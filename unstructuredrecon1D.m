@@ -37,11 +37,12 @@ for i = 1:N+2
     
     end
     %u(i) = (1/h(i))*((x(i)+h(i)/2)^4-((x(i)-h(i)/2)^4))/4;%exp(-(x(i)-0.5)^2);
-    
+    %u(i) = (1/h(i))*((x(i)+h(i)/2)^5-((x(i)-h(i)/2)^5))/5;%exp(-(x(i)-0.5)^2);
     u(i) = (1/h(i))*((pi^(1/2)*erf(x(i)+h(i)/2 - 1/2))/2-(pi^(1/2)*erf(x(i)-h(i)/2 - 1/2))/2);
 end
 
- 
+ u(1) = NaN;
+ u(N+2) = NaN;
 
 
 f(1)=2*1;
@@ -80,6 +81,7 @@ hold on
 %    plot(xx,yy)
 % end
 error = 0;
+M = 10000;
 %4th order recon
 for i = 4:N-1
 %i = 5;
@@ -129,15 +131,17 @@ for i = 4:N-1
    y=Y;
    
    
-   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100000);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    ue = exp(-(xx-0.5).^2);%xx.^3;%;exp(-(xx-0.5).^2);
+   %ue = xx.^3;
+   %ue = xx.^4;
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
    plot(xx,yy)
    %ylim([-1e0 1e0])
   
-   if i==4
-   error = max(error,max(abs(ue-yy)))
-   end
+   
+   error = max(error,max(abs(ue-yy)));
+   
 end
 
 
@@ -146,11 +150,15 @@ i=2;
 
 y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4));
 
-   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
-   plot(xx,yy)
 
-   
+   plot(xx,yy)
+   %ue = xx.^3;
+   ue = exp(-(xx-0.5).^2);%xx.^3;
+   error = max(error,max(abs(ue-yy)));
+  
+  
 
    
 
@@ -158,27 +166,36 @@ y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3)
    i = N+1;
    y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4));
 
-   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
    plot(xx,yy)
-
+%   ue = xx.^3;
+   ue = exp(-(xx-0.5).^2);%xx.^3;
+   error = max(error,max(abs(ue-yy)));
+  
    
    
    i=3;
 
 y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3));
 
-   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
    plot(xx,yy)
-
+%ue = xx.^3;
+ue = exp(-(xx-0.5).^2);%xx.^3;
+   error = max(error,max(abs(ue-yy)));
+  
 
    
    i = N;
    y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3));
 
-   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
    plot(xx,yy)
 
- 
+%ue = xx.^3;
+ue = exp(-(xx-0.5).^2);%xx.^3;
+   error = max(error,max(abs(ue-yy)))
+  
