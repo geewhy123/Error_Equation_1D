@@ -1,9 +1,9 @@
 clear all
 close all
-N = 5;
+N = 10;
 rng(1234);
 h0 = 1/N;
-k = .01%0.00006;
+k = .005%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -47,7 +47,7 @@ end
  u(N+2) = NaN;
 
  
-u(:)=0;
+%u(:)=0;
 
 f(1)=2*1;
 f(N+2)=2*exp(-1);
@@ -68,7 +68,7 @@ olderr = 1;
 T = 1;
 for j = 1:100000
     
-[err(j),Z]=unstructuredrecon3(u,x,h,N);
+[err(j),Z]=unstructuredrecon3(u,x,h,N,1,exp(-1));
 if(j > 10 && ((abs(err(j)-olderr)/olderr < 1e-8) || abs(err(j)-olderr)<1e-15))
     T = (1:1:j)*k;
     break
@@ -101,8 +101,8 @@ u = uu;
 T = (1:1:j)*k;
 end
 toc
-u40u = u;
-T40u = T;
-err40u = err;
-x40u = x;
-save('test','u40u','T40u','err40u','x40u')
+nu10 = u;
+nT10 = T;
+nerr10 = err;
+nx10 = x;
+save('test10','nu10','nT10','nerr10','nx10')

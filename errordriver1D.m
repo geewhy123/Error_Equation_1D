@@ -1,11 +1,11 @@
 close all
 clear all
 rng(1234);
-load('N10.mat')
-u = u10;
-N = 10;
+load('test80.mat')
+u = nu80;
+N = 80;
 h0 = 1/N;
-k=0.003;
+k=0.00005;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -46,7 +46,7 @@ end
 
 
 [R,uxx,Z] =computeres(u,x,h,N,f);
-max(abs(R));
+max(abs(R))
 
 
 
@@ -60,7 +60,7 @@ tic
 olderr = 1;
 %esterr= zeros(,
 T = 1;
-for j = 1:4000
+for j = 1:100000
 
     
     %error based on u.....
@@ -110,3 +110,4 @@ exacterr = ue-u;
 exacterr = exacterr(2:N+1);
 x = x(2:N+1);
 plot(x,exacterr,'*');
+max(abs(exacterr-ee(2:N+1)))
