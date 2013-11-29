@@ -75,8 +75,10 @@ y = double(y);
 %y(1) = ubi-xbi*y(2)-x2bi*y(3)-x3bi*y(4);%ubi-xbi*y(2)
 
 %y(1) = uL-(-h1/2)*y(2)-(-h1/2)^2*y(3)-(-h1/2)^3*y(4)
-y(1)+xbi*y(2)+x2bi*y(3)+x3bi*y(4);
-y(1)+y(2)*(-hi/2)+y(3)*(-hi/2)^2+y(4)*(-hi/2)^3;
+double(y(1)+xbi*y(2)+x2bi*y(3)+x3bi*y(4));
+double(y(1)+y(2)*(-hi/2)+y(3)*(-hi/2)^2+y(4)*(-hi/2)^3);
+
+    
 %q = y(1)-ubi
 
 

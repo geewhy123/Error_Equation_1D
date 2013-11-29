@@ -1,6 +1,6 @@
 clear all
 close all
-N = 20;
+N = 40;
 rng(1234);
 h0 = 1/N;
 X = zeros(N+1,1);
@@ -53,7 +53,8 @@ f(N+2)=2*exp(-1);
 
 hold on 
 
-
+global AD
+AD = computepseudo(N,x,h);
 %uu=zeros(N+2,1);
 %for t = 1:10
 %k = 0.1;
@@ -132,8 +133,8 @@ for i = 4:N-1
 % y(1) = ubi-xbi*y(2)-x2bi*y(3)-x3bi*y(4);%ubi-xbi*y(2)
 % %q = y(1)-ubi
 
- Y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i-2),h(i-2),u(i-2),x(i+2),h(i+2),u(i+2));
-   y=Y;
+ y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i-2),h(i-2),u(i-2),x(i+2),h(i+2),u(i+2),i);
+   
    
    
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
@@ -155,7 +156,7 @@ end
 % i = 2
 i=2;
 
-y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4));
+y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4),i);
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
@@ -173,7 +174,7 @@ y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3)
 
    
    i = N+1;
-   y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4));
+   y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),i);
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
@@ -188,7 +189,7 @@ y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3)
    
    i=3;
 
-y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3));
+y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),i);
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
@@ -202,7 +203,7 @@ ue = exp(-(xx-0.5).^2);%xx.^3;
 
    
    i = N;
-   y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3));
+   y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),i);
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;

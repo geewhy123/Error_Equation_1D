@@ -1,4 +1,4 @@
-function [error, Z] = unstructuredrecon3( u,x,h,N )
+function [error, Z] = unstructuredrecon3( u,x,h,N,u0,u1 )
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 %   Detailed explanation goes here
 Z = zeros(4,N+2);
@@ -74,7 +74,7 @@ end
 % i = 2
 i=2;
 
-y= reconboundary3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4),1,'left');
+y= reconboundary3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4),u0,'left');
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
@@ -92,7 +92,7 @@ ue = exp(-(xx).^2);%xx.^3;
 
    
    i = N+1;
-   y= reconboundary3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),exp(-1),'right');
+   y= reconboundary3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),u1,'right');
 
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;

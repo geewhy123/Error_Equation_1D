@@ -1,9 +1,9 @@
 clear all
 close all
-N = 40;
+N = 5;
 rng(1234);
 h0 = 1/N;
-k = 0.0003;
+k = .01%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -66,10 +66,10 @@ tic
 olderr = 1;
 %err= zeros(j,
 T = 1;
-for j = 1:10000
+for j = 1:100000
     
 [err(j),Z]=unstructuredrecon3(u,x,h,N);
-if(abs(err(j)-olderr)/olderr < 1e-8)
+if(j > 10 && ((abs(err(j)-olderr)/olderr < 1e-8) || abs(err(j)-olderr)<1e-15))
     T = (1:1:j)*k;
     break
 end
@@ -101,4 +101,8 @@ u = uu;
 T = (1:1:j)*k;
 end
 toc
-
+u40u = u;
+T40u = T;
+err40u = err;
+x40u = x;
+save('test','u40u','T40u','err40u','x40u')
