@@ -1,11 +1,11 @@
 close all
 clear all
 rng(1234);
-load('test80.mat')
-u = nu80;
-N = 80;
+load('test20.mat')
+u = nu20;
+N = 20;
 h0 = 1/N;
-k=0.00005;
+k=0.0005;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -66,7 +66,7 @@ for j = 1:100000
     %error based on u.....
 [errerr(j),Z]=unstructuredrecon3(e,x,h,N,0,0);
 %if(j > 50 && ((abs(errerr(j)-olderr)/olderr < 1e-15) || abs(errerr(j)-olderr)<1e-15))
-if(j > 50 && s <1e-8)
+if(j > 50 && k*s <1e-15)
     T = (1:1:j)*k;
     break
 end
