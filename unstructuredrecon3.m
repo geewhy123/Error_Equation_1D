@@ -3,7 +3,7 @@ function [error, Z] = unstructuredrecon3( u,x,h,N,u0,u1 )
 %   Detailed explanation goes here
 Z = zeros(4,N+2);
 error = 0;
-M = 10000;
+M = 1000;
 %4th order recon
 for i = 4:N-1
 %i = 5;

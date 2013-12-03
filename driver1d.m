@@ -1,9 +1,9 @@
 clear all
 close all
-N = 10;
+N = 20;
 rng(1234);
 h0 = 1/N;
-k = .005%0.00006;
+k = .0008%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 

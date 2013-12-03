@@ -1,9 +1,9 @@
 clear all
 close all
-N =5;
+N =40;
 rng(1234);
 h0 = 1/N;
-k = .01%0.00006;
+k = .0002%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -46,7 +46,7 @@ end
  u(1) = NaN;
  u(N+2) = NaN;
 
- 
+ ue = u;
 %u(:)=0;
 
 f(1)=2*1;
@@ -100,9 +100,12 @@ u = uu;
 
 T = (1:1:j)*k;
 end
+
+%%cverr = max(abs(ue-u))
+norm(ue(2:N+1)-u(2:N+1),2)
 toc
-hu5 = u;
-hT5 = T;
-herr5 = err;
-hx5 = x;
-save('h','nu10','nT10','nerr10','nx10')
+hu20 = u;
+hT20 = T;
+herr20 = err;
+hx20 = x;
+save('test0','hu20','hT20','herr20','hx20')

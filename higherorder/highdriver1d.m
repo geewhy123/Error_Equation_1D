@@ -46,7 +46,7 @@ end
  u(1) = NaN;
  u(N+2) = NaN;
 
- 
+ ue = u;
 %u(:)=0;
 
 f(1)=2*1;
@@ -100,9 +100,12 @@ u = uu;
 
 T = (1:1:j)*k;
 end
+
+%%cverr = max(abs(ue-u))
+%norm(ue(2:N+1)-u(2:N+1),2)
 toc
-hu20 = u;
-hT20 = T;
-herr20 = err;
-hx20 = x;
-save('hN20','hu20','hT20','herr20','hx20')
+hu40 = u;
+hT40 = T;
+herr40 = err;
+hx40 = x;
+save('test0','hu40','hT40','herr40','hx40')

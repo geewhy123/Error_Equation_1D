@@ -14,7 +14,7 @@ wi4 = 1;%1/abs(x4-xi);
 % x2 = x(i+2);
 % x3 = x(i+3);
 % x4 = x(i+4);
- syms z
+ %syms z
 % % xb1 = (1/h1)*int(z-x1,z,x1-h1/2,x1+h1/2);
 % % xb2 = (1/h2)*int(z-x2,z,x2-h2/2,x2+h2/2);
 % % xb3 = (1/h3)*int(z-x3,z,x3-h3/2,x3+h3/2);
