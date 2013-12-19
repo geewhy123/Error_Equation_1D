@@ -1,4 +1,4 @@
-function [ y ] = reconboundary4( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,uL,str,i)
+function [ y ] = reconboundary1( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,uL,str,i)
 %RECON3 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -76,10 +76,10 @@ if strcmp(str,'right')
    hi = -hi; 
 end
 
-A = (A(:,2:4)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4); 
-                     (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);
-                     (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);
-                     (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);]));
+A = (A(:,2:2)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ; 
+                     (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
+                     (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
+                     (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ]));
    
                  
 b = (b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
@@ -89,18 +89,20 @@ b = (b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
 
 
 
-y(3:5) = (A'*A)\(A'*b);
+%y(3:3) = (A'*A)\(A'*b);
 
 P = [ 1 -hi/2; 1 xbi];
-q = [uL; ubi]-[ (-hi/2)^2*y(3) + (-hi/2)^3*y(4) + (-hi/2)^4*y(5); x2bi*y(3)+x3bi*y(4)+x4bi*y(5)];
+%q = [uL; ubi]-[ (-hi/2)^2*y(3) ; x2bi*y(3)];
+q = [uL;ubi];
 y(1:2) = P\q;
 %y = double(y);
 
 %y(1) = ubi-xbi*y(2)-x2bi*y(3)-x3bi*y(4);%ubi-xbi*y(2)
 
 %y(1) = uL-(-h1/2)*y(2)-(-h1/2)^2*y(3)-(-h1/2)^3*y(4)
-double(y(1)+xbi*y(2)+x2bi*y(3)+x3bi*y(4)+x4bi*y(5));
-double(y(1)+y(2)*(-hi/2)+y(3)*(-hi/2)^2+y(4)*(-hi/2)^3+y(5)*(-hi/2)^4);
+double(y(1)+xbi*y(2));
+double(y(1)+y(2)*(-hi/2));
+
 
     
 %q = y(1)-ubi

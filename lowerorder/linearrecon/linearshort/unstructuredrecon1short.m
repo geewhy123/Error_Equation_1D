@@ -1,11 +1,11 @@
-function [error, Z] = unstructuredrecon3( u,x,h,N,u0,u1 )
+function [error, Z] = unstructuredrecon1short( u,x,h,N,u0,u1 )
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 %   Detailed explanation goes here
-Z = zeros(4,N+2);
+Z = zeros(2,N+2);
 error = 0;
 M = 1000;
 %4th order recon
-for i = 4:N-1
+for i = 3:N
 %i = 5;
 % wi1 = 1/abs(x(i-1)-x(i));
 % wi2 = 1/abs(x(i+1)-x(i));
@@ -49,20 +49,20 @@ for i = 4:N-1
 % y(1) = ubi-xbi*y(2)-x2bi*y(3)-x3bi*y(4);%ubi-xbi*y(2)
 % %q = y(1)-ubi
 
- Y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i-2),h(i-2),u(i-2),x(i+2),h(i+2),u(i+2),i);
+ Y= recon1short(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),i);
    y=Y;
    
    
-  % xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
-  % ue = exp(-(xx).^2);%xx.^3;%;exp(-(xx-0.5).^2);
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
+   ue = exp(-(xx).^2);%xx.^3;%;exp(-(xx-0.5).^2);
    %ue = xx.^3;
    %ue = xx.^4;
-  % yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
+   yy = y(1)+y(2)*(xx-x(i));
   % plot(xx,yy)
    %ylim([-1e0 1e0])
   
    
-  % error = max(error,max(abs(ue-yy)));
+   error = max(error,max(abs(ue-yy)));
    %upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
    %upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
    %uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
@@ -74,15 +74,15 @@ end
 % i = 2
 i=2;
 
-y= reconboundary3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),x(i+4),h(i+4),u(i+4),u0,'left');
+y= reconboundary1short(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),u0,'left');
 
-%   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
-%   yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
-%ue = exp(-(xx).^2);%xx.^3;
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
+   yy = y(1)+y(2)*(xx-x(i));
+ue = exp(-(xx).^2);%xx.^3;
  %  plot(xx,yy)
    %ue = xx.^3;
    
- %  error = max(error,max(abs(ue-yy)));
+   error = max(error,max(abs(ue-yy)));
    %upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
    %upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
    %uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
@@ -92,52 +92,52 @@ y= reconboundary3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3
 
    
    i = N+1;
-   y= reconboundary3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),u1,'right');
+   y= reconboundary1short(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),u1,'right');
 
-  % xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
-  % yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
-  %  ue = exp(-(xx).^2);%xx.^3;
+   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
+   yy = y(1)+y(2)*(xx-x(i));
+    ue = exp(-(xx).^2);%xx.^3;
  %  plot(xx,yy)
 %   ue = xx.^3;
   
-   %error = max(error,max(abs(ue-yy)));
+   error = max(error,max(abs(ue-yy)));
    %upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
    %upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
    %uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
    Z(:,i)= y;
    
-   i=3;
-
-y= recon3(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),i);
-
-%   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
- %  yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
- %  ue = exp(-(xx).^2);%xx.^3;
-   
-  % plot(xx,yy)
-%ue = xx.^3;
-
-  % error = max(error,max(abs(ue-yy)));
-   %upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
-   %upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
-   %uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
-Z(:,i)= y;
-   
-   i = N;
-   y= recon3(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),i);
-
-   %xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
-   %yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;
-   %ue = exp(-(xx).^2);%xx.^3;
-  % plot(xx,yy)
-
-%ue = xx.^3;
-
-%   error = max(error,max(abs(ue-yy)));
-  %  upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
-  % upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
-  % uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
-   
+%    i=3;
+% 
+% y= recon1short(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i+1),h(i+1),u(i+1),x(i+2),h(i+2),u(i+2),x(i+3),h(i+3),u(i+3),i);
+% 
+%    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
+%    yy = y(1)+y(2)*(xx-x(i));
+%    ue = exp(-(xx).^2);%xx.^3;
+%    
+%   % plot(xx,yy)
+% %ue = xx.^3;
+% 
+%    error = max(error,max(abs(ue-yy)));
+%    %upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
+%    %upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
+%    %uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
+% Z(:,i)= y;
+%    
+%    i = N;
+%    y= recon1short(x(i),h(i),u(i),x(i+1),h(i+1),u(i+1),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),i);
+% 
+%    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
+%    yy = y(1)+y(2)*(xx-x(i));
+%    ue = exp(-(xx).^2);%xx.^3;
+%   % plot(xx,yy)
+% 
+% %ue = xx.^3;
+% 
+%    error = max(error,max(abs(ue-yy)))
+%   %  upr = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
+%   % upl = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
+%   % uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
+%    
    Z(:,i)= y;
 
 end

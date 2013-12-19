@@ -1,14 +1,14 @@
 clear all
 close all
-N =40;
+N =80;
 rng(1234);
 h0 =1/N;
-k = .002*(10/N)^2;%0.00006;
+k = .0006*(40/N)^2;%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + (-1+rand*(2))*h0/3;
+   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -18,7 +18,7 @@ end
 x(1) = -x(2);
 x(N+2) = 1+(1-x(N+1));
 %plot(X,1,'*',x,1,'o')
-%xlim([0 1])
+%xlim([0 1]) 
 h = zeros(N+2,1);
 for i = 2:N+1
    h(i) = X(i)-X(i-1); 
@@ -45,32 +45,36 @@ for i = 1:N+2
     
 end
 
+f(1) = NaN;
+f(N+2) = NaN;
  u(1) = NaN;
  u(N+2) = NaN;
 
  ue = u;
 %u(:)=0;
 
-f(1)=2*1;
-f(N+2)=2*exp(-1);
+%f(1)=2*1;
+%f(N+2)=2*exp(-1);
 
 %plot(x,u,'o')
 
 %hold on
 
 uu = zeros(N+2,1);
-
+uu(1) = NaN;
+uu(N+2) = NaN;
 global AD
 AD = computepseudo(N,x,h);
 d =1;
-
+figure
+hold on
 tic
 olderr = 1;
 %err= zeros(j,
 T = 1;
-for j = 1:100000
+for j = 1:50000
     
-[err(j),Z]=unstructuredrecon4(u,x,h,N,1,exp(-1));
+[err(j),Z]=unstructuredrecon1(u,x,h,N,1,exp(-1));
 %if(j > 10 && ((abs(err(j)-olderr)/olderr < 1e-8) || abs(err(j)-olderr)<1e-15))
 if (d*k < 1e-15)
     T = (1:1:j)*k;
@@ -86,26 +90,30 @@ for i= 2:N+1
     yl = Z(:,i-1);
     %need averaging flux
 
-        
-upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2   + 4*y(5)*(h(i)/2)^3;
- upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3;
-ur = yr(1)+yr(2)*(-h(i)/2)+yr(3)*(-h(i)/2)^2+yr(4)*(-h(i)/2)^3 +yr(5)*(-h(i)/2)^4;
-ul = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3+ y(5)*(h(i)/2)^4;
-upr = (upr1+upr2)/2 ;%+ (0.2/h(i))*(ur(1)-ul(1));
-
-upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
- upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 ;
-ur = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3 + y(5)*(-h(i)/2)^4;
-ul = yl(1) + yl(2)*(h(i)/2) + yl(3)*(h(i)/2)^2 + yl(4)*(h(i)/2)^3 + yl(5)*(h(i)/2)^4;
-upl = (upl1+upl2)/2 ;%+ (0.2/h(i))*(ur(1)-ul(1));
     
-% upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2   + 4*y(5)*(h(i)/2)^3;
-% upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3;
-% upr = (upr1+upr2)/2;
-% upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
-% upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
-% upl = (upl1+upl2)/2;
+upr1 = y(2);
+upr2 = yr(2);
+ur = yr(1)+yr(2)*(-h(i)/2);
+ul = y(1) + y(2)*(h(i)/2);
+upr = (upr1+upr2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+upl1 = y(2);
+upl2 = yl(2);
 
+ur = y(1)+y(2)*(-h(i)/2);
+ul = yl(1) + yl(2)*(h(i)/2);
+upl = (upl1+upl2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+
+
+% upr1 = y(2);
+% upr2 = yr(2);
+% upr = (upr1+upr2)/2;% + 0.2*(yr(1)-y(1));
+% upl1 = y(2);
+% upl2 = yl(2);
+% upl = (upl1+upl2)/2;% + 0.2*(y(1)-yl(1));
+
+if i==N/2+1
+   fhalf = upr; 
+end
 
 
 if i==2
@@ -123,8 +131,13 @@ u = uu;
 
 T = (1:1:j)*k;
 d
+Z;
+%plot(x,u,'*-')
+
 end
 
+shalf=exp(-0.5^2) - u(N/2+1)
+fhalf=-exp(-0.5^2) - fhalf
 
 
 
@@ -133,8 +146,8 @@ cverr = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2))/N
 max(abs(ue-u))
 %norm(ue(2:N+1)-u(2:N+1),2)
 toc
-hu40 = u;
-hT40 = T;
-herr40 = err;
-hx40 = x;
-save('test','hu40','hT40','herr40','hx40')
+lu20 = u;
+lT20 = T;
+lerr20 = err;
+lx20 = x;
+save('test','lu20','lT20','lerr20','lx20')
