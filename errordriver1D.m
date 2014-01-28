@@ -1,11 +1,11 @@
 close all
 clear all
 rng(1234);
-load('hN20b.mat')
-u = hu20;
-N = 20;
+load('80-o2.mat')%hN20b.mat')
+u = lu80;
+N = 80;
 h0 = 1/N;
-k=0.0008;
+k=0.0003*(40/N)^2;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -109,5 +109,10 @@ toc
 exacterr = ue-u;
 exacterr = exacterr(2:N+1);
 x = x(2:N+1);
-plot(x,exacterr,'*');
-max(abs(exacterr-ee(2:N+1)))
+plot(x,exacterr,'-o',x,ee(2:N+1),'*');
+
+cverr1 = sum(abs(exacterr-ee(2:N+1)))/N
+cverr2 = sqrt(sum((exacterr-ee(2:N+1)).^2)/N)
+
+cverrinf=max(abs(exacterr-ee(2:N+1)))
+%max(abs(exacterr-ee(2:N+1)))

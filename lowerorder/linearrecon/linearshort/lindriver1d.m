@@ -1,9 +1,11 @@
+%3 pt linear recon
+
 clear all
 close all
 N =80;
 rng(1234);
 h0 =1/N;
-k = .00035*(40/N)^2;%0.00006;
+k = .00055*(40/N)^2;%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -96,13 +98,13 @@ upr1 = y(2);
 upr2 = yr(2);
 ur = yr(1)+yr(2)*(-h(i)/2);
 ul = y(1) + y(2)*(h(i)/2);
-upr = (upr1+upr2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+upr = (upr1+upr2)/2 + (0.5/h(i))*(ur(1)-ul(1));
 upl1 = y(2);
 upl2 = yl(2);
 
 ur = y(1)+y(2)*(-h(i)/2);
 ul = yl(1) + yl(2)*(h(i)/2);
-upl = (upl1+upl2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+upl = (upl1+upl2)/2 + (0.5/h(i))*(ur(1)-ul(1));
 
 if i==N/2+1
    fhalf = upr; 
@@ -133,10 +135,10 @@ shalf=exp(-0.5^2) - u(N/2+1)
 fhalf=-exp(-0.5^2) - fhalf
 
 
+cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
+cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
 
-cverr = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2))/N
-
-max(abs(ue-u))
+cverrinf = max(abs(ue-u))
 %norm(ue(2:N+1)-u(2:N+1),2)
 toc
 lu20 = u;

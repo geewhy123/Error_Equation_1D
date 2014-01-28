@@ -1,9 +1,9 @@
 close all
 clear all
 rng(1234);
-load('new40u')%20hru.mat')
-u = nu40;
-N = 40;
+load('20-o2')%20hru.mat')
+u = lu20;
+N = 20;
 h0 = 1/N;
 k=0.0007*(20/N)^2    ;
 X = zeros(N+1,1);

@@ -1,6 +1,8 @@
+%linear recon 5pt (second order)
+
 clear all
 close all
-N =80;
+N =40;
 rng(1234);
 h0 =1/N;
 k = .0006*(40/N)^2;%0.00006;
@@ -95,13 +97,13 @@ upr1 = y(2);
 upr2 = yr(2);
 ur = yr(1)+yr(2)*(-h(i)/2);
 ul = y(1) + y(2)*(h(i)/2);
-upr = (upr1+upr2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+upr = (upr1+upr2)/2 + (0.5/h(i))*(ur(1)-ul(1));
 upl1 = y(2);
 upl2 = yl(2);
 
 ur = y(1)+y(2)*(-h(i)/2);
 ul = yl(1) + yl(2)*(h(i)/2);
-upl = (upl1+upl2)/2 + (0.2/h(i))*(ur(1)-ul(1));
+upl = (upl1+upl2)/2 + (0.5/h(i))*(ur(1)-ul(1));
 
 
 % upr1 = y(2);
@@ -141,13 +143,16 @@ fhalf=-exp(-0.5^2) - fhalf
 
 
 
-cverr = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2))/N
 
-max(abs(ue-u))
+cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
+cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
+
+cverrinf= max(abs(ue-u))
 %norm(ue(2:N+1)-u(2:N+1),2)
 toc
-lu20 = u;
-lT20 = T;
-lerr20 = err;
-lx20 = x;
-save('test','lu20','lT20','lerr20','lx20')
+lu80 = u;
+lT80 = T;
+lerr80 = err;
+lx80 = x;
+save('80-o2','lu80','lT80','lerr80','lx80')
+%q

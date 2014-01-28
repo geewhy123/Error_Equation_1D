@@ -95,9 +95,9 @@ x4b4 = (1/h4)*( ((x4+h4/2)-x4)^5/5 -((x4-h4/2)-x4)^5/5 );
 x4bi = (1/hi)*( ((xi+hi/2)-xi)^5/5 -((xi-hi/2)-xi)^5/5 );
 
 AA = double([wi1*(xb1-xbi+x1-xi) wi1*(x2b1+2*(x1-xi)*xb1+(x1-xi)^2-x2bi) ; 
-            wi2*(xb2-xbi+x2-xi) wi2*(x2b2+2*(x2-xi)*xb2+(x2-xi)^2-x2bi) ; 
-            wi3*(xb3-xbi+x3-xi) wi3*(x2b3+2*(x3-xi)*xb3+(x3-xi)^2-x2bi) ;
-            wi4*(xb4-xbi+x4-xi) wi4*(x2b4+2*(x4-xi)*xb4+(x4-xi)^2-x2bi)  ]);
+             wi2*(xb2-xbi+x2-xi) wi2*(x2b2+2*(x2-xi)*xb2+(x2-xi)^2-x2bi) ; 
+             wi3*(xb3-xbi+x3-xi) wi3*(x2b3+2*(x3-xi)*xb3+(x3-xi)^2-x2bi) ;
+             wi4*(xb4-xbi+x4-xi) wi4*(x2b4+2*(x4-xi)*xb4+(x4-xi)^2-x2bi)  ]);
  AD(:,:,i)=pinv(AA);
 
 

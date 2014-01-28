@@ -1,6 +1,6 @@
 clear all
 close all
-N = 20;
+N = 40;
 rng(1234);
 h0 = 1/N;
 k = .004*(10/N)^2;%0.00006;
@@ -126,6 +126,8 @@ nerr40 = err;
 nx40 = x;
 save('test','nu40','nT40','nerr40','nx40')
 
-cverr = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2))/N
 
-max(abs(ue-u))
+cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
+cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
+
+cverrinf=max(abs(ue-u))

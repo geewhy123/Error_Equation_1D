@@ -1,8 +1,8 @@
 close all
 clear all
 rng(1234);
-load('hN20.mat')
-u = hu20;
+load('20-o2.mat')
+u = lu20;
 N = 20;
 h0 = 1/N;
 k=0.0005;
@@ -109,5 +109,5 @@ toc
 exacterr = ue-u;
 exacterr = exacterr(2:N+1);
 x = x(2:N+1);
-plot(x,exacterr,'*');
+plot(x,exacterr,'-o',x,ee(2:N+1),'*');
 max(abs(exacterr-ee(2:N+1)))

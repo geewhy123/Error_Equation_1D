@@ -1,6 +1,6 @@
 clear all
 close all
-N =40;
+N =20;
 rng(1234);
 h0 =1/N;
 k = .002*(10/N)^2;%0.00006;
@@ -8,7 +8,7 @@ X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + (-1+rand*(2))*h0/3;
+   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -128,9 +128,11 @@ end
 
 
 
-cverr = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2))/N
 
-max(abs(ue-u))
+cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
+cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
+
+cverrinf= max(abs(ue-u))
 %norm(ue(2:N+1)-u(2:N+1),2)
 toc
 hu40 = u;
