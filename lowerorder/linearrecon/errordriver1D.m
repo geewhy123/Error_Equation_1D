@@ -1,16 +1,16 @@
 close all
 clear all
 rng(1234);
-load('20hru.mat')
-u = nu20;
-N = 20;
+load('n40-o4.mat')
+u = u;
+N = 40;
 h0 = 1/N;
-k=0.0007    ;
+k=0.0009  *(20/N)^2  ;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + (-1+rand*(2))*h0/3;
+   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -35,8 +35,12 @@ for i = 2:N+1
     f(i) = (1/h(i))*(-2*(x(i)+h(i)/2)*exp(-(x(i)+h(i)/2)^2)+2*(x(i-1)+h(i-1)/2)*exp(-(x(i-1)+h(i-1)/2)^2));
   %    f(i) = (1/h(i))*( log(1+(x(i)+h(i)/2))+((x(i)+h(i)/2)-1)/((x(i)+h(i)/2)+1) - (log(1+(x(i)-h(i)/2))+((x(i)-h(i)/2)-1)/((x(i)-h(i)/2)+1)) );%
 end
-global AD
-AD = computepseudo(N,x,h);
+global PS3
+PS3 = computepseudo3(N,x,h);
+global PS1
+PS1 = computepseudo(N,x,h);
+global PS4
+PS4 = computepseudo4(N,x,h);
 
 
 ue = zeros(N+2,1);
@@ -48,9 +52,6 @@ end
 
 [R,uxx,Z] =computeres(u,x,h,N,f);
 r=max(abs(R))
-
-
-
 
 
 e = zeros(N+2,1);
@@ -65,7 +66,7 @@ for j = 1:100000
 
     
     %error based on u.....
-[errerr(j),Z]=unstructuredrecon4(e,x,h,N,0,0);
+[errerr(j),Z]=unstructuredrecon3(e,x,h,N,0,0);
 %if(j > 50 && ((abs(errerr(j)-olderr)/olderr < 1e-15) || abs(errerr(j)-olderr)<1e-15))
 if(j > 50 && k*s <1e-15)
     T = (1:1:j)*k;
@@ -78,12 +79,27 @@ for i= 2:N+1
     yr = Z(:,i+1);
     yl = Z(:,i-1);
     %need averaging flux
-upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2   + 4*y(5)*(h(i)/2)^3;
-upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i)/2)^3;
+upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2 ;% + 4*y(5)*(h(i)/2)^3;
+upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2  ;% + 4*yr(5)*(-h(i)/2)^3;
 upr = (upr1+upr2)/2;
-upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
-upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
+upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   ;%+ 4*y(5)*(-h(i)/2)^3;
+upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2  ;% + 4*yl(5)*(h(i-1)/2)^3;
 upl = (upl1+upl2)/2;
+
+
+%second order
+% upr1 = y(2);
+% upr2 = yr(2);
+% ur = yr(1)+yr(2)*(-h(i)/2);
+% ul = y(1) + y(2)*(h(i)/2);
+% upr = (upr1+upr2)/2 + (.2/h(i))*(ur(1)-ul(1));
+% upl1 = y(2);
+% upl2 = yl(2);
+% 
+% ur = y(1)+y(2)*(-h(i)/2);
+% ul = yl(1) + yl(2)*(h(i)/2);
+% upl = (upl1+upl2)/2 + (.2/h(i))*(ur(1)-ul(1));
+
 
 if i==2
     upl = upl1;
@@ -114,4 +130,5 @@ figure
 plot(x,exacterr,'o-',x,ee(2:N+1),'*');
 max(abs(exacterr-ee(2:N+1)))
 ee = ee(2:N+1);
-save('test','exacterr','ee','x')
+ue=ue(2:N+1);
+save('t','exacterr','ee','x')

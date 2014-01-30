@@ -68,8 +68,8 @@ uu(N+2) = NaN;
 global AD
 AD = computepseudo(N,x,h);
 d =1;
-figure
-hold on
+%figure
+%hold on
 tic
 olderr = 1;
 %err= zeros(j,
@@ -93,17 +93,19 @@ for i= 2:N+1
     %need averaging flux
 
     
+    
+    
 upr1 = y(2);
 upr2 = yr(2);
 ur = yr(1)+yr(2)*(-h(i)/2);
 ul = y(1) + y(2)*(h(i)/2);
-upr = (upr1+upr2)/2 + (0.5/h(i))*(ur(1)-ul(1));
+upr = (upr1+upr2)/2 + (.2/h(i))*(ur(1)-ul(1));
 upl1 = y(2);
 upl2 = yl(2);
 
 ur = y(1)+y(2)*(-h(i)/2);
 ul = yl(1) + yl(2)*(h(i)/2);
-upl = (upl1+upl2)/2 + (0.5/h(i))*(ur(1)-ul(1));
+upl = (upl1+upl2)/2 + (.2/h(i))*(ur(1)-ul(1));
 
 
 % upr1 = y(2);
@@ -150,9 +152,9 @@ cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
 cverrinf= max(abs(ue-u))
 %norm(ue(2:N+1)-u(2:N+1),2)
 toc
-lu80 = u;
-lT80 = T;
-lerr80 = err;
-lx80 = x;
-save('80-o2','lu80','lT80','lerr80','lx80')
+%u40 = u;
+%T40 = T;
+%err40 = err;
+%x40 = x;
+save('test','u','T','err','x')
 %q

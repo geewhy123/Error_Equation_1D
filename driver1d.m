@@ -1,6 +1,6 @@
 clear all
 close all
-N = 40;
+N = 80;
 rng(1234);
 h0 = 1/N;
 k = .004*(10/N)^2;%0.00006;
@@ -83,6 +83,9 @@ for i= 2:N+1
     yl = Z(:,i-1);
     %need averaging flux
     
+
+    
+    
  upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
  upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2;
 ur = yr(1)+yr(2)*(-h(i)/2)+yr(3)*(-h(i)/2)^2+yr(4)*(-h(i)/2)^3;
@@ -120,11 +123,11 @@ T = (1:1:j)*k;
 d
 end
 toc
-nu40 = u;
-nT40 = T;
-nerr40 = err;
-nx40 = x;
-save('test','nu40','nT40','nerr40','nx40')
+% nu40 = u;
+% nT40 = T;
+% nerr40 = err;
+% nx40 = x;
+save('n80-o4','u','T','err','x')
 
 
 cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N

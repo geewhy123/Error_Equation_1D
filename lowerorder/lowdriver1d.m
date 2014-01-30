@@ -1,6 +1,6 @@
 clear all
 close all
-N =80;
+N =160;
 rng(1234);
 h0 =1/N;
 k = .0005*(40/N)^2;%0.00006;
@@ -100,7 +100,8 @@ for i= 2:N+1
 % upl = (upl1+upl2)/2 ;%+ (0.8/h(i))*(ur(1)-ul(1));
 
 
-upr1 = y(2)+2*y(3)*h(i)/2;
+
+upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
 upr2 = yr(2)+2*yr(3)*-h(i+1)/2;
 upr = (upr1+upr2)/2;
 upl1 = y(2)+2*y(3)*-h(i)/2;

@@ -14,7 +14,7 @@ wi4 = 1;%1/abs(x4-xi);
 % x2 = x(i+2);
 % x3 = x(i+3);
 % x4 = x(i+4);
-syms z
+%syms z
 % xb1 = (1/h1)*int(z-x1,z,x1-h1/2,x1+h1/2);
 % xb2 = (1/h2)*int(z-x2,z,x2-h2/2,x2+h2/2);
 % xb3 = (1/h3)*int(z-x3,z,x3-h3/2,x3+h3/2);
@@ -76,13 +76,13 @@ if strcmp(str,'right')
    hi = -hi; 
 end
 
-A = double(A(:,2:4)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4); 
+A = (A(:,2:4)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4); 
                      (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);
                      (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);
                      (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3) (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x4bi-(-hi/2)^4);]));
    
                  
-b = double(b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
+b = (b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
        (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;]);
@@ -92,30 +92,19 @@ b = double(b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
 y(3:5) = (A'*A)\(A'*b);
 
 P = [ 1 -hi/2; 1 xbi];
-q = [uL; ubi]-[ (-hi/2)^2*y(3) + (-hi/2)^3*y(4); x2bi*y(3)+x3bi*y(4)];
+q = [uL; ubi]-[ (-hi/2)^2*y(3) + (-hi/2)^3*y(4) + (-hi/2)^4*y(5); x2bi*y(3)+x3bi*y(4)+x4bi*y(5)];
 y(1:2) = P\q;
-y = double(y);
+%y = double(y);
 
 %y(1) = ubi-xbi*y(2)-x2bi*y(3)-x3bi*y(4);%ubi-xbi*y(2)
 
 %y(1) = uL-(-h1/2)*y(2)-(-h1/2)^2*y(3)-(-h1/2)^3*y(4)
-double(y(1)+xbi*y(2)+x2bi*y(3)+x3bi*y(4));
-double(y(1)+y(2)*(-hi/2)+y(3)*(-hi/2)^2+y(4)*(-hi/2)^3);
+double(y(1)+xbi*y(2)+x2bi*y(3)+x3bi*y(4)+x4bi*y(5));
+double(y(1)+y(2)*(-hi/2)+y(3)*(-hi/2)^2+y(4)*(-hi/2)^3+y(5)*(-hi/2)^4);
 
     
 %q = y(1)-ubi
 
-
-if xi==0.1
-%     wi1
-%     x2b1
-%     x1
-%     xi
-    %y
-%     x2bi
-%     y
-%   x2b2 
-end
 
 end
 

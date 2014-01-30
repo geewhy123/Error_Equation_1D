@@ -1,9 +1,9 @@
 close all
 clear all
 rng(1234);
-load('80-o2.mat')%hN20b.mat')
-u = lu80;
-N = 80;
+load('test.mat')%hN20b.mat')
+u = nu40;
+N = 40;
 h0 = 1/N;
 k=0.0003*(40/N)^2;
 X = zeros(N+1,1);
@@ -50,7 +50,7 @@ r=max(abs(R))
 
 
 
-
+error('1')
 
 e = zeros(N+2,1);
 ee =zeros(N+2,1);

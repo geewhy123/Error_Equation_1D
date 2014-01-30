@@ -1,6 +1,6 @@
 clear all
 close all
-N = 80;
+N = 40;
 rng(1234);
 h0 = 1/N;
 X = zeros(N+1,1);

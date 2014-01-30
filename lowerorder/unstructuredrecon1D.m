@@ -102,8 +102,6 @@ xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,M);
   
 
    
-
-   
    i = N+1;
    %%%y= recon2(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),i);
    y= reconboundary2(x(i),h(i),u(i),x(i-1),h(i-1),u(i-1),x(i-2),h(i-2),u(i-2),x(i-3),h(i-3),u(i-3),x(i-4),h(i-4),u(i-4),exp(-1),'right');
