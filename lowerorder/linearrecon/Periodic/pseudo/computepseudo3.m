@@ -19,49 +19,49 @@ for i = 2:N+1
     if i==3
          h1 = h(i-1);
     h2 = h(i+1);
-    h3 = h(i+2);
-    h4 = h(i+3);
+    h3 = h(N+1);
+    h4 = h(i+2);
     hi = h(i);
     x1 = x(i-1);
     x2 = x(i+1);
-    x3 = x(i+2);
-    x4 = x(i+3);
+    x3 = x(N+1);
+    x4 = x(i+2);
     xi = x(i);
     end
     if i==N
-    h1 = h(i+1);
-    h2 = h(i-1);
+    h1 = h(i-1);
+    h2 = h(i+1);
     h3 = h(i-2);
-    h4 = h(i-3);
+    h4 = h(2);
     hi = h(i);
-    x1 = x(i+1);
-    x2 = x(i-1);
+    x1 = x(i-1);
+    x2 = x(i+1);
     x3 = x(i-2);
-    x4 = x(i-3);
+    x4 = x(2);
     xi = x(i); 
     end
     if i==2
-         h1 = h(i+1);
-    h2 = h(i+2);
-    h3 = h(i+3);
-    h4 = h(i+4);
+         h1 = h(N+1);
+    h2 = h(i+1);
+    h3 = h(N);
+    h4 = h(i+2);
     hi = h(i);
-    x1 = x(i+1);
-    x2 = x(i+2);
-    x3 = x(i+3);
-    x4 = x(i+4);
+    x1 = x(N+1);
+    x2 = x(i+1);
+    x3 = x(N);
+    x4 = x(i+2);
     xi = x(i);
     end
     if i==N+1
     h1 = h(i-1);
-    h2 = h(i-2);
-    h3 = h(i-3);
-    h4 = h(i-4);
+    h2 = h(2);
+    h3 = h(i-2);
+    h4 = h(3);
     hi = h(i);
     x1 = x(i-1);
-    x2 = x(i-2);
-    x3 = x(i-3);
-    x4 = x(i-4);
+    x2 = x(2);
+    x3 = x(i-2);
+    x4 = x(3);
     xi = x(i); 
     end
     wi1 = 1;

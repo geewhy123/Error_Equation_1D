@@ -1,6 +1,6 @@
 clear all
 close all
-N = 1280;
+N = 20;
 p=2;
 rng(1234);
 h0 = 1/N;
