@@ -32,30 +32,20 @@ ur = y(1)+y(2)*(-h(i)/2);
 ul = yl(1) + yl(2)*(h(i)/2);
 upl = (upl1+upl2)/2 + (.2/h(i))*(ur(1)-ul(1));
         
-%         if i==2
-%     upl = upl1;
-% end
-% if i==N+1
-%    upr = upr1; 
-% end
-
-
 
     case 3
         upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
 upr2 = yr(2)+2*yr(3)*-h(i+1)/2;
-upr = (upr1+upr2)/2;
+%ur = yr(1)+yr(2)*(-h(i)/2)+yr(3)*(-h(i)/2)^2;
+%ul = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2;
+upr = (upr1+upr2)/2 ;%+(.2/h(i))*(ur(1)-ul(1));;
 upl1 = y(2)+2*y(3)*-h(i)/2;
 upl2 = yl(2)+2*yl(3)*h(i-1)/2;
-upl = (upl1+upl2)/2;
+% ur = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 ;
+ %       ul = yl(1) + yl(2)*(h(i)/2) + yl(3)*(h(i)/2)^2 ;
+        upl = (upl1+upl2)/2;% +(.2/h(i))*(ur(1)-ul(1)) ;;
 
-%         
-%    if i==2
-%     upl = upl1;
-% end
-% if i==N+1
-%    upr = upr1; 
-% end
+
 
 
     case 4

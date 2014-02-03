@@ -1,6 +1,6 @@
 clear all
 close all
-N = 80;
+N = 20;
 rng(1234);
 h0 = 1/N;
 k = .004*(10/N)^2;%0.00006;

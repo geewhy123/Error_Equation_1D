@@ -24,7 +24,7 @@ for i = 2:N+1
     hi = h(i);
     x1 = x(i-1);
     x2 = x(i+1);
-    x3 = x(N+1);
+    x3 = -1+x(N+1);
     x4 = x(i+2);
     xi = x(i);
     end
@@ -37,7 +37,7 @@ for i = 2:N+1
     x1 = x(i-1);
     x2 = x(i+1);
     x3 = x(i-2);
-    x4 = x(2);
+    x4 = 1+x(2);
     xi = x(i); 
     end
     if i==2
@@ -46,9 +46,9 @@ for i = 2:N+1
     h3 = h(N);
     h4 = h(i+2);
     hi = h(i);
-    x1 = x(N+1);
+    x1 = -1+x(N+1);
     x2 = x(i+1);
-    x3 = x(N);
+    x3 = -1+x(N);
     x4 = x(i+2);
     xi = x(i);
     end
@@ -59,9 +59,9 @@ for i = 2:N+1
     h4 = h(3);
     hi = h(i);
     x1 = x(i-1);
-    x2 = x(2);
+    x2 = 1+x(2);
     x3 = x(i-2);
-    x4 = x(3);
+    x4 = 1+x(3);
     xi = x(i); 
     end
     wi1 = 1;

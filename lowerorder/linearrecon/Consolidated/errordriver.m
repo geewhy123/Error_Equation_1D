@@ -208,7 +208,7 @@ for i= 2:N+1
 
 
 
-    
+    Z
     [upr,upl] = reconflux(e,Z,-R,k,h,i,N,q);
 
 %second order

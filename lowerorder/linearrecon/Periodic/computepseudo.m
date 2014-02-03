@@ -11,6 +11,8 @@ switch p
         [AD]=computepseudo3(N,x,h);
     case 5
         [AD]=computepseudo4(N,x,h);
+           case 6
+        [AD]=computepseudo5(N,x,h);
     otherwise
         error('1')
 end

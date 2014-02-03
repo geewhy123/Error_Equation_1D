@@ -4,7 +4,7 @@ function [ R ,uxx,Z] = computeres(u,x,h,N,f,r )
 
 switch r
 case 4
-    [err,Z]=unstructuredrecon3(u,x,h,N,1,exp(-1));
+    [err,Z]=unstructuredrecon3(u,x,h,N,NaN,NaN);
 R = zeros(N+2,1);
 uxx = zeros(N+2,1);
 
@@ -16,7 +16,7 @@ for i = 2:N+1
 end
 
 case 5
-    [err,Z]=unstructuredrecon4(u,x,h,N,1,exp(-1));
+    [err,Z]=unstructuredrecon4(u,x,h,N,NaN,NaN);
 R = zeros(N+2,1);
 uxx = zeros(N+2,1);
 
