@@ -107,6 +107,10 @@ switch p
    %ue = xx.^4;
    yy = y(1)+y(2)*(xx-x(i));%+y(3)*(xx-x(i)).^2;%+y(4)*(xx-x(i)).^3;%+y(5)*(xx-x(i)).^4;
    
+      ub(i) = y(1);
+   upb(i) = y(2);
+   uppb(i) = 0;
+   
     case 3
         switch i
             case 2
@@ -130,9 +134,10 @@ switch p
 
 %   if(i==2)
  %      h(i)^(2)/(3*2^2)
-   ub(i) = y(1)+y(3)*h(i)^(2)/(3*2^2);
+ x2bi= h(i)^(2)/(3*2^2);
+   ub(i) = y(1)+y(3)*x2bi;
    upb(i) = y(2);
-   uppb(i) = y(3);
+   uppb(i) = 2*y(3);
    %end
 %    if(i==2)
 %        h(i)^(3)/(3*2^2)
@@ -160,7 +165,10 @@ switch p
    %ue = xx.^4;
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3;%+y(5)*(xx-x(i)).^4;
 
-   
+   x2bi=h(i)^(2)/(3*2^2);
+      ub(i) = y(1)+y(3)*x2bi;
+   upb(i) = y(2)+3*y(4)*x2bi;
+   uppb(i) = 2*y(3);
    %ub(i) = y(1)+y(3)*h(i)^(4)/(5*2^4);
 
   case 5
@@ -185,6 +193,11 @@ switch p
    %ue = xx.^4;
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3+y(5)*(xx-x(i)).^4;
   
+   x2bi=h(i)^(2)/(3*2^2);
+   x4bi = h(i)^4/(5*2^4);
+      ub(i) = y(1)+y(3)*x2bi+y(5)*x4bi;
+   upb(i) = y(2)+3*y(4)*x2bi;
+   uppb(i) = 2*y(3)+12*y(5)*x2bi;
    case 6
         switch i
         
@@ -211,7 +224,9 @@ switch p
    %ue = xx.^4;
    yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3+y(5)*(xx-x(i)).^4;
    
-   
+      ub(i) = y(1)+y(3)*h(i)^(2)/(3*2^2);
+   upb(i) = y(2);
+   uppb(i) = y(3);
 end
    plot(xx,yy)
 err = max(err,max(abs(ue-yy)));
@@ -220,10 +235,10 @@ end
 
 %Z
 %Z
-u
+
 
 ub(N+2) = NaN;
-ub-u
+d0= max(abs(ub-u))
 upb(N+2) = NaN;
 upb(1) = NaN;
 d1 = max(abs(upb-up))
