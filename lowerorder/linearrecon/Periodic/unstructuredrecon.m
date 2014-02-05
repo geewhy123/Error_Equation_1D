@@ -12,6 +12,8 @@ switch p
    [error,Z] = unstructuredrecon3 (u,x,h,N,u0,u1); 
     case 5
    [error,Z] = unstructuredrecon4 (u,x,h,N,u0,u1); 
+       case 6
+   [error,Z] = unstructuredrecon5 (u,x,h,N,u0,u1); 
     otherwise 
        assert(0==1)
 end

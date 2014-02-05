@@ -90,6 +90,12 @@ AA = double([wi1*(xb1-xbi+x1-xi) wi1*(x2b1+2*(x1-xi)*xb1+(x1-xi)^2-x2bi) ;
              wi4*(xb4-xbi+x4-xi) wi4*(x2b4+2*(x4-xi)*xb4+(x4-xi)^2-x2bi)  ]);
  AD(:,:,i)=pinv(AA);
 
+ 
+%  Q = [-1 1 -2 2; 2.9412 3.9412 11.7647 11.7647];
+%  if( (i>1)&&(i<N+2)&& (norm(AD(:,:,i)-Q) > 1e-2))
+%      AD(:,:,i)
+%     error('1') 
+%  end
 %  
 %  if(i==4)
 %      AA

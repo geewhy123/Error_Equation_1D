@@ -1,4 +1,4 @@
-
+%q
 function [  ] = errordriver( N,p,q,r )
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
@@ -9,12 +9,12 @@ if(p>0)
 %N = 80;
 rng(1234);
 h0 = 1/N;
-k = .009*(10/N)^2;%0.00006;
+k = .004*(10/N)^2;%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
+   X(i) = X(i) + (-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -47,9 +47,9 @@ for i = 1:N+2
     %f(i) = (1/h(i))*(-2*pi);%*(exp(cos(2*pi*xr))*   (2*(cos(pi*xr)^2-    4*(cos(pi*xr))^4+1)));% - (exp(cos(2*pi*xl))*(2*(cos(pi*xl))^2-4*(cos(pi*xl))^4+1));
     %f(i)=(1/h(i))*((-1/pi)*sin(2*pi*xr)+(1/(pi^3))*(sin(4*pi*xr))+(1/pi)*(sin(2*pi*xl))-(1/(pi^3))*(sin(4*pi*xl)));
    
-%f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
+f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     
-    f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+   % f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
    
     end
     f(1) = f(N+1);
@@ -63,14 +63,15 @@ for i = 1:N+2
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
     
-   %u(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
-  u(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+   u(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+  %u(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
 end
 
  u(1) = NaN;
  u(N+2) = NaN;
 ue = u;
  u
+ f
 %u(:)=0;
 
 %f(1)=2*1;
@@ -91,12 +92,14 @@ plot(x,u,'*')
 for i = 2:N+1
     [upr,upl] = reconflux(u,Z,f,k,h,i,N,p);
     FI(i) = (upr-upl)/h(i)-f(i);
+    d2u(i) = (upr-upl)/h(i);
 end
-
-max(abs(FI))
-Z
+d2u
+FI
+fi= max(abs(FI))
 %Z
-error('1')
+%Z
+%error('1')
 
 
 d=1;
@@ -175,7 +178,7 @@ X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
+   X(i) = X(i) + (-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -202,8 +205,12 @@ for i = 2:N+1
     %f(i)= (1/h(i))*(1/(12*pi))*(3*cos(2*pi*xr)-cos(6*pi*xr)-3*cos(2*pi*xl)+cos(6*pi*xl));
     %f(i) = (1/h(i))*(-2*pi);%*(exp(cos(2*pi*xr))*   (2*(cos(pi*xr)^2-    4*(cos(pi*xr))^4+1)));% - (exp(cos(2*pi*xl))*(2*(cos(pi*xl))^2-4*(cos(pi*xl))^4+1));
     %f(i)=(1/h(i))*((-1/pi)*sin(2*pi*xr)+(1/(pi^3))*(sin(4*pi*xr))+(1/pi)*(sin(2*pi*xl))-(1/(pi^3))*(sin(4*pi*xl)));
-  f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2); 
-   % f(i) = (1/h(i))*(-2*(x(i)+h(i)/2)*exp(-(x(i)+h(i)/2)^2)+2*(x(i-1)+h(i-1)/2)*exp(-(x(i-1)+h(i-1)/2)^2));
+  
+%f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2); 
+f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
+
+
+% f(i) = (1/h(i))*(-2*(x(i)+h(i)/2)*exp(-(x(i)+h(i)/2)^2)+2*(x(i-1)+h(i-1)/2)*exp(-(x(i-1)+h(i-1)/2)^2));
   %    f(i) = (1/h(i))*( log(1+(x(i)+h(i)/2))+((x(i)+h(i)/2)-1)/((x(i)+h(i)/2)+1) - (log(1+(x(i)-h(i)/2))+((x(i)-h(i)/2)-1)/((x(i)-h(i)/2)+1)) );%
 end
 % global PS3
@@ -221,7 +228,10 @@ for i = 1:N+2
     xr = x(i)+h(i)/2;
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
-  ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+  
+    %ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+  ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+  
 %ue(i) = (1/h(i))*((pi^(1/2)*erf(x(i)+h(i)/2 ))/2-(pi^(1/2)*erf(x(i)-h(i)/2 ))/2);
 %ue(i) = (1/h(i))*((0.5*(1+(x(i)+h(i)/2))^2*log(1+(x(i)+h(i)/2))+7/4+1.5*(x(i)+h(i)/2)-0.25*(x(i)+h(i)/2)^2-2*(1+(x(i)+h(i)/2))*log(1+(x(i)+h(i)/2)))-((0.5*(1+(x(i)-h(i)/2))^2*log(1+(x(i)-h(i)/2))+7/4+1.5*(x(i)-h(i)/2)-0.25*(x(i)-h(i)/2)^2-2*(1+(x(i)-h(i)/2))*log(1+(x(i)-h(i)/2)))));
 end
@@ -256,9 +266,9 @@ end
 s=0;
 olderr = errerr(j);
 for i= 2:N+1
-    y = Z(:,i);
-    yr = Z(:,i+1);
-    yl = Z(:,i-1);
+  %  y = Z(:,i);
+  %  yr = Z(:,i+1);
+  %  yl = Z(:,i-1);
     %need averaging flux
 % upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  ;%+ 4*y(5)*(h(i)/2)^3;
 % upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   ;%+ 4*yr(5)*(-h(i)/2)^3;

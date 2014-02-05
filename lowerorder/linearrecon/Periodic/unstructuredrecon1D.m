@@ -27,10 +27,11 @@ for i = 2:N+1
    h(i) = X(i)-X(i-1); 
 end
 
-h(1) = h(2);
-h(N+2) = h(N+1);
+% h(1) = h(2);
+% h(N+2) = h(N+1);
 
-
+h(1) = h(N+1);
+h(N+2) = h(2);
 
 f = zeros(N+2,1);
 for i = 1:N+2
@@ -222,11 +223,14 @@ switch p
    ue = cos(2*pi*xx);%2*pi*cos(2*pi*xx)./(sin(2*pi*xx)+exp(1)^3);%exp(-(xx-0.5).^2);%xx.^3;%;exp(-(xx-0.5).^2);
    %ue = xx.^3;
    %ue = xx.^4;
-   yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3+y(5)*(xx-x(i)).^4;
+   yy = y(1)+y(2)*(xx-x(i))+y(3)*(xx-x(i)).^2+y(4)*(xx-x(i)).^3+y(5)*(xx-x(i)).^4+y(6)*(xx-x(i)).^5;
    
-      ub(i) = y(1)+y(3)*h(i)^(2)/(3*2^2);
-   upb(i) = y(2);
-   uppb(i) = y(3);
+    x2bi=h(i)^(2)/(3*2^2);
+   x4bi = h(i)^4/(5*2^4);
+      ub(i) = y(1)+y(3)*x2bi+y(5)*x4bi;
+      %ub(i) = y(1)+y(3)*h(i)^(2)/(3*2^2);
+   upb(i) = y(2)+3*y(4)*x2bi+5*y(6)*x4bi;
+   uppb(i) = y(3)+12*y(5)*x2bi;
 end
    plot(xx,yy)
 err = max(err,max(abs(ue-yy)));

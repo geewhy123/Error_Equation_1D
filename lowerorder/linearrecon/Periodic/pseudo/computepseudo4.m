@@ -104,7 +104,7 @@ AA = double([wi1*(xb1-xbi+x1-xi) wi1*(x2b1+2*(x1-xi)*xb1+(x1-xi)^2-x2bi) wi1*(x3
 3*(x1-xi)*x2bi
 (x1-xi)^3
 
-AA
+
  end
  
 end

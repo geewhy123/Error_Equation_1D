@@ -30,6 +30,24 @@ for i = 2:N+1
    R(i) = uxx(i) - f(i);
 end
     
+
+case 6
+    [err,Z]=unstructuredrecon5(u,x,h,N,NaN,NaN);
+R = zeros(N+2,1);
+uxx = zeros(N+2,1);
+
+for i = 2:N+1
+    hi = h(i);
+    xi = x(i);
+   x2bi = (1/hi)*( ((xi+hi/2)-xi)^3/3-((xi-hi/2)-xi)^3/3);
+   
+    uxx(i) = 2*Z(3,i)+12*Z(5,i)*x2bi;
+   
+   R(i) = uxx(i) - f(i);
+end
+    
+
+
     otherwise 
                assert(0==1)
 end
