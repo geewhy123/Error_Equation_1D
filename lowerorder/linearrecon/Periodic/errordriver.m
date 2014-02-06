@@ -1,5 +1,5 @@
 %q
-function [  ] = errordriver( N,p,q,r )
+function [x,exacterr,ee  ] = errordriver( N,p,q,r ,pos)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -14,7 +14,7 @@ X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + (-1+rand*(2))*h0/3;
+   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -48,7 +48,9 @@ for i = 1:N+2
     %f(i)=(1/h(i))*((-1/pi)*sin(2*pi*xr)+(1/(pi^3))*(sin(4*pi*xr))+(1/pi)*(sin(2*pi*xl))-(1/(pi^3))*(sin(4*pi*xl)));
    
 f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
-    
+%f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+
+
    % f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
    
     end
@@ -86,7 +88,7 @@ global AD
 AD = computepseudo(N,x,h,p);
 %AD
 %cond(AD(:,:,4))
-plot(x,u,'*')
+%%%plot(x,u,'*')
 
     [err,Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 for i = 2:N+1
@@ -159,14 +161,17 @@ cverrinf=max(abs(ue-u))
 
 u(1) = NaN;
 u(N+2) = NaN;
-plot(x,u,'*',x,ue,'o')
-figure
-plot(x,ue-u,'x')
+%%%plot(x,u,'*',x,ue,'o')
+%%%figure
+%%%plot(x,ue-u,'x')
 
 end
 
 
 if(q>0 && r > 0)
+    
+    clearvars -except N p q r
+    
 %Error equation
 %clear all
 rng(1234);
@@ -178,7 +183,7 @@ X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
-   X(i) = X(i) + (-1+rand*(2))*h0/3;
+   X(i) = X(i) + 0*(-1+rand*(2))*h0/3;
    end
 end
 x = zeros(N+2,1);
@@ -219,7 +224,7 @@ end
 % PS1 = computepseudo(N,x,h);
 % global PS4
 % PS4 = computepseudo4(N,x,h);
- %global AD
+ global AD
  AD = computepseudo(N,x,h,r);
 
 ue = zeros(N+2,1);
@@ -241,6 +246,7 @@ end
 res=max(abs(R))
 %error('1')
 
+
 e = zeros(N+2,1);
 ee =zeros(N+2,1);
 
@@ -256,8 +262,9 @@ T = 1;
 for j = 1:100000
 
     
+    
     %error based on u.....
-[errerr(j),Z]=unstructuredrecon(e,x,h,N,0,0,q);
+[errerr(j),Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
 %if(j > 50 && ((abs(errerr(j)-olderr)/olderr < 1e-15) || abs(errerr(j)-olderr)<1e-15))
 if(j > 50 && k*s <1e-15)
     T = (1:1:j)*k;
@@ -323,10 +330,23 @@ exacterr = exacterr(2:N+1);
 x = x(2:N+1);
 figure
 plot(x,exacterr,'o-',x,ee(2:N+1),'*');
-max(abs(exacterr-ee(2:N+1)))
+errerr= max(abs(exacterr-ee(2:N+1)));
+
+
+
 ee = ee(2:N+1);
 ue=ue(2:N+1);
+
+
+errerr1 = sum(abs(exacterr-ee))/N
+errerr2 = sqrt(sum((exacterr-ee).^2)/N)
+
+errerrinf=max(abs(exacterr-ee))
+
+
 save('t','exacterr','ee','x')
+
+
 
 end
 

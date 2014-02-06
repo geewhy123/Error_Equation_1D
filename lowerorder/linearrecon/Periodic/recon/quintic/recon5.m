@@ -48,6 +48,8 @@ ubi = ui;
 global AD
 %%y(2:4) = A\b;%(A'*A)\(A'*b)
 
+
+
 y(2:6) = AD(:,:,i)*b;
 
 %y-y2;
