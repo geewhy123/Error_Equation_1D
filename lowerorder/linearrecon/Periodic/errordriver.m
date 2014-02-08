@@ -1,5 +1,5 @@
 %q
-function [errerr2,x,exacterr,ee  ] = errordriver( N,p,q,r ,unif)
+function [errerr2,x,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -51,7 +51,7 @@ f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
 %f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
 
-   % f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+%%%%%    f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
    
     end
     f(1) = f(N+1);
@@ -65,8 +65,8 @@ f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
     
-   u(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
-  %u(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+u(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+%%%%%  u(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
 end
 
  u(1) = NaN;
@@ -97,7 +97,9 @@ for i = 2:N+1
     d2u(i) = (upr-upl)/h(i);
 end
 d2u
+FI(N+2) = NaN;
 FI
+
 fi= max(abs(FI))
 %Z
 %Z
@@ -175,7 +177,7 @@ end
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif
+    clearvars -except u N p q r unif FI bta
     
 %Error equation
 %clear all
@@ -217,9 +219,8 @@ for i = 2:N+1
     %f(i) = (1/h(i))*(-2*pi);%*(exp(cos(2*pi*xr))*   (2*(cos(pi*xr)^2-    4*(cos(pi*xr))^4+1)));% - (exp(cos(2*pi*xl))*(2*(cos(pi*xl))^2-4*(cos(pi*xl))^4+1));
     %f(i)=(1/h(i))*((-1/pi)*sin(2*pi*xr)+(1/(pi^3))*(sin(4*pi*xr))+(1/pi)*(sin(2*pi*xl))-(1/(pi^3))*(sin(4*pi*xl)));
   
-%f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2); 
+%%%%%f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2); 
 f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
-
 
 % f(i) = (1/h(i))*(-2*(x(i)+h(i)/2)*exp(-(x(i)+h(i)/2)^2)+2*(x(i-1)+h(i-1)/2)*exp(-(x(i-1)+h(i-1)/2)^2));
   %    f(i) = (1/h(i))*( log(1+(x(i)+h(i)/2))+((x(i)+h(i)/2)-1)/((x(i)+h(i)/2)+1) - (log(1+(x(i)-h(i)/2))+((x(i)-h(i)/2)-1)/((x(i)-h(i)/2)+1)) );%
@@ -240,7 +241,7 @@ for i = 1:N+2
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
   
-    %ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+  %%%%%  ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
   ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
   
 %ue(i) = (1/h(i))*((pi^(1/2)*erf(x(i)+h(i)/2 ))/2-(pi^(1/2)*erf(x(i)-h(i)/2 ))/2);
@@ -258,7 +259,13 @@ e = zeros(N+2,1);
 ee =zeros(N+2,1);
 
 
-
+R=-FI
+v = rand(N+2,1);
+v = v./norm(v);
+R = R+h0^bta*v'
+SS = dot(h(2:N+1),R(2:N+1))
+R=R-SS
+mean(R(2:N+1))
 
  AD = computepseudo(N,x,h,q);
 
@@ -287,9 +294,14 @@ for i= 2:N+1
 
 
 
+    
+    
 ee(i) = e(i) + k*((upr-upl)/h(i)+R(i)); 
 s=max(s,abs((upr-upl)/h(i)+R(i)));
+
+
 end
+
 
 e = ee;
 
