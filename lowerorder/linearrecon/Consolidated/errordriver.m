@@ -6,10 +6,9 @@ function [  ] = errordriver( N,p,q,r )
 close all
 
 if(p>0)
-%N = 80;
 rng(1234);
 h0 = 1/N;
-k = .004*(10/N)^2;%0.00006;
+k = .008*(10/N)^2;%0.00006;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -69,6 +68,8 @@ AD = computepseudo(N,x,h,p);
 d=1;
 tic
 T = 1;
+
+
 for j = 1:100000
     
 [err(j),Z]=unstructuredrecon(u,x,h,N,1,exp(-1),p);
@@ -111,6 +112,8 @@ cverrinf=max(abs(ue-u))
 m = N/2;
 FI = (-u(m-2)+16*u(m-1)-30*u(m)+16*u(m+1)-u(m+2)) /(12*h(m)^2)-f(m)
 
+
+plot(x,ue-u)
 
 end
 if(q>0 && r > 0)
@@ -168,7 +171,7 @@ end
 
 [R,uxx,Z] =computeres(u,x,h,N,f,r);
 res=max(abs(R))
-
+error('1')
 
 e = zeros(N+2,1);
 ee =zeros(N+2,1);

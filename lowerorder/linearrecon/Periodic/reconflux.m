@@ -68,13 +68,6 @@ upl2 = yl(2)+2*yl(3)*h(i-1)/2;
         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ur-ul);
         
    
-%         
-% if i==2
-%     upl = upl1;
-% end
-% if i==N+1
-%    upr = upr1; 
-% end
 
     case 5
         upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3;
@@ -83,12 +76,6 @@ upr = (upr1+upr2)/2;
 upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
 upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
 upl = (upl1+upl2)/2;
-% if i==2
-%     upl = upl1;
-% end
-% if i==N+1
-%    upr = upr1; 
-% end
 
 
     case 6

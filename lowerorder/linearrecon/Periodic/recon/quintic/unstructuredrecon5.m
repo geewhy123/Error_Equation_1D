@@ -5,7 +5,7 @@ Z = zeros(6,N+2);
 error = 0;
 
 
-for i = 2:N+1%4:N-1
+for i = 2:N+1
 switch i
     case 2
  Y= recon5(x(i),h(i),u(i),x(N+1),h(N+1),u(N+1),x(i+1),h(i+1),u(i+1),x(N),h(N),u(N),x(i+2),h(i+2),u(i+2),x(N-1),h(N-1),u(N-1),x(i+3),h(i+3),u(i+3),i);
