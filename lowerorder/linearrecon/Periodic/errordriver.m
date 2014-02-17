@@ -44,11 +44,11 @@ for i = 2:N+1
     %f(i) = (1/h(i))*(-2*pi);%*(exp(cos(2*pi*xr))*   (2*(cos(pi*xr)^2-    4*(cos(pi*xr))^4+1)));% - (exp(cos(2*pi*xl))*(2*(cos(pi*xl))^2-4*(cos(pi*xl))^4+1));
     %f(i)=(1/h(i))*((-1/pi)*sin(2*pi*xr)+(1/(pi^3))*(sin(4*pi*xr))+(1/pi)*(sin(2*pi*xl))-(1/(pi^3))*(sin(4*pi*xl)));
    
-    f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
+    %%%%%f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     %f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
 
-    %%%%%    f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+        f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
    
     
     
@@ -62,8 +62,8 @@ for i = 2:N+1
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
     
-    ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
-%%%%%  u(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+%%%%%    ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+  ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
 end
 f(1) = NaN;
 f(N+2) = NaN;
@@ -99,9 +99,11 @@ for i = 2:N+1
  %   FIe(i)=(upre-uple)/h(i)-f(i);
     d2u(i) = (upr-upl)/h(i);
 end
-d2u
+
+
+d2u;
 FI(N+2) = NaN;  
-FI
+FI;
 
 %norm(FIe(2:N+1)-FI(2:N+1))
 
@@ -133,11 +135,19 @@ d=0;
 for i= 2:N+1
     
     [upr,upl] = reconflux(u,Z,f,k,h,i,N,p);
+
     
-uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
-d = max(d,abs((upr-upl)/h(i)-f(i)));
+%    [uu(i)] = updatesol(
+    
+%uu(i) = u(i) + k*((upr-upl)/h(i)-f(i)); 
 
 
+%d = max(d,abs((upr-upl)/h(i)-f(i)));
+
+
+[delt]= updatesol(u,Z,f,k,h,i,N,p);
+uu(i) = u(i)+k*delt;
+d = max(d,abs(delt));
 
 
 end
@@ -220,8 +230,8 @@ for i = 1:N+2
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
   
-  %%%%%  ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
-  ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+    ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+  %%%%%ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
   
 %ue(i) = (1/h(i))*((pi^(1/2)*erf(x(i)+h(i)/2 ))/2-(pi^(1/2)*erf(x(i)-h(i)/2 ))/2);
 %ue(i) = (1/h(i))*((0.5*(1+(x(i)+h(i)/2))^2*log(1+(x(i)+h(i)/2))+7/4+1.5*(x(i)+h(i)/2)-0.25*(x(i)+h(i)/2)^2-2*(1+(x(i)+h(i)/2))*log(1+(x(i)+h(i)/2)))-((0.5*(1+(x(i)-h(i)/2))^2*log(1+(x(i)-h(i)/2))+7/4+1.5*(x(i)-h(i)/2)-0.25*(x(i)-h(i)/2)^2-2*(1+(x(i)-h(i)/2))*log(1+(x(i)-h(i)/2)))));
@@ -250,7 +260,21 @@ for i = 2:N+1
     FIq(i) = (upr-upl)/h(i)-f(i);
 end
 FIq(N+2) = NaN;  
-R=-FIq
+
+AD = computepseudo(N,x,h,p);
+FIp = zeros(N+2,1);
+    [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,p);
+for i = 2:N+1
+    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,p);
+    FIp(i) = (upr-upl)/h(i)-f(i);
+end
+FIp(N+2) = NaN;  
+
+
+
+FI-FIq;
+
+%R=-FIq
 % v = rand(N+2,1);
 % v = v./norm(v);
 % R = R+h0^bta*v'
@@ -311,6 +335,13 @@ errerr1 = sum(abs(exacterr-ee))/N
 errerr2 = sqrt(sum((exacterr-ee).^2)/N)
 
 errerrinf=max(abs(exacterr-ee))
+
+
+figure
+plot(x,exacterr-ee,'*-')
+
+%norm(exacterr)
+%[exacterr ee (exacterr-ee)*1e6]
 
 
 save('t','exacterr','ee','x')
