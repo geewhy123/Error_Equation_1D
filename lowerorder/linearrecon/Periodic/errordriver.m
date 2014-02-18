@@ -274,7 +274,7 @@ FIp(N+2) = NaN;
 
 FI-FIq;
 
-%R=-FIq
+R=(-FIp-FIq)/2
 % v = rand(N+2,1);
 % v = v./norm(v);
 % R = R+h0^bta*v'

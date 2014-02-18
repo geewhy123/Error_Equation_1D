@@ -40,6 +40,11 @@ upl = (upl1+upl2)/2 + (.2/((h(i)+h(i-1))/2))*(ur-ul);
 delt = (upr-upl)/h(i)-f(i);
 
 
+
+dt = 0.001;
+uhalf = u +(dt/2)*((upr-upl)/h(i)-f(i));
+
+
     case 3
         upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
 upr2 = yr(2)+2*yr(3)*(-h(i+1)/2);
