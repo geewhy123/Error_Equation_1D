@@ -1,5 +1,5 @@
 %q
-function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta)
+function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -9,7 +9,11 @@ if(p>0)
 
 rng(1234);
 h0 = 1/N;
-k = .004*(10/N)^2;
+
+CFL = 0.3;
+k = CFL*h0;
+%k = .004*(10/N)^2
+%k=k/4
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -34,7 +38,7 @@ h(1) = h(N+1);
 h(N+2) = h(2);
 
 ue = zeros(N+2,1);
-
+u = zeros(N+2,1);
 f = zeros(N+2,1);
 for i = 2:N+1
     
@@ -48,9 +52,10 @@ for i = 2:N+1
     %f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
 
-        f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
-   
+     %this%%%   f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+   %f(i) = -(1/h(i))*(2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     
+   f(i) = 0;
     
     %u(i) = (1/h(i))*((x(i)+h(i)/2)^4-((x(i)-h(i)/2)^4))/4;%exp(-(x(i)-0.5)^2);
     %u(i) = (1/h(i))*((x(i)+h(i)/2)^5-((x(i)-h(i)/2)^5))/5;%exp(-(x(i)-0.5)^2);
@@ -63,16 +68,31 @@ for i = 2:N+1
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
     
 %%%%%    ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
-  ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+
+
+ %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+ 
+%%%this ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
+
+ %initial
+%this u(i) = (1/h(i))*((-1/(2*pi))*(100*(cos(2*pi*xr)-cos(2*pi*xl))) +(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+ 
+u(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+
 end
 f(1) = NaN;
 f(N+2) = NaN;
  ue(1) = NaN;
  ue(N+2) = NaN;
+ u(1) = NaN;
+ u(N+2)= NaN;
  
-u = ue;
+ 
+%u = ue;
 
 uu = zeros(N+2,1);
+
 
 
 v = rand(N+2,1);
@@ -84,16 +104,15 @@ v = v./norm(v);
 u=u+h0^bta*v;
 
 
-
 global AD
 AD = computepseudo(N,x,h,p);
 FI = zeros(N+2,1);
 d2u = zeros(N+2,1);
 
-    [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
+    [Z]=unstructuredrecon(ue,x,h,N,NaN,NaN,p);
    % [Ze]= unstructuredrecon(ue,x,h,N,NaN,NaN,p);
 for i = 2:N+1
-    [upr,upl] = reconflux(u,Z,f,k,h,i,N,p);
+    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p);
   %  [upre,uple]=reconflux(ue,Ze,f,k,h,i,N,p);
     FI(i) = (upr-upl)/h(i)-f(i);
  %   FIe(i)=(upre-uple)/h(i)-f(i);
@@ -120,21 +139,24 @@ d=1;
 
 T = 1;
 for j = 1:100000
-
+        
+tt = k*j;
     
-[Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
+%[Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 
 
-if(d*k<1e-15)
+if((d*k<1e-15)||(tt>=tlim))
+    d
+    tt
     T = (1:1:j)*k;
     break
 end
 
 d=0;
 
-for i= 2:N+1
+%for i= 2:N+1
     
-    [upr,upl] = reconflux(u,Z,f,k,h,i,N,p);
+   % [upr,upl] = reconflux(u,Z,f,k,h,i,N,p);
 
     
 %    [uu(i)] = updatesol(
@@ -145,12 +167,14 @@ for i= 2:N+1
 %d = max(d,abs((upr-upl)/h(i)-f(i)));
 
 
-[delt]= updatesol(u,Z,f,k,h,i,N,p);
-uu(i) = u(i)+k*delt;
-d = max(d,abs(delt));
+%[delt]= updatesol(u,Z,f,k,h,i,N,p);
+%uu(i) = u(i)+k*delt;
+%d = max(d,abs(delt));
 
 
-end
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord);
+
+%end
 
 u = uu;
 
@@ -181,13 +205,15 @@ u(N+2) = NaN;
 %%%figure
 %%%plot(x,ue-u,'x')
 
+plot(x,u,x,ue)
+
 end
 
-
+T(end)
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v
+    clearvars -except u N p q r unif FI bta f cverr2 v k
     
 %Error equation
 %clear all
@@ -195,7 +221,7 @@ rng(1234);
 load('test.mat')
 
 h0 = 1/N;
-k=0.0008  *(20/N)^2  ;
+%k=0.0008  *(20/N)^2  ;
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -274,7 +300,7 @@ FIp(N+2) = NaN;
 
 FI-FIq;
 
-R=(-FIp-FIq)/2
+%R=(-FIp-FIq)/2
 % v = rand(N+2,1);
 % v = v./norm(v);
 % R = R+h0^bta*v'
