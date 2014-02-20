@@ -10,7 +10,7 @@ if(p>0)
 rng(1234);
 h0 = 1/N;
 
-CFL = 0.3;
+CFL = 0.4;
 k = CFL*h0;
 %k = .004*(10/N)^2
 %k=k/4
@@ -78,19 +78,19 @@ ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
  %initial
 %this u(i) = (1/h(i))*((-1/(2*pi))*(100*(cos(2*pi*xr)-cos(2*pi*xl))) +(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
  
-u(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 end
 f(1) = NaN;
 f(N+2) = NaN;
  ue(1) = NaN;
  ue(N+2) = NaN;
- u(1) = NaN;
- u(N+2)= NaN;
+ u0(1) = NaN;
+ u0(N+2)= NaN;
  
  
 %u = ue;
-
+u=u0;
 uu = zeros(N+2,1);
 
 
@@ -131,9 +131,6 @@ FI;
 
 fi= max(abs(FI))
 %Z
-%Z
-%error('1')
-
 
 d=1;
 
@@ -146,6 +143,9 @@ tt = k*j;
 
 
 if((d*k<1e-15)||(tt>=tlim))
+    
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord);
+u = uu;
     d
     tt
     T = (1:1:j)*k;
@@ -213,7 +213,7 @@ T(end)
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0
     
 %Error equation
 %clear all
@@ -256,7 +256,7 @@ for i = 1:N+2
    
     %u(i) = (1/h(i))*(4*pi*sin(2*pi*xr)-(16/pi)*sin(4*pi*xr)-4*pi*sin(2*pi*xl)+(16/pi)*sin(4*pi*xl));
   
-    ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+   % ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
   %%%%%ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
   
 %ue(i) = (1/h(i))*((pi^(1/2)*erf(x(i)+h(i)/2 ))/2-(pi^(1/2)*erf(x(i)-h(i)/2 ))/2);
@@ -314,14 +314,26 @@ FI-FIq;
 
 T = 1;
 for j = 1:100000
-    
+    TT = k*j;
     
 [Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
 
-if(j > 50 && k*s <1e-15)
+
+
+if((s*k<1e-15)||(TT>=tlim))
+    
+[ee,s] = updatesoln(e,x,f,k,h,N,q,tord);
+e = ee;
+    s
+    TT
     T = (1:1:j)*k;
     break
 end
+
+% if(j > 50 && k*s <1e-15)
+%     T = (1:1:j)*k;
+%     break
+% end
 s=0;
 for i= 2:N+1
    

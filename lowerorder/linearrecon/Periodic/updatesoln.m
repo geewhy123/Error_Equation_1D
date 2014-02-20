@@ -14,6 +14,12 @@ function [uu,d] = updatesoln(u,x,f,k,h,N,p,t)
            
        case 4
            [uu,d] = rk4(u,x,f,k,h,N,p,t);
+           
+       case 5
+           [uu,d] = rk5(u,x,f,k,h,N,p,t);
+           
+       case 7
+           [uu,d] = rk7(u,x,f,k,h,N,p,t);
        otherwise
    end
       
