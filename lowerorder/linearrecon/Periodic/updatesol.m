@@ -20,29 +20,28 @@ end
 
 switch p
     case 2
-       upr1 = y(2);
-upr2 = yr(2);
+        upr1 = y(2);
+        upr2 = yr(2);
+        ur = yr(1)+yr(2)*(-h(i+1)/2);
+        ul = y(1) + y(2)*(h(i)/2);
+        upr = (upr1+upr2)/2 + (.2/((h(i)+h(i+1))/2))*(ur-ul);
+        upl1 = y(2);
+        upl2 = yl(2);
 
-
-
-ur = yr(1)+yr(2)*(-h(i+1)/2);
-ul = y(1) + y(2)*(h(i)/2);
-upr = (upr1+upr2)/2 + (.2/((h(i)+h(i+1))/2))*(ur-ul);
-upl1 = y(2);
-upl2 = yl(2);
-
-
-
-ur = y(1)+y(2)*(-h(i)/2);
-ul = yl(1) + yl(2)*(h(i-1)/2);
-upl = (upl1+upl2)/2 + (.2/((h(i)+h(i-1))/2))*(ur-ul);
+        ur = y(1)+y(2)*(-h(i)/2);
+        ul = yl(1) + yl(2)*(h(i-1)/2);
+        upl = (upl1+upl2)/2 + (.2/((h(i)+h(i-1))/2))*(ur-ul);
         
-delt = (upr-upl)/h(i)-f(i);
+        delt = (upr-upl)/h(i)-f(i);
 
 
 
 dt = 0.001;
-uhalf = u +(dt/2)*((upr-upl)/h(i)-f(i));
+uhalf = u(i) +(dt/2)*((upr-upl)/h(i)-f(i));
+
+unext = u(i) + 
+
+
 
 
     case 3

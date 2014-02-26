@@ -1,4 +1,4 @@
-%q
+%qx
 function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
@@ -11,7 +11,8 @@ rng(1234);
 h0 = 1/N;
 
 CFL = 0.4;
-k = CFL*h0;
+k = CFL*h0
+
 %k = .004*(10/N)^2
 %k=k/4
 X = zeros(N+1,1);
@@ -38,7 +39,7 @@ h(1) = h(N+1);
 h(N+2) = h(2);
 
 ue = zeros(N+2,1);
-u = zeros(N+2,1);
+u0 = zeros(N+2,1);
 f = zeros(N+2,1);
 for i = 2:N+1
     
@@ -213,7 +214,7 @@ T(end)
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord
     
 %Error equation
 %clear all
@@ -264,9 +265,9 @@ for i = 1:N+2
 end
 
 
-[R,uxx,Z] =computeres(u,x,h,N,f,r);
+[R,uxx,Z] =computeres(u,x,k,h,N,f,r);
 res=max(abs(R))
-
+R
 %error('1')
 
 
@@ -313,6 +314,7 @@ FI-FIq;
 
 
 T = 1;
+s=1;
 for j = 1:100000
     TT = k*j;
     
@@ -320,12 +322,13 @@ for j = 1:100000
 
 
 
-if((s*k<1e-15)||(TT>=tlim))
+if( ((s*k<1e-15)||(TT>=tlim)))
     
-[ee,s] = updatesoln(e,x,f,k,h,N,q,tord);
+[ee,s] = updatesoln(e,x,-R,k,h,N,q,tord);
 e = ee;
     s
     TT
+   
     T = (1:1:j)*k;
     break
 end
@@ -335,16 +338,18 @@ end
 %     break
 % end
 s=0;
-for i= 2:N+1
+%%%for i= 2:N+1
    
-    [upr,upl] = reconflux(e,Z,-R,k,h,i,N,q);
+  %%%  [upr,upl] = reconflux(e,Z,-R,k,h,i,N,q);
+% 
+%     
+% ee(i) = e(i) + k*((upr-upl)/h(i)+R(i)); 
+% s=max(s,abs((upr-upl)/h(i)+R(i)));
+% 
+% 
+% end
 
-    
-ee(i) = e(i) + k*((upr-upl)/h(i)+R(i)); 
-s=max(s,abs((upr-upl)/h(i)+R(i)));
-
-
-end
+[ee,s] = updatesoln(u,x,-R,k,h,N,q,tord);
 
 
 e = ee;
