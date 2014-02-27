@@ -76,6 +76,46 @@ for i = 2:N+1
 %%%this ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
 
+
+%%%burgers
+% xx = 0.5*(xl+xr);
+% F = @(s) s+tlim*sin(2*pi*s)-xx;
+% xi = fzero(F,0);
+% ue(i) = sin(2*pi*xi);  
+
+c1 = 0.3478548451;
+c2 = 0.6521451549;
+c3 = 0.6521451549;
+c4 = 0.3478548451;
+x1= 0.8611363116;
+x2 = 0.339981436;
+x3 = -0.339981436;
+x4= -0.8611363116;
+
+ xx1 = ((xr-xl)/2)*x1+(xr+xl)/2;
+ xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
+ xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
+ xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
+% xx1 = (2/(xr-xl))*x1-(xr+xl)/(xr-xl);
+% xx2 = (2/(xr-xl))*x2-(xr+xl)/(xr-xl);
+% xx3 = (2/(xr-xl))*x3-(xr+xl)/(xr-xl);
+% xx4 = (2/(xr-xl))*x4-(xr+xl)/(xr-xl);
+
+
+
+F = @(s) s+tlim*sin(2*pi*s)-xx1;
+xxx1=fzero(F,0);
+F = @(s) s+tlim*sin(2*pi*s)-xx2;
+xxx2=fzero(F,0);
+F = @(s) s+tlim*sin(2*pi*s)-xx3;
+xxx3=fzero(F,0);
+F = @(s) s+tlim*sin(2*pi*s)-xx4;
+xxx4=fzero(F,0);
+
+
+ue(i) = (1/h(i))*((xr-xl)/2)*(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
+
+
  %initial
 %this u(i) = (1/h(i))*((-1/(2*pi))*(100*(cos(2*pi*xr)-cos(2*pi*xl))) +(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
  
@@ -101,6 +141,10 @@ v = v./norm(v);
 %R = R+h0^bta*v'
 %SS = dot(h(2:N+1),R(2:N+1))
 %R=R-SS
+
+% plot(x,u0-ue)
+% max(abs(u0-ue))
+% error('1')
 
 u=u+h0^bta*v;
 
@@ -176,7 +220,7 @@ d=0;
 [uu,d] = updatesoln(u,x,f,k,h,N,p,tord);
 
 %end
-
+uo = u;
 u = uu;
 
 T = (1:1:j)*k;
@@ -214,7 +258,7 @@ T(end)
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo
     
 %Error equation
 %clear all
@@ -265,14 +309,28 @@ for i = 1:N+2
 end
 
 
+
 [R,uxx,Z] =computeres(u,x,k,h,N,f,r);
 res=max(abs(R))
 R
-%error('1')
+plot(x,R)
+
+% error('1')
 
 
 e = zeros(N+2,1);
 ee =zeros(N+2,1);
+
+
+% AD = computepseudo(N,x,h,q);
+% FInew = zeros(N+2,1);
+%     [Z]=unstructuredrecon(ue,x,h,N,NaN,NaN,q);
+% for i = 2:N+1
+%     [upr,upl,FInew(i)] = reconflux(ue,Z,f,k,h,i,N,q);
+%     %FIq(i) = (upr-upl)/h(i)-f(i);
+% end
+% FIq(N+2) = NaN; 
+
 
 
 
@@ -301,6 +359,7 @@ FIp(N+2) = NaN;
 
 FI-FIq;
 
+%R = -FInew;
 %R=(-FIp-FIq)/2
 % v = rand(N+2,1);
 % v = v./norm(v);

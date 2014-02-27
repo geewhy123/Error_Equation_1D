@@ -63,7 +63,6 @@ switch p
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3;
         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ul1-ul2);
              
-            phi= (ur2-ul1)/h(i)-f(i);
 
     case 5
         upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3;
@@ -101,6 +100,10 @@ end
 
 %        phi= (upr-upl)/h(i)-f(i);%Poisson
         phi= (ur2-ul1)/h(i)-f(i);
+        
+%        phi= (ur1-ul2)/h(i)-f(i);
+       phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);
+ 
 
 
 end
