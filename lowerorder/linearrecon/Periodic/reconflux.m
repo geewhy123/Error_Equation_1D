@@ -98,11 +98,11 @@ end
 
 
 
-%        phi= (upr-upl)/h(i)-f(i);%Poisson
-        phi= (ur2-ul1)/h(i)-f(i);
+        phi= (upr-upl)/h(i)-f(i);%Poisson
+ %       phi= (ur2-ul1)/h(i)-f(i);
         
-%        phi= (ur1-ul2)/h(i)-f(i);
-       phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);
+
+%       phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
  
 
 
