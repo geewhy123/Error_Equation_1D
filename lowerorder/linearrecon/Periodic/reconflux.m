@@ -1,6 +1,8 @@
-function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p)
+function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
+
+
 
 switch i
     case 2
@@ -38,7 +40,7 @@ switch p
         upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
         upr2 = yr(2)+2*yr(3)*(-h(i+1)/2);
         ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2;
-        ul1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2;
+        ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2;
 
 
         upr = (upr1+upr2)/2 ;%+(.2/((h(i)+h(i+1))/2))*(ur2-ur1);
@@ -86,7 +88,7 @@ switch p
         upr = (upr1+upr2)/2;
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3+ 5*y(6)*(-h(i)/2)^4;
-        upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 + 5*yl(6)*(h(i-1)/2)^4;
+        upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 + 5*yl(6)*(h(i-1)/2)^4; 
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3+y(5)*(-h(i)/2)^4 +y(6)*(-h(i)/2)^5;
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3 +yl(5)*(h(i-1)/2)^4 + yl(6)*(h(i-1)/2)^5; 
         upl = (upl1+upl2)/2;
@@ -97,13 +99,32 @@ switch p
 end
 
 
-
+if(strcmp(phys,'Poisson')==1)
+    if(nargin < 10)
         phi= (upr-upl)/h(i)-f(i);%Poisson
- %       phi= (ur2-ul1)/h(i)-f(i);
-        
-
-%       phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
- 
+    else
+        phi= (upr-upl)/h(i)-f(i);%Poisson
+    end    
+elseif(strcmp(phys,'Advection')==1)
+    if(nargin < 10)
+        phi= (ur2-ul1)/h(i)-f(i);
+    else
+%         if (i==5)
+ %        uder(i,end)
+%         error('1')
+%         end
+        phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
+        if(i==11 && j==10)
+            uder(i,j)
+            (ur2-ul1)/h(i)
+            f(i)
+            %error('1');
+            phi;
+        end
+    end    
+elseif(strcmp(phys,'Burgers')==1)
+        phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+end
 
 
 end

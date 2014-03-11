@@ -129,7 +129,7 @@ d2u = zeros(N+2,1);
     [Z]=unstructuredrecon(ue,x,h,N,NaN,NaN,p);
    % [Ze]= unstructuredrecon(ue,x,h,N,NaN,NaN,p);
 for i = 2:N+1
-    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p);
+    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p,physics);
   %  [upre,uple]=reconflux(ue,Ze,f,k,h,i,N,p);
     FI(i) = (upr-upl)/h(i)-f(i);
  %   FIe(i)=(upre-uple)/h(i)-f(i);
@@ -153,19 +153,21 @@ d=1;
 
 T = 1;
 for j = 1:100000
-        
+        U(:,j) = u;
 tt = k*j;
     
 %[Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 
 
 if((d*k<1e-15)||(tt>=tlim))
-    
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord);
+     
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
 u = uu;
     d
     tt
     T = (1:1:j)*k;
+ U(:,j+1) = u;
+ nSteps = j;
     break
 end
 
@@ -189,7 +191,7 @@ d=0;
 %d = max(d,abs(delt));
 
 
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord);
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
 
 %end
 uo = u;
@@ -228,9 +230,64 @@ end
 
 T(end)
 
+figure
+hold on
+
+uder = zeros(size(U));
+U(1,:) = NaN;
+U(N+2,:) = NaN;
+uder(1,:) = NaN;
+uder(N+2,:) = NaN;
+for i = 4:size(U,2)-3
+w=  U(:,i);
+for j = 2:N+1
+%%%uder(j,i) = (U(j,i+1)-U(j,i-1))/(2*k);%(w(j+1)-w(j-1))/(2*k);
+%%%%uder(j,i) = ((1/12)*U(j,i-2)+(-2/3)*U(j,i-1)+(2/3)*U(j,i+1)+(-1/12)*U(j,i+2))/(k);
+uder(j,i) = ((-1/60)*U(j,i-3)+(3/20)*U(j,i-2)+(-3/4)*U(j,i-1)+(3/4)*U(j,i+1)+(-3/20)*U(j,i+2)+(1/60)*U(j,i+3))/(k);
+end
+end
+
+for j = 2:N+1
+%%%uder(j,1) = (-3*U(j,1)+4*U(j,2)-U(j,3))/(2*k);%(-3*w(2)+4*w(3)-w(4))/(2*k);
+%%%%uder(j,1) = ((-25/12)*U(j,1)+4*U(j,2)-3*U(j,3)+(4/3)*U(j,4)-(1/4)*U(j,5))/(k);
+%%%%uder(j,2) = ((-25/12)*U(j,2)+4*U(j,3)-3*U(j,4)+(4/3)*U(j,5)-(1/4)*U(j,6))/(k);
+uder(j,1) = ((-49/20)*U(j,1)+6*U(j,2)-(15/2)*U(j,3)+(20/3)*U(j,4)-(15/4)*U(j,5)+(6/5)*U(j,6)-(1/6)*U(j,7))/(k);
+uder(j,2) = ((-49/20)*U(j,2)+6*U(j,3)-(15/2)*U(j,4)+(20/3)*U(j,5)-(15/4)*U(j,6)+(6/5)*U(j,7)-(1/6)*U(j,8))/(k);
+uder(j,3) = ((-49/20)*U(j,3)+6*U(j,4)-(15/2)*U(j,5)+(20/3)*U(j,6)-(15/4)*U(j,7)+(6/5)*U(j,8)-(1/6)*U(j,9))/(k);
+
+%%%uder(j,size(U,2)) = (-3*U(j,size(U,2))+4*U(j,size(U,2)-1)-U(j,size(U,2)-2))/(2*k);%(-3*w(N+1)+4*w(N)-w(N-1))/(2*k);
+%%%%uder(j,size(U,2)-1) = -((-25/12)*U(j,size(U,2)-1)+4*U(j,size(U,2)-2)-3*U(j,size(U,2)-3)+(4/3)*U(j,size(U,2)-4)-(1/4)*U(j,size(U,2)-5))/(k);
+%%%%uder(j,size(U,2)) = -((-25/12)*U(j,size(U,2))+4*U(j,size(U,2)-1)-3*U(j,size(U,2)-2)+(4/3)*U(j,size(U,2)-3)-(1/4)*U(j,size(U,2)-4))/(k);
+uder(j,size(U,2)-2) = -((-49/20)*U(j,size(U,2)-2)+6*U(j,size(U,2)-3)-(15/2)*U(j,size(U,2)-4)+(20/3)*U(j,size(U,2)-5)-(15/4)*U(j,size(U,2)-6)+(6/5)*U(j,size(U,2)-7)-(1/6)*U(j,size(U,2)-8))/(k);
+uder(j,size(U,2)-1) = -((-49/20)*U(j,size(U,2)-1)+6*U(j,size(U,2)-2)-(15/2)*U(j,size(U,2)-3)+(20/3)*U(j,size(U,2)-4)-(15/4)*U(j,size(U,2)-5)+(6/5)*U(j,size(U,2)-6)-(1/6)*U(j,size(U,2)-7))/(k);
+uder(j,size(U,2))   = -((-49/20)*U(j,size(U,2))+6*U(j,size(U,2)-1)-(15/2)*U(j,size(U,2)-2)+(20/3)*U(j,size(U,2)-3)-(15/4)*U(j,size(U,2)-4)+(6/5)*U(j,size(U,2)-5)-(1/6)*U(j,size(U,2)-6))/(k);
+end
+uder(:,:);
+size(U)
+size(uder)
+
+%plot(x,(U(:,end)-U(:,end-2))/(2*k),'o',x,uder(:,end-1),'*')
+plot(x,uder(:,end),'*')
+hold on
+
+%XX = linspace(0,1,100);
+%YY = 2*pi*cos(2*pi*(XX+1));
+%YY = -400*pi^2*exp(-0.4*pi^2)*sin(2*pi*XX);
+XX = x;
+YY = zeros(size(XX));
+for i = 2:N+1
+YY(i) = (1/h(i))*(sin(2*pi*(XX(i)+h(i)/2+1))-sin(2*pi*(XX(i)-h(i)/2+1)));
+end
+plot(XX,YY,'+')
+max(abs(YY-uder(:,end)))
+
+k
+uder(:,end)
+
+
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps
     
 %Error equation
 %clear all
@@ -282,9 +339,42 @@ end
 
 
 
-[R,uxx,Z] =computeres(u,x,k,h,N,f,r);
-res=max(abs(R))
-R
+[R0,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
+res=max(abs(R0))
+R0
+
+
+
+
+for j = 1:nSteps
+    uder(:,j) = (1/h(i))*(sin(2*pi*(x(i)+h(i)/2+(j-1)*k))-sin(2*pi*(x(i)-h(i)/2+(j-1)*k)));
+    for i = 2:N+1
+    u(i) =  (1/h(i))*(-1/(2*pi))*(cos(2*pi*(x(i)+h(i)/2+(j-1)*k)) -cos(2*pi*(x(i)-h(i)/2+(j-1)*k)));
+    end
+ AD = computepseudo(N,x,h,p);    
+    [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
+    %%%recon(p)??every time step
+ AD = computepseudo(N,x,h,r);
+   [R(:,j+1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j+1);
+   
+
+%    
+%    if(abs(j*k-0.2) < 1e-5)
+%       max(abs(R(:,j)))
+%       error('1')
+%    end
+end
+
+R(:,1)=0;
+
+max(abs(R(:,end)))
+%uder(:,end)
+error('1')
+
+% R0-R(:,end)
+% error('1')
+
+
 %error('1')
 
 % error('1')
@@ -313,7 +403,7 @@ AD = computepseudo(N,x,h,q);
 FIq = zeros(N+2,1);
     [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,q);
 for i = 2:N+1
-    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,q);
+    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,q,physics);
     FIq(i) = (upr-upl)/h(i)-f(i);
 end
 FIq(N+2) = NaN;  
@@ -322,7 +412,7 @@ AD = computepseudo(N,x,h,p);
 FIp = zeros(N+2,1);
     [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,p);
 for i = 2:N+1
-    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,p);
+    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,p,physics);
     FIp(i) = (upr-upl)/h(i)-f(i);
 end
 FIp(N+2) = NaN;  
@@ -348,21 +438,34 @@ FI-FIq;
 T = 1;
 s=1;
 for j = 1:100000
+
+
+%  AD = computepseudo(N,x,h,r);
+% [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
+%  AD = computepseudo(N,x,h,q);
+
+
     TT = k*j;
     
-[Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
+%%%%[Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
 
 
 
 if( ((s*k<1e-15)||(TT>=tlim)))
+% AD = computepseudo(N,x,h,r);
+% [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
+%  AD = computepseudo(N,x,h,q);
+
     
-[ee,s] = updatesoln(e,x,-R,k,h,N,q,tord);
+
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics);
 
 e = ee;
     s
     TT
    
     T = (1:1:j)*k;
+j
     break
 end
 
@@ -382,7 +485,7 @@ s=0;
 % 
 % end
 
-[ee,s] = updatesoln(e,x,-R,k,h,N,q,tord);
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics);
 
 
 e = ee;
@@ -426,5 +529,9 @@ save('t','exacterr','ee','x')
 
 
 end
+
+
+
+
 
 end
