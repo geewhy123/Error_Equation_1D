@@ -289,6 +289,25 @@ max(abs(YY-uder(:,end)))
 k
 uder(:,end)
 
+T=(0:1:nSteps)*k;
+%cs =csapi(T,U(3,:))
+
+for j = 2:N+1
+sp = spapi(6,T,U(j,:));
+gsp(j) = sp;
+%figure
+fnplt(sp)
+%hold on
+%plot(T,U(3,:),'*')
+end
+
+
+size(sp.coefs)
+gsp
+
+error('1')
+
+
 
 if(q>0 && r > 0)
     
