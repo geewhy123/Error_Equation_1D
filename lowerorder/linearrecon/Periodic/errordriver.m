@@ -106,7 +106,11 @@ u=u0;
 uu = zeros(N+2,1);
 
 
-
+%u=uu;
+% u(1) = NaN;
+% u(N+2) = NaN;
+% size(u)
+% error('1')
 
 v = rand(N+2,1);
 v = v./norm(v);
@@ -168,6 +172,7 @@ u = uu;
     T = (1:1:j)*k;
  U(:,j+1) = u;
  nSteps = j;
+ 
     break
 end
 
@@ -341,16 +346,16 @@ end
 
 [R0,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
 res=max(abs(R0))
-R0
+R0;
 
 
-
-
+u=u0;
+  [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
 for j = 1:nSteps
-    uder(:,j) = (1/h(i))*(sin(2*pi*(x(i)+h(i)/2+(j-1)*k))-sin(2*pi*(x(i)-h(i)/2+(j-1)*k)));
-    for i = 2:N+1
-    u(i) =  (1/h(i))*(-1/(2*pi))*(cos(2*pi*(x(i)+h(i)/2+(j-1)*k)) -cos(2*pi*(x(i)-h(i)/2+(j-1)*k)));
-    end
+%     uder(:,j) = (1/h(i))*(sin(2*pi*(x(i)+h(i)/2+(j-1)*k))-sin(2*pi*(x(i)-h(i)/2+(j-1)*k)));
+%     for i = 2:N+1
+%     u(i) =  (1/h(i))*(-1/(2*pi))*(cos(2*pi*(x(i)+h(i)/2+(j-1)*k)) -cos(2*pi*(x(i)-h(i)/2+(j-1)*k)));
+%     end
  AD = computepseudo(N,x,h,p);    
     [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
     %%%recon(p)??every time step
@@ -358,18 +363,18 @@ for j = 1:nSteps
    [R(:,j+1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j+1);
    
 
-%    
+   
 %    if(abs(j*k-0.2) < 1e-5)
 %       max(abs(R(:,j)))
 %       error('1')
 %    end
 end
 
-R(:,1)=0;
+%R(:,1)=0;
 
 max(abs(R(:,end)))
 %uder(:,end)
-error('1')
+% error('1')
 
 % R0-R(:,end)
 % error('1')
@@ -451,19 +456,14 @@ for j = 1:100000
 
 
 
-if( ((s*k<1e-15)||(TT>=tlim)))
+if( ((s*k<1e-15)||(TT>=tlim)) || (j > nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-
-    
-
 [ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics);
-
 e = ee;
     s
     TT
-   
     T = (1:1:j)*k;
 j
     break

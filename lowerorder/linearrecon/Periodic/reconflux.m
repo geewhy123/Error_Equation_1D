@@ -103,7 +103,7 @@ if(strcmp(phys,'Poisson')==1)
     if(nargin < 10)
         phi= (upr-upl)/h(i)-f(i);%Poisson
     else
-        phi= (upr-upl)/h(i)-f(i);%Poisson
+        phi= -uder(i,j)+(upr-upl)/h(i)-f(i);%Poisson
     end    
 elseif(strcmp(phys,'Advection')==1)
     if(nargin < 10)
@@ -114,16 +114,20 @@ elseif(strcmp(phys,'Advection')==1)
 %         error('1')
 %         end
         phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
-        if(i==11 && j==10)
-            uder(i,j)
-            (ur2-ul1)/h(i)
-            f(i)
-            %error('1');
-            phi;
-        end
+%         if(i==11 && j==10)
+%             uder(i,j)
+%             (ur2-ul1)/h(i)
+%             f(i)
+%             %error('1');
+%             phi;
+%         end
     end    
 elseif(strcmp(phys,'Burgers')==1)
+    if(nargin < 10)
         phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+    else
+        phi = -uder(i,j)-(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+    end
 end
 
 
