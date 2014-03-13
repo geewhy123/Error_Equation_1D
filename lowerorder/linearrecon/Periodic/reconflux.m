@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j)
+function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -100,30 +100,55 @@ end
 
 
 if(strcmp(phys,'Poisson')==1)
-    if(nargin < 10)
+    if(nargin < 12 || (isnan(time)))
         phi= (upr-upl)/h(i)-f(i);%Poisson
     else
-        phi= -uder(i,j)+(upr-upl)/h(i)-f(i);%Poisson
+       %%% phi= -uder(i,j)+(upr-upl)/h(i)-f(i);%Poisson
+       
+sp = gsp(i);
+ut = fnval(fnder(sp),time);
+phi= -ut+(upr-upl)/h(i)-f(i);%Poisson
     end    
 elseif(strcmp(phys,'Advection')==1)
-    if(nargin < 10)
+    
+    
+    if((nargin < 12) || (isnan(time))|| isnan(j))
         phi= (ur2-ul1)/h(i)-f(i);
     else
 %         if (i==5)
  %        uder(i,end)
 %         error('1')
 %         end
-        phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
-%         if(i==11 && j==10)
+
+
+%%%phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
+
+sp = gsp(i);
+ut = fnval(fnder(sp),time);
+phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
+
+if(~isnan(j) && abs(uder(i,j)-ut)/ut > 1e-4)
+   uder(i,j)
+   ut
+   error('1')
+    
+end
+%         if((i==11) && abs(time-0.2)<1e-3)
+%             time
+%             j = round(time/k+1)
 %             uder(i,j)
-%             (ur2-ul1)/h(i)
-%             f(i)
-%             %error('1');
+%             ut
+%             uder(i,j)-ut
+%             %(ur2-ul1)/h(i)
+%             %f(i)
+% %            error('1');
 %             phi;
 %         end
     end    
+    
+    
 elseif(strcmp(phys,'Burgers')==1)
-    if(nargin < 10)
+    if(nargin < 12)
         phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
     else
         phi = -uder(i,j)-(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers

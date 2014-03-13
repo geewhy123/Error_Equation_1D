@@ -133,7 +133,7 @@ d2u = zeros(N+2,1);
     [Z]=unstructuredrecon(ue,x,h,N,NaN,NaN,p);
    % [Ze]= unstructuredrecon(ue,x,h,N,NaN,NaN,p);
 for i = 2:N+1
-    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p,physics);
+    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p,physics,NaN,NaN,NaN);
   %  [upre,uple]=reconflux(ue,Ze,f,k,h,i,N,p);
     FI(i) = (upr-upl)/h(i)-f(i);
  %   FIe(i)=(upre-uple)/h(i)-f(i);
@@ -165,7 +165,7 @@ tt = k*j;
 
 if((d*k<1e-15)||(tt>=tlim))
      
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN);
 u = uu;
     d
     tt
@@ -196,7 +196,7 @@ d=0;
 %d = max(d,abs(delt));
 
 
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN);
 
 %end
 uo = u;
@@ -292,6 +292,9 @@ uder(:,end)
 T=(0:1:nSteps)*k;
 %cs =csapi(T,U(3,:))
 
+
+
+
 for j = 2:N+1
 sp = spapi(6,T,U(j,:));
 gsp(j) = sp;
@@ -300,18 +303,29 @@ fnplt(sp)
 %hold on
 %plot(T,U(3,:),'*')
 end
+% 
+% M = 40;
+% xx = linspace(0,1,M);
+% yy = exp(sin(pi*xx));
+% sp = spapi(6,xx,yy);
+% figure 
+% fnplt(sp)
+% fnval(fnder(sp),.25)-exp(sin(pi*.25))*pi*cos(pi*.25)
+% fnval(sp,.5)-exp(1)
+%  error('1')
+% size(sp.coefs)
+% gsp
+% figure
+% fnplt(sp)
+% fnval(sp,.3)
+% error('1')
 
-
-size(sp.coefs)
-gsp
-
-error('1')
 
 
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp
     
 %Error equation
 %clear all
@@ -376,7 +390,7 @@ for j = 1:nSteps
 %     u(i) =  (1/h(i))*(-1/(2*pi))*(cos(2*pi*(x(i)+h(i)/2+(j-1)*k)) -cos(2*pi*(x(i)-h(i)/2+(j-1)*k)));
 %     end
  AD = computepseudo(N,x,h,p);    
-    [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics);
+    [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,uder,NaN,NaN);
     %%%recon(p)??every time step
  AD = computepseudo(N,x,h,r);
    [R(:,j+1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j+1);
@@ -458,7 +472,8 @@ FI-FIq;
 
  AD = computepseudo(N,x,h,q);
 
-
+ 
+ 
 T = 1;
 s=1;
 for j = 1:100000
@@ -479,7 +494,7 @@ if( ((s*k<1e-15)||(TT>=tlim)) || (j > nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics);
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,uder,j*k,gsp);
 e = ee;
     s
     TT
@@ -504,7 +519,7 @@ s=0;
 % 
 % end
 
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics);
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,uder,j*k,gsp);
 
 
 e = ee;
