@@ -2,7 +2,14 @@ function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 
+global TEND
+if(abs(time-round(time))<1e-10)
+   time = round(time); 
+elseif(abs(time-TEND) < 1e-10)
+   time = TEND;
+end
 
+global UU
 
 switch i
     case 2
@@ -100,7 +107,13 @@ end
 
 
 if(strcmp(phys,'Poisson')==1)
-    if(nargin < 12 || (isnan(time)))
+    if(nargin < 12 || (isnan(time))||isnan(j))
+        if(~isnan(time))
+     
+            time
+     
+            f(i) = -1*getRes(time,k,i);
+        end
         phi= (upr-upl)/h(i)-f(i);%Poisson
     else
        %%% phi= -uder(i,j)+(upr-upl)/h(i)-f(i);%Poisson
@@ -108,12 +121,20 @@ if(strcmp(phys,'Poisson')==1)
 sp = gsp(i);
 ut = fnval(fnder(sp),time);
 phi= -ut+(upr-upl)/h(i)-f(i);%Poisson
-    end    
+    end   
+    
 elseif(strcmp(phys,'Advection')==1)
     
     
     if((nargin < 12) || (isnan(time))|| isnan(j))
+        if(~isnan(time))
+     
+            time
+     
+            f(i) = -1*getRes(time,k,i);
+        end
         phi= (ur2-ul1)/h(i)-f(i);
+        
     else
 %         if (i==5)
  %        uder(i,end)
@@ -125,33 +146,52 @@ elseif(strcmp(phys,'Advection')==1)
 
 sp = gsp(i);
 ut = fnval(fnder(sp),time);
-phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
 
-if(~isnan(j) && abs(uder(i,j)-ut)/ut > 1e-4)
-   uder(i,j)
-   ut
-   error('1')
-    
-end
+
+phi= -ut+(ur2-ul1)/h(i)-f(i);
+
+% if(norm(phi) >1)
+%    time
+%    ut
+%    error('3')
+% end
+
+
+% if(~isnan(j) && abs(uder(i,j)-ut)/ut > 1e-4)
+%    
+%    uder(i,j)
+%    ut
+%    i
+%    j
+%    time-1
+%    fnval(fnder(sp),1+1e-8)
+%   error('1')
+% end
+%     
+% % end
 %         if((i==11) && abs(time-0.2)<1e-3)
 %             time
 %             j = round(time/k+1)
 %             uder(i,j)
 %             ut
 %             uder(i,j)-ut
-%             %(ur2-ul1)/h(i)
-%             %f(i)
-% %            error('1');
+%             (ur2-ul1)/h(i)
+%             f(i)
+%            error('1');
 %             phi;
 %         end
     end    
     
     
 elseif(strcmp(phys,'Burgers')==1)
-    if(nargin < 12)
+    
+    if((nargin < 12) || (isnan(time))|| isnan(j))
         phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
     else
-        phi = -uder(i,j)-(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+        sp = gsp(i);
+        ut = fnval(fnder(sp),time);
+        
+        phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i)  -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
     end
 end
 

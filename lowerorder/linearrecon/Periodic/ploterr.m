@@ -1,14 +1,14 @@
-clearvars -except errerr4
+clearvars -except errerr10 errerr20 errerr40 errerr10b errerr40b
 close all
 A = [2 2 4;2 2 6;2 4 4;2 4 6; 2 6 4; 2 6 6; 4 2 6; 4 4 6; 4 6 6];
 B = ['2 2 4';'2 2 6';'2 4 4';'2 4 6'; '2 6 4'; '2 6 6'; '4 2 6'; '4 4 6'; '4 6 6'];
 
 [m,n] = size(A);
-N = 40
+N = 20
 figure
 hold on
 for j = 1:m
-   [errerr4b(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),0,100,10,7,'Poisson');
+   [errerr20b(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),1/3,100,1,7,'Advection');
    
 
 

@@ -1,4 +1,4 @@
-function [ R ,uxx,Z] = computeres(u,x,k,h,N,f,r,phys,uder,j )
+function [ R ,uxx,Z] = computeres(u,x,k,h,N,f,r,phys,uder,j,time,gsp )
 %COMPUTERES Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -40,7 +40,7 @@ for i = 2:N+1
 %   
   
   
-[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys);%%%
+[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
  %%% R(i) = phi;%%%
   
 %   R(i) = uxx(i) - f(i);
@@ -129,7 +129,7 @@ uxx = zeros(N+2,1);
   
 
 %   R(i) = uxx(i) - f(i);
-[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j);%%%
+[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
  %%% R(i) = phi;%%%
 
 end

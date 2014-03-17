@@ -3,7 +3,7 @@ function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
-close all
+%close all
 
 if(p>0)
 
@@ -133,7 +133,7 @@ d2u = zeros(N+2,1);
     [Z]=unstructuredrecon(ue,x,h,N,NaN,NaN,p);
    % [Ze]= unstructuredrecon(ue,x,h,N,NaN,NaN,p);
 for i = 2:N+1
-    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p,physics,NaN,NaN,NaN);
+    [upr,upl] = reconflux(ue,Z,f,k,h,i,N,p,physics,NaN,NaN,NaN,NaN);
   %  [upre,uple]=reconflux(ue,Ze,f,k,h,i,N,p);
     FI(i) = (upr-upl)/h(i)-f(i);
  %   FIe(i)=(upre-uple)/h(i)-f(i);
@@ -165,7 +165,7 @@ tt = k*j;
 
 if((d*k<1e-15)||(tt>=tlim))
      
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN);
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN);
 u = uu;
     d
     tt
@@ -196,7 +196,7 @@ d=0;
 %d = max(d,abs(delt));
 
 
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN);
+[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN);
 
 %end
 uo = u;
@@ -293,8 +293,6 @@ T=(0:1:nSteps)*k;
 %cs =csapi(T,U(3,:))
 
 
-
-
 for j = 2:N+1
 sp = spapi(6,T,U(j,:));
 gsp(j) = sp;
@@ -320,12 +318,24 @@ end
 % fnval(sp,.3)
 % error('1')
 
+% % % [m,n] = size(uder);
+% % % UT = zeros(m,n);
+% % % for i = 2:N+1
+% % %     sp = gsp(i);
+% % %     for j = 1:n
+% % %         ttt = (j-1)*k;
+% % %       UT(i,j) = fnval(fnder(sp),ttt);     
+% % %     end
+% % % end
+% % % norm(UT(2:N+1,:)-uder(2:N+1,:));
+% % % %UT
+% % % %uder
 
 
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U
     
 %Error equation
 %clear all
@@ -356,6 +366,11 @@ end
 h(1) = h(N+1);
 h(N+2) = h(2);
 
+global TEND
+TEND = tlim;
+
+global UU
+UU = U;
 
 
  global AD
@@ -377,25 +392,30 @@ end
 
 
 
-[R0,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
-res=max(abs(R0))
-R0;
-
-
+% [R0,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
+% res=max(abs(R0))
+% R0;
+uold = u;
 u=u0;
-  [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
+
+global R
+tt=0;
+  [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1,0,gsp);
 for j = 1:nSteps
 %     uder(:,j) = (1/h(i))*(sin(2*pi*(x(i)+h(i)/2+(j-1)*k))-sin(2*pi*(x(i)-h(i)/2+(j-1)*k)));
 %     for i = 2:N+1
 %     u(i) =  (1/h(i))*(-1/(2*pi))*(cos(2*pi*(x(i)+h(i)/2+(j-1)*k)) -cos(2*pi*(x(i)-h(i)/2+(j-1)*k)));
 %     end
- AD = computepseudo(N,x,h,p);    
-    [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,uder,NaN,NaN);
-    %%%recon(p)??every time step
- AD = computepseudo(N,x,h,r);
-   [R(:,j+1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j+1);
-   
 
+AD = computepseudo(N,x,h,p);    
+     [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
+    %%recon(p)??every time step
+
+    
+ AD = computepseudo(N,x,h,r);
+   [R(:,j+1),uxx,Z] =computeres(U(:,j+1),x,k,h,N,f,r,physics,uder,j+1,tt+k,gsp);
+   
+tt = tt+k;
    
 %    if(abs(j*k-0.2) < 1e-5)
 %       max(abs(R(:,j)))
@@ -403,9 +423,13 @@ for j = 1:nSteps
 %    end
 end
 
-%R(:,1)=0;
 
+%R(:,1)=0;
+%uder
+%R
 max(abs(R(:,end)))
+
+%error('1')
 %uder(:,end)
 % error('1')
 
@@ -435,29 +459,29 @@ ee =zeros(N+2,1);
 
 
 %%%%perturb
-uu = ue;
-uu=uu+h0^bta*v;
-AD = computepseudo(N,x,h,q);
-FIq = zeros(N+2,1);
-    [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,q);
-for i = 2:N+1
-    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,q,physics);
-    FIq(i) = (upr-upl)/h(i)-f(i);
-end
-FIq(N+2) = NaN;  
-
-AD = computepseudo(N,x,h,p);
-FIp = zeros(N+2,1);
-    [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,p);
-for i = 2:N+1
-    [upr,upl] = reconflux(uu,Z,f,k,h,i,N,p,physics);
-    FIp(i) = (upr-upl)/h(i)-f(i);
-end
-FIp(N+2) = NaN;  
-
-
-
-FI-FIq;
+% % % uu = ue;
+% % % uu=uu+h0^bta*v;
+% % % AD = computepseudo(N,x,h,q);
+% % % FIq = zeros(N+2,1);
+% % %     [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,q);
+% % % for i = 2:N+1
+% % %     [upr,upl] = reconflux(uu,Z,f,k,h,i,N,q,physics);
+% % %     FIq(i) = (upr-upl)/h(i)-f(i);
+% % % end
+% % % FIq(N+2) = NaN;  
+% % % 
+% % % AD = computepseudo(N,x,h,p);
+% % % FIp = zeros(N+2,1);
+% % %     [Z]=unstructuredrecon(uu,x,h,N,NaN,NaN,p);
+% % % for i = 2:N+1
+% % %     [upr,upl] = reconflux(uu,Z,f,k,h,i,N,p,physics);
+% % %     FIp(i) = (upr-upl)/h(i)-f(i);
+% % % end
+% % % FIp(N+2) = NaN;  
+% % % 
+% % % 
+% % % 
+% % % FI-FIq;
 
 %R = -FInew;
 %R = -FIp;
@@ -468,6 +492,16 @@ FI-FIq;
 % SS = dot(h(2:N+1),R(2:N+1))
 % R=R-SS
 %%%%%
+% 
+% for j = 2:N+1
+% sp = spapi(6,T,R(j,:));
+% Rsp(j) = sp;
+% 
+% end
+
+
+global M
+M = nSteps;
 
 
  AD = computepseudo(N,x,h,q);
@@ -476,13 +510,14 @@ FI-FIq;
  
 T = 1;
 s=1;
+
 for j = 1:100000
 
 
 %  AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-
+E(:,j) = e;
 
     TT = k*j;
     
@@ -494,7 +529,10 @@ if( ((s*k<1e-15)||(TT>=tlim)) || (j > nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,uder,j*k,gsp);
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp);
+
+
+
 e = ee;
     s
     TT
@@ -519,7 +557,7 @@ s=0;
 % 
 % end
 
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,uder,j*k,gsp);
+[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp);
 
 
 e = ee;
@@ -536,6 +574,9 @@ end
 
 
 exacterr = ue-u;
+
+norm(u(2:N+1))
+
 exacterr = exacterr(2:N+1);
 x = x(2:N+1);
 figure
@@ -567,5 +608,5 @@ end
 
 
 
-
+clear global
 end

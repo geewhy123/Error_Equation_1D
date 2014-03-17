@@ -1,4 +1,4 @@
-function [uu,d] = updatesoln(u,x,f,k,h,N,p,t,phys,uder,time,gsp)
+function [uu,d] = updatesoln(u,x,f,k,h,N,p,t,phys,uder,j,time,gsp)
 
 %UPDATESOLN Summary of this function goes here
 %   Detailed explanation goes here
@@ -19,7 +19,7 @@ function [uu,d] = updatesoln(u,x,f,k,h,N,p,t,phys,uder,time,gsp)
            [uu,d] = rk5(u,x,f,k,h,N,p,t,phys);
            
        case 7
-           [uu,d] = rk7(u,x,f,k,h,N,p,t,phys,uder,time,gsp);
+           [uu,d] = rk7(u,x,f,k,h,N,p,t,phys,uder,j,time,gsp);
        otherwise
    end
       
