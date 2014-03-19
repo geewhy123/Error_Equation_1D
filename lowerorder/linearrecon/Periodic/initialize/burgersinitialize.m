@@ -22,19 +22,19 @@ x4= -0.8611363116;
  xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
 
 
-F = @(s) s+tlim*sin(2*pi*s)-xx1;
+F = @(s) s+tlim*sin(2*pi*s)/(2*pi)-xx1;
 xxx1=fzero(F,0);
-F = @(s) s+tlim*sin(2*pi*s)-xx2;
+F = @(s) s+tlim*sin(2*pi*s)/(2*pi)-xx2;
 xxx2=fzero(F,0);
-F = @(s) s+tlim*sin(2*pi*s)-xx3;
+F = @(s) s+tlim*sin(2*pi*s)/(2*pi)-xx3;
 xxx3=fzero(F,0);
-F = @(s) s+tlim*sin(2*pi*s)-xx4;
+F = @(s) s+tlim*sin(2*pi*s)/(2*pi)-xx4;
 xxx4=fzero(F,0);
 
 
-ue(i) = (1/h(i))*((xr-xl)/2)*(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
+ue(i) = (1/(2*pi))* (1/h(i))*((xr-xl)/2)*(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
 
-u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+u0(i) = (1/(2*pi))* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 f(i) = 0;
     end

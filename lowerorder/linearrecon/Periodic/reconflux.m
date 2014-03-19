@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp)
+function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp,Rsp)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -111,8 +111,9 @@ if(strcmp(phys,'Poisson')==1)
         if(~isnan(time))
      
             time
+            sp = Rsp(i);
      
-            f(i) = -1*getRes(time,k,i);
+            f(i) = -1*getRes(time,k,i,sp);
         end
         phi= (upr-upl)/h(i)-f(i);%Poisson
     else
@@ -129,9 +130,9 @@ elseif(strcmp(phys,'Advection')==1)
     if((nargin < 12) || (isnan(time))|| isnan(j))
         if(~isnan(time))
      
-            time
-     
-            f(i) = -1*getRes(time,k,i);
+            %time
+            sp = Rsp(i);
+            f(i) = -1*getRes(time,k,i,sp);
         end
         phi= (ur2-ul1)/h(i)-f(i);
         
@@ -191,7 +192,7 @@ elseif(strcmp(phys,'Burgers')==1)
         sp = gsp(i);
         ut = fnval(fnder(sp),time);
         
-        phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i)  -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
+        phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i) % -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
     end
 end
 
