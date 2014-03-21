@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp,Rsp)
+function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp,Rsp,Zu)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -10,6 +10,7 @@ elseif(abs(time-TEND) < 1e-10)
 end
 
 global UU
+global M
 
 switch i
     case 2
@@ -137,11 +138,6 @@ elseif(strcmp(phys,'Advection')==1)
         phi= (ur2-ul1)/h(i)-f(i);
         
     else
-%         if (i==5)
- %        uder(i,end)
-%         error('1')
-%         end
-
 
 %%%phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
 
@@ -186,13 +182,71 @@ phi= -ut+(ur2-ul1)/h(i)-f(i);
     
 elseif(strcmp(phys,'Burgers')==1)
     
-    if((nargin < 12) || (isnan(time))|| isnan(j))
-        phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
-    else
+    if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
+        if(~isnan(time))%error step
+     
+            %time
+            sp = Rsp(i);
+            f(i) = -1*getRes(time,k,i,sp);
+            
+%             T=(0:1:M)*k;
+%             Usp1 = spapi(6,T,UU(i,:));
+%             
+%             if (i==N+1)
+%             Usp2 = spapi(6,T,UU(2,:));
+%             else
+%             Usp2 = spapi(6,T,UU(i+1,:));
+%             end
+%             uhr = fnval(Usp2,time);
+%             uhl = fnval(Usp1,time);
+  %          f(i) = f(i) -(ur1*(uhr)-ur2*(uhl))/h(i);
+            
+%            ubar(i) ;
+            switch i
+               case 2
+                Y = Zu(:,i);
+                Yr = Zu(:,i+1);
+                Yl = Zu(:,N+1);
+               case N+1
+                Y = Zu(:,i);
+                Yr = Zu(:,2);
+                Yl = Zu(:,i-1);
+               otherwise
+                Y = Zu(:,i);
+                Yr = Zu(:,i+1);
+                Yl = Zu(:,i-1);
+               end
+            if (p==2)
+               
+                  uhr2 = Yr(1)+Yr(2)*(-h(i+1)/2);
+                  uhr1 = Y(1) + Y(2)*(h(i)/2);
+        
+                  uhl1 = Y(1)+Y(2)*(-h(i)/2);
+                  uhl2 = Yl(1) + Yl(2)*(h(i-1)/2);
+                  
+            elseif(p==4)
+                uhr2 = Yr(1)+Yr(2)*(-h(i+1)/2)+Yr(3)*(-h(i+1)/2)^2+Yr(4)*(-h(i+1)/2)^3;
+                uhr1 = Y(1) + Y(2)*(h(i)/2)+Y(3)*(h(i)/2)^2 + Y(4)*(h(i)/2)^3;
+                uhl1 = Y(1)+Y(2)*(-h(i)/2) + Y(3)*(-h(i)/2)^2 + Y(4)*(-h(i)/2)^3;
+                uhl2 = Yl(1) + Yl(2)*(h(i-1)/2) + Yl(3)*(h(i-1)/2)^2 + Yl(4)*(h(i-1)/2)^3;
+            elseif(p==6)
+                uhr2 = Yr(1)+Yr(2)*(-h(i+1)/2)+Yr(3)*(-h(i+1)/2)^2+Yr(4)*(-h(i+1)/2)^3+Yr(5)*(-h(i+1)/2)^4 +Yr(6)*(-h(i+1)/2)^5;
+                uhr1 = Y(1) + Y(2)*(h(i)/2)+Y(3)*(h(i)/2)^2 + Y(4)*(h(i)/2)^3 + Y(5)*(h(i)/2)^4 +Y(6)*(h(i)/2)^5;
+                uhl1 = Y(1)+Y(2)*(-h(i)/2) + Y(3)*(-h(i)/2)^2 + Y(4)*(-h(i)/2)^3+Y(5)*(-h(i)/2)^4 +Y(6)*(-h(i)/2)^5;
+                uhl2 = Yl(1) + Yl(2)*(h(i-1)/2) + Yl(3)*(h(i-1)/2)^2 + Yl(4)*(h(i-1)/2)^3 +Yl(5)*(h(i-1)/2)^4 + Yl(6)*(h(i-1)/2)^5; 
+            else
+                error('2')
+            end
+            f(i) = f(i) + (ur1*(uhr1)-ul2*(uhl2))/h(i);
+
+        end
+             phi = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+
+    else%residual eval
         sp = gsp(i);
         ut = fnval(fnder(sp),time);
-        
-        phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i) % -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
+    
+        phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i); % -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
     end
 end
 
