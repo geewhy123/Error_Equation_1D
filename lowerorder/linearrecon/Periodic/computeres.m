@@ -85,7 +85,7 @@ for i = 2:N+1
    
 %   R(i) = uxx(i) - f(i);
 
-[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys);%%%
+[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
   %%%R(i) = phi;%%%
 
 end
