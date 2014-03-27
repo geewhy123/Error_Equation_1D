@@ -332,43 +332,47 @@ end
 % % % %UT
 % % % %uder
 
+% errerr2(1) = NaN;
+% exacterr(1) = NaN;
+% ee(1) = NaN;
 
 uder =0;
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x
     
 figure
 hold on
 %Error equation
 %clear all
-rng(1234);
-% % % % load('test.mat')
-
-h0 = 1/N;
-%k=0.0008  *(20/N)^2  ;
-X = zeros(N+1,1);
-for i = 1:N+1
-   X(i) = (i-1)*h0; 
-   if(i>1 && i < N+1)
-   X(i) = X(i) + unif*(-1+rand*(2))*h0/3;
-   end
-end
-x = zeros(N+2,1);
-for i = 2:N+1
-    x(i) = (X(i-1)+X(i))/2;
-end
-x(1) = 0-(1-x(N+1));%-x(2);
-x(N+2) = 1+x(2);%1+(1-x(N+1));
-
-h = zeros(N+2,1);
-for i = 2:N+1
-   h(i) = X(i)-X(i-1); 
-end
-
-h(1) = h(N+1);
-h(N+2) = h(2);
-
+% % rng(1234);
+% % % % % % load('test.mat')
+% % 
+% % h0 = 1/N;
+% % %k=0.0008  *(20/N)^2  ;
+% % X = zeros(N+1,1);
+% % for i = 1:N+1
+% %    X(i) = (i-1)*h0; 
+% %    if(i>1 && i < N+1)
+% %    X(i) = X(i) + unif*(-1+rand*(2))*h0/3;
+% %    end
+% % end
+% % x = zeros(N+2,1);
+% % for i = 2:N+1
+% %     x(i) = (X(i-1)+X(i))/2;
+% % end
+% % x(1) = 0-(1-x(N+1));%-x(2);
+% % x(N+2) = 1+x(2);%1+(1-x(N+1));
+% % 
+% % h = zeros(N+2,1);
+% % for i = 2:N+1
+% %    h(i) = X(i)-X(i-1); 
+% % end
+% % 
+% % h(1) = h(N+1);
+% % h(N+2) = h(2);
+global xx
+xx = x;
 global TEND
 TEND = tlim;
 
@@ -393,8 +397,26 @@ for i = 1:N+2
 %ue(i) = (1/h(i))*((0.5*(1+(x(i)+h(i)/2))^2*log(1+(x(i)+h(i)/2))+7/4+1.5*(x(i)+h(i)/2)-0.25*(x(i)+h(i)/2)^2-2*(1+(x(i)+h(i)/2))*log(1+(x(i)+h(i)/2)))-((0.5*(1+(x(i)-h(i)/2))^2*log(1+(x(i)-h(i)/2))+7/4+1.5*(x(i)-h(i)/2)-0.25*(x(i)-h(i)/2)^2-2*(1+(x(i)-h(i)/2))*log(1+(x(i)-h(i)/2)))));
 end
 
-
-
+% % %check FI of exact
+% % for j = 1:nSteps+1
+% %     tim = (j-1)*k;
+% %   for i = 2:N+1
+% %            xl = x(i)-h(i)/2;
+% %     xr = x(i)+h(i)/2;
+% % 
+% % UUe(i,j) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tim)) -cos(2*pi*(xl+tim)));
+% % 
+% % 
+% % 
+% %   end
+% %   UUe(1,j) = NaN;
+% %   UUe(N+2,j) = NaN;
+% % end
+% %   %
+% % %max(abs( UUe(:,end)-UU(:,end)))
+ 
+  
+  
 % [R0,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1);
 % res=max(abs(R0))
 % R0;
@@ -430,7 +452,15 @@ end
 %R(:,1)=0;
 %uder
 %R
-max(abs(R(:,end)))
+Rm=max(abs(R(:,end)))
+% errerr2 = Rm;
+% cverr2 = NaN;
+% exacterr = NaN;
+% ee = NaN;
+% clear global
+% return 
+%error('1')
+
 %error('1')
 %error('1')
 %uder(:,end)

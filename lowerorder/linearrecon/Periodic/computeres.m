@@ -3,6 +3,17 @@ function [ R ,uxx,Z] = computeres(u,x,k,h,N,f,r,phys,uder,j,time,gsp )
 %   Detailed explanation goes here
 
 switch r
+    case 3
+    
+    
+    [err,Z]=unstructuredrecon2(u,x,h,N,NaN,NaN);
+R = zeros(N+2,1);
+uxx = zeros(N+2,1);
+for i = 2:N+1
+   
+[ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
+ 
+end
 case 4
     
     

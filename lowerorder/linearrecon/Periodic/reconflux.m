@@ -1,7 +1,7 @@
 function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp,Rsp,Zu)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
-
+global xx
 global TEND
 if(abs(time-round(time))<1e-10)
    time = round(time); 
@@ -139,6 +139,9 @@ elseif(strcmp(phys,'Advection')==1)
         
     else
 
+
+     
+        
 %%%phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
 
 sp = gsp(i);
@@ -146,6 +149,20 @@ ut = fnval(fnder(sp),time);
 
 
 phi= -ut+(ur2-ul1)/h(i)-f(i);
+
+
+   if(abs(time-0.04)<1e-3)
+           PHI(i) = phi;
+           if(i==N+1)
+               PHI(N+2) = NaN;
+               PHI
+              plot(xx(2:N+1),PHI(2:N+1))
+              error('1')
+           end
+
+        end
+        
+
 
 % if(norm(phi) >1)
 %    time
@@ -264,24 +281,27 @@ elseif(strcmp(phys,'Burgers')==1)
 %              phi = -(ur2^2-ul1^2)/(2*h(i))-f(i);%burgers
 %              end
              
-% if( (ur1+ur2)<0 || (ul1+ul2)<0)
-%             fr = ur1;
-%             fl = ul2;
-%             if( (ur1+ur2)<0)
-%                 fr = ur2;
-%             end
-%             if( (ul1+ul2)<0)
-%                 fl = ul1;
-%             end
-%               phi = -(fr^2-fl^2)/(2*h(i))-f(i);%burgers
-%             
-% end
+if( (ur1+ur2)<0 || (ul1+ul2)<0)
+            fr = ur1;
+            fl = ul2;
+            if( (ur1+ur2)<0)
+                fr = ur2;
+            end
+            if( (ul1+ul2)<0)
+                fl = ul1;
+            end
+              phi = -(fr^2-fl^2)/(2*h(i))-f(i);%burgers
+            
+end
               
     else%residual eval
         sp = gsp(i);
         ut = fnval(fnder(sp),time);
     
         phi = -ut-(ur1^2-ul2^2)/(2*h(i))-f(i); % -(ur1*UU(i+1,j)-ul2*UU(i,j))/h(i);%burgers
+        
+      
+        
     end
 end
 
