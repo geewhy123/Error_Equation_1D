@@ -7,7 +7,7 @@ function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,
 
 if(p>0)
 
-rng(1234);
+%rng(1234);
 h0 = 1/N;
 
 CFL = 0.4;

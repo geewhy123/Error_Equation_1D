@@ -2,6 +2,7 @@ function [ upr,upl,phi] = reconflux( u,Z,f,k,h,i,N,p,phys,uder,j,time,gsp,Rsp,Zu
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 global xx
+global PHI
 global TEND
 if(abs(time-round(time))<1e-10)
    time = round(time); 
@@ -152,12 +153,21 @@ phi= -ut+(ur2-ul1)/h(i)-f(i);
 
 
    if(abs(time-0.04)<1e-3)
+       ut
+       ur2
+       ul1
+       -ut+(ur2-ul1)/h(i)
+
            PHI(i) = phi;
+           PHI(i)
+           
            if(i==N+1)
                PHI(N+2) = NaN;
                PHI
-              plot(xx(2:N+1),PHI(2:N+1))
-              error('1')
+               max(abs(PHI))
+              %plot(xx(2:N+1),PHI(2:N+1))
+              %clear global
+              %error('1')
            end
 
         end

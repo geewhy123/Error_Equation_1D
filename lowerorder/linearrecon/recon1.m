@@ -26,10 +26,10 @@ ubi = ui;
 
 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
-global PS1
+global AD
 %%y(2:4) = A\b;%(A'*A)\(A'*b)
 
-y(2:2) = PS1(:,:,i)*b;
+y(2:2) = AD(:,:,i)*b;
 
 %y-y2;
 
