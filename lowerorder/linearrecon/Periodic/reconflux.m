@@ -130,27 +130,20 @@ elseif(strcmp(phys,'Advection')==1)
     
     
     if((nargin < 12) || (isnan(time))|| isnan(j))
-        if(~isnan(time))
-     
-            %time
+        if(~isnan(time))% error eqn
+            
             sp = Rsp(i);
             f(i) = -1*getRes(time,k,i,sp);
         end
-        phi= (ur2-ul1)/h(i)-f(i);
         
-    else
-
-
-     
+        phi= (ur2-ul1)/h(i)-f(i); % primal
         
-%%%phi= -uder(i,j)+(ur2-ul1)/h(i)-f(i);
+    else%res
 
 sp = gsp(i);
 ut = fnval(fnder(sp),time);
 
-
 phi= -ut+(ur2-ul1)/h(i)-f(i);
-
 
    if(abs(time-0.04)<1e-3)
        ut
@@ -167,12 +160,11 @@ phi= -ut+(ur2-ul1)/h(i)-f(i);
                max(abs(PHI))
               %plot(xx(2:N+1),PHI(2:N+1))
               %clear global
+              
               %error('1')
            end
 
         end
-        
-
 
 % if(norm(phi) >1)
 %    time
