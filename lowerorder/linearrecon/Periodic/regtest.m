@@ -7,8 +7,8 @@ close all
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.4,7,'Advection');
 assert(abs(errerr2-0.0106)<1e-3)
 close all
-[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.1,7,'Burgers');
-assert(abs(errerr2-0.0011)<1e-3)
+%[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.1,7,'Burgers');
+%assert(abs(errerr2-0.0011)<1e-3)
 close all
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,4,1/10,100,10,7,'Poisson');
 assert(abs(errerr2-0.0029)<1e-3)

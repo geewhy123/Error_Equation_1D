@@ -113,6 +113,7 @@ if(strcmp(phys,'Poisson')==1)
         if(~isnan(time))
      
             time
+            
             sp = Rsp(i);
      
             f(i) = -1*getRes(time,k,i,sp);

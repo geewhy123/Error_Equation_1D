@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-rng(1234);
+%rng(1234);
 h0 = 1/N;
 
 CFL = 0.4;
@@ -15,7 +15,11 @@ k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1)
     k = k*h0;
-    k=k;
+%     if (N>10)
+%     k=4*k;
+%     elseif (N>20)
+%     k = 8*k;
+%     end
 end
 
 %k = .004*(10/N)^2
@@ -120,7 +124,7 @@ plot(x,ue-u,'x')
 end
 
 T(end)
-
+assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
 
 
 T=(0:1:nSteps)*k;
