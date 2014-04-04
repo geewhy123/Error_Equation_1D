@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-%rng(1234);
+rng(1234);
 h0 = 1/N;
 
 CFL = 0.4;
@@ -22,8 +22,7 @@ if(strcmp(physics,'Poisson')==1)
 %     end
 end
 
-%k = .004*(10/N)^2
-%k=k/4
+
 X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
@@ -166,7 +165,7 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    [FI,uxx,Z]=computeres(ue,x,k,h,N,f,p,physics,uder,nSteps+1,tlim,gsp);
+    [FI,uxx,Z]=computeres(ue,x,h,N,f,p,physics,tlim,gsp);
 
 
 
@@ -189,7 +188,7 @@ u=u0;
 
 global R
 tt=0;
-  [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1,0,gsp);
+  [R(:,1),uxx,Z] =computeres(u,x,h,N,f,r,physics,0,gsp);
 
 for j = 1:nSteps
 
@@ -201,7 +200,7 @@ AD = computepseudo(N,x,h,p);
 
     
  AD = computepseudo(N,x,h,r);
-   [R(:,j+1),uxx,Z] =computeres(U(:,j+1),x,k,h,N,f,r,physics,uder,j+1,tt+k,gsp);
+   [R(:,j+1),uxx,Z] =computeres(U(:,j+1),x,h,N,f,r,physics,tt+k,gsp);
    
 tt = tt+k;
    
@@ -220,7 +219,7 @@ end
 
 
 if(exist('goal','var') && strcmp(goal,'FI')==1)
-    assert(strcmp('physics','Poisson')==1)
+    assert(strcmp(physics,'Poisson')==1)
 for j = 1:nSteps+1
     R(:,j) = -FI;
 end
