@@ -141,6 +141,9 @@ end
 
 
 uder =0;
+
+
+
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x
@@ -171,12 +174,16 @@ for i = 1:N+2
 uold = u;
 u=u0;
 
+
+
 global R
 tt=0;
   [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,1,0,gsp);
+
 for j = 1:nSteps
 
 
+    
 AD = computepseudo(N,x,h,p);    
      [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
     %%recon(p)??every time step
@@ -189,6 +196,14 @@ tt = tt+k;
    
 
 end
+
+% % %  u = ue;
+% % %    [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,nSteps+1,tt,gsp);
+% % % for j = 2:nSteps+1
+% % % R(:,j) = R(:,1);
+% % % end
+% % % plot(x,R)
+%error('1')
 
 
 %R(:,1)=0;
