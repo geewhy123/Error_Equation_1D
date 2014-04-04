@@ -14,8 +14,14 @@ close all
 assert(abs(errerr2-0.0029)<1e-3)
 close all
 
+
+[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,4,1/10,100,10,7,'Poisson','FI');
+assert(abs(errerr2)<1e-12)
+close all
+
+
 clc
-printf('Passed All Tests')
+fprintf('Passed All Tests')
 
 
 

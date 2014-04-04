@@ -1,5 +1,5 @@
 %qx
-function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord,physics)
+function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord,physics,goal)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -147,7 +147,7 @@ nSteps
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal
     
     
     
@@ -219,8 +219,11 @@ end
 % error('1')
 
 
+if(exist('goal','var') && strcmp(goal,'FI')==1)
+    assert(strcmp('physics','Poisson')==1)
 for j = 1:nSteps+1
     R(:,j) = -FI;
+end
 end
 
 %uder
