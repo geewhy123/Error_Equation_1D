@@ -5,7 +5,7 @@ function [uu,d] = rk7(u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
 % b = [7/90 0 32/90 12/90 32/90 7/90];
 % A=[
 
-time = time-k;
+%time = time-k;
 c = [0 1/6 1/3 1/2 2/11 2/3 6/7 0 1 ];
 Zu=  NaN*ones(p,N+2,9);
 Ubar = NaN*ones(N+2,9);
@@ -58,84 +58,84 @@ uu = zeros(N+2,1);
 
 [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 d = 0;
-for i = 2:N+1
+% for i = 2:N+1
        
-[upr,upl,phi(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(1)*k,gsp,Rsp,Zu(:,:,1));
-uII(i) = u(i)+(k/6)*phi(i);
+[upr,upl,phi] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(1)*k,gsp,Rsp,Zu(:,:,1));
+uII = u+(k/6)*phi;
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uII,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiII(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(2)*k,gsp,Rsp,Zu(:,:,2));
-uIII(i) = u(i)+(k/3)*(phiII(i));
+[upr,upl,phiII] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(2)*k,gsp,Rsp,Zu(:,:,2));
+uIII = u+(k/3)*(phiII);
    
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uIII,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiIII(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(3)*k,gsp,Rsp,Zu(:,:,3));
-uIV(i) = u(i)+(k/8)*(phi(i)+3*phiIII(i));
+[upr,upl,phiIII] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(3)*k,gsp,Rsp,Zu(:,:,3));
+uIV = u+(k/8)*(phi+3*phiIII);
    
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uIV,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiIV(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(4)*k,gsp,Rsp,Zu(:,:,4));
-uV(i) = u(i)+(k/1331)*(148*phi(i)+150*phiIII(i)-56*phiIV(i));
+[upr,upl,phiIV] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(4)*k,gsp,Rsp,Zu(:,:,4));
+uV = u+(k/1331)*(148*phi+150*phiIII-56*phiIV);
    
-end
+% end
 
 [Z]=unstructuredrecon(uV,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiV(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(5)*k,gsp,Rsp,Zu(:,:,5));
-uVI(i) = u(i)+(k/1701)*(-2828*phi(i)-10710*phiIII(i)+4024*phiIV(i)+10648*phiV(i));
+[upr,upl,phiV] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(5)*k,gsp,Rsp,Zu(:,:,5));
+uVI = u+(k/1701)*(-2828*phi-10710*phiIII+4024*phiIV+10648*phiV);
    
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uVI,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiVI(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(6)*k,gsp,Rsp,Zu(:,:,6));
-uVII(i) = u(i)+(k/16807)*(17262*phi(i)+60858*phiIII(i)-19176*phiIV(i)-51909*phiV(i)+7371*phiVI(i));
+[upr,upl,phiVI] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(6)*k,gsp,Rsp,Zu(:,:,6));
+uVII = u+(k/16807)*(17262*phi+60858*phiIII-19176*phiIV-51909*phiV+7371*phiVI);
    
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uVII,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiVII(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(7)*k,gsp,Rsp,Zu(:,:,7));
-uVIII(i) = u(i)+(k)*((5/154)*phi(i)+(96/539)*phiIV(i)-(1815/20384)*phiV(i)-(405/2464)*phiVI(i)+(49/1144)*phiVII(i));
+[upr,upl,phiVII] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(7)*k,gsp,Rsp,Zu(:,:,7));
+uVIII = u+(k)*((5/154)*phi+(96/539)*phiIV-(1815/20384)*phiV-(405/2464)*phiVI+(49/1144)*phiVII);
    
 %d = max(d,abs(delt)); 
-end
+% end
 
 [Z]=unstructuredrecon(uVIII,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiVIII(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(8)*k,gsp,Rsp,Zu(:,:,8));
-uIX(i) = u(i)+(k)*((-113/32)*phi(i)-(195/22)*phiIII(i)+(32/7)*phiIV(i)+(29403/3584)*phiV(i)-(729/512)*phiVI(i)+(1029/1408)*phiVII(i)+(21/16)*phiVIII(i));
+[upr,upl,phiVIII] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(8)*k,gsp,Rsp,Zu(:,:,8));
+uIX = u+(k)*((-113/32)*phi-(195/22)*phiIII+(32/7)*phiIV+(29403/3584)*phiV-(729/512)*phiVI+(1029/1408)*phiVII+(21/16)*phiVIII);
    
 %d = max(d,abs(delt)); 
-end
+%  end
 
 
 [Z]=unstructuredrecon(uIX,x,h,N,NaN,NaN,p);
-for i = 2:N+1        
+% for i = 2:N+1        
        
-[upr,upl,phiIX(i)] = reconflux(u,Z,f,k,h,i,N,p,phys,uder,j,time+c(9)*k,gsp,Rsp,Zu(:,:,9));
+[upr,upl,phiIX] = reconflux(u,Z,f,k,h,N,p,phys,uder,j,time+c(9)*k,gsp,Rsp,Zu(:,:,9));
 
-uu(i) = u(i)+(k)*((32/105)*phiIV(i)+(1771561/6289920)*phiV(i)+(243/2560)*phiVI(i)+(16807/74880)*phiVII(i)+(77/1440)*phiVIII(i)+(11/270)*phiIX(i));   
-d = max(d,abs(((32/105)*phiIV(i)+(1771561/6289920)*phiV(i)+(243/2560)*phiVI(i)+(16807/74880)*phiVII(i)+(77/1440)*phiVIII(i)+(11/270)*phiIX(i)))); 
-end
+uu = u+(k)*((32/105)*phiIV+(1771561/6289920)*phiV+(243/2560)*phiVI+(16807/74880)*phiVII+(77/1440)*phiVIII+(11/270)*phiIX);   
+d = max(d,abs(((32/105)*phiIV+(1771561/6289920)*phiV+(243/2560)*phiVI+(16807/74880)*phiVII+(77/1440)*phiVIII+(11/270)*phiIX))); 
+% end
 uu(N+2) = NaN;
    
 

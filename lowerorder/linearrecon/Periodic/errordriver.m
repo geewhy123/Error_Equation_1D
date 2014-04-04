@@ -70,7 +70,7 @@ tt = k*j;
     
 
 
-if((d*k<1e-15)||(tt>=tlim))
+if((max(d)*k<1e-15)||(tt>=tlim))
      
 [uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
 u = uu;
@@ -191,8 +191,6 @@ tt=0;
   [R(:,1),uxx,Z] =computeres(u,x,h,N,f,r,physics,0,gsp);
 
 for j = 1:nSteps
-
-
     
 AD = computepseudo(N,x,h,p);    
      [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
@@ -263,13 +261,13 @@ for j = 1:100000
 %  AD = computepseudo(N,x,h,q);
 E(:,j) = e;
 
-    TT = k*j;
+    TT = k*(j-1);
     
 %%%%[Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
 
 
 
-if( ((s*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
+if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);

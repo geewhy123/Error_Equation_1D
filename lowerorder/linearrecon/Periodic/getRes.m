@@ -15,8 +15,11 @@ T=(0:1:nSteps)*(k);
 
 
 
-
+% tic
 res=fnval(sp,time);
-
+% toc
+% error('1')
+%res
+%error('1')
 end
 

@@ -9,6 +9,8 @@ elseif(abs(time-TEND) < 1e-10)
 end
 
 
+
+
  [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,r);
  R = zeros(N+2,1);
  uxx = zeros(N+2,1);
@@ -29,10 +31,7 @@ end
 
  end
  
- 
- 
- 
- 
+
 % switch r
 % 
 %         case 2    
