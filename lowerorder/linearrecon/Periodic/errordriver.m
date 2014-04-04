@@ -51,6 +51,7 @@ h(N+2) = h(2);
 
  [u0,ue,f]=initializeexact(physics,N,x,h,tlim);
  
+
 %u = ue;
 u=u0;
 %uu = zeros(N+2,1);
@@ -142,11 +143,13 @@ end
 
 uder =0;
 
-
+nSteps
 
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x
+    
+    
     
 figure
 hold on
@@ -158,6 +161,14 @@ TEND = tlim;
 
 global UU
 UU = U;
+
+
+
+
+    %[FI] =computefluxint(ue,x,h,N,f,p, physics);
+    [FI,uxx,Z]=computeres(ue,x,k,h,N,f,p,physics,uder,nSteps+1,tlim,gsp);
+
+
 
 
  global AD
@@ -197,16 +208,21 @@ tt = tt+k;
 
 end
 
-% % %  u = ue;
-% % %    [R(:,1),uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,nSteps+1,tt,gsp);
 % % % for j = 2:nSteps+1
 % % % R(:,j) = R(:,1);
 % % % end
 % % % plot(x,R)
 %error('1')
 
+% FI
+% ue
+% error('1')
 
-%R(:,1)=0;
+
+for j = 1:nSteps+1
+    R(:,j) = -FI;
+end
+
 %uder
 %R
 Rm=max(abs(R(:,end)))
@@ -251,7 +267,7 @@ E(:,j) = e;
 
 
 
-if( ((s*k<1e-15)||(TT>=tlim)) || (j >= nSteps))
+if( ((s*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
