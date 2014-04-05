@@ -72,7 +72,7 @@ tt = k*j;
 
 if((max(d)*k<1e-15)||(tt>=tlim))
      
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
+[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
 u = uu;
     d
     tt
@@ -86,7 +86,7 @@ end
 d=0;
 
 
-[uu,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
+[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
 
 %end
 %uo = u;
@@ -193,7 +193,7 @@ tt=0;
 for j = 1:nSteps
     
 AD = computepseudo(N,x,h,p);    
-     [u,d] = updatesoln(u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
+     [u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
     %%recon(p)??every time step
 
     
@@ -271,7 +271,7 @@ if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
+[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
 
 
 
@@ -285,7 +285,7 @@ end
 
 s=0;
 
-[ee,s] = updatesoln(e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
+[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
 
 
 e = ee;

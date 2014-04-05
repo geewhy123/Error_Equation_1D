@@ -1,4 +1,4 @@
-function [uu,d] = rk7(u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
+function [uu,d] = rk7(eqn,u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
 %RK1 Summary of this function goes here
 %   Detailed explanation goes here
 
