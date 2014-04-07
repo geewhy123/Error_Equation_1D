@@ -1,4 +1,4 @@
-function [uu,d] = rk7(eqn,u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
+function [uu,d] = rk7(eqn,u,x,f,k,h,N,p,phys,time,Rsp)
 %RK1 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -11,7 +11,7 @@ Zu=  NaN*ones(p,N+2,9);
 Ubar = NaN*ones(N+2,9);
 %nonlinear error
   if (strcmp(phys,'Burgers')==1)
-  if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
+% if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
      if(~isnan(time))
          Ubar = zeros(N+2,9);
          global UU
@@ -32,7 +32,7 @@ Ubar = NaN*ones(N+2,9);
          end
         
      end
-  end
+%   end
   end
   
  
@@ -59,8 +59,7 @@ uu = zeros(N+2,1);
 [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 d = 0;
 % for i = 2:N+1
-       
-[upr,upl,phi] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(1)*k,gsp,Rsp,Zu(:,:,1));
+[upr,upl,phi] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(1)*k,Rsp,Zu(:,:,1));
 uII = u+(k/6)*phi;
 %d = max(d,abs(delt)); 
 % end
@@ -68,7 +67,7 @@ uII = u+(k/6)*phi;
 [Z]=unstructuredrecon(uII,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiII] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(2)*k,gsp,Rsp,Zu(:,:,2));
+[upr,upl,phiII] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(2)*k,Rsp,Zu(:,:,2));
 uIII = u+(k/3)*(phiII);
    
 %d = max(d,abs(delt)); 
@@ -77,7 +76,7 @@ uIII = u+(k/3)*(phiII);
 [Z]=unstructuredrecon(uIII,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiIII] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(3)*k,gsp,Rsp,Zu(:,:,3));
+[upr,upl,phiIII] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(3)*k,Rsp,Zu(:,:,3));
 uIV = u+(k/8)*(phi+3*phiIII);
    
 %d = max(d,abs(delt)); 
@@ -86,7 +85,7 @@ uIV = u+(k/8)*(phi+3*phiIII);
 [Z]=unstructuredrecon(uIV,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiIV] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(4)*k,gsp,Rsp,Zu(:,:,4));
+[upr,upl,phiIV] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(4)*k,Rsp,Zu(:,:,4));
 uV = u+(k/1331)*(148*phi+150*phiIII-56*phiIV);
    
 % end
@@ -94,7 +93,7 @@ uV = u+(k/1331)*(148*phi+150*phiIII-56*phiIV);
 [Z]=unstructuredrecon(uV,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiV] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(5)*k,gsp,Rsp,Zu(:,:,5));
+[upr,upl,phiV] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(5)*k,Rsp,Zu(:,:,5));
 uVI = u+(k/1701)*(-2828*phi-10710*phiIII+4024*phiIV+10648*phiV);
    
 %d = max(d,abs(delt)); 
@@ -103,7 +102,7 @@ uVI = u+(k/1701)*(-2828*phi-10710*phiIII+4024*phiIV+10648*phiV);
 [Z]=unstructuredrecon(uVI,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiVI] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(6)*k,gsp,Rsp,Zu(:,:,6));
+[upr,upl,phiVI] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(6)*k,Rsp,Zu(:,:,6));
 uVII = u+(k/16807)*(17262*phi+60858*phiIII-19176*phiIV-51909*phiV+7371*phiVI);
    
 %d = max(d,abs(delt)); 
@@ -112,7 +111,7 @@ uVII = u+(k/16807)*(17262*phi+60858*phiIII-19176*phiIV-51909*phiV+7371*phiVI);
 [Z]=unstructuredrecon(uVII,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiVII] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(7)*k,gsp,Rsp,Zu(:,:,7));
+[upr,upl,phiVII] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(7)*k,Rsp,Zu(:,:,7));
 uVIII = u+(k)*((5/154)*phi+(96/539)*phiIV-(1815/20384)*phiV-(405/2464)*phiVI+(49/1144)*phiVII);
    
 %d = max(d,abs(delt)); 
@@ -121,7 +120,7 @@ uVIII = u+(k)*((5/154)*phi+(96/539)*phiIV-(1815/20384)*phiV-(405/2464)*phiVI+(49
 [Z]=unstructuredrecon(uVIII,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiVIII] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(8)*k,gsp,Rsp,Zu(:,:,8));
+[upr,upl,phiVIII] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(8)*k,Rsp,Zu(:,:,8));
 uIX = u+(k)*((-113/32)*phi-(195/22)*phiIII+(32/7)*phiIV+(29403/3584)*phiV-(729/512)*phiVI+(1029/1408)*phiVII+(21/16)*phiVIII);
    
 %d = max(d,abs(delt)); 
@@ -131,7 +130,7 @@ uIX = u+(k)*((-113/32)*phi-(195/22)*phiIII+(32/7)*phiIV+(29403/3584)*phiV-(729/5
 [Z]=unstructuredrecon(uIX,x,h,N,NaN,NaN,p);
 % for i = 2:N+1        
        
-[upr,upl,phiIX] = timestep(eqn,u,Z,f,k,h,N,p,phys,uder,j,time+c(9)*k,gsp,Rsp,Zu(:,:,9));
+[upr,upl,phiIX] = timestep(eqn,Z,f,k,h,N,p,phys,time+c(9)*k,Rsp,Zu(:,:,9));
 
 uu = u+(k)*((32/105)*phiIV+(1771561/6289920)*phiV+(243/2560)*phiVI+(16807/74880)*phiVII+(77/1440)*phiVIII+(11/270)*phiIX);   
 d = max(d,abs(((32/105)*phiIV+(1771561/6289920)*phiV+(243/2560)*phiVI+(16807/74880)*phiVII+(77/1440)*phiVIII+(11/270)*phiIX))); 

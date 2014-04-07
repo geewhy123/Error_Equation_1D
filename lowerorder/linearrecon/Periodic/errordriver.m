@@ -72,7 +72,7 @@ tt = k*j;
 
 if((max(d)*k<1e-15)||(tt>=tlim))
      
-[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
+[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 u = uu;
     d
     tt
@@ -86,7 +86,7 @@ end
 d=0;
 
 
-[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);
+[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 
 %end
 %uo = u;
@@ -140,7 +140,6 @@ gsp(j) = sp;
 end
 
 
-uder =0;
 
 nSteps
 
@@ -165,7 +164,7 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    [FI,uxx,Z]=computeres(ue,x,h,N,f,p,physics,tlim,gsp);
+    FI = computeres(ue,x,h,N,f,p,physics,tlim,gsp);
 
 
 
@@ -188,17 +187,17 @@ u=u0;
 
 global R
 tt=0;
-  [R(:,1),uxx,Z] =computeres(u,x,h,N,f,r,physics,0,gsp);
+  R(:,1) =computeres(u,x,h,N,f,r,physics,0,gsp);
 
 for j = 1:nSteps
     
 AD = computepseudo(N,x,h,p);    
-     [u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN,NaN,NaN,NaN);%uder,j,tt,gsp);
+     [u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);%uder,j,tt,gsp);
     %%recon(p)??every time step
 
     
  AD = computepseudo(N,x,h,r);
-   [R(:,j+1),uxx,Z] =computeres(U(:,j+1),x,h,N,f,r,physics,tt+k,gsp);
+   R(:,j+1) =computeres(U(:,j+1),x,h,N,f,r,physics,tt+k,gsp);
    
 tt = tt+k;
    
@@ -271,7 +270,7 @@ if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 % AD = computepseudo(N,x,h,r);
 % [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
 %  AD = computepseudo(N,x,h,q);
-[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
+[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
 
@@ -285,7 +284,7 @@ end
 
 s=0;
 
-[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,NaN,NaN,TT,gsp,Rsp);
+[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
 e = ee;

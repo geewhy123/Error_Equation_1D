@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconfluxerror( u,Z,f,k,h,N,p,phys,uder,j,time,gsp,Rsp,Zu)
+function [ upr,upl,phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);
@@ -16,8 +16,8 @@ phi(N+2) = NaN;
 for i = 2:N+1
 
 
-global xx
-global PHI
+% global xx
+% global PHI
 global TEND
 if(abs(time-round(time))<1e-10)
    time = round(time); 
@@ -25,8 +25,8 @@ elseif(abs(time-TEND) < 1e-10)
    time = TEND;
 end
 
-global UU
-global M
+% global UU
+% global M
 
 [left,right] = computeflux(Z,h,i,N,p,phys);
 ur1 = right;

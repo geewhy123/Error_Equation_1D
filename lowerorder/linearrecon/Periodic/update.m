@@ -1,4 +1,4 @@
-function [uu,d] = update(eqn,u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
+function [uu,d] = update(eqn,u,x,f,k,h,N,p,t,phys,time,Rsp)
 
 %UPDATESOLN Summary of this function goes here
 %   Detailed explanation goes here
@@ -19,7 +19,7 @@ function [uu,d] = update(eqn,u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp)
            [uu,d] = rk5(u,x,f,k,h,N,p,t,phys);
            
        case 7
-           [uu,d] = rk7(eqn,u,x,f,k,h,N,p,t,phys,uder,j,time,gsp,Rsp);
+           [uu,d] = rk7(eqn,u,x,f,k,h,N,p,phys,time,Rsp);
        otherwise
    end
       

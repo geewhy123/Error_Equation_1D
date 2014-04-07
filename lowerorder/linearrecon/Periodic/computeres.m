@@ -1,4 +1,4 @@
-function [ R ,uxx,Z] = computeres(u,x,h,N,f,r,phys,time,gsp )
+function [ R ] = computeres(u,x,h,N,f,r,phys,time,gsp )
 %COMPUTERES Summary of this function goes here
 %   Detailed explanation goes here
 global TEND
@@ -13,7 +13,7 @@ end
 
  [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,r);
  R = zeros(N+2,1);
- uxx = zeros(N+2,1);
+ %uxx = zeros(N+2,1);
  for i = 2:N+1
 
 % [ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
