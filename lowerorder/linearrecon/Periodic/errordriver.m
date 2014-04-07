@@ -74,7 +74,7 @@ if((max(d)*k<1e-15)||(tt>=tlim))
      
 [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 u = uu;
-    d
+    max(d)
     tt
     T = (1:1:j)*k;
  U(:,j+1) = u;
@@ -95,7 +95,7 @@ u = uu;
 T = (1:1:j)*k;
 
 if(mod(j,100)==0)
-    d
+    max(d)
 end
 
 end
@@ -275,7 +275,7 @@ if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 
 
 e = ee;
-    s
+   max(s)
     TT
     T = (1:1:j)*k;
 j

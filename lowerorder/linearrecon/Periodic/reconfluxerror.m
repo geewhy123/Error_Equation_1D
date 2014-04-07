@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu)
+function [ upr,upl,phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);
@@ -44,8 +44,18 @@ if(strcmp(phys,'Poisson')==1)
             
            sp = Rsp(i);
      
-            f(i) = -1*getRes(time,k,i,sp);
+            f(i) = -1*val(i);%getRes(time,k,i,sp);
     
+            %val(i)
+            %getRes(time,k,i,sp)
+           
+            %if(abs(val(i) - getRes(time,k,i,sp))>1e-3)
+             %   val
+             %   fnval(sp,time)
+             %   error('1');
+            %end
+            
+            
         phi(i)= (upr-upl)/h(i)-f(i);%Poisson
 
     
@@ -54,7 +64,7 @@ elseif(strcmp(phys,'Advection')==1)
     
             
             sp = Rsp(i);
-            f(i) = -1*getRes(time,k,i,sp);
+            f(i) = -1*val(i);%getRes(time,k,i,sp);
         
         
         phi(i)= (ur2-ul1)/h(i)-f(i); % primal
@@ -69,7 +79,7 @@ elseif(strcmp(phys,'Burgers')==1)
             sp = Rsp(i);
          
             
-            f(i) = -1*getRes(time,k,i,sp);
+            f(i) = -1*val(i);%getRes(time,k,i,sp);
             
 
 %             switch i
