@@ -293,7 +293,7 @@ T = (1:1:j)*k;
 
 
 if(mod(j,100)==0)
-s
+max(s)
 end
 end
 

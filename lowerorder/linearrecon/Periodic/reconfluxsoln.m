@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconfluxsoln( Z,f,h,N,p,phys,time)
+function [phi] = reconfluxsoln( Z,f,h,N,p,phys,time)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);

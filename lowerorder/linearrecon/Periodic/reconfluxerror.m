@@ -1,4 +1,4 @@
-function [ upr,upl,phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val)
+function [phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);
@@ -40,7 +40,7 @@ upl = left;
 
 if(strcmp(phys,'Poisson')==1)
    
-            time
+            %time
             
            sp = Rsp(i);
      
