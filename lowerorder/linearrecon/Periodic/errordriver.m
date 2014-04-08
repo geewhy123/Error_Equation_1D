@@ -21,6 +21,11 @@ if(strcmp(physics,'Poisson')==1)
 %     elseif (N>20)
 %     k = 8*k;
 %     end
+% if(strcmp(goal,'SS')==1)
+    k = 2*k;
+if( tlim > 2)
+    k = 2*k;
+end
 end
 
 
@@ -128,20 +133,22 @@ T(end)
 assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
 
 
-T=(0:1:nSteps)*k;
-
-
-for j = 2:N+1
-sp = spapi(6,T,U(j,:));
-gsp(j) = sp;
-%figure
-%fnplt(sp)
-%hold on
-%plot(T,U(3,:),'*')
-end
-
 global dUdt
 dUdt = diffU(U,k);
+gsp = NaN;
+
+% if not using FD, then use this to spline
+% % % T=(0:1:nSteps)*k;
+% % % for j = 2:N+1
+% % % sp = spapi(6,T,U(j,:));
+% % % gsp(j) = sp;
+% % % %figure
+% % % %fnplt(sp)
+% % % %hold on
+% % % %plot(T,U(3,:),'*')
+% % % end
+
+
 
 
 nSteps
