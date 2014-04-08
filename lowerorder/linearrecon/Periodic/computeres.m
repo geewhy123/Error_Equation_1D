@@ -19,8 +19,13 @@ end
 % [ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
   
  [left,right] = computeflux(Z,h,i,N,r,phys);
- sp = gsp(i);
-ut = fnval(fnder(sp),time);
+%  sp = gsp(i);
+% ut = fnval(fnder(sp),time);
+
+global dUdt
+global KK
+ut = dUdt(i,round(time/KK)+1);
+
 
 R(i)= -ut+(right-left)/h(i)-f(i);
 

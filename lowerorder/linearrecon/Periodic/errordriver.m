@@ -59,7 +59,7 @@ u=u0;
 
 
 global AD
-AD = computepseudo(N,x,h,p);
+AD = computepseudo(N,x,h,p);    
 
 
 d=1;
@@ -140,9 +140,15 @@ gsp(j) = sp;
 %plot(T,U(3,:),'*')
 end
 
+global dUdt
+dUdt = diffU(U,k);
 
 
 nSteps
+% 
+% if(nSteps < 20)
+%    error('1') 
+% end
 
 if(q>0 && r > 0)
     
@@ -153,6 +159,8 @@ if(q>0 && r > 0)
 figure
 hold on
 
+global KK
+KK = k;
 global xx
 xx = x;
 global TEND
@@ -165,7 +173,7 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    FI = computeres(ue,x,h,N,f,p,physics,tlim,gsp);
+    FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
 
 
 
