@@ -56,8 +56,7 @@ end
      end
 %   end
   end
-  
- 
+
 
 % phi = zeros(N+2,1);
 % phiII = zeros(N+2,1);

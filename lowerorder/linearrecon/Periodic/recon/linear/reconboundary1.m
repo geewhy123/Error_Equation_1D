@@ -1,14 +1,14 @@
-function [ y ] = reconboundary1( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,uL,str,i)
+function [ y ] = reconboundary1( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,uL,str,i,w)
 %RECON3 Summary of this function goes here
 %   Detailed explanation goes here
 
 %global AD
 
 
-wi1 = 1;%1/abs(x1-xi);
-wi2 = 1;%1/abs(x2-xi);
-wi3 = 1;%1/abs(x3-xi);
-wi4 = 1;%1/abs(x4-xi);
+wi1 = 1/abs(x1-xi)^w;
+wi2 = 1/abs(x2-xi)^w;
+wi3 = 1/abs(x3-xi)^w;
+wi4 = 1/abs(x4-xi)^w;
 % xi = x(i);
 % x1 = x(i+1);
 % x2 = x(i+2);

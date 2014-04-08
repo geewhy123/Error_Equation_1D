@@ -1,3 +1,4 @@
+tic
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.1,7,'Poisson');
 assert(abs(errerr2-0.8347)<1e-4)
 close all
@@ -48,3 +49,6 @@ fprintf('Passed Burgers')
 % 
 % end
 % E
+
+
+toc

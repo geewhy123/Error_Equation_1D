@@ -8,6 +8,7 @@ close all
 if(p>0)
 
 rng(1234);
+w = 0;
 h0 = 1/N;
 
 CFL = 0.4;
@@ -173,32 +174,33 @@ UU = U;
  AD = computepseudo(N,x,h,r);
 
 %ue = zeros(N+2,1);
-for i = 1:N+2
-        xl = x(i)-h(i)/2;
-    xr = x(i)+h(i)/2;
-   
- end
+% for i = 1:N+2
+%         xl = x(i)-h(i)/2;
+%     xr = x(i)+h(i)/2;
+%    
+%  end
 
 
-uold = u;
-u=u0;
+%uold = u;
+%u=u0;
 
 
 
-global R
-tt=0;
-  R(:,1) =computeres(u,x,h,N,f,r,physics,0,gsp);
+%global R
+R = zeros(N+2,nSteps+1);
+ tt=0;
+%   R(:,1) =computeres(U(:,1),x,h,N,f,r,physics,0,gsp);
 
-for j = 1:nSteps
+for j = 1:nSteps+1
     
-AD = computepseudo(N,x,h,p);    
-     [u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);%uder,j,tt,gsp);
+%AD = computepseudo(N,x,h,p);    
+     %[u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);%uder,j,tt,gsp);
     %%recon(p)??every time step
 
     
- AD = computepseudo(N,x,h,r);
-   R(:,j+1) =computeres(U(:,j+1),x,h,N,f,r,physics,tt+k,gsp);
-   
+ %AD = computepseudo(N,x,h,r);
+   R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
+
 tt = tt+k;
    
 

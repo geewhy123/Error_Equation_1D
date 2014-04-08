@@ -64,10 +64,10 @@ for i = 2:N+1
     x4 = 1+x(3);
     xi = x(i); 
     end
-    wi1 = 1;
-    wi2 = 1;
-    wi3 = 1;
-    wi4 = 1;
+wi1 = 1;%/abs(x1-xi);
+wi2 = 1;%/abs(x2-xi);
+wi3 = 1;%/abs(x3-xi);
+wi4 = 1;%/abs(x4-xi);
     
   
 xb1 = (1/h1)*( ((x1+h1/2)-x1)^2/2 -((x1-h1/2)-x1)^2/2 );

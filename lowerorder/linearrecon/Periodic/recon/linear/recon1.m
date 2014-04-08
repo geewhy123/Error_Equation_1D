@@ -5,10 +5,10 @@ function [ y ] = recon1( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,i)
 
 
 
-wi1 = 1;%1/abs(x1-xi);
-wi2 = 1;%1/abs(x2-xi);
-wi3 = 1;%1/abs(x3-xi);
-wi4 = 1;%1/abs(x4-xi);
+wi1 = 1;%/abs(x1-xi)^w;
+wi2 = 1;%/abs(x2-xi)^w;
+wi3 = 1;%/abs(x3-xi)^w;
+wi4 = 1;%/abs(x4-xi)^w;
 
 
 
@@ -30,16 +30,6 @@ y(2:2) = AD(:,:,i)*b;
 y(1) = ubi-xbi*y(2);%ubi-xbi*y(2)
 %q = y(1)-ubi
 
-%if xi==0.1
-%     wi1
-%     x2b1
-%     x1
-%     xi
-    %y
-%     x2bi
-%     y
-%   x2b2 
-%end
 
 end
 

@@ -72,7 +72,32 @@ elseif(strcmp(phys,'Advection')==1)
 
     
 elseif(strcmp(phys,'Burgers')==1)
-    
+    %nonlinear error
+
+% if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
+%    %  if(~isnan(time))
+%          Ubar = zeros(N+2,1);
+%          global UU
+%          global M        
+%              T=(0:1:M)*k;
+%              
+% %          for i = 2:N+1
+%             Usp(i) = spapi(6,T,UU(i,:));
+%             
+% %             for steps = 1:9
+% %             Ubar(i,steps) = fnval(Usp(i),time+c(steps)*k);
+% %             end
+%          Ubar(i) = fnval(Usp(i),time);
+% %          end
+%          
+% %          for steps = 1:9
+%             [Zu(:,:,steps)]=unstructuredrecon(Ubar(:,steps),x,h,N,NaN,NaN,p); 
+%          end
+%         
+%     % end
+% %   end
+% %   end
+  
   
      
             %time

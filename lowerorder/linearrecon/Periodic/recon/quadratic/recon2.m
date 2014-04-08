@@ -5,10 +5,10 @@ function [ y ] = recon2( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4 ,i)
 
 
 
-wi1 = 1;%1/abs(x1-xi);
-wi2 = 1;%1/abs(x2-xi);
-wi3 = 1;%1/abs(x3-xi);
-wi4 = 1;%1/abs(x4-xi);
+wi1 = 1;%/abs(x1-xi)^w;
+wi2 = 1;%/abs(x2-xi)^w;
+wi3 = 1;%/abs(x3-xi)^w;
+wi4 = 1;%/abs(x4-xi)^w;
 
 
 xbi = (1/hi)*(((xi+hi/2)-xi)^2/2-((xi-hi/2)-xi)^2/2);
