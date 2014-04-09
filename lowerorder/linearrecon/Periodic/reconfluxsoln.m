@@ -6,18 +6,10 @@ phi(1) = NaN;
 phi(N+2) = NaN;
 
 
-%  if((nargin < 12) || (isnan(time))|| isnan(j))
-%         if(~isnan(time))% error eqn
-% Rsp(3)
-% val(2:N+1) = fnval(time,Rsp(2:N+1));
-%         end
-%  end
 
 for i = 2:N+1
 
 
-% global xx
-% global PHI
 global TEND
 if(abs(time-round(time))<1e-10)
    time = round(time); 
@@ -25,8 +17,7 @@ elseif(abs(time-TEND) < 1e-10)
    time = TEND;
 end
 
-% global UU
-% global M
+
 
 [left,right] = computeflux(Z,h,i,N,p,phys);
 ur1 = right;

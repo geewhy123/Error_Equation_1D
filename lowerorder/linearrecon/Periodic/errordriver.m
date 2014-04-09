@@ -1,4 +1,4 @@
-%qx
+
 function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord,physics,goal)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
@@ -94,8 +94,7 @@ d=0;
 
 [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 
-%end
-%uo = u;
+
 u = uu;
 
 T = (1:1:j)*k;
@@ -107,17 +106,12 @@ end
 end
 
 
-% % % % save('test','u','T','x')
-
 
 cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
 cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
-
 cverrinf=max(abs(ue-u))
 
 
-%m = N/2;
-%FI = (-u(m-2)+16*u(m-1)-30*u(m)+16*u(m+1)-u(m+2)) /(12*h(m)^2)-f(m)
 
 u(1) = NaN;
 u(N+2) = NaN;
@@ -125,7 +119,6 @@ plot(x,u,'*',x,ue,'o')
 figure
 plot(x,ue-u,'x')
 
-%plot(x,u,x,ue)
 
 end
 
@@ -188,32 +181,14 @@ UU = U;
  global AD
  AD = computepseudo(N,x,h,r);
 
-%ue = zeros(N+2,1);
-% for i = 1:N+2
-%         xl = x(i)-h(i)/2;
-%     xr = x(i)+h(i)/2;
-%    
-%  end
-
-
-%uold = u;
-%u=u0;
-
-
 
 %global R
 R = zeros(N+2,nSteps+1);
  tt=0;
-%   R(:,1) =computeres(U(:,1),x,h,N,f,r,physics,0,gsp);
 
 for j = 1:nSteps+1
     
-%AD = computepseudo(N,x,h,p);    
-     %[u,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);%uder,j,tt,gsp);
-    %%recon(p)??every time step
 
-    
- %AD = computepseudo(N,x,h,r);
    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
 
 tt = tt+k;
@@ -221,15 +196,7 @@ tt = tt+k;
 
 end
 
-% % % for j = 2:nSteps+1
-% % % R(:,j) = R(:,1);
-% % % end
-% % % plot(x,R)
-%error('1')
 
-% FI
-% ue
-% error('1')
 
 
 if(exist('goal','var') && strcmp(goal,'FI')==1)
@@ -239,8 +206,7 @@ for j = 1:nSteps+1
 end
 end
 
-%uder
-%R
+
 Rm=max(abs(R(:,end)))
 
 
@@ -272,21 +238,15 @@ s=1;
 for j = 1:100000
 
 
-%  AD = computepseudo(N,x,h,r);
-% [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
-%  AD = computepseudo(N,x,h,q);
 E(:,j) = e;
 
     TT = k*(j-1);
     
-%%%%[Z]=unstructuredrecon(e,x,h,N,NaN,NaN,q);
 
 
 
-if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
-% AD = computepseudo(N,x,h,r);
-% [R,uxx,Z] =computeres(u,x,k,h,N,f,r,physics,uder,j);
-%  AD = computepseudo(N,x,h,q);
+% if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
+if( ((TT>=tlim)) || (j >= nSteps))
 [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
@@ -338,8 +298,6 @@ errerrinf=max(abs(exacterr-ee))
 figure
 plot(x,exacterr-ee,'*-')
 
-%norm(exacterr)
-%[exacterr ee (exacterr-ee)*1e6]
 
 
 save('t','exacterr','ee','x')
