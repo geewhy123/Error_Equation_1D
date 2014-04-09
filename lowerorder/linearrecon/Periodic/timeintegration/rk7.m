@@ -43,9 +43,9 @@ end
          for i = 2:N+1
             Usp(i) = spapi(6,T,UU(i,:));
             
-            for steps = 1:9
-            Ubar(i,steps) = fnval(Usp(i),time+c(steps)*k);
-            end
+%             for steps = 1:9
+            Ubar(i,1:9) = fnval(Usp(i),time+c*k);
+%             end
          
          end
          

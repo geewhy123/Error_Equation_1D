@@ -14,11 +14,15 @@ end
  [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,r);
  R = zeros(N+2,1);
  %uxx = zeros(N+2,1);
+ 
+ 
+ [left,right] = computeflux(Z,h,N,r,phys);
+ 
  for i = 2:N+1
 
 % [ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
   
- [left,right] = computeflux(Z,h,i,N,r,phys);
+% % %  [left,right] = computeflux(Z,h,i,N,r,phys);
 %  sp = gsp(i);
 % ut = fnval(fnder(sp),time);
 
@@ -27,10 +31,10 @@ global KK
 ut = dUdt(i,round(time/KK)+1);
 
 
-R(i)= -ut+(right-left)/h(i)-f(i);
+R(i)= -ut+(right(i)-left(i))/h(i)-f(i);
 
 if(strcmp(phys,'Burgers')==1)
-   R(i) = -ut-(right^2-left^2)/(2*h(i))-f(i);  
+   R(i) = -ut-(right(i)^2-left(i)^2)/(2*h(i))-f(i);  
 end
 
 

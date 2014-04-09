@@ -1,30 +1,26 @@
-function [left,right ] = computeflux(Z,h,i,N,p,phys )
+function [left,right ] = computeflux(Z,h,N,p,phys )
 %COMPUTEFLUX Summary of this function goes here
 %   Detailed explanation goes here
-switch i
-    case 2
+
+left  = NaN*ones(N+2,1);
+right = NaN*ones(N+2,1);
+up = zeros(N+1,1);
+
+for i = 2:N+2
+ if (i==2)
         y = Z(:,i);
-        yr = Z(:,i+1);
         yl = Z(:,N+1);
-    case N+1
-        y = Z(:,i);
-        yr = Z(:,2);
+ elseif(i==N+2)
+        y = Z(:,2);
         yl = Z(:,i-1);
-    otherwise
+ else
         y = Z(:,i);
-        yr = Z(:,i+1);
         yl = Z(:,i-1);
     
 end    
 
 switch p
     case 2
-        upr1 = y(2);
-        upr2 = yr(2);
-        ur2 = yr(1)+yr(2)*(-h(i+1)/2);
-        ur1 = y(1) + y(2)*(h(i)/2);
-        upr = (upr1+upr2)/2 + (.2/((h(i)+h(i+1))/2))*(ur2-ur1);
-        
           
         upl1 = y(2);
         upl2 = yl(2);
@@ -34,13 +30,10 @@ switch p
 
 
     case 3
-        upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
-        upr2 = yr(2)+2*yr(3)*(-h(i+1)/2);
-        ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2;
-        ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2;
+       
 
 
-        upr = (upr1+upr2)/2 ;%+(.2/((h(i)+h(i+1))/2))*(ur2-ur1);
+      
         upl1 = y(2)+2*y(3)*(-h(i)/2);
         upl2 = yl(2)+2*yl(3)*h(i-1)/2;
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 ;
@@ -49,11 +42,7 @@ switch p
         
 
     case 4
-        upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
-        upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2;
-        ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3;
-        ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3;
-        upr = (upr1+upr2)/2 ;%+(.2/((h(i)+h(i+1))/2))*(ur2-ur1);
+       
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2;
@@ -64,11 +53,7 @@ switch p
              
 
     case 5
-        upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3;
-        upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3;
-        ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3+yr(5)*(-h(i+1)/2)^4;
-        ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3 + y(5)*(h(i)/2)^4;
-        upr = (upr1+upr2)/2;
+       
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
@@ -78,11 +63,7 @@ switch p
 
 
     case 6
-        upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3+5*y(6)*(h(i)/2)^4;
-        upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3 + 5*yr(6)*(-h(i+1)/2)^4;
-        ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3+yr(5)*(-h(i+1)/2)^4 +yr(6)*(-h(i+1)/2)^5;
-        ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3 + y(5)*(h(i)/2)^4 +y(6)*(h(i)/2)^5;
-        upr = (upr1+upr2)/2;
+      
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3+ 5*y(6)*(-h(i)/2)^4;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 + 5*yl(6)*(h(i-1)/2)^4; 
@@ -97,19 +78,138 @@ end
 
 switch phys
     case 'Poisson'
-        left = upl;
-        right = upr;
+        up(i-1) = upl;
     case 'Advection'
-        left = ul1;
-        right = ur2;
+       up(i-1) = ul1;
     case 'Burgers'
-        left = ul2;
-        right = ur1;
+        up(i-1) = ul2;
     otherwise
         error('5')
     
 end
 
+
+
+end
+
+left(2:N+1) = up(1:N);
+right(2:N+1) = up(2:N+1);
+
+
+% for i = 2:N+1
+%  if (i==2)
+%         y = Z(:,i);
+%         yr = Z(:,i+1);
+%         yl = Z(:,N+1);
+%  elseif(i== N+1)
+%         y = Z(:,i);
+%         yr = Z(:,2);
+%         yl = Z(:,i-1);
+%  else
+%         y = Z(:,i);
+%         yr = Z(:,i+1);
+%         yl = Z(:,i-1);
+%     
+% end    
+% 
+% switch p
+%     case 2
+%         upr1 = y(2);
+%         upr2 = yr(2);
+%         ur2 = yr(1)+yr(2)*(-h(i+1)/2);
+%         ur1 = y(1) + y(2)*(h(i)/2);
+%         upr = (upr1+upr2)/2 + (.2/((h(i)+h(i+1))/2))*(ur2-ur1);
+%         
+%           
+%         upl1 = y(2);
+%         upl2 = yl(2);
+%         ul1 = y(1)+y(2)*(-h(i)/2);
+%         ul2 = yl(1) + yl(2)*(h(i-1)/2);
+%         upl = (upl1+upl2)/2 + (.2/((h(i)+h(i-1))/2))*(ul1-ul2);
+% 
+% 
+%     case 3
+%         upr1 = y(2)+2*y(3)*h(i)/2; % u_i+1/2 using recon in i 
+%         upr2 = yr(2)+2*yr(3)*(-h(i+1)/2);
+%         ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2;
+%         ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2;
+% 
+% 
+%         upr = (upr1+upr2)/2 ;%+(.2/((h(i)+h(i+1))/2))*(ur2-ur1);
+%         upl1 = y(2)+2*y(3)*(-h(i)/2);
+%         upl2 = yl(2)+2*yl(3)*h(i-1)/2;
+%         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 ;
+%         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 ;
+%         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ul1-ul2);
+%         
+% 
+%     case 4
+%         upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2;
+%         upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2;
+%         ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3;
+%         ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3;
+%         upr = (upr1+upr2)/2 ;%+(.2/((h(i)+h(i+1))/2))*(ur2-ur1);
+% 
+%         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
+%         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2;
+% 
+%         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3;
+%         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3;
+%         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ul1-ul2);
+%              
+% 
+%     case 5
+%         upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3;
+%         upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3;
+%         ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3+yr(5)*(-h(i+1)/2)^4;
+%         ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3 + y(5)*(h(i)/2)^4;
+%         upr = (upr1+upr2)/2;
+% 
+%         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
+%         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
+%         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3+y(5)*(-h(i)/2)^4;
+%         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3 +yl(5)*(h(i-1)/2)^4; 
+%         upl = (upl1+upl2)/2;
+% 
+% 
+%     case 6
+%         upr1 = y(2)+2*y(3)*h(i)/2+3*y(4)*(h(i)/2)^2  + 4*y(5)*(h(i)/2)^3+5*y(6)*(h(i)/2)^4;
+%         upr2 = yr(2)+2*yr(3)*-h(i+1)/2+3*yr(4)*(-h(i+1)/2)^2   + 4*yr(5)*(-h(i+1)/2)^3 + 5*yr(6)*(-h(i+1)/2)^4;
+%         ur2 = yr(1)+yr(2)*(-h(i+1)/2)+yr(3)*(-h(i+1)/2)^2+yr(4)*(-h(i+1)/2)^3+yr(5)*(-h(i+1)/2)^4 +yr(6)*(-h(i+1)/2)^5;
+%         ur1 = y(1) + y(2)*(h(i)/2)+y(3)*(h(i)/2)^2 + y(4)*(h(i)/2)^3 + y(5)*(h(i)/2)^4 +y(6)*(h(i)/2)^5;
+%         upr = (upr1+upr2)/2;
+% 
+%         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3+ 5*y(6)*(-h(i)/2)^4;
+%         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 + 5*yl(6)*(h(i-1)/2)^4; 
+%         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3+y(5)*(-h(i)/2)^4 +y(6)*(-h(i)/2)^5;
+%         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3 +yl(5)*(h(i-1)/2)^4 + yl(6)*(h(i-1)/2)^5; 
+%         upl = (upl1+upl2)/2;
+%            
+%         
+%     otherwise
+%         error('1')
+% end
+% 
+% switch phys
+%     case 'Poisson'
+%         left(i) = upl;
+%         right(i) = upr;
+%     case 'Advection'
+%         left(i) = ul1;
+%         right(i) = ur2;
+%     case 'Burgers'
+%         left(i) = ul2;
+%         right(i) = ur1;
+%     otherwise
+%         error('5')
+%     
+% end
+% 
+% end
+% up
+% left
+% right
+% error('1')
 
 end
 

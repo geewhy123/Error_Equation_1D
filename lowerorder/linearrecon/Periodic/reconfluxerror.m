@@ -7,20 +7,24 @@ phi(N+2) = NaN;
 
 
 
-
-for i = 2:N+1
-
-
-global TEND
-if(abs(time-round(time))<1e-10)
-   time = round(time); 
-elseif(abs(time-TEND) < 1e-10)
-   time = TEND;
-end
+[left,right] = computeflux(Z,h,N,p,phys);
 
 
 
-[left,right] = computeflux(Z,h,i,N,p,phys);
+
+% for i = 2:N+1
+% 
+% 
+% global TEND
+% if(abs(time-round(time))<1e-10)
+%    time = round(time); 
+% elseif(abs(time-TEND) < 1e-10)
+%    time = TEND;
+% end
+
+
+% 
+% [left,right] = computeflux(Z,h,i,N,p,phys);
 ur1 = right;
 ur2 = right;
 upr = right;
@@ -36,7 +40,7 @@ if(strcmp(phys,'Poisson')==1)
             
 %            sp = Rsp(i);
      
-            f(i) = -1*val(i);%getRes(time,k,i,sp);
+            f = -1*val;%getRes(time,k,i,sp);
     
             %val(i)
             %getRes(time,k,i,sp)
@@ -48,7 +52,7 @@ if(strcmp(phys,'Poisson')==1)
             %end
             
             
-        phi(i)= (upr-upl)/h(i)-f(i);%Poisson
+        phi= (upr-upl)./h-f;%Poisson
 
     
 elseif(strcmp(phys,'Advection')==1)
@@ -56,47 +60,48 @@ elseif(strcmp(phys,'Advection')==1)
     
             
 %             sp = Rsp(i);
-            f(i) = -1*val(i);%getRes(time,k,i,sp);
+            f = -1*val;%getRes(time,k,i,sp);
         
         
-        phi(i)= (ur2-ul1)/h(i)-f(i); % primal
+        phi= (ur2-ul1)./h-f; % primal
         
 
     
 elseif(strcmp(phys,'Burgers')==1)
-    %nonlinear error
+    
 
-% if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
-%    %  if(~isnan(time))
-%          Ubar = zeros(N+2,1);
-%          global UU
-%          global M        
-%              T=(0:1:M)*k;
-%              
+    
+  %nonlinear error
+
+% % c = [0 1/6 1/3 1/2 2/11 2/3 6/7 0 1 ];
+% %          Ubar = zeros(N+2,9);
+% %          global UU
+% %          global M        
+% %          global xx
+% %              T=(0:1:M)*k;
+% %              
 % %          for i = 2:N+1
-%             Usp(i) = spapi(6,T,UU(i,:));
-%             
-% %             for steps = 1:9
-% %             Ubar(i,steps) = fnval(Usp(i),time+c(steps)*k);
-% %             end
-%          Ubar(i) = fnval(Usp(i),time);
+% %             Usp(i) = spapi(6,T,UU(i,:));
+% %             
+% % %             for steps = 1:9
+% %             Ubar(i,1:9) = fnval(Usp(i),time+c*k);
+% % %             end
+% %          
 % %          end
-%          
+% %          
 % %          for steps = 1:9
-%             [Zu(:,:,steps)]=unstructuredrecon(Ubar(:,steps),x,h,N,NaN,NaN,p); 
-%          end
-%         
-%     % end
-% %   end
-% %   end
-  
+% %             [Zu(:,:,steps)]=unstructuredrecon(Ubar(:,steps),xx,h,N,NaN,NaN,p); 
+% %          end
+        
+
+   [bleft,bright] = computeflux(Zu,h,N,p,phys);
   
      
             %time
 %             sp = Rsp(i);
          
             
-            f(i) = -1*val(i);%getRes(time,k,i,sp);
+            f = -1*val;%getRes(time,k,i,sp);
             
 
 %             switch i
@@ -140,13 +145,13 @@ elseif(strcmp(phys,'Burgers')==1)
 %                 error('2')
 %             end
 
-[left,right] = computeflux(Zu,h,i,N,p,phys);
+% [left,right] = computeflux(Zu,h,i,N,p,phys);
 
 %             f(i) = f(i) + (ur1*(uhr1)-ul2*(uhl2))/h(i);
-f(i) = f(i) + (ur1*(right)-ul2*(left))/h(i);
+f = f + (ur1.*(bright)-ul2.*(bleft))./h;
       
         
-             phi(i) = -(ur1^2-ul2^2)/(2*h(i))-f(i);%burgers
+             phi = -(ur1.^2-ul2.^2)./(2*h)-f;%burgers
                     
 
  
@@ -156,4 +161,4 @@ end
 
 end
 
-end
+% end
