@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-%rng(1234);
+rng(1234);
 w = 0;
 h0 = 1/N;
 
@@ -72,19 +72,19 @@ d=1;
 T = 1;
 for j = 1:100000
         U(:,j) = u;
-tt = k*j;
+tt = k*(j-1);
     
 
 
 if((max(d)*k<1e-15)||(tt>=tlim))
      
-[uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
+%  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 u = uu;
     max(d)
     tt
-    T = (1:1:j)*k;
- U(:,j+1) = u;
- nSteps = j;
+    T = (1:1:j-1)*k;
+%  U(:,j+1) = u;
+ nSteps = j-1;
  
     break
 end
@@ -97,7 +97,7 @@ d=0;
 
 u = uu;
 
-T = (1:1:j)*k;
+% T = (1:1:j)*k;
 
 if(mod(j,100)==0)
     max(d)
@@ -110,7 +110,7 @@ end
 cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
 cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
 cverrinf=max(abs(ue-u))
-
+size(U)
 
 
 u(1) = NaN;
@@ -235,7 +235,7 @@ M = nSteps;
 T = 1;
 s=1;
 
-for j = 1:nSteps
+for j = 1:nSteps+1
 
 
 E(:,j) = e;
@@ -246,17 +246,17 @@ E(:,j) = e;
 
 
 % if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
-if( ((TT>=tlim)) || (j >= nSteps))
+if( ((TT>=tlim)) || (j >= nSteps+1))
     
-[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+% [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
 
 e = ee;
    max(s)
     TT
-    T = (1:1:j)*k;
-j
+    T = (1:1:j-1)*k;
+j-1
     break
 end
 
@@ -267,7 +267,7 @@ s=0;
 
 e = ee;
 
-T = (1:1:j)*k;
+% T = (1:1:j-1)*k;
 
 
 if(mod(j,100)==0)

@@ -1,4 +1,4 @@
-function [ dUdt] = diffU( U ,k)
+    function [ dUdt] = diffU( U ,k)
 %DIFFU Summary of this function goes here
 %   Detailed explanation goes here
 
