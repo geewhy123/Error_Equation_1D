@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-rng(1234);
+%rng(1234);
 w = 0;
 h0 = 1/N;
 
@@ -24,7 +24,7 @@ if(strcmp(physics,'Poisson')==1)
 % if(strcmp(goal,'SS')==1)
     k = 2*k;
 if( tlim > 2)
-    k = 2*k;
+    k = 1.5*k;
 end
 end
 
@@ -235,7 +235,7 @@ M = nSteps;
 T = 1;
 s=1;
 
-for j = 1:100000
+for j = 1:nSteps
 
 
 E(:,j) = e;
@@ -247,6 +247,7 @@ E(:,j) = e;
 
 % if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 if( ((TT>=tlim)) || (j >= nSteps))
+    
 [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
