@@ -7,7 +7,11 @@ close all
 
 if(p>0)
 
-rng(1234);
+% rng(1234);
+
+ g = randi(1000000);
+%  977219
+ rng(972219);  
 w = 0;
 h0 = 1/N;
 
@@ -123,6 +127,17 @@ plot(x,ue-u,'x')
 end
 
 T(end)
+% 
+% if( T(end) > 0.997)%0.9166)
+% g
+% error('1')
+% else
+% errerr2=NaN;
+% ee = NaN;
+% exacterr = NaN;
+%     return
+% end
+
 assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
 
 
@@ -230,11 +245,15 @@ M = nSteps;
 
  AD = computepseudo(N,x,h,q);
 
- 
- 
+% size(U)
+% size(R)
+% error('1')
+%  
 T = 1;
 s=1;
 
+%  nSteps = nSteps-1;
+% tlim = tlim-k;
 for j = 1:nSteps+1
 
 
@@ -247,8 +266,10 @@ E(:,j) = e;
 
 % if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 if( ((TT>=tlim)) || (j >= nSteps+1))
-    
-% [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+%     TT
+%     tlim
+ 
+%  [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 
 
@@ -256,7 +277,8 @@ e = ee;
    max(s)
     TT
     T = (1:1:j-1)*k;
-j-1
+j
+R(:,end-2:end)
     break
 end
 
