@@ -7,11 +7,12 @@ close all
 
 if(p>0)
 
-% rng(1234);
+%  rng(1234);
 
  g = randi(1000000);
 %  977219
- rng(972219);  
+rng(g)
+%  rng(972219);  
 w = 0;
 h0 = 1/N;
 
@@ -28,7 +29,7 @@ if(strcmp(physics,'Poisson')==1)
 % if(strcmp(goal,'SS')==1)
     k = 2*k;
 if( tlim > 2)
-    k = 1.5*k;
+     k = 1.5*k;
 end
 end
 
@@ -140,6 +141,7 @@ T(end)
 
 assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
 
+tlim = T(end);
 
 global dUdt
 dUdt = diffU(U,k);
@@ -167,7 +169,7 @@ nSteps
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X
     
     
     
@@ -222,11 +224,40 @@ end
 end
 
 
+
 Rm=max(abs(R(:,end)))
+
+
+% clear R
+%  Ro = R;
+% R
+% error('1')
+%   load('RP.mat')
+%  Ro(:,1) = R(:,1);
+%  R = Ro;
+
+
+% % dUdt 
+% % t = (0:1:nSteps)*k;
+% % Utexact = zeros(size(dUdt));
+% % for i = 2:N+1
+% %     for j = 1:nSteps+1
+% %           xl = x(i)-h(i)/2;
+% %     xr = x(i)+h(i)/2;
+% %         Utexact(i,j) = (1/h(i))*(sin(2*pi*((xr)+t(j)))-sin(2*pi*((xl)+t(j))));
+% %     end
+% % end
+% % Utexact(1,:) = NaN;
+% % Utexact(N+2,:) = NaN;
+% % Utexact
+% % plot(x,dUdt(:,end)-Utexact(:,end))
+% % max(abs(dUdt(:,end)-Utexact(:,end)))
+% %  error('1')
 
 
 
 T=(0:1:nSteps)*k;
+
 for j = 2:N+1
 sp = spapi(6,T,R(j,:));
 Rsp(j) = sp;
@@ -247,13 +278,15 @@ M = nSteps;
 
 % size(U)
 % size(R)
-% error('1')
+
 %  
 T = 1;
 s=1;
 
 %  nSteps = nSteps-1;
 % tlim = tlim-k;
+
+
 for j = 1:nSteps+1
 
 
@@ -278,13 +311,15 @@ e = ee;
     TT
     T = (1:1:j-1)*k;
 j
-R(:,end-2:end)
+nSteps
+% R(:,end-2:end)
     break
 end
 
 s=0;
 
 [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+
 
 
 e = ee;
@@ -300,7 +335,7 @@ end
 
 exacterr = ue-u;
 
-norm(u(2:N+1))
+% norm(u(2:N+1))
 
 exacterr = exacterr(2:N+1);
 x = x(2:N+1);

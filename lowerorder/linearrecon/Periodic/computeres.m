@@ -30,6 +30,9 @@ global dUdt
 global KK
 ut = dUdt(i,round(time/KK)+1);
 
+% if (time ==0)
+% round(time/KK)+1
+% end
 
 R(i)= -ut+(right(i)-left(i))/h(i)-f(i);
 
