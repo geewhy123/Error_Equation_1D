@@ -82,10 +82,43 @@ switch phys
     case 'Advection'
        up(i-1) = ul1;
     case 'Burgers'
-        up(i-1) = ul2;
-    otherwise
-        error('5')
+%         tmp1 = ul1;
+%         tmp2 = ul2;
+%         ul1 = tmp2;
+%         ul2 = tmp1;
+        
+        
+%          up(i-1) = ul2;
+%          if(ul1>ul2)
+%             S = 0.5*(ul1+ul2);
+%             if(S>0)
+%                 up(i-1) = ul1;
+%             else
+%                up(i-1)=ul2; 
+%             end
+%                 
+%          else
+%              if(ul1>0)
+%                  up(i-1) = ul1;
+%              elseif(ul2<0)
+%                  up(i-1) = ul2;
+%              else
+%                  up(i-1)=0;
+%              end
+%              
+%          end
+
+
+            up(i-1) = ul2;
+
+
+            if( (ul1+ul2)<0)
+                up(i-1) = ul1;
+            end
     
+%             if(abs(ul1+ul2) < 10^-6)
+%                up(i-1) = 0; 
+%             end
 end
 
 
@@ -94,6 +127,7 @@ end
 
 left(2:N+1) = up(1:N);
 right(2:N+1) = up(2:N+1);
+
 
 
 % for i = 2:N+1

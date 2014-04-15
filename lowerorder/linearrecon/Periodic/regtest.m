@@ -1,14 +1,14 @@
-count = 0;
-while(1)
-    [errerr2,x,cverr2,exacterr,ee]=errordriver(40,2,6,6,1/3,100,10,7,'Poisson');
-    if(abs(errerr2) > 1e-6) 
-%    [errerr2,x,cverr2,exacterr,ee]=errordriver(20,2,6,6,1/3,100,10,7,'Poisson');
-%       if(abs(errerr2) > 2.5e-5) 
-        count
-        error('1')
-    end
-    count = count +1;
-end
+% count = 0;
+% while(1)
+%     [errerr2,x,cverr2,exacterr,ee]=errordriver(40,2,6,6,1/3,100,10,7,'Poisson');
+%     if(abs(errerr2) > 1e-6) 
+% %    [errerr2,x,cverr2,exacterr,ee]=errordriver(20,2,6,6,1/3,100,10,7,'Poisson');
+% %       if(abs(errerr2) > 2.5e-5) 
+%         count
+%         error('1')
+%     end
+%     count = count +1;
+% end
 
 
 

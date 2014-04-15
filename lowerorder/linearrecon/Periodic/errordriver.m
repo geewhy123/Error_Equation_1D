@@ -7,12 +7,12 @@ close all
 
 if(p>0)
 
-%  rng(1234);
+%   rng(1234);
 
  g = randi(1000000);
 %  977219
-rng(g)
-%  rng(972219);  
+% rng(g)
+%   rng(972219);  
 w = 0;
 h0 = 1/N;
 
@@ -143,6 +143,9 @@ assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T
 
 tlim = T(end);
 
+
+
+
 global dUdt
 dUdt = diffU(U,k);
 gsp = NaN;
@@ -159,6 +162,27 @@ gsp = NaN;
 % % % end
 
 
+
+
+% 
+% t = (0:1:nSteps)*k;
+% Utexact = zeros(size(dUdt));
+% Utexact(1,:) = NaN;
+% Utexact(N+2,:) = NaN;
+% Uexact = Utexact;
+% for i = 2:N+1
+%     for j = 1:nSteps+1
+%           xl = x(i)-h(i)/2;
+%     xr = x(i)+h(i)/2;
+%         Uexact(i,j) = -(1/(2*pi))*(1/h(i))*(cos(2*pi*(xr+t(j)))-cos(2*pi*(xl+t(j))));
+%         Utexact(i,j) =           (1/h(i))*(sin(2*pi*(xr+t(j)))-sin(2*pi*(xl+t(j))));
+%     end
+% end
+% 
+% dUdt = diffU(Uexact,k);
+% 
+% max(max(abs(dUdt-Utexact)))
+% error('1')
 
 
 nSteps
@@ -227,32 +251,41 @@ end
 
 Rm=max(abs(R(:,end)))
 
+plot(x,R(:,end))
+max(abs(R(:,end)))
+%  error('2')
 
 % clear R
 %  Ro = R;
 % R
 % error('1')
-%   load('RP.mat')
+%     load('RA.mat')
 %  Ro(:,1) = R(:,1);
 %  R = Ro;
 
 
-% % dUdt 
-% % t = (0:1:nSteps)*k;
-% % Utexact = zeros(size(dUdt));
-% % for i = 2:N+1
-% %     for j = 1:nSteps+1
-% %           xl = x(i)-h(i)/2;
-% %     xr = x(i)+h(i)/2;
-% %         Utexact(i,j) = (1/h(i))*(sin(2*pi*((xr)+t(j)))-sin(2*pi*((xl)+t(j))));
-% %     end
-% % end
-% % Utexact(1,:) = NaN;
-% % Utexact(N+2,:) = NaN;
-% % Utexact
-% % plot(x,dUdt(:,end)-Utexact(:,end))
-% % max(abs(dUdt(:,end)-Utexact(:,end)))
-% %  error('1')
+% dUdt 
+% 
+% t = (0:1:nSteps)*k;
+% Utexact = zeros(size(dUdt));
+% Utexact(1,:) = NaN;
+% Utexact(N+2,:) = NaN;
+% Uexact = Utexact;
+% for i = 2:N+1
+%     for j = 1:nSteps+1
+%           xl = x(i)-h(i)/2;
+%     xr = x(i)+h(i)/2;
+%         Uexact(i,j) = -(1/(2*pi))*(1/h(i))*(cos(2*pi*(xr+t(j)))-cos(2*pi*(xl+t(j))));
+%         Utexact(i,j) =           (1/h(i))*(sin(2*pi*(xr+t(j)))-sin(2*pi*(xl+t(j))));
+%     end
+% end
+% 
+% Utexact
+% plot(x,dUdt(:,end)-Utexact(:,end))
+% max(abs(dUdt(:,end)-Utexact(:,end)))
+% % plot(x,Uexact(:,end))
+% 
+%  error('1')
 
 
 
@@ -355,12 +388,16 @@ errerrinf=max(abs(exacterr-ee))
 
 figure
 plot(x,exacterr-ee,'*-')
-
+ylabel('\epsilon - \epsilon_h')
 
 
 save('t','exacterr','ee','x')
 
 
+else 
+    errerr2 = NaN;
+    ee = NaN;
+    exacterr = NaN;
 end
 
 

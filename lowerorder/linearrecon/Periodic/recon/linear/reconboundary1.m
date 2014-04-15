@@ -5,33 +5,12 @@ function [ y ] = reconboundary1( xi,hi,ui,x1,h1,u1, x2 ,h2,u2, x3,h3,u3,x4,h4,u4
 %global AD
 
 
-wi1 = 1/abs(x1-xi)^w;
-wi2 = 1/abs(x2-xi)^w;
-wi3 = 1/abs(x3-xi)^w;
-wi4 = 1/abs(x4-xi)^w;
-% xi = x(i);
-% x1 = x(i+1);
-% x2 = x(i+2);
-% x3 = x(i+3);
-% x4 = x(i+4);
-%syms z
-% xb1 = (1/h1)*int(z-x1,z,x1-h1/2,x1+h1/2);
-% xb2 = (1/h2)*int(z-x2,z,x2-h2/2,x2+h2/2);
-% xb3 = (1/h3)*int(z-x3,z,x3-h3/2,x3+h3/2);
-% xb4 = (1/h4)*int(z-x4,z,x4-h4/2,x4+h4/2);
-% xbi = (1/hi)*int(z-xi,z,xi-hi/2,xi+hi/2);
-% 
-% x2b1 = (1/h1)*int((z-x1)^2,z,x1-h1/2,x1+h1/2);
-% x2b2 = (1/h2)*int((z-x2)^2,z,x2-h2/2,x2+h2/2);
-% x2b3 = (1/h3)*int((z-x3)^2,z,x3-h3/2,x3+h3/2);
-% x2b4 = (1/h4)*int((z-x4)^2,z,x4-h4/2,x4+h4/2);
-% x2bi = (1/hi)*int((z-xi)^2,z,xi-hi/2,xi+hi/2);
-% 
-% x3b1 = (1/h1)*int((z-x1)^3,z,x1-h1/2,x1+h1/2);
-% x3b2 = (1/h2)*int((z-x2)^3,z,x2-h2/2,x2+h2/2);
-% x3b3 = (1/h3)*int((z-x3)^3,z,x3-h3/2,x3+h3/2);
-% x3b4 = (1/h4)*int((z-x4)^3,z,x4-h4/2,x4+h4/2);
-% x3bi = (1/hi)*int((z-xi)^3,z,xi-hi/2,xi+hi/2);
+wi1 = 1/abs(x1-xi)^0;
+wi2 = 1/abs(x2-xi)^0;
+wi3 = 1/abs(x3-xi)^0;
+wi4 = 1/abs(x4-xi)^0;
+
+
 xb1 = (1/h1)*(((x1+h1/2)-x1)^2/2-((x1-h1/2)-x1)^2/2 );
 xb2 = (1/h2)*(((x2+h2/2)-x2)^2/2-((x2-h2/2)-x2)^2/2 );
 xb3 = (1/h3)*(((x3+h3/2)-x3)^2/2-((x3-h3/2)-x3)^2/2 );
