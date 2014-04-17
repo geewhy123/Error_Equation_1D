@@ -59,6 +59,11 @@ h(1) = h(N+1);
 h(N+2) = h(2);
 
 
+% global xx 
+% xx = X;
+
+
+
  [u0,ue,f]=initializeexact(physics,N,x,h,tlim);
  
 
@@ -191,6 +196,7 @@ nSteps
 %    error('1') 
 % end
 
+
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X
@@ -209,7 +215,6 @@ TEND = tlim;
 
 global UU
 UU = U;
-
 
 
 
@@ -250,6 +255,13 @@ end
 
 
 Rm=max(abs(R(:,end)))
+% 
+%     cverr2 = Rm;
+%     errerr2 = Rm;
+%     ee = NaN;
+%     exacterr = NaN;
+%     return
+
 
 plot(x,R(:,end))
 max(abs(R(:,end)))

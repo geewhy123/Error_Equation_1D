@@ -100,12 +100,12 @@ AA = double([wi1*(xb1-xbi+x1-xi) wi1*(x2b1+2*(x1-xi)*xb1+(x1-xi)^2-x2bi) wi1*(x3
              wi4*(xb4-xbi+x4-xi) wi4*(x2b4+2*(x4-xi)*xb4+(x4-xi)^2-x2bi) wi4*(x3b4+3*(x4-xi)*x2b4+3*(x4-xi)^2*xb4+(x4-xi)^3-x3bi)   wi4*(x4b4+4*(x4-xi)*x3b4+6*(x4-xi)^2*x2b4+4*(x4-xi)^3*xb4+(x4-xi)^4-x4bi) ]);
  AD(:,:,i)=pinv(AA);
 
- if(i==4)
-3*(x1-xi)*x2bi
-(x1-xi)^3
-
-
- end
+%  if(i==4)
+% 3*(x1-xi)*x2bi
+% (x1-xi)^3
+% 
+% 
+%  end
  
 end
 

@@ -81,6 +81,7 @@ switch phys
         up(i-1) = upl;
     case 'Advection'
        up(i-1) = ul1;
+
     case 'Burgers'
 %         tmp1 = ul1;
 %         tmp2 = ul2;
@@ -241,9 +242,17 @@ right(2:N+1) = up(2:N+1);
 % 
 % end
 % up
+
 % left
 % right
+% global xx
+% size(xx)
+% size(up)
+% max(abs(up-sin(2*pi*xx)/(2*pi)))
+% plot(xx,up-sin(2*pi*xx)/(2*pi),'o-')
 % error('1')
+
+
 
 end
 
