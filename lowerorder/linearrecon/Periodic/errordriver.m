@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-%   rng(1234);
+  rng(1234);
 
  g = randi(1000000);
 %  977219
@@ -61,7 +61,8 @@ h(N+2) = h(2);
 
 % global xx 
 % xx = X;
-
+global dir
+dir = NaN*ones(N+2,1);
 
 
  [u0,ue,f]=initializeexact(physics,N,x,h,tlim);
@@ -126,9 +127,10 @@ size(U)
 u(1) = NaN;
 u(N+2) = NaN;
 plot(x,u,'*',x,ue,'o')
+ylabel('u')
 figure
 plot(x,ue-u,'x')
-
+ylabel('ue-u')
 
 end
 
@@ -196,6 +198,7 @@ nSteps
 %    error('1') 
 % end
 
+dir
 
 if(q>0 && r > 0)
     

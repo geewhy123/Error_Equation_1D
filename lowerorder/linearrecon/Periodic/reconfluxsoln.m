@@ -6,7 +6,9 @@ phi(1) = NaN;
 phi(N+2) = NaN;
 
 
-[left,right] = computeflux(Z,h,N,p,phys);
+
+
+[left,right] = computeflux(Z,h,N,p,phys,'solution');
 
 % for i = 2:N+1
 

@@ -16,7 +16,7 @@ end
  %uxx = zeros(N+2,1);
  
  
- [left,right] = computeflux(Z,h,N,r,phys);
+ [left,right] = computeflux(Z,h,N,r,phys,'residual');
  
  for i = 2:N+1
 

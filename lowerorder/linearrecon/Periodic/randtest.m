@@ -14,12 +14,13 @@ Q = [2 2 3; 2 2 4; 2 2 5; 2 2 6; 2 3 3; 2 3 4; 2 3 5; 2 3 6; 2 4 3; 2 4 4; 2 4 5
 e20 = 0;
 e40 =0;
 % Q = [2 6 6]
+Q = [2 2 3; 2 2 4; 2 2 5; 2 2 6; 2 3 3; 2 3 4; 2 3 5; 2 3 6; 2 4 3; 2 4 4; 2 4 5; 2 4 6; 2 5 3; 2 5 4; 2 5 5; 2 5 6; 2 6 3; 2 6 4; 2 6 5; 2 6 6;]
 [m,n] = size(Q);
 for k= 1:m
 for j = 1:1
 % [err2b(j),x,cverr2b(j),exacterr2b(:,j),ee2b(:,j)] = errordriver(20,Q(k,1),Q(k,2),Q(k,3),1/3,100,10,7,'Poisson');
 %[err2b(j),x,cverr2b(j),exacterr2b(:,j),ee2b(:,j)] = errordriver(80,Q(k,1),Q(k,2),Q(k,3),0,100,.3,7,'Advection');
- [err2b(j),x,cverr2b(j),exacterr2b(:,j),ee2b(:,j)] = errordriver(80,Q(k,1),Q(k,2),Q(k,3),0,100,.2,7,'Burgers');
+ [err2b(j),x,cverr2b(j),exacterr2b(:,j),ee2b(:,j)] = errordriver(20,Q(k,1),Q(k,2),Q(k,3),0,100,.2,7,'Burgers');
 close all
 e20 = e20+err2b(j);
 % [err4b(j),x,cverr4b(j),exacterr4b(:,j),ee4b(:,j)] = errordriver(40,Q(k,1),Q(k,2),Q(k,3),1/3,100,10,7,'Poisson');

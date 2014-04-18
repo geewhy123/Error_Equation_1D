@@ -7,7 +7,7 @@ phi(N+2) = NaN;
 
 
 
-[left,right] = computeflux(Z,h,N,p,phys);
+[left,right] = computeflux(Z,h,N,p,phys,'error');
 
 
 
@@ -94,7 +94,7 @@ elseif(strcmp(phys,'Burgers')==1)
 % %          end
         
 
-   [bleft,bright] = computeflux(Zu,h,N,p,phys);
+   [bleft,bright] = computeflux(Zu,h,N,p,phys,'error');
   
      
             %time
