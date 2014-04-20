@@ -111,42 +111,49 @@ switch phys
 %              
 %          end
 
-if(strcmp(equation,'solution')==1 || strcmp(equation,'residual')==1)
-            if(abs(ul1+ul2) < 1e-12 )
-               up(i-1) = 0;
-                dir(i) = 0; 
-            elseif((ul1+ul2)>0 )
-                up(i-1) = ul2;
-                dir(i) = 1;
 
- 
-            elseif( (ul1+ul2)<0 )
-                up(i-1) = ul1;
-                dir(i) = -1;
-            else
-                error('5');
-            end
-    
-elseif(strcmp(equation,'error')==1)
-            if(dir(i)==0 )
-               up(i-1) = 0;
-                dir(i) = 0; 
-            elseif(dir(i)==1 )
-                up(i-1) = ul2;
-                dir(i) = 1;
 
- 
-            elseif( dir(i)==-1 )
-                up(i-1) = ul1;
-                dir(i) = -1;
-            else
-                error('5');
-            end
-    
-    
-else   error('6')
-    
+up(i-1) = ul2;
+if((ul1+ul2)<0)
+    up(i-1) = ul1;
 end
+
+% % if(strcmp(equation,'solution')==1 || strcmp(equation,'residual')==1)
+% %             if(abs(ul1+ul2) < 1e-12 )
+% %                up(i-1) = 0;
+% %                 dir(i) = 0; 
+% %             elseif((ul1+ul2)>0 )
+% %                 up(i-1) = ul2;
+% %                 dir(i) = 1;
+% % 
+% %  
+% %             elseif( (ul1+ul2)<0 )
+% %                 up(i-1) = ul1;
+% %                 dir(i) = -1;
+% %             else
+% %                 error('5');
+% %             end
+% %     
+% % elseif(strcmp(equation,'error')==1)
+% %             if(dir(i)==0 )
+% %                up(i-1) = 0;
+% %                 dir(i) = 0; 
+% %             elseif(dir(i)==1 )
+% %                 up(i-1) = ul2;
+% %                 dir(i) = 1;
+% % 
+% %  
+% %             elseif( dir(i)==-1 )
+% %                 up(i-1) = ul1;
+% %                 dir(i) = -1;
+% %             else
+% %                 error('5');
+% %             end
+% %     
+% %     
+% % else   error('6')
+% %     
+% % end
             
 %             if(abs(ul1+ul2) < 10^-6)
 %                up(i-1) = 0; 

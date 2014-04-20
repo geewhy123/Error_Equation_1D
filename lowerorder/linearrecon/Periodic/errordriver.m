@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-  rng(1234);
+%   rng(1234);
 
  g = randi(1000000);
 %  977219

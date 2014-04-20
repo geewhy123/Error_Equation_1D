@@ -1,7 +1,7 @@
 function [u0,ue,f ] = burgersinitialize(N,x,h,tlim )
 %BURGERSINITIALIZE Summary of this function goes here
 %   Detailed explanation goes here
-a = 1.0;
+a = 0.5;
 % for k = 1:30
 % tlim = tlim+0.01;
     
