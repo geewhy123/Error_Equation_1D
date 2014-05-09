@@ -7,7 +7,7 @@ close all
 
 if(p>0)
 
-%   rng(1234);
+%    rng(1234);
 
  g = randi(1000000);
 %  977219
@@ -38,6 +38,7 @@ X = zeros(N+1,1);
 for i = 1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
+%    X(i) = X(i) + 0.1*randn*h0;
    X(i) = X(i) + unif*(-1+rand*(2))*h0/3;%0.001*sin(2*pi*X(i));%
    end
 end
@@ -258,6 +259,8 @@ end
 
 
 Rm=max(abs(R(:,end)))
+
+error('1');
 % 
 %     cverr2 = Rm;
 %     errerr2 = Rm;
