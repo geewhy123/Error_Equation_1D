@@ -23,6 +23,8 @@ ubi = ui;
 
 global AD
 
+
+
 y(2:4) = AD(:,:,i)*b;
 
 %y-y2;

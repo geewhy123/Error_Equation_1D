@@ -16,7 +16,7 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.4;
+CFL = 0.2;
 k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1)
@@ -78,6 +78,23 @@ u=u0;
 
 global AD
 AD = computepseudo(N,x,h,p);    
+
+
+% plot(x,ue,'*')
+% [err,Z]=unstructuredrecon3(ue,x,h,N,0,0);
+% Z
+% hold on
+% for i = 2:N+1
+%   xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);
+%    y = Z(1,i)+Z(2,i)*(xx-x(i))+Z(3,i)*(xx-x(i)).^2+Z(4,i)*(xx-x(i)).^3;
+%    plot(xx,y)
+%    hold on
+%    
+% end
+% 
+% 
+% error('1')
+
 
 
 d=1;
@@ -154,7 +171,6 @@ tlim = T(end);
 
 
 
-
 global dUdt
 dUdt = diffU(U,k);
 gsp = NaN;
@@ -207,7 +223,6 @@ if(q>0 && r > 0)
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X
     
     
-    
 figure
 hold on
 
@@ -223,15 +238,15 @@ UU = U;
 
 
 
+
+
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
     FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
 
 
 
-
  global AD
  AD = computepseudo(N,x,h,r);
-
 
 %global R
 R = zeros(N+2,nSteps+1);
@@ -257,11 +272,11 @@ for j = 1:nSteps+1
 end
 end
 
-
-
+% U
+%  R
 Rm=max(abs(R(:,end)))
 
-% error('1');
+
 % 
 %     cverr2 = Rm;
 %     errerr2 = Rm;
@@ -272,6 +287,11 @@ Rm=max(abs(R(:,end)))
 
 plot(x,R(:,end))
 max(abs(R(:,end)))
+q=R(2:N+1,end)
+sum(abs(q))/N
+sqrt(sum((q).^2)/N)
+norm(q,inf)
+error('1')
 %  error('2')
 
 % clear R

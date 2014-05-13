@@ -7,17 +7,19 @@ if(abs(time-round(time))<1e-10)
 elseif(abs(time-TEND) < 1e-10)
    time = TEND;
 end
+% global u0
+% global u1
+% 
 
 
-
-
- [Z]=unstructuredrecon(u,x,h,N,NaN,NaN,r);
+ [Z]=unstructuredrecon(u,x,h,N,0,0,r);
  R = zeros(N+2,1);
  %uxx = zeros(N+2,1);
  
  
  [left,right] = computeflux(Z,h,N,r,phys,'residual');
- 
+
+
  for i = 2:N+1
 
 % [ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%

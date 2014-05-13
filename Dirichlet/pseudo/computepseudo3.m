@@ -16,28 +16,28 @@ for i = 2:N+1
     x4 = x(i+2);
     xi = x(i);
     end
-    if i==3
+     if i==3
          h1 = h(i-1);
     h2 = h(i+1);
-    h3 = h(N+1);
-    h4 = h(i+2);
+    h3 = h(i+2);%h(N+1);
+    h4 = h(i+3);%h(i+2);
     hi = h(i);
     x1 = x(i-1);
     x2 = x(i+1);
-    x3 = -1+x(N+1);
-    x4 = x(i+2);
+    x3 = x(i+2);%-1+x(N+1);
+    x4 = x(i+3);%x(i+2);
     xi = x(i);
     end
     if i==N
     h1 = h(i-1);
     h2 = h(i+1);
     h3 = h(i-2);
-    h4 = h(2);
+    h4 = h(i-3);%h(2);
     hi = h(i);
     x1 = x(i-1);
     x2 = x(i+1);
     x3 = x(i-2);
-    x4 = 1+x(2);
+    x4 = x(i-3);%1+x(2);
     xi = x(i); 
     end
     if i==2
