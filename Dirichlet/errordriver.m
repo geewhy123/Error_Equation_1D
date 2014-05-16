@@ -96,6 +96,22 @@ AD = computepseudo(N,x,h,p);
 % error('1')
 
 
+[Z] = unstructuredrecon(ue,x,h,N,0,0,p);
+ [er]=reconplot(x,h,N,p,Z);
+ er
+ [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim);
+figure
+ plot(x,phi)
+%   Z
+%    phi
+    sum(abs(phi(2:N+1)))/N
+  sqrt(sum((phi(2:N+1)).^2)/N)
+  max(abs(phi))
+
+figure
+plot(x,f)
+% error('1')
+
 
 d=1;
 
@@ -287,11 +303,11 @@ Rm=max(abs(R(:,end)))
 
 plot(x,R(:,end))
 max(abs(R(:,end)))
-q=R(2:N+1,end)
-sum(abs(q))/N
-sqrt(sum((q).^2)/N)
-norm(q,inf)
-error('1')
+% q=R(2:N+1,end)
+% sum(abs(q))/N
+% sqrt(sum((q).^2)/N)
+% norm(q,inf)
+% error('1')
 %  error('2')
 
 % clear R
