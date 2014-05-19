@@ -77,6 +77,7 @@ A = double(A(:,2:3)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) (wi1*
                      (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x3bi-(-hi/2)^3);]));
    
                  
+                 
 b = double(b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
        (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;

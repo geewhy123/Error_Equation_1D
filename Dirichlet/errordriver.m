@@ -50,7 +50,7 @@ end
 
 x(1) = 0-(1-x(N+1));%-x(2);
 x(N+2) = 1+x(2);%1+(1-x(N+1));
-
+x
 h = zeros(N+2,1);
 for i = 2:N+1
    h(i) = X(i)-X(i-1); 
@@ -78,6 +78,7 @@ u=u0;
 
 global AD
 AD = computepseudo(N,x,h,p);    
+AD
 
 
 % plot(x,ue,'*')

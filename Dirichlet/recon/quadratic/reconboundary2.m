@@ -55,15 +55,19 @@ if strcmp(str,'right')
 end
 
 
+% (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))
+x2bi
 A = (A(:,2:2)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ; 
                 (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
                 (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
                 (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ]));
+            
       
 b = (b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
        (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;]);
+   
 % 
 % A
 % b
@@ -74,6 +78,10 @@ y(3:3) = (A'*A)\(A'*b);
 
 P = [ 1 -hi/2; 1 xbi];
 q = [uL; ubi]-[ (-hi/2)^2*y(3) ; x2bi*y(3)];
+
+% [ (-hi/2)^2*y(3) ; x2bi*y(3)]
+% P
+% q
 y(1:2) = P\q;
 %y = double(y);
 

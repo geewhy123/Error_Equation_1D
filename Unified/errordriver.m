@@ -11,7 +11,7 @@ if(p>0)
     
     rng(1234);
 
- g = randi(1000000);
+%  g = randi(1000000);
 %  977219
 % rng(g)
 %   rng(972219);  
@@ -78,7 +78,6 @@ ue = problem.exactSolution;
 
 problem.computemoments();
 
-
 %u = ue;
 u=u0;
 %uu = zeros(N+2,1);
@@ -88,13 +87,14 @@ problem.exactSolution
 % AD = computepseudo(N,x,h,p,BCRight,BCLeft);    
 problem.computeprimalpseudo();
 
-
+problem.primalPI;
+error('1')
 
  Z = problem.unstructuredrecon(ue)
  
 er = problem.reconplot(Z)
 
- error('1')
+%  error('1')
 
 %  computejacobiananalytic(p,h,N);
 %   error('1')

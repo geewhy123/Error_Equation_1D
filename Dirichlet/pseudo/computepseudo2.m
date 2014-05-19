@@ -41,27 +41,27 @@ for i = 2:N+1
     xi = x(i); 
     end
     if i==2
-         h1 = h(N+1);
-    h2 = h(i+1);
-    h3 = h(N);
-    h4 = h(i+2);
+         h1 = h(i+1);
+    h2 = h(i+2);
+    h3 = h(i+3);
+    h4 = h(i+4);
     hi = h(i);
-    x1 = -1+x(N+1);
-    x2 = x(i+1);
-    x3 = -1+x(N);
-    x4 = x(i+2);
+    x1 = x(i+1);
+    x2 = x(i+2);
+    x3 = x(i+3);
+    x4 = x(i+4);
     xi = x(i);
     end
     if i==N+1
     h1 = h(i-1);
-    h2 = h(2);
-    h3 = h(i-2);
-    h4 = h(3);
+    h2 = h(i-2);
+    h3 = h(i-3);
+    h4 = h(i-4);
     hi = h(i);
     x1 = x(i-1);
-    x2 = 1+x(2);
-    x3 = x(i-2);
-    x4 = 1+x(3);
+    x2 = x(i-2);
+    x3 = x(i-3);
+    x4 = x(i-4);
     xi = x(i); 
     end
 wi1 = 1;%/abs(x1-xi);
@@ -101,7 +101,7 @@ AA = double([wi1*(xb1-xbi+x1-xi) wi1*(x2b1+2*(x1-xi)*xb1+(x1-xi)^2-x2bi) ;
 %      AA
 %      error('1')
 %  end
-
+AA
 end
 
 
