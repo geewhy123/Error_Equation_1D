@@ -13,6 +13,7 @@ switch p
        case 6
    [~,Z] = unstructuredrecon5 (u,x,h,N,u0,u1); 
     otherwise 
+        p
        assert(0==1)
 end
 

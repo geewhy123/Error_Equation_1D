@@ -35,14 +35,14 @@ f = zeros(N+2,1);
 %%%%%    ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
 
- %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
- 
- ue(i)= (1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));%(1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
-
-% ue(i)=(1/h(i)) * (xr^7/7-xr^6*2/6+xr^5/5-(xl^7/7-xl^6*2/6+xl^5/5));
-ue(i) = (1/h(i)) *(sqrt(pi)/2)* (erf(xr-0.5)-erf(xl-0.5));
-ue(i) = (1/h(i)) * ( (-xr^2/(2*exp(1))-exp(-xr^2)/2) - (-xl^2/(2*exp(1))-exp(-xl^2)/2));
-% ue(i) = (1/h(i))*(-exp(-xr)+exp(-xl));
+ ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
+%  
+%  ue(i)= (1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));%(1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+% 
+% % ue(i)=(1/h(i)) * (xr^7/7-xr^6*2/6+xr^5/5-(xl^7/7-xl^6*2/6+xl^5/5));
+% ue(i) = (1/h(i)) *(sqrt(pi)/2)* (erf(xr-0.5)-erf(xl-0.5));
+% ue(i) = (1/h(i)) * ( (-xr^2/(2*exp(1))-exp(-xr^2)/2) - (-xl^2/(2*exp(1))-exp(-xl^2)/2));
+% % ue(i) = (1/h(i))*(-exp(-xr)+exp(-xl));
  %initial
  u0(i) = 0;%(1/h(i))*((-1/(2*pi))*(100*(cos(2*pi*xr)-cos(2*pi*xl))) +(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
  

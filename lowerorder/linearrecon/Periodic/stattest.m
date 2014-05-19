@@ -54,7 +54,7 @@ p = Q(:,1);
 q = Q(:,2);
 r = Q(:,3);
 
-fit = min(p+q,min(r,p-1))+1+max((r-p).*(q==r),(p==r-1));
+fit = min(p+q,min(r,p-1)+1)+max((r-p).*(q==r),(p==r-1));
 
 plot(fit,'*-')
 hold on

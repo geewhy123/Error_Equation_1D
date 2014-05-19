@@ -1,5 +1,5 @@
 
-function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,bta,tlim,tord,physics,goal)
+function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -7,6 +7,8 @@ close all
 
 if(p>0)
 
+    
+    
     rng(1234);
 
  g = randi(1000000);
@@ -50,6 +52,7 @@ end
 
 x(1) = 0-(1-x(N+1));%-x(2);
 x(N+2) = 1+x(2);%1+(1-x(N+1));
+x
 
 h = zeros(N+2,1);
 for i = 2:N+1
@@ -66,58 +69,71 @@ global dir
 dir = NaN*ones(N+2,1);
 
 
- [u0,ue,f]=initializeexact(physics,N,x,h,tlim);
+problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h);
+problem.initializeexact();
+
  
+u0 = problem.initialSolution;
+ue = problem.exactSolution;
+
+problem.computemoments();
+
 
 %u = ue;
 u=u0;
 %uu = zeros(N+2,1);
 
+problem.exactSolution
+% global AD
+% AD = computepseudo(N,x,h,p,BCRight,BCLeft);    
+problem.computeprimalpseudo();
 
 
-global AD
-AD = computepseudo(N,x,h,p);    
 
+ Z = problem.unstructuredrecon(ue)
+ 
+er = problem.reconplot(Z)
 
-
- computejacobiananalytic(p,h,N);
-  error('1')
-
-J = computefluxjacobian(ue,x,h,N,p);
-%   plot(x,J,x,f)
-
-
-% max(abs(J(2:N+1)-f(2:N+1)))
-
-% R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
-[Z] = unstructuredrecon(ue,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
- [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim)
- max(abs(phi))
- del = ones(N,1);
- t=0;
- u0 = ue;
- count = 0;
- while(max(abs(del)) > 1e-10)
-     count = count +1;
-     dt = .01;
-     
-K = J(2:N+1,2:N+1)+eye(N)/dt;
-
-[Z] = unstructuredrecon(u0,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
- [R]=reconfluxsoln(Z,f,h,N,p,physics,t)
-    del = K\R(2:N+1);
-     uu = u0(2:N+1) + del*dt;
-     u0 = NaN*ones(N+2,1);
-     u0(2:N+1) = uu;
-     t = t+dt;
- end
- u0
- max(abs(u0-ue))
  error('1')
+
+%  computejacobiananalytic(p,h,N);
+%   error('1')
+
+% J = computefluxjacobian(ue,x,h,N,p);
+% %   plot(x,J,x,f)
+% 
+% 
+% % max(abs(J(2:N+1)-f(2:N+1)))
+% 
+% % R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
+% [Z] = unstructuredrecon(ue,x,h,N,NaN,NaN,p);
+% 
+% %  [er]=reconplot(x,h,N,p,Z);
+%  [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim)
+%  max(abs(phi))
+%  del = ones(N,1);
+%  t=0;
+%  u0 = ue;
+%  count = 0;
+%  while(max(abs(del)) > 1e-10)
+%      count = count +1;
+%      dt = .01;
+%      
+% K = J(2:N+1,2:N+1)+eye(N)/dt;
+% 
+% [Z] = unstructuredrecon(u0,x,h,N,NaN,NaN,p);
+% 
+% %  [er]=reconplot(x,h,N,p,Z);
+%  [R]=reconfluxsoln(Z,f,h,N,p,physics,t)
+%     del = K\R(2:N+1);
+%      uu = u0(2:N+1) + del*dt;
+%      u0 = NaN*ones(N+2,1);
+%      u0(2:N+1) = uu;
+%      t = t+dt;
+%  end
+%  u0
+%  max(abs(u0-ue))
+%  error('1')
 
 
 

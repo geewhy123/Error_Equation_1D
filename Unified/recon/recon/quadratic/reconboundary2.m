@@ -54,21 +54,20 @@ if strcmp(str,'right')
    hi = -hi; 
 end
 
-
 A = (A(:,2:2)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ; 
                 (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
                 (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
                 (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ]));
-      
+   
+                 
 b = (b-[(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ; 
        (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;
        (wi4*(xb4+x4-xi-xbi)/(xbi-(-hi/2)))*(ubi-uL) ;]);
-% 
-% A
-% b
-% ubi
-% error('2')
+
+A
+b
+error('1')
 
 y(3:3) = (A'*A)\(A'*b);
 

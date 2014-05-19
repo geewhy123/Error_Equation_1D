@@ -93,12 +93,12 @@ AD = computepseudo(N,x,h,p);
 % end
 % 
 % 
-% error('1')
 
 
-[Z] = unstructuredrecon(ue,x,h,N,0,0,p);
+[Z] = unstructuredrecon(ue,x,h,N,2*pi/exp(1)^3,2*pi/exp(1)^3,p)
  [er]=reconplot(x,h,N,p,Z);
  er
+ error('1')
  [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim);
 figure
  plot(x,phi)
