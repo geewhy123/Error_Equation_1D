@@ -79,11 +79,12 @@ global AD
 AD = computepseudo(N,x,h,p);    
 
 
-
- computejacobiananalytic(p,h,N);
-  error('1')
+%  computejacobiananalytic(p,h,N);
+%   error('1')
 
 J = computefluxjacobian(ue,x,h,N,p);
+% J
+% error('2')
 %   plot(x,J,x,f)
 
 

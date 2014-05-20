@@ -1,4 +1,4 @@
-function [uu,d] = rk7(eqn,u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR)
+function [uu,d] = rk7(eqn,u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj)
 %RK1 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -90,9 +90,24 @@ unew = u;%zeros(N+2,1);
  
  phi = zeros(N+2,length(c));
  for steps = 1:length(c);
-    Z = unstructuredrecon(unew,x,h,N,BCLeft,uL,BCRight,uR,p);
-    phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
-    
+%     Z = unstructuredrecon(unew,x,h,N,BCLeft,uL,BCRight,uR,p);
+  
+Z = obj.unstructuredrecon(unew);
+     
+     
+% % % %     phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
+% if(steps==length(c))
+% %     A
+% %     k
+% %     phi
+% %     unew
+%    Z
+%    error('1')
+% end
+phi(:,steps) = obj.computefluxintegral(Z);
+%     Z
+%     phi
+%     error('1')
     unew = u+phi*A(steps,:)'*k;
     
  end

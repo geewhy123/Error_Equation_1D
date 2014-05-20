@@ -2,7 +2,7 @@ function [left,right ] = computeflux(Z,h,N,p,phys,equation )
 %COMPUTEFLUX Summary of this function goes here
 %   Detailed explanation goes here
 
-global dir
+% global dir
 
 left  = NaN*ones(N+2,1);
 right = NaN*ones(N+2,1);
@@ -11,15 +11,10 @@ up = zeros(N+1,1);
 for i = 2:N+2
  if (i==2)
         y = Z(:,i);
-%         yl = -y;%zeros(size(Z(:,i)));
-       % yl = Z(:,N+1);
-       
+        yl = Z(:,N+1);
  elseif(i==N+2)
-
-%         y = Z(:,2);
-
+        y = Z(:,2);
         yl = Z(:,i-1);
-%         y = -yl;%zeros(size(Z(:,i)));
  else
         y = Z(:,i);
         yl = Z(:,i-1);
@@ -28,131 +23,54 @@ end
 
 switch p
     case 2
-        
-        if(i==2)
-        yl = 0;    
-        upl1 = y(2);
-        upl2 = upl1;
-        ul1 = 0;
-        ul2 = 0;
-        elseif(i==N+2)
-            y=0;
-        upl2 = yl(2);
-        upl1 = upl2;
-        ul1 = 0;
-        ul2 = 0;
-        else
-        
+          
         upl1 = y(2);
         upl2 = yl(2);
-        
-        
-%         upl1
-        
         ul1 = y(1)+y(2)*(-h(i)/2);
         ul2 = yl(1) + yl(2)*(h(i-1)/2);
-        end
         upl = (upl1+upl2)/2 + (.2/((h(i)+h(i-1))/2))*(ul1-ul2);
 
-% if(i==4)
-%     upl
-%     error('1')
-% end
-        
 
     case 3
        
-  if(i==2)
-        yl = 0;    
-        upl1 =  y(2)+2*y(3)*-h(i)/2;
-        upl2 = upl1;
-        ul1 = 0;
-        ul2 = 0;
-        elseif(i==N+2)
-            y=0;
-        upl2 = yl(2)+2*yl(3)*h(i-1)/2;
-        upl1 = upl2;
-        ul1 = 0;
-        ul2 = 0;
-        else
+
 
       
         upl1 = y(2)+2*y(3)*(-h(i)/2);
         upl2 = yl(2)+2*yl(3)*h(i-1)/2;
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 ;
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 ;
-  end
         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ul1-ul2);
         
 
     case 4
-         if(i==2)
-        yl = 0;    
-        upl1 =  y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
-        upl2 = upl1;
-        ul1 = 0;
-        ul2 = 0;
-        elseif(i==N+2)
-            y=0;
-        upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2;
-        upl1 = upl2;
-        ul1 = 0;
-        ul2 = 0;
-        else
+       
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2;
 
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3;
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3;
-         end
         upl = (upl1+upl2)/2;% +(.2/((h(i)+h(i+1))/2))*(ul1-ul2);
              
 
     case 5
-       if(i==2)
-        yl = 0;    
-        upl1 =  y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2+4*y(5)*(-h(i)/2)^3;
-        upl2 = upl1;
-        ul1 = 0;
-        ul2 = 0;
-        elseif(i==N+2)
-            y=0;
-        upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2+4*yl(5)*(h(i-1)/2)^3;
-        upl1 = upl2;
-        ul1 = 0;
-        ul2 = 0;
-        else
+       
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3;
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3+y(5)*(-h(i)/2)^4;
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3 +yl(5)*(h(i-1)/2)^4; 
-       end
         upl = (upl1+upl2)/2;
 
 
     case 6
-        if(i==2)
-        yl = 0;    
-        upl1 =  y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2+4*y(5)*(-h(i)/2)^3+5*y(6)*(-h(i)/2)^4;
-        upl2 = upl1;
-        ul1 = 0;
-        ul2 = 0;
-        elseif(i==N+2)
-            y=0;
-        upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2+4*yl(5)*(h(i-1)/2)^3+5*yl(6)*(h(i-1)/2)^4;
-        upl1 = upl2;
-        ul1 = 0;
-        ul2 = 0;
-        else
-
+      
 
         upl1 = y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2   + 4*y(5)*(-h(i)/2)^3+ 5*y(6)*(-h(i)/2)^4;
         upl2 = yl(2)+2*yl(3)*h(i-1)/2+3*yl(4)*(h(i-1)/2)^2   + 4*yl(5)*(h(i-1)/2)^3 + 5*yl(6)*(h(i-1)/2)^4; 
         ul1 = y(1)+y(2)*(-h(i)/2) + y(3)*(-h(i)/2)^2 + y(4)*(-h(i)/2)^3+y(5)*(-h(i)/2)^4 +y(6)*(-h(i)/2)^5;
         ul2 = yl(1) + yl(2)*(h(i-1)/2) + yl(3)*(h(i-1)/2)^2 + yl(4)*(h(i-1)/2)^3 +yl(5)*(h(i-1)/2)^4 + yl(6)*(h(i-1)/2)^5; 
-        end
         upl = (upl1+upl2)/2;
            
         
@@ -250,11 +168,7 @@ left(2:N+1) = up(1:N);
 right(2:N+1) = up(2:N+1);
 
 
-% up
-% left
-% right
-%  left-right
-% error('1')
+
 % for i = 2:N+1
 %  if (i==2)
 %         y = Z(:,i);

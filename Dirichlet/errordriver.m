@@ -78,7 +78,7 @@ u=u0;
 
 global AD
 AD = computepseudo(N,x,h,p);    
-AD
+
 
 
 % plot(x,ue,'*')
@@ -96,21 +96,22 @@ AD
 % 
 
 
-[Z] = unstructuredrecon(ue,x,h,N,2*pi/exp(1)^3,2*pi/exp(1)^3,p)
+[Z] = unstructuredrecon(ue,x,h,N,0,0,p)
  [er]=reconplot(x,h,N,p,Z);
  er
- error('1')
- [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim);
-figure
- plot(x,phi)
+ 
+%  error('1')
+% %  [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim);
+% % figure
+% %  plot(x,phi)
 %   Z
 %    phi
-    sum(abs(phi(2:N+1)))/N
-  sqrt(sum((phi(2:N+1)).^2)/N)
-  max(abs(phi))
-
-figure
-plot(x,f)
+% %     sum(abs(phi(2:N+1)))/N
+% %   sqrt(sum((phi(2:N+1)).^2)/N)
+% %   max(abs(phi))
+% % 
+% % figure
+% % plot(x,f)
 % error('1')
 
 
@@ -140,8 +141,10 @@ d=0;
 
 
 [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
-
-
+% if(j==20)
+% uu
+% error('1')
+% end
 u = uu;
 
 % T = (1:1:j)*k;

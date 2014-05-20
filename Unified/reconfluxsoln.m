@@ -10,8 +10,9 @@ phi(N+2) = NaN;
 
 [left,right] = computeflux(Z,h,N,p,phys,'solution');
 
-
-
+% left
+% right
+% error('1')
 % for i = 2:N+1
 
 
@@ -38,7 +39,6 @@ if(strcmp(phys,'Poisson')==1)
    
         phi= (upr-upl)./h-f;%Poisson
  
-        
 elseif(strcmp(phys,'Advection')==1)
     
 
