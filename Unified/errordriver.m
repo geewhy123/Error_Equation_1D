@@ -120,9 +120,12 @@ f = problem.source;
  count = 0;
  while(max(abs(del)) > 1e-10)
      count = count +1;
-     dt = .001;
+     dt = .002;
      
 K = J(2:N+1,2:N+1)+eye(N)/dt;
+% K
+% error('1')
+ K = (K+K')/2;
 
 [Z] = problem.unstructuredrecon(u0);%u0,x,h,N,NaN,NaN,p);
 
