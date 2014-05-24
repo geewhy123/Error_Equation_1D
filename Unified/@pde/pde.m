@@ -57,6 +57,7 @@ classdef pde < handle
         [uu,d] = updatesolution(obj,u);
         FI = computefluxintegral(obj,u);
         J=computefluxjacobian(obj,u);
+        R = computeres(obj,u,time);
         
     end
     

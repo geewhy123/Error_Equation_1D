@@ -108,38 +108,38 @@ J = problem.computefluxjacobian(ue);%,x,h,N,p);
 % max(abs(J(2:N+1)-f(2:N+1))) 
 
 % R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
-[Z] = problem.unstructuredrecon(ue);%ue,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
-f = problem.source;
- [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim)
- max(abs(phi))
- del = ones(N,1);
- t=0;
- u0 = ue;
- count = 0;
- while(max(abs(del)) > 1e-10)
-     count = count +1;
-     dt = .002;
-     
-K = J(2:N+1,2:N+1)+eye(N)/dt;
-% K
-% error('1')
- K = (K+K')/2;
-
-[Z] = problem.unstructuredrecon(u0);%u0,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
- [R]=reconfluxsoln(Z,f,h,N,p,physics,t)
-    del = K\R(2:N+1);
-     uu = u0(2:N+1) + del*dt;
-     u0 = NaN*ones(N+2,1);
-     u0(2:N+1) = uu;
-     t = t+dt;
- end
- u0
- max(abs(u0-ue))
- error('1')
+% % % [Z] = problem.unstructuredrecon(ue);%ue,x,h,N,NaN,NaN,p);
+% % % 
+% % % %  [er]=reconplot(x,h,N,p,Z);
+% % % f = problem.source;
+% % %  [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim)
+% % %  max(abs(phi))
+% % %  del = ones(N,1);
+% % %  t=0;
+% % %  u0 = ue;
+% % %  count = 0;
+% % %  while(max(abs(del)) > 1e-10)
+% % %      count = count +1;
+% % %      dt = .002;
+% % %      
+% % % K = J(2:N+1,2:N+1)+eye(N)/dt;
+% % % % K
+% % % % error('1')
+% % %  K = (K+K')/2;
+% % % 
+% % % [Z] = problem.unstructuredrecon(u0);%u0,x,h,N,NaN,NaN,p);
+% % % 
+% % % %  [er]=reconplot(x,h,N,p,Z);
+% % %  [R]=reconfluxsoln(Z,f,h,N,p,physics,t)
+% % %     del = K\R(2:N+1);
+% % %      uu = u0(2:N+1) + del*dt;
+% % %      u0 = NaN*ones(N+2,1);
+% % %      u0(2:N+1) = uu;
+% % %      t = t+dt;
+% % %  end
+% % %  u0
+% % %  max(abs(u0-ue))
+% % %  error('1')
 
 
 d=1;
@@ -291,9 +291,11 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
 
-
+% %     FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
+FI = problem.computeres(ue,nSteps*k);
+    FI
+error('1')
 
 
  global AD
