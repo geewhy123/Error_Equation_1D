@@ -17,7 +17,6 @@ end
  
  
  [left,right] = computeflux(Z,h,N,r,phys,'residual');
- 
  for i = 2:N+1
 
 % [ur,ul,R(i)] = reconflux(u,Z,f,k,h,i,N,r,phys,uder,j,time,gsp);%%%
@@ -43,6 +42,9 @@ end
 
  end
  
+%    dUdt
+%   error('1')
+
 
 % switch r
 % 

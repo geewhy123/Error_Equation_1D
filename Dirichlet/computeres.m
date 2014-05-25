@@ -13,12 +13,21 @@ end
 
 
  [Z]=unstructuredrecon(u,x,h,N,0,0,r);
+%  if (time > 0)
+%     Z
+%     error('1')
+%  end
+ 
+ 
  R = zeros(N+2,1);
  %uxx = zeros(N+2,1);
- 
+
  
  [left,right] = computeflux(Z,h,N,r,phys,'residual');
-
+ 
+%  [left right]
+ 
+% error('1')
 
  for i = 2:N+1
 

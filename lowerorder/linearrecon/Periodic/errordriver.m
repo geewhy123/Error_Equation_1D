@@ -9,14 +9,14 @@ if(p>0)
 
     rng(1234);
 
- g = randi(1000000);
+%  g = randi(1000000);
 %  977219
 % rng(g)
 %   rng(972219);  
 w = 0;
 h0 = 1/N;
 
-CFL = 0.4;
+CFL = 0.2;
 k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1)
@@ -199,6 +199,9 @@ tlim = T(end);
 
 global dUdt
 dUdt = diffU(U,k);
+
+% U
+% error('1')
 gsp = NaN;
 
 % if not using FD, then use this to spline
@@ -266,15 +269,14 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
+     FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
 
-    FI
-error('1')
+%     FI
+% error('1')
 
 
  global AD
  AD = computepseudo(N,x,h,r);
-
 
 %global R
 R = zeros(N+2,nSteps+1);
@@ -284,13 +286,15 @@ for j = 1:nSteps+1
     
 
    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
+   
 
 tt = tt+k;
    
 
 end
 
-
+% R
+% error('1')
 
 
 if(exist('goal','var') && strcmp(goal,'FI')==1)
@@ -412,7 +416,6 @@ nSteps
 end
 
 s=0;
-
 [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
 

@@ -22,9 +22,16 @@ classdef pde < handle
          source;
          primalPI;
          moments; 
-         reconM;
+         primalRM;
          xhat;
          tStep;
+         resPI;
+         resRM;
+         errorPI;
+         errorRM;
+         residual;
+         Rsp;
+         
     end
     
     methods
@@ -45,6 +52,7 @@ classdef pde < handle
          obj.cellCentroids = x;
          obj.cellWidths = h;
          obj.tStep = k;
+         
             end
         end
 %     end
@@ -52,12 +60,15 @@ classdef pde < handle
         initializeexact(obj);
         computemoments(obj);
         computeprimalpseudo(obj);
-        Z = unstructuredrecon(obj,u);
+        Z = unstructuredrecon(obj,u,order,eqn);
         er = reconplot(obj,Z);
         [uu,d] = updatesolution(obj,u);
         FI = computefluxintegral(obj,u);
         J=computefluxjacobian(obj,u);
-        R = computeres(obj,u,time);
+        R = computeres(obj,u,time,r);
+        computerespseudo(obj);
+        [AD,AA] = computepseudo(obj,p);
+        computeerrorpseudo(obj);
         
     end
     

@@ -6,13 +6,13 @@ B = ['2 2 4';'2 2 6';'2 4 4';'2 4 6'; '2 6 4'; '2 6 6'; '4 2 6'; '4 4 6'; '4 6 6
 A = [2 2 5; 2 3 4; 2 3 5; 3 3 5; 3 4 5; 3 5 5 ; 4 2 5; 4 4 5; 4 5 6];
 A = [3 2 4; 3 2 5; 3 2 6; 3 3 4; 4 3 5; 4 3 6; 4 2 5; 4 2 6; 5 2 6];
 [m,n] = size(A);
-N = 40
+N = 20;
 figure
 hold on
 for j = 1:m
-   [err4b(j),x,cverr4b(j),exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),1/10,100,.1,7,'Advection');
+%    [err4b(j),x,cverr4b(j),exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),1/10,100,.1,7,'Advection');
  
-  %[errerr1b(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),1,100,10,7,'Poisson');
+  [errerr20(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),1,100,10,7,'Poisson');
  %%% [errerr4(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),0,100,.1,7,'Poisson');
  
 %  [berrerrlin8(j),x,cverr,exacterr(:,j),ee(:,j)] = errordriver(N,A(j,1),A(j,2),A(j,3),0,100,.1,7,'Burgers');

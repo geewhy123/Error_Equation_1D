@@ -1,6 +1,6 @@
-function [ Z] = unstructuredrecon(obj,u)
+function [ Z] = unstructuredrecon(obj,u,p,eqn)
 %UNSTRUCTUREDRECON3 Summary of this function goes here
-p = obj.pOrder;
+% p = obj.pOrder;
 switch p
 %     case 2
 %    [Z] = unstructuredrecon1 (obj,u,p); 
@@ -14,16 +14,19 @@ switch p
         case 6
    [~,Z] = unstructuredrecon5 (u,x,h,N,u0,u1); 
     otherwise 
-        [Z] = unstructuredreconp (obj,u,p); 
+        [Z] = unstructuredreconp (obj,u,p,eqn); 
 %         p
 %         
 %        assert(0==1)
 end
 
+
 end
 
 
-function [Z] = unstructuredreconp(obj,u ,p)
+function [Z] = unstructuredreconp(obj,u ,p,eqn)
+
+
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 %   Detailed explanation goes here
 N = obj.nCells;
@@ -35,6 +38,22 @@ Z = zeros(p,N+2);
 
 
 if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+    if(strcmp(eqn,'solution')==1)
+       AD = obj.primalPI;
+    elseif(strcmp(eqn,'error')==1)
+%         obj.bcLeftType = 'D';
+%         obj.bcLeftVal = 1;
+%         obj.bcRightType = 'D';
+%         obj.bcRightVal = 1;
+       AD = obj.errorPI;
+    elseif(strcmp(eqn,'residual')==1)
+       AD = obj.resPI;
+    else
+        eqn
+        error('1')
+end
+    
+    
 for i = 2:N+1
 switch i
     case 2
@@ -79,7 +98,7 @@ ubi = u(i);
 
 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
-AD = obj.primalPI;
+% AD = obj.primalPI;
 
 Y(2:p) = AD(:,:,i)*b;
 
@@ -108,7 +127,27 @@ end
 end
 
 elseif(obj.bcLeftType=='D' && obj.bcRightType == 'D')
-    AA = obj.reconM;
+    
+%     AA = obj.reconM;
+% AA = zeros(4,p-1,N+2);
+  if(strcmp(eqn,'solution')==1)
+       AA = obj.primalRM;
+       AD = obj.primalPI;
+    elseif(strcmp(eqn,'error')==1)
+%         obj.bcLeftType = 'D';
+%         obj.bcLeftVal = 1;
+%         obj.bcRightType = 'D';
+%         obj.bcRightVal = 1;
+       AA = obj.errorRM;
+       AD = obj.errorPI;
+    elseif(strcmp(eqn,'residual')==1)
+       AA = obj.resRM;
+       AD = obj.resPI;
+    else
+        eqn
+        error('1')
+end
+    
     
 i=2;
 cv1 =i+1;
@@ -267,7 +306,7 @@ ubi = u(i);
 
 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
-AD = obj.primalPI;
+% AD = obj.primalPI;
 
 Y(2:p) = AD(:,:,i)*b;
 

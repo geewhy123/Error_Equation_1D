@@ -1,4 +1,4 @@
-function [phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val)
+function [phi] = reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val,obj)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);
@@ -7,7 +7,7 @@ phi(N+2) = NaN;
 
 
 
-[left,right] = computeflux(Z,h,N,p,phys,'error');
+[left,right] = computeflux(Z,h,N,p,phys,'error',obj);
 
 
 

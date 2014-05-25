@@ -25,7 +25,7 @@ global TEND
 end
 
 for kk = 2:N+1
-val(kk,1:length(timesbet)) = fnval(timesbet,Rsp(kk));
+val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
 end
 %val
 
@@ -50,7 +50,8 @@ end
          end
          
          for steps = 1:9
-            [Zu(:,:,steps)]=unstructuredrecon(Ubar(:,steps),x,h,N,NaN,NaN,p); 
+% %             [Zu(:,:,steps)]=unstructuredrecon(Ubar(:,steps),x,h,N,NaN,NaN,p); 
+            Zu(:,:,steps) = obj.unstructuredrecon(Ubar(:,steps),p);
          end
         
      end
@@ -92,7 +93,7 @@ unew = u;%zeros(N+2,1);
  for steps = 1:length(c);
 %     Z = unstructuredrecon(unew,x,h,N,BCLeft,uL,BCRight,uR,p);
   
-Z = obj.unstructuredrecon(unew);
+Z = obj.unstructuredrecon(unew,p,eqn);
      
      
 % % % %     phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
@@ -104,7 +105,13 @@ Z = obj.unstructuredrecon(unew);
 %    Z
 %    error('1')
 % end
+if(strcmp(eqn,'solution')==1)
 phi(:,steps) = obj.computefluxintegral(Z);
+elseif(strcmp(eqn,'error')==1)
+      phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps),obj);
+else
+    error('2')
+end
 %     Z
 %     phi
 %     error('1')

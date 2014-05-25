@@ -261,8 +261,9 @@ UU = U;
 
 
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
-    FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
-
+     FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
+% FI
+% error('1')
 
 
  global AD
@@ -282,7 +283,7 @@ tt = tt+k;
 
 end
 
-
+% error('1')
 
 
 if(exist('goal','var') && strcmp(goal,'FI')==1)
@@ -294,9 +295,12 @@ end
 
 % U
 %  R
+% dUdt
+% error('1')
 Rm=max(abs(R(:,end)))
 
-
+ sqrt(sum((R(2:N+1,end)).^2)/N)
+% error('1')
 % 
 %     cverr2 = Rm;
 %     errerr2 = Rm;

@@ -90,7 +90,7 @@ problem.computeprimalpseudo();
 
 
 
- Z = problem.unstructuredrecon(ue);
+ Z = problem.unstructuredrecon(ue,problem.pOrder,'solution');
  
 er = problem.reconplot(Z)
 
@@ -99,8 +99,8 @@ er = problem.reconplot(Z)
 %  computejacobiananalytic(p,h,N);
 %   error('1')
 
-J = problem.computefluxjacobian(ue);%,x,h,N,p);
-% J
+% % % J = problem.computefluxjacobian(ue);%,x,h,N,p);
+% % J
 % error('1')
 %   plot(x,J,x,f)
 
@@ -168,6 +168,9 @@ d=0;
 
 
 [uu,d] = problem.updatesolution(u);
+
+% [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
+
 % if(j==20)
 %     uu
 % error('1')
@@ -224,6 +227,9 @@ tlim = T(end);
 
 global dUdt
 dUdt = diffU(U,k);
+
+%  U
+%  error('1')
 gsp = NaN;
 
 % if not using FD, then use this to spline
@@ -271,7 +277,7 @@ dir
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem
     
     
     
@@ -293,14 +299,17 @@ UU = U;
     %[FI] =computefluxint(ue,x,h,N,f,p, physics);
 
 % %     FI = computeres(ue,x,h,N,f,p,physics,nSteps*k,gsp);
-FI = problem.computeres(ue,nSteps*k);
-    FI
-error('1')
+% % %  FI = problem.computeres(ue,nSteps*k,p);
+ 
+ 
+%     FI
+% error('1')
 
 
- global AD
- AD = computepseudo(N,x,h,r);
-
+%  global AD
+  problem.computerespseudo();%N,x,h,r);
+% problem.resPI
+% error('1')
 
 %global R
 R = zeros(N+2,nSteps+1);
@@ -309,14 +318,14 @@ R = zeros(N+2,nSteps+1);
 for j = 1:nSteps+1
     
 
-   R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
+%    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
+R(:,j) = problem.computeres(U(:,j),tt,r);
+
 
 tt = tt+k;
    
 
 end
-
-
 
 
 if(exist('goal','var') && strcmp(goal,'FI')==1)
@@ -328,9 +337,14 @@ end
 
 
 
+problem.residual = R;
+
+
+
 Rm=max(abs(R(:,end)))
 
-% error('1');
+ sqrt(sum((R(2:N+1,end)).^2)/N)
+%  error('1');
 % 
 %     cverr2 = Rm;
 %     errerr2 = Rm;
@@ -389,13 +403,15 @@ e = zeros(N+2,1);
 ee =zeros(N+2,1);
 
 
-
+problem.Rsp =Rsp;
 
 global M
 M = nSteps;
 
 
- AD = computepseudo(N,x,h,q);
+% % %  AD = computepseudo(N,x,h,q);
+problem.computeerrorpseudo();
+
 
 % size(U)
 % size(R)
@@ -439,8 +455,9 @@ end
 
 s=0;
 
-[ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+% % % [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
 
+[ee,s] = problem.updateerror(e,TT,j);
 
 
 e = ee;
