@@ -66,7 +66,7 @@ for i = 2:N+1
         cv3 = i+3;
         cv4 = i+4;
     else
-         assert(0)
+%          assert(0)
         
     end
     

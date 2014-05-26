@@ -1,4 +1,4 @@
-function [phi] = reconfluxsoln( Z,f,h,N,p,phys,time)
+function [phi] = reconfluxsoln( Z,f,h,N,p,phys,time,obj)
 %RECONFLUX Summary of this function goes here
 %   Detailed explanation goes here
 phi = zeros(N+2,1);
@@ -8,7 +8,7 @@ phi(N+2) = NaN;
 
 
 
-[left,right] = computeflux(Z,h,N,p,phys,'solution');
+[left,right] = computeflux(Z,h,N,p,phys,'solution',obj);
 
 % left
 % right

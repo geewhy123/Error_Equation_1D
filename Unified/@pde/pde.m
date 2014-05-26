@@ -63,12 +63,13 @@ classdef pde < handle
         Z = unstructuredrecon(obj,u,order,eqn);
         er = reconplot(obj,Z);
         [uu,d] = updatesolution(obj,u);
-        FI = computefluxintegral(obj,u);
-        J=computefluxjacobian(obj,u);
+        FI = computefluxintegral(obj,u,eqn);
+        J=computefluxjacobian(obj,u,eqn);
         R = computeres(obj,u,time,r);
         computerespseudo(obj);
         [AD,AA] = computepseudo(obj,p);
         computeerrorpseudo(obj);
+        [errerr2,x,cverr2,exacterr,ee  ]=solvebyjacobian(obj);
         
     end
     

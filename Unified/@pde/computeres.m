@@ -47,6 +47,8 @@ Z = obj.unstructuredrecon(u,r,eqn);
 
 global dUdt
 global KK
+
+
 ut = dUdt(i,round(time/KK)+1);
 
 % if (time ==0)

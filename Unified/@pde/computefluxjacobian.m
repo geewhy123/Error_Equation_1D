@@ -1,14 +1,28 @@
-function [ J ] = computefluxjacobian( obj,u)
+function [ J ] = computefluxjacobian( obj,u,eqn)
 %COMPUTEFLUXJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
+
+if(strcmp(eqn,'solution')==1)
+    order = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    order = obj.qOrder;
+else
+assert(0);    
+end
 
 
 N = obj.nCells;
 J = zeros(N+2,N+2);
-Z = obj.unstructuredrecon(u);
-R = obj.computefluxintegral(Z);%,x,h,N,p)
+Z = obj.unstructuredrecon(u,order,eqn);
+
+
+% R = obj.computefluxintegral(Z);%,x,h,N,p)
+
+
+
+
 I = eye(N);
-ep = 1e-10;
+ep = 1e-8;
 u1 = NaN*ones(N+2,1);
 
 for i = 2:N+1
@@ -17,10 +31,18 @@ for i = 2:N+1
 
  
        
-       Z1 = obj.unstructuredrecon(u1);
+       Z1 = obj.unstructuredrecon(u1,order,eqn);
  
-       R1=obj.computefluxintegral(Z1);%u1,x,h,N,p);
-       R0=obj.computefluxintegral(Z);%u,x,h,N,p);
+       R1=obj.computefluxintegral(Z1,eqn);%u1,x,h,N,p);
+       R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
+
+       
+%     if(strcmp(eqn,'error')==1)
+%     R0
+% error('1')
+%  end
+
+       
        
 %        R1-R0
 %        error('1')
@@ -28,6 +50,7 @@ for i = 2:N+1
     
 %    end
 end
+
 
 
 

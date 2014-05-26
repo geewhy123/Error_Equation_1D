@@ -89,6 +89,7 @@ switch p
     case 4
          if(i==2)
         yl = 0;    
+        
         upl1 =  y(2)+2*y(3)*-h(i)/2+3*y(4)*(-h(i)/2)^2;
         upl2 = upl1;
         ul1 = 0;

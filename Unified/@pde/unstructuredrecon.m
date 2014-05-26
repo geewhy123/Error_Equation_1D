@@ -192,6 +192,15 @@ for jj = 1:p-2
    C(4,jj) = (A(4,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
 end
 
+
+% [m,n] = size(A);
+% if(n == 1)
+%     i
+%     AA
+%     eqn
+%     obj.errorRM
+% end
+
 A = (A(:,2:p-1)-C);
         
 

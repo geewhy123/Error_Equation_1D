@@ -1,6 +1,6 @@
-function [ FI ] = computefluxintegral( obj,Z )
+function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1)
-    FI=computepoissonfluxintegral(obj,Z);
+    FI=computepoissonfluxintegral(obj,Z,eqn);
 elseif(strcmp(obj.physics,'Advection')==1)
     FI=computeadvectionfluxintegral(obj,Z);
 else
@@ -9,14 +9,21 @@ end
 
 end
 
-function [ FI ] = computepoissonfluxintegral( obj,Z )
+function [ FI ] = computepoissonfluxintegral( obj,Z,eqn )
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
 x = obj.cellCentroids;
 h = obj.cellWidths;
 N = obj.nCells;
-p = obj.pOrder;
 
+if(strcmp(eqn,'solution')==1)
+p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+    
+else
+   assert(0); 
+end
 
 
 % Z=unstructuredrecon(u,x,h,N,NaN,NaN,p);
@@ -116,6 +123,9 @@ Fl;
 % plot(x,FrAve,x,FlAve)
 
  FI = (FrAve-FlAve)./h-obj.source;
+
+ 
+ 
 
 
 % 
