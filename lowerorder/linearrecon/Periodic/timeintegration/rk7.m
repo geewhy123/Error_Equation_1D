@@ -91,8 +91,9 @@ unew = u;%zeros(N+2,1);
  phi = zeros(N+2,length(c));
  for steps = 1:length(c);
     Z = unstructuredrecon(unew,x,h,N,NaN,NaN,p);
-    phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
+ 
     
+    phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
     unew = u+phi*A(steps,:)'*k;
     
  end

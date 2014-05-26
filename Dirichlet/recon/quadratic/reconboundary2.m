@@ -56,7 +56,7 @@ end
 
 
 % (wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))
-x2bi
+
 A = (A(:,2:2)-([(wi1*(xb1+x1-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2) ; 
                 (wi2*(xb2+x2-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;
                 (wi3*(xb3+x3-xi-xbi)/(xbi-(-hi/2)))*(x2bi-(-hi/2)^2)  ;

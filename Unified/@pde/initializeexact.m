@@ -39,9 +39,14 @@ f = zeros(N+2,1);
     %%%%%f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     %f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
-
-% % %      f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+     f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
+%      f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
+elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl))
+else
+   assert(0) 
+end
 %    f(i) = -(1/h(i))*(2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     
   
@@ -59,9 +64,14 @@ f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl))
 
 
  %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
- 
-% % %  ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
-ue(i) = (1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));
+ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+ ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+%  ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+ ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
+ else
+    assert(0) 
+ end
 % ue(i) = (1/h(i))*((xr-0.5)^5/5-(xl-0.5)^5/5);
 
  %initial
@@ -101,9 +111,15 @@ f = zeros(N+2,1);
            xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
  
-
+if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
 u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
+    ue(i) = (1/h(i))*(xr-xl);
+    u0(i) = 0.9;
+else
+    assert(0)
+end
 
 f(i) = 0;
     end

@@ -76,7 +76,8 @@ problem.initializeexact();
  
 u0 = problem.initialSolution;
 ue = problem.exactSolution;
-
+% plot(x,u0,x,ue)
+% assert(0)
 problem.computemoments();
 
 %u = ue;
@@ -88,12 +89,15 @@ problem.exactSolution
 % AD = computepseudo(N,x,h,p,BCRight,BCLeft);    
 problem.computeprimalpseudo();
 
+% problem.primalPI
+
+
 
 
  Z = problem.unstructuredrecon(ue,problem.pOrder,'solution');
  
 er = problem.reconplot(Z)
-
+% assert(0)
 %  error('1')
 
 %  computejacobiananalytic(p,h,N);

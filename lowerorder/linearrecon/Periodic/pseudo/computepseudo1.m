@@ -82,6 +82,9 @@ AA = double([wi1*(xb1-xbi+x1-xi) ;
             wi2*(xb2-xbi+x2-xi) ; 
             wi3*(xb3-xbi+x3-xi)  ;
             wi4*(xb4-xbi+x4-xi)  ]);
+        
+        
+
  AD(:,:,i)=pinv(AA);
 
  
