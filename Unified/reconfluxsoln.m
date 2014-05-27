@@ -40,7 +40,8 @@ if(strcmp(phys,'Poisson')==1)
         phi= (upr-upl)./h-f;%Poisson
  
 elseif(strcmp(phys,'Advection')==1)
-    
+%     [left right]
+%     error('1')
 
         
         phi= (ur2-ul1)./h-f; % primal

@@ -111,7 +111,13 @@ problem.computeprimalpseudo();
 er = problem.reconplot(Z)
 
 f = problem.source;
+% figure
+% plot(x,ue)
+% error('1')
 [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+% tau
+
+% error('1')
 % max(abs(tau))
 % % assert(0)
 %  error('1')
@@ -234,6 +240,7 @@ ylabel('u')
 figure
 plot(x,ue-u,'x')
 ylabel('ue-u')
+
 
 end
 
@@ -372,6 +379,8 @@ problem.residual = R;
 
 [-R(:,end) tau]
 max(abs(-R(:,end)-tau))
+plot(x,-R(:,end),x,tau)
+R
 error('1')
 
 
