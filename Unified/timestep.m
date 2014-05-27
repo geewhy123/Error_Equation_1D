@@ -5,7 +5,8 @@ switch equation
     case 'solution'
         phi=reconfluxsoln( Z,f,h,N,p,phys,time);
     case 'error'
-        phi=reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val,obj);
+%         phi = obj.computefluxintegral(Z,
+         phi=reconfluxerror( Z,f,k,h,N,p,phys,time,Rsp,Zu,val,obj);
     otherwise
         error('2')
     

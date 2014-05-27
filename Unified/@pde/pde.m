@@ -31,6 +31,7 @@ classdef pde < handle
          errorRM;
          residual;
          Rsp;
+         errorSource;
          
     end
     

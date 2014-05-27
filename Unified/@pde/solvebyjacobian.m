@@ -23,7 +23,7 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 
 %  [er]=reconplot(x,h,N,p,Z);
 f = obj.source;
- [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
+ [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
  max(abs(tau))
   
@@ -76,16 +76,25 @@ K = J(2:N+1,2:N+1)+eye(N)/dt;
  
  
  obj.computeerrorpseudo();
+[Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
+f = -Rend;
+   obj.errorSource = f;
+   f
+%    error('2')
+ 
  
  Je = obj.computefluxjacobian(ue,'error');
 % obj.errorRM
 % error('1')
 
-[Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
-f = -Rend;
+
 
 % error('1')
- [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,obj)
+%  [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,obj)
+%  error('1')
+ [tauE]= obj.computefluxintegral(Z,'error')
+%  error('1')
+ 
 %  Je
 %  error('1')
 w = Je(2:N+1,2:N+1)\tauE(2:N+1);

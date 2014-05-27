@@ -121,9 +121,13 @@ Fl;
 
 
 % plot(x,FrAve,x,FlAve)
-
+if(strcmp(eqn,'solution')==1)
  FI = (FrAve-FlAve)./h-obj.source;
-
+elseif(strcmp(eqn,'error')==1)
+    size(FrAve)
+    size(obj.errorSource)
+  FI = (FrAve-FlAve)./h-obj.errorSource;
+end
  
  
 

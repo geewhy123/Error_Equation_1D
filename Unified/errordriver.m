@@ -114,7 +114,12 @@ f = problem.source;
 % figure
 % plot(x,ue)
 % error('1')
-[tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+
+
+% % % % [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+[tau]=problem.computefluxintegral(Z,'solution')%reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+
+
 % tau
 
 % error('1')
@@ -381,7 +386,7 @@ problem.residual = R;
 max(abs(-R(:,end)-tau))
 plot(x,-R(:,end),x,tau)
 R
-error('1')
+% error('1')
 
 
 
