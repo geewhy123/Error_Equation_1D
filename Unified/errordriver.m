@@ -109,62 +109,66 @@ problem.computeprimalpseudo();
  Z = problem.unstructuredrecon(ue,problem.pOrder,'solution');
  
 er = problem.reconplot(Z)
-% assert(0)
+
+f = problem.source;
+[tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+% max(abs(tau))
+% % assert(0)
 %  error('1')
 
 %  computejacobiananalytic(p,h,N);
 %   error('1')
 
-J = problem.computefluxjacobian(ue,'solution');%,x,h,N,p);
-Je = J
-% error('1')
-% % J
-% error('1')
-%   plot(x,J,x,f)
-
-
-% max(abs(J(2:N+1)-f(2:N+1))) 
-
-% R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
-[Z] = problem.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
-f = problem.source;
- [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
-
- max(abs(tau))
-  
- del = ones(N,1);
- t=0;
- u0 = ue;
- count = 0;
- while(max(abs(del)) > 1e-10 && 0)
-     count = count +1;
-     dt = .01;
-     
-K = J(2:N+1,2:N+1)+eye(N)/dt;
-% K
-% error('1')
- K = (K+K')/2;
-
-[Z] = problem.unstructuredrecon(u0,p,'solution');%u0,x,h,N,NaN,NaN,p);
-
-%  [er]=reconplot(x,h,N,p,Z);
- [R]=reconfluxsoln(Z,f,h,N,p,physics,t,problem)
-    del = K\R(2:N+1);
-     uu = u0(2:N+1) + del*dt;
-     u0 = NaN*ones(N+2,1);
-     u0(2:N+1) = uu;
-     t = t+dt;
- end
- u0
- max(abs(u0-ue))
- u0-ue
-
- v=Je(2:N+1,2:N+1)\tau(2:N+1)
- figure
- plot(x,u0-ue,x(2:N+1),v)
- figure
+% % % J = problem.computefluxjacobian(ue,'solution');%,x,h,N,p);
+% % % Je = J
+% % % % error('1')
+% % % % % J
+% % % % error('1')
+% % % %   plot(x,J,x,f)
+% % % 
+% % % 
+% % % % max(abs(J(2:N+1)-f(2:N+1))) 
+% % % 
+% % % % R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
+% % % [Z] = problem.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
+% % % 
+% % % %  [er]=reconplot(x,h,N,p,Z);
+% % % f = problem.source;
+% % %  [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+% % % 
+% % %  max(abs(tau))
+% % %   
+% % %  del = ones(N,1);
+% % %  t=0;
+% % %  u0 = ue;
+% % %  count = 0;
+% % %  while(max(abs(del)) > 1e-10 && 0)
+% % %      count = count +1;
+% % %      dt = .01;
+% % %      
+% % % K = J(2:N+1,2:N+1)+eye(N)/dt;
+% % % % K
+% % % % error('1')
+% % %  K = (K+K')/2;
+% % % 
+% % % [Z] = problem.unstructuredrecon(u0,p,'solution');%u0,x,h,N,NaN,NaN,p);
+% % % 
+% % % %  [er]=reconplot(x,h,N,p,Z);
+% % %  [R]=reconfluxsoln(Z,f,h,N,p,physics,t,problem)
+% % %     del = K\R(2:N+1);
+% % %      uu = u0(2:N+1) + del*dt;
+% % %      u0 = NaN*ones(N+2,1);
+% % %      u0(2:N+1) = uu;
+% % %      t = t+dt;
+% % %  end
+% % %  u0
+% % %  max(abs(u0-ue))
+% % %  u0-ue
+% % % 
+% % %  v=Je(2:N+1,2:N+1)\tau(2:N+1)
+% % %  figure
+% % %  plot(x,u0-ue,x(2:N+1),v)
+% % %  figure
 %   error('1')
 
  
@@ -304,7 +308,7 @@ dir
 
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau
     
     
     
@@ -366,7 +370,9 @@ end
 
 problem.residual = R;
 
-
+[-R(:,end) tau]
+max(abs(-R(:,end)-tau))
+error('1')
 
 
 
@@ -449,24 +455,24 @@ problem.computeerrorpseudo();
 
 
 %new
-Je = problem.computefluxjacobian(ue,'error');
-% problem.errorRM
-% error('1')
-
-[Z] = problem.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
-f = -R(:,end);
-
-% error('1')
- [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,problem)
-%  Je
-%  error('1')
-w = Je(2:N+1,2:N+1)\tauE(2:N+1);
-max(abs(w))
-% error('1')
-figure
-plot(x(2:N+1),w)
-figure
-% error('2')
+% % % Je = problem.computefluxjacobian(ue,'error');
+% % % % problem.errorRM
+% % % % error('1')
+% % % 
+% % % [Z] = problem.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
+% % % f = -R(:,end);
+% % % 
+% % % % error('1')
+% % %  [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,problem)
+% % % %  Je
+% % % %  error('1')
+% % % w = Je(2:N+1,2:N+1)\tauE(2:N+1);
+% % % max(abs(w))
+% % % % error('1')
+% % % figure
+% % % plot(x(2:N+1),w)
+% % % figure
+% % % % error('2')
 
 %new
 
