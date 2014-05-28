@@ -43,7 +43,7 @@ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
      f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
 %      f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
-f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl))
+f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
 else
    assert(0) 
 end

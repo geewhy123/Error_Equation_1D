@@ -125,8 +125,8 @@ Fl;
 if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
  FI = (FrAve-FlAve)./h-obj.source;
 elseif(strcmp(eqn,'error')==1)
-    size(FrAve)
-    size(obj.errorSource)
+%     size(FrAve)
+%     size(obj.errorSource)
   FI = (FrAve-FlAve)./h-obj.errorSource;
 
 
@@ -283,11 +283,11 @@ FlAve(2:N+1) = Fr(1:N);
  FI = (FrAve-FlAve)./h-obj.source;
 
  
- if(strcmp(eqn,'residual')==1)
-     new = [FrAve FlAve]
+%  if(strcmp(eqn,'residual')==1)
+%      new = [FrAve FlAve]
 %  FI
 %  error('1')
- end
+%  end
  
  
 elseif(strcmp(eqn,'error')==1)

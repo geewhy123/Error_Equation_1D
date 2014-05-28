@@ -88,11 +88,9 @@ problem.exactSolution
 
 
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
- if(strcmp(goal,'SS')==1 && 0)
+ if(strcmp(goal,'SS')==1 )
     fprintf('solving by Jacobian');
     [errerr2,x,cverr2,exacterr,ee  ]= problem.solvebyjacobian();
-    
-   
     return;
 end
 
@@ -317,7 +315,7 @@ nSteps
 %    error('1') 
 % end
 
-dir
+% dir
 
 if(q>0 && r > 0)
     
@@ -383,10 +381,10 @@ end
 
 problem.residual = R;
 
-[-R(:,end) tau]
-max(abs(-R(:,end)-tau))
-plot(x,-R(:,end),x,tau)
-R
+% [-R(:,end) tau]
+% max(abs(-R(:,end)-tau))
+% plot(x,-R(:,end),x,tau)
+% R
 % error('1')
 
 

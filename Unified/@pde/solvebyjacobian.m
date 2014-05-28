@@ -59,14 +59,14 @@ f = obj.source;
      u0(2:N+1) = uu;
      t = t+dt;
  end
- u0
- max(abs(u0-ue))
- u0-ue
+%  u0
+%  max(abs(u0-ue))
+%  u0-ue
 
  v=J(2:N+1,2:N+1)\tau(2:N+1)
 
   if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(J(2:N+1,2:N+1)))) < 1e-5)
-    v = pinv(J(2:N+1,2:N+1))*tau(2:N+1)
+    v = pinv(J(2:N+1,2:N+1))*tau(2:N+1);
   end
 %  max(abs(v-ue(2:N+1)))
 max(abs(v))
@@ -92,9 +92,10 @@ max(abs(v))
 
 
   obj.computerespseudo();
-  [Zr] = obj.unstructuredrecon(u,r,'residual')
-    [left,right] = computeflux(Zr,h,N,r,physics,'residual',obj);
-    Rend= (right-left)./h-f;
+  [Zr] = obj.unstructuredrecon(u,r,'residual');
+%     [left,right] = computeflux(Zr,h,N,r,physics,'residual',obj);
+%     Rend= (right-left)./h-f;
+Rend = obj.computefluxintegral(Zr,'residual');
  
  
  
@@ -103,7 +104,7 @@ max(abs(v))
 [Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
 f = -Rend;
    obj.errorSource = f;
-   f
+%    f
 %    error('2')
  
  
