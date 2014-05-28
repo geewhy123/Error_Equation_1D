@@ -2,7 +2,7 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1)
     FI=computepoissonfluxintegral(obj,Z,eqn);
 elseif(strcmp(obj.physics,'Advection')==1)
-    FI=computeadvectionfluxintegral(obj,Z);
+    FI=computeadvectionfluxintegral(obj,Z,eqn);
 else
     assert(0)
 end
@@ -20,7 +20,8 @@ if(strcmp(eqn,'solution')==1)
 p = obj.pOrder;
 elseif(strcmp(eqn,'error')==1)
     p = obj.qOrder;
-    
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
 else
    assert(0); 
 end
@@ -121,12 +122,14 @@ Fl;
 
 
 % plot(x,FrAve,x,FlAve)
-if(strcmp(eqn,'solution')==1)
+if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
  FI = (FrAve-FlAve)./h-obj.source;
 elseif(strcmp(eqn,'error')==1)
     size(FrAve)
     size(obj.errorSource)
   FI = (FrAve-FlAve)./h-obj.errorSource;
+
+
 end
  
  
@@ -143,13 +146,29 @@ end
  
 end
 
-function [ FI ] = computeadvectionfluxintegral( obj,Z )
+function [ FI ] = computeadvectionfluxintegral( obj,Z,eqn )
+
+
+
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
+
+% error('1')
+
+if(strcmp(eqn,'solution')==1)
+    p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
+else
+   assert(0); 
+end
+
 x = obj.cellCentroids;
 h = obj.cellWidths;
 N = obj.nCells;
-p = obj.pOrder;
+% p = obj.pOrder;
 
 
 
@@ -157,7 +176,6 @@ Fr = zeros(N+2,1);
 Fl = zeros(N+2,1);
 FrAve = zeros(N+2,1);
 FlAve = zeros(N+2,1);
-
 
 
 for i=2:N
@@ -258,8 +276,28 @@ FlAve(2:N+1) = Fr(1:N);
 
 % plot(x,FrAve,x,FlAve)
 
+% % % %  FI = (FrAve-FlAve)./h-obj.source;
+
+ 
+ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
  FI = (FrAve-FlAve)./h-obj.source;
 
+ 
+ if(strcmp(eqn,'residual')==1)
+     new = [FrAve FlAve]
+%  FI
+%  error('1')
+ end
+ 
+ 
+elseif(strcmp(eqn,'error')==1)
+%     size(FrAve)
+%      size(obj.errorSource)
+%      error('1')
+  FI = (FrAve-FlAve)./h-obj.errorSource;
+
+
+end
 
 % 
 %  FI

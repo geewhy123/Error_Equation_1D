@@ -33,9 +33,16 @@ Z = obj.unstructuredrecon(u,r,eqn);
  R = zeros(N+2,1);
  %uxx = zeros(N+2,1);
  
- 
-  [left,right] = computeflux(Z,h,N,r,phys,'residual',obj);
+% % % %   [left,right] = computeflux(Z,h,N,r,phys,'residual',obj);
   
+ R= obj.computefluxintegral(Z,'residual');  
+ 
+ 
+
+
+
+
+
 %   error('1')
  for i = 2:N+1
 
@@ -55,7 +62,9 @@ ut = dUdt(i,round(time/KK)+1);
 % round(time/KK)+1
 % end
 
-R(i)= -ut+(right(i)-left(i))/h(i)-f(i);
+% % % % R(i)= -ut+(right(i)-left(i))/h(i)-f(i);
+R(i) = R(i) - ut;
+
 
 if(strcmp(phys,'Burgers')==1)
    R(i) = -ut-(right(i)^2-left(i)^2)/(2*h(i))-f(i);  

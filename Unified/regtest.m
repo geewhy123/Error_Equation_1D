@@ -3,6 +3,9 @@ tic
 
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,4,0,'P',0,'P',0,10,7,'Poisson','SS');
 assert(abs(errerr2-0.014130429330857)/errerr2 < 0.001)
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(20,2,2,4,0,'P',0,'P',0,10,7,'Poisson','SS');
+% assert(abs(errerr2-6.829423497046346e-04)/errerr2 < 0.001) 
+
 
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,4,1/3,'P',0,'P',0,10,7,'Poisson','SS');
 assert(abs(errerr2-0.002502354702354)/errerr2 < 0.001)

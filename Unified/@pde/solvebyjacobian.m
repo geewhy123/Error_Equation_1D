@@ -19,6 +19,15 @@ obj.computeprimalpseudo();
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 
 
+% [d,c] =  eig(J(2:N+1,2:N+1))
+
+
+% nu = null(J(2:N+1,2:N+1));
+
+%  error('1')
+% J(2:N+1,2:N+1)
+% 
+% error('1')
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
 %  [er]=reconplot(x,h,N,p,Z);
@@ -35,10 +44,10 @@ f = obj.source;
      count = count +1;
      dt = .01;
      
-K = J(2:N+1,2:N+1)+eye(N)/dt;
+% K = J(2:N+1,2:N+1)+eye(N)/dt;
 % K
 % error('1')
- K = (K+K')/2;
+%  K = (K+K')/2;
 
 [Z] = obj.unstructuredrecon(u0,p,'solution');%u0,x,h,N,NaN,NaN,p);
 
@@ -55,6 +64,13 @@ K = J(2:N+1,2:N+1)+eye(N)/dt;
  u0-ue
 
  v=J(2:N+1,2:N+1)\tau(2:N+1)
+
+  if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(J(2:N+1,2:N+1)))) < 1e-5)
+    v = pinv(J(2:N+1,2:N+1))*tau(2:N+1)
+  end
+%  max(abs(v-ue(2:N+1)))
+max(abs(v))
+%  error('1')
  figure
  plot(x,u0-ue,x(2:N+1),v)
  
@@ -63,9 +79,17 @@ K = J(2:N+1,2:N+1)+eye(N)/dt;
  v(N+2) = NaN;
  
  u = ue-v
-% plot(x,u)
+ plot(x,u)
+ v
 %  ue-v
-%   error('1')
+ cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
+
+ 
+ 
+% error('1')
+
+
+
 
   obj.computerespseudo();
   [Zr] = obj.unstructuredrecon(u,r,'residual')
@@ -97,7 +121,22 @@ f = -Rend;
  
 %  Je
 %  error('1')
-w = Je(2:N+1,2:N+1)\tauE(2:N+1);
+w = Je(2:N+1,2:N+1)\tauE(2:N+1)
+
+% x1 = ones(N,1);
+%  null(Je(2:N+1,2:N+1),'r')
+%  error('1')
+if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(Je(2:N+1,2:N+1)))) < 1e-5)
+%   error('5')
+%   [Q,R] = qr(Je(2:N+1,2:N+1)') ;
+% w = Q*(R'\tauE(2:N+1)) ;
+% w = Je(2:N+1,2:N+1)'*Je(2:N+1,2:N+1)\Je(2:N+1,2:N+1)'*tauE(2:N+1)
+
+% w = w-dot(w,x1')*x1*dot(w,w);
+    w = pinv(Je(2:N+1,2:N+1))*tauE(2:N+1)
+  end
+
+
 max(abs(w))
 % error('1')
 figure
@@ -109,10 +148,11 @@ plot(x(2:N+1),w)
 w(2:N+1) = w;
 w(1) = NaN;
 w(N+2) = NaN;
-cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
+% cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 exacterr = ue-u;
 ee = exacterr - w;
 errerr2 = sqrt(sum((exacterr(2:N+1)-ee(2:N+1)).^2)/N) 
 w
+ 
 end
 

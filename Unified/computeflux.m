@@ -1,10 +1,15 @@
 function [left,right ] = computeflux(Z,h,N,p,phys,equation,obj )
 %COMPUTEFLUX Summary of this function goes here
 %   Detailed explanation goes here
+% error('1')
+
 
 % global dir
 if (obj.bcLeftType == 'D' && obj.bcRightType == 'D')
-    
+
+        
+        
+        
 left  = NaN*ones(N+2,1);
 right = NaN*ones(N+2,1);
 up = zeros(N+1,1);
@@ -190,6 +195,7 @@ right(2:N+1) = up(2:N+1);
 
     
 else
+    
     
 left  = NaN*ones(N+2,1);
 right = NaN*ones(N+2,1);
