@@ -112,7 +112,10 @@ phi(:,steps) = obj.computefluxintegral(Z,eqn);
 % error('1')
 
 elseif(strcmp(eqn,'error')==1)
-      phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps),obj);
+        obj.errorSource = -1*val(:,steps);
+         phi(:,steps) = obj.computefluxintegral(Z,'error');
+         
+%       phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps),obj);
 else
     error('2')
 end
