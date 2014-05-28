@@ -125,7 +125,8 @@ w = Je(2:N+1,2:N+1)\tauE(2:N+1)
 
 % x1 = ones(N,1);
 %  null(Je(2:N+1,2:N+1),'r')
-%  error('1')
+% Je
+%   error('1')
 if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(Je(2:N+1,2:N+1)))) < 1e-5)
 %   error('5')
 %   [Q,R] = qr(Je(2:N+1,2:N+1)') ;

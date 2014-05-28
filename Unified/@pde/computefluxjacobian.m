@@ -22,7 +22,11 @@ Z = obj.unstructuredrecon(u,order,eqn);
 
 
 I = eye(N);
-ep = 1e-8;
+if(strcmp(obj.physics,'Poisson') ~= 1 &&strcmp(obj.physics,'Advection') ~= 1 )
+   fprintf('not linear problem, pick smaller epsilon for FD Jacobian')
+   assert(0);
+end
+ep = 1e-1;
 u1 = NaN*ones(N+2,1);
 
 for i = 2:N+1
