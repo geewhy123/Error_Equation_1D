@@ -116,7 +116,7 @@ ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
 u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
     ue(i) = (1/h(i))*(xr-xl);
-    u0(i) = 0;
+    u0(i) = 0;%(1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl))+xr-xl);
 else
     assert(0)
 end

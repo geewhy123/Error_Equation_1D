@@ -344,6 +344,8 @@ elseif(obj.bcLeftType=='F' && obj.bcRightType == 'D')
   if(strcmp(eqn,'solution')==1)
        AA = obj.primalRM;
        AD = obj.primalPI;
+       
+       
     elseif(strcmp(eqn,'error')==1)
 %         obj.bcLeftType = 'D';
 %         obj.bcLeftVal = 1;
@@ -441,7 +443,13 @@ ub2 = u(cv2);
 ub3 = u(cv3);
 ub4 = u(cv4);
 ubi = u(i);
-uL = obj.bcRightVal;
+
+% obj.step
+% obj.tStep
+obj.curTime
+uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
+obj.bcRightVal = uL;
+
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 b = (b-[(A(1,1)/(xbi-(h(i)/2)))*(u(i)-uL) ; 

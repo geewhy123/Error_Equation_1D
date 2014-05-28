@@ -104,11 +104,15 @@ problem.computeprimalpseudo();
 
 
 
-
+ problem.curTime = 0;
  Z = problem.unstructuredrecon(ue,problem.pOrder,'solution');
  
+ 
+ 
+ 
 er = problem.reconplot(Z)
-
+hold on
+plot(x,u0)
 f = problem.source;
 % figure
 % plot(x,ue)
@@ -192,7 +196,7 @@ tt = k*(j-1);
     
 
 
-if((max(d)*k<1e-15)||(tt>=tlim))
+if((max(d)*k<1e-15) && strcmp(goal,'SS')==1 ||(tt>=tlim) )
      
 %  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 u = uu;
@@ -209,7 +213,7 @@ d=0;
 
 
 [uu,d] = problem.updatesolution(u);
-
+problem.curTime = j*k;
 % [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
 
 % if(j==20)

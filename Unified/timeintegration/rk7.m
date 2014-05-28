@@ -94,8 +94,10 @@ unew = u;%zeros(N+2,1);
 %     Z = unstructuredrecon(unew,x,h,N,BCLeft,uL,BCRight,uR,p);
   
 Z = obj.unstructuredrecon(unew,p,eqn);
-%      Z
-%      assert(0)
+
+% Z
+% obj.reconplot(Z)
+% error('1')
      
 % % % %     phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps));
 % if(steps==length(c))
@@ -108,8 +110,10 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 % end
 if(strcmp(eqn,'solution')==1)
 phi(:,steps) = obj.computefluxintegral(Z,eqn);
-% phi(:,steps)
-% error('1')
+%  phi(:,steps)
+%  error('1')
+
+
 
 elseif(strcmp(eqn,'error')==1)
         obj.errorSource = -1*val(:,steps);

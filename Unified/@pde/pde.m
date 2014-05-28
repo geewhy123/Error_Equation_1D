@@ -32,7 +32,7 @@ classdef pde < handle
          residual;
          Rsp;
          errorSource;
-         
+         curTime;
     end
     
     methods

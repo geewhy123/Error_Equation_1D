@@ -1,6 +1,8 @@
 function [ err ] = reconplot( obj,Z )
 %RECONPLOT Summary of this function goes here
 %   Detailed explanation goes here
+% Z
+% error('1')
 err = 0;
 x = obj.cellCentroids;
 h = obj.cellWidths;
