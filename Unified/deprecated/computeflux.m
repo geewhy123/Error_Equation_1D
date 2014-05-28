@@ -1,7 +1,7 @@
 function [left,right ] = computeflux(Z,h,N,p,phys,equation,obj )
 %COMPUTEFLUX Summary of this function goes here
 %   Detailed explanation goes here
-% error('1')
+error('1')
 
 
 % global dir

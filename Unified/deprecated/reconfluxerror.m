@@ -6,7 +6,7 @@ phi(1) = NaN;
 phi(N+2) = NaN;
 
 
-%  error('2')
+ error('2')
 [left,right] = computeflux(Z,h,N,p,phys,'error',obj);
 
 

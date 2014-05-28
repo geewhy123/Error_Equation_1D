@@ -88,7 +88,7 @@ problem.exactSolution
 
 
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
- if(strcmp(goal,'SS')==1)
+ if(strcmp(goal,'SS')==1 && 0)
     fprintf('solving by Jacobian');
     [errerr2,x,cverr2,exacterr,ee  ]= problem.solvebyjacobian();
     
