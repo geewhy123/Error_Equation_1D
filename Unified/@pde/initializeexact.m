@@ -9,6 +9,8 @@ elseif(strcmp(obj.physics,'Advection')==1)
      advectioninitialize(obj);
 elseif(strcmp(obj.physics,'Poisson')==1)
 poissoninitialize(obj);
+elseif(strcmp(obj.physics,'BurgersMod')==1)
+    burgersmodinitialize(obj);
 else
     error('1')
 end
@@ -115,8 +117,46 @@ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
 u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
-    ue(i) = (1/h(i))*(xr-xl);
+    ue(i) = (1/h(i))*(xr-xl);%(1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));%(1/h(i))*(xr-xl);
     u0(i) = 0;%(1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl))+xr-xl);
+else
+    assert(0)
+end
+
+f(i) = 0;
+    end
+f(1) = NaN;
+f(N+2) = NaN;
+ ue(1) = NaN;
+ ue(N+2) = NaN;
+ u0(1) = NaN;
+ u0(N+2)= NaN;
+ obj.exactSolution = ue;
+ obj.initialSolution = u0;
+ obj.source = f;
+end
+
+function  burgersmodinitialize(obj)
+%BURGERSINITIALIZE Summary of this function goes here
+%   Detailed explanation goes here
+tlim = obj.endTime;
+x = obj.cellCentroids;
+N = obj.nCells;
+h = obj.cellWidths;
+
+u0 = zeros(N+2,1);
+ue = zeros(N+2,1);
+f = zeros(N+2,1);
+  for i = 2:N+1
+           xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+ 
+if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
+u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
+    ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
+    u0(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 else
     assert(0)
 end

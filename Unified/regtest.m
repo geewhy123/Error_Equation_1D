@@ -27,8 +27,8 @@ assert(abs(errerr2-0.006105285299128)/errerr2 < 0.001)
 
 % [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,4,0,'D',0,'D',0,0.3,7,'Advection','TimeAccurate');
 % assert(abs(errerr2-0.001964073234010)/errerr2 < 0.001)
-
-
+[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,0,0,0,'F',0,'D',1,0.5,7,'Advection','TimeAccurate');
+assert(abs(cverr2-0.662135389183426)/cverr2 <0.001)
 
 fprintf('Passed no 6th order')
 toc

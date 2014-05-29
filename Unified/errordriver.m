@@ -212,8 +212,11 @@ end
 d=0;
 
 
+% problem.curTime = j*k;
 [uu,d] = problem.updatesolution(u);
 problem.curTime = j*k;
+
+
 % [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
 
 % if(j==20)

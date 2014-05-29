@@ -3,6 +3,8 @@ if(strcmp(obj.physics,'Poisson')==1)
     FI=computepoissonfluxintegral(obj,Z,eqn);
 elseif(strcmp(obj.physics,'Advection')==1)
     FI=computeadvectionfluxintegral(obj,Z,eqn);
+elseif(strcmp(obj.physics,'BurgersMod')==1)
+    FI=computeburgersmodfluxintegral(obj,Z,eqn);
 else
     assert(0)
 end
@@ -147,9 +149,6 @@ end
 end
 
 function [ FI ] = computeadvectionfluxintegral( obj,Z,eqn )
-
-
-
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -272,6 +271,111 @@ end
 % FlAve(3)
 % FI(3)
 % error('1')
+
+ 
+end
+
+
+
+function [ FI ] = computeburgersmodfluxintegral( obj,Z,eqn )
+%COMPUTEFLUXINTEGRAL Summary of this function goes here
+%   Detailed explanation goes here
+
+% error('1')
+
+if(strcmp(eqn,'solution')==1)
+    p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
+else
+   assert(0); 
+end
+
+x = obj.cellCentroids;
+h = obj.cellWidths;
+N = obj.nCells;
+% p = obj.pOrder;
+
+
+
+Fr = zeros(N+2,1);
+Fl = zeros(N+2,1);
+FrAve = zeros(N+2,1);
+FlAve = zeros(N+2,1);
+
+
+if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+
+for i=2:N
+
+
+    for k = 1:p
+   Fr(i) = Fr(i) + Z(k,i+1)*(-h(i+1)/2)^(k-1); 
+%    Fl(i) = Fl(i) + k*Z(k+1,i)*(-h(i)/2)^(k-1);
+   
+    end
+
+end
+for k = 1:p
+   Fr(N+1) = Fr(N+1) + Z(k,2)*(-h(2)/2)^(k-1); 
+   
+  
+end
+
+    Fr(1) =Fr(N+1) ;
+FrAve(2:N+1) = Fr(2:N+1);
+FlAve(2:N+1) = Fr(1:N);
+
+
+
+
+elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
+for i=2:N
+
+    for k = 1:p
+        
+        ur = Z(k,i+1)*(-h(i+1)/2)^(k-1); 
+        
+%         assert(ur-1 < 0);
+   Fr(i) = Fr(i) + ur^2/2-ur; 
+%    Fl(i) = Fl(i) + k*Z(k+1,i)*(-h(i)/2)^(k-1);
+   
+    end
+
+end
+for k = 1:p
+   ur = Z(k,2)*(-h(2)/2)^(k-1);
+%    assert(ur-1 < 0);
+   Fr(N+1) = Fr(N+1) + ur^2/2-ur;   
+end
+
+    Fr(1) =Fr(N+1) ;
+FrAve(2:N+1) = Fr(2:N+1);
+FlAve(2:N+1) = Fr(1:N);
+
+
+FrAve(N+1) = obj.bcRightVal;
+
+
+else
+   assert(0) 
+end
+
+
+ 
+ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
+ FI = (FrAve-FlAve)./h-obj.source;
+
+ 
+ 
+elseif(strcmp(eqn,'error')==1)
+
+  FI = (FrAve-FlAve)./h-obj.errorSource;
+
+
+end
 
  
 end

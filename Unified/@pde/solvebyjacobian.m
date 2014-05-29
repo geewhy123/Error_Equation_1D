@@ -2,6 +2,11 @@ function [errerr2,x,cverr2,exacterr,ee  ] = solvebyjacobian( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 
+if(strcmp(obj.physics,'BurgersMod')==1)
+   [errerr2,x,cverr2,exacterr,ee  ]=solvebyjacobianNL(obj); 
+   return;
+end
+
 
 ue = obj.exactSolution;
 p = obj.pOrder;
