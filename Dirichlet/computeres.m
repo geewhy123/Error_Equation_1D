@@ -13,6 +13,12 @@ end
 
 
  [Z]=unstructuredrecon(u,x,h,N,0,0,r);
+ 
+%  if(r==6 && time > 3.888)
+
+%      Z
+%  error('1')
+%  end
 %  if (time > 0)
 %     Z
 %     error('1')

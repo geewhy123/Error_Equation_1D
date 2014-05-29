@@ -31,6 +31,36 @@ assert(abs(errerr2-0.006105285299128)/errerr2 < 0.001)
 assert(abs(cverr2-0.662135389183426)/cverr2 <0.001)
 
 fprintf('Passed no 6th order')
+
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.1,7,'Poisson');
+% % % assert(abs(errerr2-0.8347)<1e-4)
+% % % close all
+%     [errerr2,x,cverr2,exacterr,ee]=errordriver(20,2,2,6,0,'P',0,'P',0,.1,7,'Poisson','TimeAccurate');
+% assert(abs(errerr2-0.04129)<1e-5)
+% close all
+% 
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,1,7,'Advection');
+% assert(abs(errerr2-0.054)<1e-3)
+% close all
+% % % [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.4,7,'Advection');
+% % % assert(abs(errerr2-0.0106)<1e-4)
+% % % close all
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(20,2,2,6,0,100,.6,7,'Advection');
+% assert(abs(errerr2-7.0808e-4)<1e-8)
+% close all
+% 
+% %[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,6,0,100,.1,7,'Burgers');
+% %assert(abs(errerr2-0.0011)<1e-3)
+% close all
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,4,1/10,100,10,7,'Poisson','SS');
+% assert(abs(errerr2-0.0029)<1e-4)
+% close all
+% 
+% 
+% [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,4,1/10,100,10,7,'Poisson','FI');
+% assert(abs(errerr2)<1e-12)
+
+
 toc
 
 

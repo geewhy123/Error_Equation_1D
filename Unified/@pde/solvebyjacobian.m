@@ -38,6 +38,7 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % error('1')
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 Z
+
   [er]=obj.reconplot(Z)%reconplot(x,h,N,p,Z)
 %   error('1')
   
@@ -110,6 +111,11 @@ if(q>0 && r >0)
   [Zr] = obj.unstructuredrecon(u,r,'residual');
 %     [left,right] = computeflux(Zr,h,N,r,physics,'residual',obj);
 %     Rend= (right-left)./h-f;
+
+% Zr
+% obj.resPI
+% error('1')
+
 Rend = obj.computefluxintegral(Zr,'residual');
  
  

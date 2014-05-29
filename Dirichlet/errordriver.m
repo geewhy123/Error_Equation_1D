@@ -270,6 +270,9 @@ UU = U;
  global AD
  AD = computepseudo(N,x,h,r);
 
+ 
+%  AD
+%  error('1')
 %global R
 R = zeros(N+2,nSteps+1);
  tt=0;

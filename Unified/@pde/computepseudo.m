@@ -179,10 +179,11 @@ for i = 2:N+1
         cv4 = i+2;
         cv5 = N+1;
         x5 = x5-1;
-        cv6 = i+4;
+        cv6 = i+3;
         if(obj.bcLeftType == 'D' || obj.bcLeftType == 'F')
             x5 = 0;
             cv5 = i+3;
+            cv6 = i+4;
         end
     end
     if i== N-1

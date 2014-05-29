@@ -6,7 +6,7 @@ p = obj.pOrder;
 switch p
            case 6
                fprintf('6th order need more testing')
-              assert(0)
+%               assert(0)
         [AD,AA]=obj.computepseudo(p);
     otherwise
         [AD,AA]=obj.computepseudo(p);

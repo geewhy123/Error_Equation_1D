@@ -111,6 +111,10 @@ problem.computeprimalpseudo();
  
  
 er = problem.reconplot(Z)
+
+% Z
+% error('1')
+
 hold on
 plot(x,u0)
 f = problem.source;

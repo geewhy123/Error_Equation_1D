@@ -91,7 +91,9 @@ AD = computepseudo(N,x,h,p);
 % % % % max(abs(J(2:N+1)-f(2:N+1)))
 % % % 
 % % % % R = computeres(u,x,h,N,f,p,physics,tlim,NaN)
-% % % [Z] = unstructuredrecon(ue,x,h,N,NaN,NaN,p);
+% % %  [Z] = unstructuredrecon(ue,x,h,N,NaN,NaN,p);
+% % %  Z
+% % %  error('1')
 % % % 
 % % % %  [er]=reconplot(x,h,N,p,Z);
 % % %  [phi]=reconfluxsoln(Z,f,h,N,p,physics,tlim)
