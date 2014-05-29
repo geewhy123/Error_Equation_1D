@@ -29,6 +29,7 @@ hold on
  ye=2*pi*cos(2*pi*xx)./(sin(2*pi*xx)+exp(1)^3);
  ye = sin(pi*xx)+1;
  ye = 1;
+ye = sin(pi*xx);
 %  ye = (xx-0.5).^4;
 err = max(err,max(abs(yy-ye)));
 plot(xx,ye)

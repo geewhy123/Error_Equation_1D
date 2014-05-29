@@ -62,8 +62,6 @@ end
       
   if(p==2)
    for i = 3:N+1
-       
-    
         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2);
         ul2 = Z(1,i-1) + Z(2,i-1)*(h(i-1)/2);
       jump(i) = (.2/((h(i)+h(i-1))/2))*(ul1-ul2) ;
@@ -78,6 +76,26 @@ end
     end
   end
 
+  
+  
+  %temp
+%     for i = 3:N+1
+%         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2)+Z(3,i)*(-h(i)/2)^2;
+%         ul2 = Z(1,i-1) + Z(2,i-1)*(h(i-1)/2)+Z(3,i-1)*(h(i-1)/2)^2;
+%       jump(i) = (.2/((h(i)+h(i-1))/2))*(ul1-ul2) ;
+%     
+%       
+%    end
+%     if(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+%         i=2;
+%         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2);
+%         ul2 = Z(1,N+1) + Z(2,N+1)*(h(i-1)/2);
+%       jump(i) = (.2/((h(i)+h(i-1))/2))*(ul1-ul2) ;
+%     end
+
+  %temp
+  
+  
 %  
 %   jump(:) = 0;
 

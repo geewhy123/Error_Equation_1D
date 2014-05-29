@@ -245,7 +245,7 @@ nSteps
 %    error('1') 
 % end
 
-dir
+% dir
 
 if(q>0 && r > 0)
     

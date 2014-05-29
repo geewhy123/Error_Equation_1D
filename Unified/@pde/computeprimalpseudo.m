@@ -5,9 +5,9 @@ function  computeprimalpseudo(obj)
 p = obj.pOrder;
 switch p
            case 6
-               fprintf('6th order doesnt work yet')
-               assert(0)
-        AD=obj.computepseudo(p);
+               fprintf('6th order need more testing')
+              assert(0)
+        [AD,AA]=obj.computepseudo(p);
     otherwise
         [AD,AA]=obj.computepseudo(p);
 end

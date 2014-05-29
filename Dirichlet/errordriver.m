@@ -78,7 +78,8 @@ u=u0;
 
 global AD
 AD = computepseudo(N,x,h,p);    
-
+AD
+% error('1')
 
 
 % plot(x,ue,'*')
@@ -236,7 +237,7 @@ nSteps
 %    error('1') 
 % end
 
-dir
+% dir
 
 if(q>0 && r > 0)
     

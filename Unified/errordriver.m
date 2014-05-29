@@ -196,7 +196,7 @@ tt = k*(j-1);
     
 
 
-if((max(d)*k<1e-15) && strcmp(goal,'SS')==1 ||(tt>=tlim) )
+if((max(d)*k<1e-15)  ||(tt>=tlim) )
      
 %  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
 u = uu;
