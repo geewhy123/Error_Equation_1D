@@ -38,7 +38,7 @@ FlAve = zeros(N+2,1);
 F = zeros(N+2,1);
 % reconplot(x,h,N,p,Z)
 
-
+jump = zeros(N+2,1);
 for i=2:N+1
 
 % if(i==2)
@@ -58,7 +58,7 @@ for i=2:N+1
 end
 
 
-      jump = zeros(N+2,1);
+%       jump = zeros(N+2,1);
       
   if(p==2)
    for i = 3:N+1
@@ -68,6 +68,8 @@ end
     
       
    end
+   
+   
     if(obj.bcLeftType=='P' && obj.bcRightType == 'P')
         i=2;
         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2);
@@ -350,9 +352,9 @@ FlAve(2:N+1) = Fr(1:N);
 
 
 elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
-%  Z
+ Z
 %  obj.reconplot(Z)
-%  error('1')
+ error('1')
     for i=2:N
 
     for k = 1:p
@@ -379,6 +381,105 @@ FlAve(2:N+1) = Fr(1:N);
 
 ul = obj.bcRightVal;
 FrAve(N+1) = ul^2/2-ul;
+
+
+elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+%      Z
+%   obj.reconplot(Z)
+%     error('1')
+        ur = zeros(N+2,1);
+        upr = zeros(N+2,1);
+        ul = zeros(N+2,1);
+        upl = zeros(N+2,1);
+
+jump = zeros(N+2,1);
+for i=2:N+1
+
+    for k = 1:p
+        ur(i) = ur(i)+Z(k,i)*(h(i)/2)^(k-1);
+        ul(i) = ul(i)+Z(k,i)*(-h(i)/2)^(k-1);
+    end
+    for k = 1:p-1
+        upr(i) = upr(i)+k*Z(k+1,i)*(h(i)/2)^(k-1);
+        upl(i) = upl(i)+k*Z(k+1,i)*(-h(i)/2)^(k-1);
+    end
+
+%         assert(ur(i)-1 < 0);
+   Fr(i) = -1*(ur(i)^2/2-ur(i)-upr(i)); 
+   Fl(i) = -1*(ul(i)^2/2-ul(i)-upl(i));
+   
+   
+     if(p==2)
+        jump(i) = (.2/((h(i)+h(i-1))/2))*(ul(i)-ur(i-1)) ;
+      end
+
+
+   
+end
+jump(2) = 0;
+for i=2:N+1
+   
+%         ul(i) = Z(k,i)*(-h(i+1)/2)^(k-1);    
+%    Fl(i) = Fl(i) + k*Z(k+1,i)*(-h(i)/2)^(k-1);
+   
+
+
+
+    if i==2
+        FrAve(i) = (Fr(i)+Fl(i+1))/2;
+        FlAve(i) = Fl(i); 
+    
+        
+    elseif i==N+1
+        FrAve(i) = Fr(i);
+        FlAve(i) = (Fr(i-1)+Fl(i))/2;
+    else
+%         jumpr = 0;
+%         jumpl = 0;
+      
+        
+        
+      FrAve(i) = (Fr(i)+Fl(i+1))/2+jump(i+1);
+      FlAve(i) = (Fr(i-1)+Fl(i))/2+jump(i);
+      
+
+    end
+
+
+
+end
+
+% xx = 0:0.1:1;
+% ff = -0.5*sech(xx/2).^2-0.5*(1-tanh(xx/2).^2)+(1-tanh(xx/2));
+%     [xx' ff']
+
+%      [ul ur jump]
+%    error('1')
+% [ul ur upl upr Fl Fr FlAve FrAve]
+% error('1')
+    
+% for k = 1:p
+%    ur = Z(k,2)*(-h(2)/2)^(k-1);
+% %    assert(ur-1 < 0);
+%    Fr(N+1) = Fr(N+1) + ur^2/2-ur;
+%    
+% 
+%    
+% end
+% 
+%     Fr(1) =Fr(N+1) ;
+% FrAve(2:N+1) = Fr(2:N+1);
+% FlAve(2:N+1) = Fr(1:N);
+% 
+% 
+% ur = obj.bcRightVal;
+% FrAve(N+1) = ur^2/2-ur;
+% 
+% 
+% ul = obj.bcLeftVal;
+% FlAve(2) = ul^2/2-ul;
+% [Fr FlAve FrAve]
+% error('1')
 
 
 else

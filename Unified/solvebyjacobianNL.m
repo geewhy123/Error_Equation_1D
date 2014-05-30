@@ -18,7 +18,7 @@ tlim = obj.endTime;
 obj.computeprimalpseudo();
 
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
-% J
+%  J
 % error('1')
 
 % [d,c] =  eig(J(2:N+1,2:N+1))
@@ -33,7 +33,9 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
-%  [er]=reconplot(x,h,N,p,Z);
+%  [er]=obj.reconplot(Z)%x,h,N,p,Z);
+ 
+%  error('1')
 f = obj.source;
  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
@@ -43,12 +45,27 @@ f = obj.source;
  max(abs(tau))
   
  del = ones(N,1);
+ R = ones(N+2,1);
  t=0;
  u0 = ue;
  count = 0;
- while(max(abs(del)) > 1e-10 )
+ while(max(abs(R)) > 1e-11 )
+     J = obj.computefluxjacobian(u0,'solution');%,x,h,N,p);
+    
      count = count +1;
-     dt = .01;
+%      if(count < 50)
+        dt = 0.001; 
+%      elseif(count <100)
+%          dt = 0.0001;
+%      elseif(count < 500)
+%          dt = 0.0005;
+%      elseif(count < 1000)
+%          dt = 0.001;
+%      elseif(count < 10000)
+%          dt = 0.01;
+%      else
+%          dt = 0.05;
+%      end
      
  K = J(2:N+1,2:N+1)+eye(N)/dt;
 % K
@@ -69,31 +86,38 @@ f = obj.source;
  end
  
  
-  u0
-  error('1')
-%  max(abs(u0-ue))
-%  u0-ue
+%   u0
+%   error('1')
+%   max(abs(u0-ue))
+vv = u0-ue;
+  cverr1 = sum(abs(vv(2:N+1)))/N
+  cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
 
- v=J(2:N+1,2:N+1)\tau(2:N+1)
+   plot(x,u0,'*')
+   error('1')
+%   u0-ue
 
-  if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(J(2:N+1,2:N+1)))) < 1e-5)
-    v = pinv(J(2:N+1,2:N+1))*tau(2:N+1);
-  end
-%  max(abs(v-ue(2:N+1)))
-max(abs(v))
-%  error('1')
- figure
- plot(x,u0-ue,x(2:N+1),v)
- 
- v(2:N+1) = v;
- v(1) = NaN;
- v(N+2) = NaN;
- 
- u = ue-v
- plot(x,u)
- v
-%  ue-v
- cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
+%  v=J(2:N+1,2:N+1)\tau(2:N+1)
+% 
+%   if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(J(2:N+1,2:N+1)))) < 1e-5)
+%     v = pinv(J(2:N+1,2:N+1))*tau(2:N+1);
+%   end
+% %  max(abs(v-ue(2:N+1)))
+% max(abs(v))
+% %  error('1')
+%  figure
+%  plot(x,u0-ue,x(2:N+1),v)
+%  
+%  v(2:N+1) = v;
+%  v(1) = NaN;
+%  v(N+2) = NaN;
+%  
+%  u = ue-v
+%  plot(x,u)
+%  v
+% %  ue-v
+% % cverr1 = sum(abs(v(2:N+1)))/N
+% %  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  
  

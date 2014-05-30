@@ -169,6 +169,8 @@ ub3 = u(cv3);
 ub4 = u(cv4);
 ubi = u(i);
 uL = obj.bcLeftVal;
+% uL
+% error('1')
 
 
 

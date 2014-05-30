@@ -157,6 +157,9 @@ u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
     ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
     u0(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
+elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
+     u0(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));%(1/h(i))*(xr-tanh(1/2)*xr^2/2-xl+tanh(1/2)*xl^2);%
 else
     assert(0)
 end
