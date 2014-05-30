@@ -18,7 +18,8 @@ f = zeros(N+2,1);
 
 % %   f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
    f(i) = (1/h(i))*(pi)*(cos(pi*xr)-cos(pi*xl));
-    
+   
+% % f(i) = (1/h(i))*(pi^3/4)*(xr^2/2-xr^3/3-xl^2/2+xl^3/3);
   
 %     f(i) = (1/h(i))*( -2*(xr-0.5)*exp(-(xr-0.5)^2) +2*(xl-0.5)*exp(-(xl-0.5)^2));
 %     f(i) = (1/h(i))*( (exp(-xr^2)*(-2*xr^2 +1)) - (exp(-xl^2)*(-2*xl^2 +1)) );

@@ -22,6 +22,13 @@ assert(abs(errerr2- 0.010395717998870)/errerr2 < 0.001)
 [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,4,1/3,'P',0,'P',0,0.3,7,'Advection','TimeAccurate');
 assert(abs(errerr2-0.006105285299128)/errerr2 < 0.001)
 
+[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,6,6,1/3,'P',0,'P',0,10,7,'Poisson','SS');
+assert(abs(errerr2-3.915450275221799e-04)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,4,6,1/3,'D',0,'D',0,10,7,'Poisson','SS');
+assert(abs(errerr2-0.064614874341152)/errerr2 < 0.001)
+
+
 % [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,4,1/3,'D',0,'D',0,0.3,7,'Advection','TimeAccurate');
 % assert(abs(errerr2-0.304897658837351)/errerr2 < 0.001)
 

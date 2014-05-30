@@ -350,7 +350,10 @@ FlAve(2:N+1) = Fr(1:N);
 
 
 elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
-for i=2:N
+%  Z
+%  obj.reconplot(Z)
+%  error('1')
+    for i=2:N
 
     for k = 1:p
         
@@ -374,7 +377,8 @@ FrAve(2:N+1) = Fr(2:N+1);
 FlAve(2:N+1) = Fr(1:N);
 
 
-FrAve(N+1) = obj.bcRightVal;
+ul = obj.bcRightVal;
+FrAve(N+1) = ul^2/2-ul;
 
 
 else
@@ -384,7 +388,11 @@ end
 
  
  if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
- FI = (FrAve-FlAve)./h-obj.source;
+
+% [FlAve FrAve]
+% error('2')
+     
+     FI = (FrAve-FlAve)./h-obj.source;
 
  
  

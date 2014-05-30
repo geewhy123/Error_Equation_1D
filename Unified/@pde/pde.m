@@ -33,10 +33,11 @@ classdef pde < handle
          Rsp;
          errorSource;
          curTime;
+         weight;
     end
     
     methods
-        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k)
+        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,wt)
             if(nargin>0)
          obj.nCells = N;
         obj.pOrder = p;
@@ -53,6 +54,7 @@ classdef pde < handle
          obj.cellCentroids = x;
          obj.cellWidths = h;
          obj.tStep = k;
+         obj.weight = wt;
          
             end
         end

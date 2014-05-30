@@ -70,7 +70,7 @@ global dir
 dir = NaN*ones(N+2,1);
 
 
-problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k);
+problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.initializeexact();
 
  

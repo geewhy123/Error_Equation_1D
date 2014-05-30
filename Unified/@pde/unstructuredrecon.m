@@ -15,7 +15,9 @@ switch p
 %    [~,Z] = unstructuredrecon5 (u,x,h,N,u0,u1); 
       [Z] = unstructuredreconlong (obj,u,p,eqn); 
     otherwise 
+        
         [Z] = unstructuredreconp (obj,u,p,eqn); 
+        
 %         p
 %         
 %        assert(0==1)
@@ -36,7 +38,7 @@ h = obj.cellWidths;
 moments = obj.moments;
 Z = zeros(p,N+2);
 % error = 0;
-
+wt = obj.weight;
 
 
 if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
@@ -86,10 +88,10 @@ cv4 = i+2;
  
 end
 
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -156,10 +158,10 @@ cv1 =i+1;
 cv2 = i+2;
 cv3 = i+3;
 cv4 = i+4;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -231,10 +233,10 @@ cv1 =i-1;
 cv2 = i-2;
 cv3 = i-3;
 cv4 = i-4;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -304,10 +306,10 @@ cv2 = i+1;
 cv3 = i-2;
 cv4 = i+2;
 end
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -369,10 +371,10 @@ end
 % % % cv2 = i+2;
 % % % cv3 = i+3;
 % % % cv4 = i+4;
-% % % wi1 = 1/abs(x(cv1)-x(i))^0;
-% % % wi2 = 1/abs(x(cv2)-x(i))^0;
-% % % wi3 = 1/abs(x(cv3)-x(i))^0;
-% % % wi4 = 1/abs(x(cv4)-x(i))^0;
+% % % wi1 = 1/abs(x(cv1)-x(i))^wt;
+% % % wi2 = 1/abs(x(cv2)-x(i))^wt;
+% % % wi3 = 1/abs(x(cv3)-x(i))^wt;
+% % % wi4 = 1/abs(x(cv4)-x(i))^wt;
 % % % 
 % % % ub1 = u(cv1);
 % % % ub2 = u(cv2);
@@ -435,10 +437,10 @@ cv1 =i-1;
 cv2 = i-2;
 cv3 = i-3;
 cv4 = i-4;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -448,7 +450,7 @@ ubi = u(i);
 
 % obj.step
 % obj.tStep
-obj.curTime
+obj.curTime;
 uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
 obj.bcRightVal = uL;
 
@@ -522,10 +524,10 @@ cv2 = i+1;
 cv3 = i-2;
 cv4 = i+2;
 end
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -587,7 +589,7 @@ h = obj.cellWidths;
 moments = obj.moments;
 Z = zeros(p,N+2);
 % error = 0;
-
+wt = obj.weight;
 
 
 if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
@@ -657,12 +659,12 @@ cv5 = i-3;
 cv6 = i+3;
 end
 
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 ub1 = u(cv1);
 ub2 = u(cv2);
 ub3 = u(cv3);
@@ -727,12 +729,12 @@ cv3 = i+3;
 cv4 = i+4;
 cv5 = i+5;
 cv6 = i+6;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 ub1 = u(cv1);
 ub2 = u(cv2);
 ub3 = u(cv3);
@@ -801,12 +803,12 @@ cv3 = i-3;
 cv4 = i-4;
 cv5 = i-5;
 cv6 = i-6;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 ub1 = u(cv1);
 ub2 = u(cv2);
 ub3 = u(cv3);
@@ -898,12 +900,12 @@ cv4 = i+2;
 cv5 = i-3;
 cv6 = i+3;
 end
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 ub1 = u(cv1);
 ub2 = u(cv2);
 ub3 = u(cv3);
@@ -972,12 +974,12 @@ cv3 = i-3;
 cv4 = i-4;
 cv5 = i-5;
 cv6 = i-6;
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
@@ -1087,12 +1089,12 @@ cv4 = i+2;
 cv5 = i-3;
 cv6 = i+3;
 end
-wi1 = 1/abs(x(cv1)-x(i))^0;
-wi2 = 1/abs(x(cv2)-x(i))^0;
-wi3 = 1/abs(x(cv3)-x(i))^0;
-wi4 = 1/abs(x(cv4)-x(i))^0;
-wi5 = 1/abs(x(cv5)-x(i))^0;
-wi6 = 1/abs(x(cv6)-x(i))^0;
+wi1 = 1/abs(x(cv1)-x(i))^wt;
+wi2 = 1/abs(x(cv2)-x(i))^wt;
+wi3 = 1/abs(x(cv3)-x(i))^wt;
+wi4 = 1/abs(x(cv4)-x(i))^wt;
+wi5 = 1/abs(x(cv5)-x(i))^wt;
+wi6 = 1/abs(x(cv6)-x(i))^wt;
 ub1 = u(cv1);
 ub2 = u(cv2);
 ub3 = u(cv3);

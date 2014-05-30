@@ -16,6 +16,7 @@ tlim = obj.endTime;
 
 
 obj.computeprimalpseudo();
+
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % J
 % error('1')
@@ -29,12 +30,16 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % J(2:N+1,2:N+1)
 % 
 % error('1')
+
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
 %  [er]=reconplot(x,h,N,p,Z);
 f = obj.source;
  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
+ tau
+%  error('1')
+ 
  max(abs(tau))
   
  del = ones(N,1);
@@ -55,7 +60,9 @@ f = obj.source;
 %  [er]=reconplot(x,h,N,p,Z);
  [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
     del = K\R(2:N+1);
-     uu = u0(2:N+1) + del*dt;
+    max(abs(R(2:N+1)))
+    
+     uu = u0(2:N+1) + del;%*dt;
      u0 = NaN*ones(N+2,1);
      u0(2:N+1) = uu;
      t = t+dt;

@@ -238,6 +238,10 @@ nSteps
 % end
 
 % dir
+% % v = u;
+% % g =f;
+% % save('dual.mat','x','v','g')
+
 
 if(q>0 && r > 0)
     

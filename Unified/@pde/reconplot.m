@@ -30,6 +30,7 @@ hold on
  ye = sin(pi*xx)+1;
  ye = 1;
 ye = sin(pi*xx);
+ye = 1-tanh(xx/2);
 %  ye = (xx-0.5).^4;
 err = max(err,max(abs(yy-ye)));
 plot(xx,ye)

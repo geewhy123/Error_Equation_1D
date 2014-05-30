@@ -4,7 +4,7 @@ function  [AD,AA] = computepseudo(obj,p)
 N = obj.nCells;
 h = obj.cellWidths;
 x = obj.cellCentroids;
-
+wt = obj.weight;
 
 
 if(p < 6)
@@ -103,10 +103,10 @@ for i = 2:N+1
     x4 = x4+x(cv4);
     xi = x(i);
    
-wi1 = 1/abs(x1-xi)^0;
-wi2 = 1/abs(x2-xi)^0;
-wi3 = 1/abs(x3-xi)^0;
-wi4 = 1/abs(x4-xi)^0;
+wi1 = 1/abs(x1-xi)^wt;
+wi2 = 1/abs(x2-xi)^wt;
+wi3 = 1/abs(x3-xi)^wt;
+wi4 = 1/abs(x4-xi)^wt;
     
 
 % x2b1
@@ -133,10 +133,10 @@ end
    
 
 for j = 1:p-1
-   AA(1,j,i) = xhat(1,j)-obj.moments(i,j+1); 
-   AA(2,j,i) = xhat(2,j)-obj.moments(i,j+1);
-   AA(3,j,i) = xhat(3,j)-obj.moments(i,j+1);
-   AA(4,j,i) = xhat(4,j)-obj.moments(i,j+1);
+   AA(1,j,i) = wi1*(xhat(1,j)-obj.moments(i,j+1)); 
+   AA(2,j,i) = wi2*(xhat(2,j)-obj.moments(i,j+1));
+   AA(3,j,i) = wi3*(xhat(3,j)-obj.moments(i,j+1));
+   AA(4,j,i) = wi4*(xhat(4,j)-obj.moments(i,j+1));
 end
 
 % AA;
@@ -296,12 +296,12 @@ for i = 2:N+1
     x6 = x6+x(cv6);
     xi = x(i);
    
-wi1 = 1/abs(x1-xi)^0;
-wi2 = 1/abs(x2-xi)^0;
-wi3 = 1/abs(x3-xi)^0;
-wi4 = 1/abs(x4-xi)^0;
-wi5 = 1/abs(x5-xi)^0;
-wi6 = 1/abs(x6-xi)^0;
+wi1 = 1/abs(x1-xi)^wt;
+wi2 = 1/abs(x2-xi)^wt;
+wi3 = 1/abs(x3-xi)^wt;
+wi4 = 1/abs(x4-xi)^wt;
+wi5 = 1/abs(x5-xi)^wt;
+wi6 = 1/abs(x6-xi)^wt;
 
 % x2b1
 
@@ -313,12 +313,12 @@ for k = 1:p-1
 %           i
 %          [x2b1 nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2)]
 %       end
-xhat(1,k) = xhat(1,k)+ nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2);   
-xhat(2,k) = xhat(2,k)+nchoosek(k,ii-1)*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2);
-xhat(3,k) = xhat(3,k)+nchoosek(k,ii-1)*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2);
-xhat(4,k) = xhat(4,k)+nchoosek(k,ii-1)*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2);
-xhat(5,k) = xhat(5,k)+nchoosek(k,ii-1)*(x5-xi)^(ii-1)*obj.moments(cv5,k-ii+2);
-xhat(6,k) = xhat(6,k)+nchoosek(k,ii-1)*(x6-xi)^(ii-1)*obj.moments(cv6,k-ii+2);
+xhat(1,k) = wi1*(xhat(1,k)+ nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2));   
+xhat(2,k) = wi2*(xhat(2,k)+nchoosek(k,ii-1)*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2));
+xhat(3,k) = wi3*(xhat(3,k)+nchoosek(k,ii-1)*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2));
+xhat(4,k) = wi4*(xhat(4,k)+nchoosek(k,ii-1)*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2));
+xhat(5,k) = wi5*(xhat(5,k)+nchoosek(k,ii-1)*(x5-xi)^(ii-1)*obj.moments(cv5,k-ii+2));
+xhat(6,k) = wi6*(xhat(6,k)+nchoosek(k,ii-1)*(x6-xi)^(ii-1)*obj.moments(cv6,k-ii+2));
    end
 
         
