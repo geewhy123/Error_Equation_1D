@@ -46,6 +46,7 @@ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 %      f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
+% f(i) = (1/h(i))*(2*xr-3*xr^2-2*xl+3*xl^2);
 else
    assert(0) 
 end
@@ -71,6 +72,7 @@ end
 %  ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
  ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
+%  ue(i) = (1/h(i))*(xr^3/3-xr^4/4-xl^3/3+xl^4/4);
  else
     assert(0) 
  end

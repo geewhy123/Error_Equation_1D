@@ -22,8 +22,6 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % error('1')
 
 % [d,c] =  eig(J(2:N+1,2:N+1))
-
-
 % nu = null(J(2:N+1,2:N+1));
 
 %  error('1')
@@ -34,7 +32,6 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
 %  [er]=obj.reconplot(Z)%x,h,N,p,Z);
- 
 %  error('1')
 f = obj.source;
  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
@@ -47,14 +44,15 @@ f = obj.source;
  del = ones(N,1);
  R = ones(N+2,1);
  t=0;
- u0 = ue;
+ u = ue;
  count = 0;
  while(max(abs(R)) > 1e-11 )
-     J = obj.computefluxjacobian(u0,'solution');%,x,h,N,p);
+%      J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
     
      count = count +1;
 %      if(count < 50)
         dt = 0.001; 
+        
 %      elseif(count <100)
 %          dt = 0.0001;
 %      elseif(count < 500)
@@ -67,35 +65,41 @@ f = obj.source;
 %          dt = 0.05;
 %      end
      
+% if (mod(count,100)==0)
+%    dt = dt*(count/100);
+%    error('3')
+% end
+
+
  K = J(2:N+1,2:N+1)+eye(N)/dt;
 % K
 % error('1')
 %  K = (K+K')/2;
 
-[Z] = obj.unstructuredrecon(u0,p,'solution');%u0,x,h,N,NaN,NaN,p);
+[Z] = obj.unstructuredrecon(u,p,'solution');%u,x,h,N,NaN,NaN,p);
 
 %  [er]=reconplot(x,h,N,p,Z);
  [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
     del = K\R(2:N+1);
     max(abs(R(2:N+1)))
     
-     uu = u0(2:N+1) + del;%*dt;
-     u0 = NaN*ones(N+2,1);
-     u0(2:N+1) = uu;
+     uu = u(2:N+1) + del;%*dt;
+     u = NaN*ones(N+2,1);
+     u(2:N+1) = uu;
      t = t+dt;
  end
  
  
-%   u0
+%   u
 %   error('1')
-%   max(abs(u0-ue))
-vv = u0-ue;
-  cverr1 = sum(abs(vv(2:N+1)))/N
+%   max(abs(u-ue))
+vv = u-ue;
+%   cverr1 = sum(abs(vv(2:N+1)))/N
   cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
 
-   plot(x,u0,'*')
-   error('1')
-%   u0-ue
+   plot(x,u,'*')
+%    error('1')
+%   u-ue
 
 %  v=J(2:N+1,2:N+1)\tau(2:N+1)
 % 
@@ -106,7 +110,7 @@ vv = u0-ue;
 % max(abs(v))
 % %  error('1')
 %  figure
-%  plot(x,u0-ue,x(2:N+1),v)
+%  plot(x,u-ue,x(2:N+1),v)
 %  
 %  v(2:N+1) = v;
 %  v(1) = NaN;
@@ -120,8 +124,8 @@ vv = u0-ue;
 % %  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  
- 
-error('1')
+ count
+% error('1')
 
 
 
@@ -132,7 +136,9 @@ error('1')
 %     Rend= (right-left)./h-f;
 Rend = obj.computefluxintegral(Zr,'residual');
  
- 
+Rend
+R2 = sqrt(sum((Rend(2:N+1)).^2)/N)
+ error('2')
  
  
  obj.computeerrorpseudo();

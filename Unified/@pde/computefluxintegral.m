@@ -136,28 +136,42 @@ end
 % FrAve(N+1) = Fr(N+1);
 % FlAve(2) = Fl(2);
 
-Fr;
-Fl;
-
-
-
 
 
 % plot(x,FrAve,x,FlAve)
 if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
+    
+    xx(1) = 0;
+    for m = 2:N+1
+       xx(m) = obj.cellCentroids(m+1)-obj.cellWidths(m+1)/2;
+    end
+%     xx
+%     error('4')
+    
+    yy = pi*cos(pi*xx);
+%     yy = 2*xx-3*xx.^2;
+    yy(end+1) = 0;
+    obj.reconplot(Z)
+    size(FlAve)
+    size(FrAve)
+    size(yy')
+    [FlAve FrAve yy' ]
+FrAve(2:N)-yy(2:N)'
+     cverr1 = sum(abs(FrAve(2:N)-yy(2:N)'))/(N-1)
+     abs(Fr(4)-yy(4))
+     [Fl Fr]
+
+    error('2')
+    
  FI = (FrAve-FlAve)./h-obj.source;
 elseif(strcmp(eqn,'error')==1)
-%     size(FrAve)
-%     size(obj.errorSource)
+
   FI = (FrAve-FlAve)./h-obj.errorSource;
 
 
 end
  
  
-
-
-% 
 %  FI
 % error('1')
 %  FrAve(3)

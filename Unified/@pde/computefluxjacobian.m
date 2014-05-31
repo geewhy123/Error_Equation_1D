@@ -16,7 +16,7 @@ J = zeros(N+2,N+2);
 
 Z = obj.unstructuredrecon(u,order,eqn);
 
-
+       R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
 % R = obj.computefluxintegral(Z);%,x,h,N,p)
 
 
@@ -42,7 +42,7 @@ for i = 2:N+1
  
        R1=obj.computefluxintegral(Z1,eqn);%u1,x,h,N,p);
  
-       R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
+%        R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
 
        
 %     if(strcmp(eqn,'error')==1)
