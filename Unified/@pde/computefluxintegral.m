@@ -161,7 +161,7 @@ FrAve(2:N)-yy(2:N)'
      abs(Fr(4)-yy(4))
      [Fl Fr]
 
-    error('2')
+%     error('2')
     
  FI = (FrAve-FlAve)./h-obj.source;
 elseif(strcmp(eqn,'error')==1)
@@ -398,14 +398,30 @@ FrAve(N+1) = ul^2/2-ul;
 
 
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
-%      Z
-%   obj.reconplot(Z)
-%     error('1')
-        ur = zeros(N+2,1);
+     
+%     if(strcmp(eqn,'error')==1)
+%         figure
+%     Z
+%    obj.reconplot(Z)
+%      error('1')
+%     end
+     ur = zeros(N+2,1);
         upr = zeros(N+2,1);
         ul = zeros(N+2,1);
         upl = zeros(N+2,1);
-
+        utilder = zeros(N+2,1);
+        utildel = zeros(N+2,1);
+        
+        nonlinearerror = 1;
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+             
+             Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+%                 obj.convSoln
+%                 error('1')
+         end
+        
+         
+         
 jump = zeros(N+2,1);
 for i=2:N+1
 
@@ -421,6 +437,20 @@ for i=2:N+1
 %         assert(ur(i)-1 < 0);
    Fr(i) = -1*(ur(i)^2/2-ur(i)-upr(i)); 
    Fl(i) = -1*(ul(i)^2/2-ul(i)-upl(i));
+   
+   
+   
+   if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:p
+        utilder(i) = utilder(i)+Zu(k,i)*(h(i)/2)^(k-1);
+        utildel(i) = utildel(i)+Zu(k,i)*(-h(i)/2)^(k-1);
+        end
+       
+      Fr(i) = Fr(i) - ur(i) * utilder(i);
+      Fl(i) = Fl(i) - ul(i) * utildel(i);
+   end
+   
+   
    
    
      if(p==2)

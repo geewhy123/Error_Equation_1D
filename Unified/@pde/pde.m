@@ -34,6 +34,7 @@ classdef pde < handle
          errorSource;
          curTime;
          weight;
+         convSoln;
     end
     
     methods
