@@ -399,12 +399,6 @@ FrAve(N+1) = ul^2/2-ul;
 
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
      
-%     if(strcmp(eqn,'error')==1)
-%         figure
-%     Z
-%    obj.reconplot(Z)
-%      error('1')
-%     end
      ur = zeros(N+2,1);
         upr = zeros(N+2,1);
         ul = zeros(N+2,1);

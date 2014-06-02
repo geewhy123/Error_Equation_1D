@@ -1,4 +1,4 @@
-function [ err ] = reconplot( obj,Z )
+function [ err ] = reconplot( obj,Z ,eqn)
 %RECONPLOT Summary of this function goes here
 %   Detailed explanation goes here
 % Z
@@ -7,7 +7,16 @@ err = 0;
 errp=0;
 x = obj.cellCentroids;
 h = obj.cellWidths;
+
+if(strcmp(eqn,'solution')==1)
 p = obj.pOrder;
+elseif(strcmp(eqn,'residual')==1)
+p = obj.rOrder;
+elseif(strcmp(eqn,'error')==1)
+p = obj.qOrder;
+end
+
+
 N = obj.nCells;
 
 for i = 2:N+1
@@ -35,7 +44,7 @@ hold on
 ye = 1-tanh(xx/2);
 %  ye = (xx-0.5).^4;
 err = max(err,max(abs(yy-ye)));
-plot(xx,ye)
+% plot(xx,ye)
 %     plot(xx,sin(pi*xx))
 
 end

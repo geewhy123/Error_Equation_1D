@@ -161,7 +161,7 @@ if(q> 0 && r>0)
   
   [Zr] = obj.unstructuredrecon(u,r,'residual');
   figure
-  obj.reconplot(Zr);
+  obj.reconplot(Zr,'residual');
   
 %     [left,right] = computeflux(Zr,h,N,r,physics,'residual',obj);
 %     Rend= (right-left)./h-f;
@@ -169,9 +169,11 @@ Rend = obj.computefluxintegral(Zr,'residual');
  
 Rend
 R1  = sum(abs(Rend(2:N+1)))/N
-%  error('2')
+%   error('2')
  
  
+
+% clearvars -except x obj 
 %%%%error equation
 
 if(obj.bcLeftType == 'D')
@@ -184,9 +186,17 @@ end
 exacterr = ue-u;
 
  obj.computeerrorpseudo();
-[Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
+[Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
+
+% Z
+% figure
+% obj.reconplot(Z,'error')
+% hold on
+% plot(x,exacterr)
+% error('1')
+
 f = -Rend;
-   obj.errorSource = f;
+   obj.errorSource = f;%tau
  
  
  Je = obj.computefluxjacobian(exacterr,'error');
@@ -199,7 +209,7 @@ f = -Rend;
 %  [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,obj)
 %  error('1')
  [tauE]= obj.computefluxintegral(Z,'error')
-%  error('1')
+%   error('1')
  
 
 
@@ -213,14 +223,15 @@ f = -Rend;
  ee(N+2) = NaN;
  count = 0;
  
-  dt = 0.0001;
- if(obj.qOrder == 6)
-    dt = 0.000001; 
+  kk = 0.0001;
+ if(obj.qOrder > 4)
+% error('1')
+    kk = 0.00005;
  end
   
   
  while(max(abs(R)) > 1e-11 )
-     Je = obj.computefluxjacobian(e,'error')%,x,h,N,p);
+     Je = obj.computefluxjacobian(e,'error');%,x,h,N,p);
     
      count = count +1;
 %      if(count < 50)

@@ -65,7 +65,7 @@ classdef pde < handle
         computemoments(obj);
         computeprimalpseudo(obj);
         Z = unstructuredrecon(obj,u,order,eqn);
-        er = reconplot(obj,Z);
+        er = reconplot(obj,Z,eqn);
         [uu,d] = updatesolution(obj,u);
         FI = computefluxintegral(obj,u,eqn);
         J=computefluxjacobian(obj,u,eqn);
