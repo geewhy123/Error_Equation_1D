@@ -196,7 +196,7 @@ exacterr = ue-u;
 % error('1')
 
 f = -Rend;
-   obj.errorSource = tau;
+   obj.errorSource = f;%tau;
  
  
  Je = obj.computefluxjacobian(exacterr,'error');
