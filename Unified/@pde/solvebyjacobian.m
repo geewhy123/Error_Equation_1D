@@ -7,6 +7,12 @@ if(strcmp(obj.physics,'BurgersMod')==1)
    return;
 end
 
+if(strcmp(obj.physics,'EulerQ')==1)
+   [errerr2,x,cverr2,exacterr,ee  ]=solveeuler(obj); 
+   return;
+end
+
+
 
 ue = obj.exactSolution;
 p = obj.pOrder;

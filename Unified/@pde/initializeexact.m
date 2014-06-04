@@ -11,8 +11,11 @@ elseif(strcmp(obj.physics,'Poisson')==1)
 poissoninitialize(obj);
 elseif(strcmp(obj.physics,'BurgersMod')==1)
     burgersmodinitialize(obj);
+elseif(strcmp(obj.physics,'EulerQ')==1)
+    eulerinitialize(obj);
 else
-    error('1')
+    fprintf('No exact solution provided')
+%     error('1')
 end
 
 
@@ -305,4 +308,25 @@ end
 % end
 
 
+function eulerinitialize(obj)
+x = obj.cellCentroids;
+N = obj.nCells;
+h = obj.cellWidths;
+U = NaN*ones(N+2,3);
+
+
+ for i = 2:N+1
+           xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+
+U(i,1) = (1/h(i))*(0.5*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
+U(i,2) = (1/h(i))*(1*(xr-xl)-(1/pi)*(cos(pi*xr)-cos(pi*xl)));
+U(i,3) = (1/h(i))*(0.4*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
+f(i) = 0;
+    end
+
+obj.initialSolution = U;
+
+
+end
 

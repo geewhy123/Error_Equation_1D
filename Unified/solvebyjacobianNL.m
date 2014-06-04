@@ -14,7 +14,7 @@ k = obj.tStep;
 physics = obj.physics;
 tlim = obj.endTime;
 
-c2 = 0.9;
+c2 = 1;
 
 
 obj.computeprimalpseudo();
@@ -50,6 +50,10 @@ te1 = sum(abs(tau(2:N+1)))/N
  u = ue;
  count = 0;
  dt = 0.0001;
+  if(obj.pOrder >= 4)
+% error('1')
+    dt = 0.00002;
+ end
  kk = dt;
  Rold = R;
  dtold = 1;
@@ -66,24 +70,15 @@ te1 = sum(abs(tau(2:N+1)))/N
 % error('1')
 % end
 % error('1')
-         dt = kk*(40/N)^2; 
-        
-%      elseif(count <100)
-%          dt = 0.0001;
-%      elseif(count < 500)
-%          dt = 0.0005;
-%      elseif(count < 1000)
-%          dt = 0.001;
-%      elseif(count < 10000)
-%          dt = 0.01;
-%      else
-%          dt = 0.05;
-%      end
-     
-% if (mod(count,100)==0)
-%    dt = dt*(count/100);
-%    error('3')
-% end
+         
+        dt = kk*(40/N)^2; 
+         
+         Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+%         if( Rratio> 1)
+%             Rratio
+           dt = dtold*c2*Rratio;
+
+
 
 
  K = J(2:N+1,2:N+1)+eye(N)/dt;
@@ -96,7 +91,7 @@ te1 = sum(abs(tau(2:N+1)))/N
 %  [er]=reconplot(x,h,N,p,Z);
 Rold = R;
  [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-    del = K\R(2:N+1);
+    del = K\-R(2:N+1);
     
     if(mod(count,100)==0)
     max(abs(R(2:N+1)))
@@ -237,6 +232,9 @@ f = -Rend;
 %      if(count < 50)
         dt = kk*(40/N)^2; 
         
+      Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+
+           dt = dtold*c2*Rratio;
 
 
 
@@ -246,8 +244,9 @@ f = -Rend;
 [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
 
 %  [er]=reconplot(x,h,N,p,Z);
+Rold = R;
  [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-    del = K\R(2:N+1);
+    del = K\-R(2:N+1);
     
     if(mod(count,100)==0)
     max(abs(R(2:N+1)))
@@ -257,6 +256,7 @@ f = -Rend;
      e = NaN*ones(N+2,1);
      e = ee;
      t = t+dt;
+     dtold = dt;
  end
 
 
