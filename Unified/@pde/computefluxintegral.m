@@ -151,7 +151,7 @@ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
     yy = pi*cos(pi*xx);
 %     yy = 2*xx-3*xx.^2;
     yy(end+1) = 0;
-    obj.reconplot(Z)
+    obj.reconplot(Z,eqn)
     size(FlAve)
     size(FrAve)
     size(yy')
@@ -408,8 +408,11 @@ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
         
         nonlinearerror = 1;
          if(nonlinearerror && strcmp(eqn,'error')==1)
-             
-             Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+%              obj.computerespseudo();%
+%              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      uorder = obj.qOrder;
+%              obj.computeerrorpseudo();%
 %                 obj.convSoln
 %                 error('1')
          end
@@ -435,7 +438,7 @@ for i=2:N+1
    
    
    if(nonlinearerror && strcmp(eqn,'error')==1)
-        for k = 1:p
+        for k = 1:uorder
         utilder(i) = utilder(i)+Zu(k,i)*(h(i)/2)^(k-1);
         utildel(i) = utildel(i)+Zu(k,i)*(-h(i)/2)^(k-1);
         end

@@ -110,7 +110,7 @@ problem.computeprimalpseudo();
  
  
  
-er = problem.reconplot(Z)
+er = problem.reconplot(Z,'solution')
 
 % Z
 % error('1')

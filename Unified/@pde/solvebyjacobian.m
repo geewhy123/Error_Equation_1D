@@ -39,7 +39,7 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 Z
 % error('2')
-  [er]=obj.reconplot(Z)%reconplot(x,h,N,p,Z)
+  [er]=obj.reconplot(Z,'solution')%reconplot(x,h,N,p,Z)
 %   error('1')
   
   
