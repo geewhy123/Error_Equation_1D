@@ -93,9 +93,11 @@ Rold = R;
  [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
     del = K\-R(2:N+1);
     
-    if(mod(count,100)==0)
+%     if(mod(count,100)==0)
     max(abs(R(2:N+1)))
-    end
+%     end
+
+
      uu = u(2:N+1) + del;%*dt;
      u = NaN*ones(N+2,1);
      u(2:N+1) = uu;
@@ -248,9 +250,9 @@ Rold = R;
  [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
     del = K\-R(2:N+1);
     
-    if(mod(count,100)==0)
+%     if(mod(count,100)==0)
     max(abs(R(2:N+1)))
-    end
+%     end
     
      ee(2:N+1) = e(2:N+1) + del;%*dt;
      e = NaN*ones(N+2,1);
