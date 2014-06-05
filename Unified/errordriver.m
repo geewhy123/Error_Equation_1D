@@ -1,5 +1,5 @@
 
-function [errerr2,x,cverr2,exacterr,ee  ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal)
+function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal)
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -87,10 +87,11 @@ u=u0;
 problem.exactSolution
 
 
+
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
  if(strcmp(goal,'SS')==1 )
     fprintf('solving by Jacobian');
-    [errerr2,x,cverr2,exacterr,ee  ]= problem.solvebyjacobian();
+    [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
     return;
 end
 
@@ -599,6 +600,7 @@ end
 
 
 exacterr-ee
+te = NaN;
 
 clear global
 end

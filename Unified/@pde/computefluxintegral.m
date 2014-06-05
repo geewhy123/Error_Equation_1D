@@ -410,11 +410,13 @@ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
          if(nonlinearerror && strcmp(eqn,'error')==1)
 %              obj.computerespseudo();%
 %              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
-                      Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      Zu = obj.convSolnRecon;%obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
                       uorder = obj.qOrder;
 %              obj.computeerrorpseudo();%
 %                 obj.convSoln
 %                 error('1')
+ Zu
+% error('1')
          end
         
          
@@ -442,9 +444,24 @@ for i=2:N+1
         utilder(i) = utilder(i)+Zu(k,i)*(h(i)/2)^(k-1);
         utildel(i) = utildel(i)+Zu(k,i)*(-h(i)/2)^(k-1);
         end
-       
+  
+%           if(i==N+1)
+%       [utildel.*ul utilder.*ur Fl Fr]
+%       [ul ur]
+%       error('1')
+%    end
       Fr(i) = Fr(i) - ur(i) * utilder(i);
       Fl(i) = Fl(i) - ul(i) * utildel(i);
+      
+      
+%       if(i==12)
+%          ur(i) * utilder(i)
+%          Fr(i)
+%          error('1')
+%       end
+  
+%     end
+    
    end
    
    
@@ -457,6 +474,10 @@ for i=2:N+1
 
    
 end
+
+% error('1')
+
+
 jump(2) = 0;
 for i=2:N+1
    

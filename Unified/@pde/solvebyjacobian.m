@@ -1,14 +1,14 @@
-function [errerr2,x,cverr2,exacterr,ee  ] = solvebyjacobian( obj )
+function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobian( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 
 if(strcmp(obj.physics,'BurgersMod')==1)
-   [errerr2,x,cverr2,exacterr,ee  ]=solvebyjacobianNL(obj); 
+   [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj); 
    return;
 end
 
 if(strcmp(obj.physics,'EulerQ')==1)
-   [errerr2,x,cverr2,exacterr,ee  ]=solveeuler(obj); 
+   [errerr2,x,cverr2,exacterr,ee,te  ]=solveeuler(obj); 
    return;
 end
 
@@ -55,8 +55,19 @@ f = obj.source;
  max(abs(tau))
  
 %  sqrt(sum((tau(2:N+1)).^2)/N)
+te = tau;
 
-%  sum(abs(tau(2:N+1)))/N
+
+sum(abs(tau(2:N+1)))/N
+
+% errerr2= NaN;
+% cverr2 = NaN;
+% exacterr = NaN;
+% ee = NaN;
+% return;
+
+
+% te=  sum(abs(tau(2:N+1)))/N;
 % error('1') 
  del = ones(N,1);
  t=0;
@@ -122,10 +133,14 @@ if(q>0 && r >0)
 % obj.resPI
 % error('1')
 
-Rend = obj.computefluxintegral(Zr,'residual');
+Rend = obj.computefluxintegral(Zr,'residual')
+
+% error('1')
  
  
  
+obj.bcLeftVal = 0;
+obj.bcRightVal = 0;
  
  obj.computeerrorpseudo();
 [Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
@@ -183,7 +198,8 @@ ee = exacterr - w;
 errerr2 = sqrt(sum((exacterr(2:N+1)-ee(2:N+1)).^2)/N) 
 w
  
-
+figure
+plot(x,exacterr,'o',x,ee,'*')
 else
     errerr2 = NaN;
     exacterr = NaN;

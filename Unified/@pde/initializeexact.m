@@ -50,6 +50,11 @@ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
 % f(i) = (1/h(i))*(2*xr-3*xr^2-2*xl+3*xl^2);
+
+
+% f(i) = (1/h(i))*(-0.5)*(sech(xr/2)^2-sech(xl/2)^2);
+% f(i) = (1/h(i))*pi*(cos(pi*(xr+0.2))-cos(pi*(xl+0.2)));
+
 else
    assert(0) 
 end
@@ -76,6 +81,10 @@ end
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
  ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
 %  ue(i) = (1/h(i))*(xr^3/3-xr^4/4-xl^3/3+xl^4/4);
+
+%  ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
+% ue(i) = (1/h(i))*((1/pi))*(-cos(pi*(xr+0.2))+cos(pi*(xl+0.2)));
+
  else
     assert(0) 
  end
@@ -163,13 +172,21 @@ elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
     ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
     u0(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    
     ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
      u0(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));%(1/h(i))*(xr-tanh(1/2)*xr^2/2-xl+tanh(1/2)*xl^2);%
+     
+
+     
+%     MMS
+%     ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
+%     u0 = ue;
+%     f(i) = -(1/h(i))*( ( - sin(pi*xr) - pi*cos(pi*xr) - cos(pi*xr)^2/2) -(- sin(pi*xl) - pi*cos(pi*xl) - cos(pi*xl)^2/2));
 else
     assert(0)
 end
 
-f(i) = 0;
+% f(i) = 0;
     end
 f(1) = NaN;
 f(N+2) = NaN;

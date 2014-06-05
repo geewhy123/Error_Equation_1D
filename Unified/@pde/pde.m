@@ -35,6 +35,7 @@ classdef pde < handle
          curTime;
          weight;
          convSoln;
+         convSolnRecon;
     end
     
     methods
@@ -73,7 +74,7 @@ classdef pde < handle
         computerespseudo(obj);
         [AD,AA] = computepseudo(obj,p);
         computeerrorpseudo(obj);
-        [errerr2,x,cverr2,exacterr,ee  ]=solvebyjacobian(obj);
+        [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobian(obj);
         
     end
     

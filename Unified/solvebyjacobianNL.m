@@ -1,4 +1,4 @@
-function [errerr2,x,cverr2,exacterr,ee  ] = solvebyjacobianNL( obj )
+function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -13,7 +13,6 @@ x = obj.cellCentroids;
 k = obj.tStep;
 physics = obj.physics;
 tlim = obj.endTime;
-
 
 
 
@@ -33,13 +32,24 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
-%  [er]=obj.reconplot(Z)%x,h,N,p,Z);
-%  error('1')
+%   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
+%   error('1')
 f = obj.source;
  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
- tau
+  tau
 te1 = sum(abs(tau(2:N+1)))/N 
+
+te = tau;
+
+
+% errerr2= NaN;
+% cverr2 = NaN;
+% exacterr = NaN;
+% ee = NaN;
+% return;
+
+
 %   error('1')
  
  max(abs(tau))
@@ -104,7 +114,7 @@ vv = u-ue;
 %   cverr1 = sum(abs(vv(2:N+1)))/N
   cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
 
-   plot(x,u,'*')
+   plot(x,u,'*',x,ue,'o')
 %    error('1')
 %   u-ue
 
@@ -131,6 +141,9 @@ vv = u-ue;
 % %  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  obj.convSoln = u;
+ 
+%  obj.convSoln
+%  error('1')
  count
 % error('1')
 
@@ -159,6 +172,12 @@ R1  = sum(abs(Rend(2:N+1)))/N
  
 
 % clearvars -except x obj 
+obj.computeerrorpseudo();
+
+
+ Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+ obj.convSolnRecon = Zu;
+ 
 %%%%error equation
 
 if(obj.bcLeftType == 'D')
@@ -170,7 +189,7 @@ end
 
 exacterr = ue-u;
 
- obj.computeerrorpseudo();
+%  obj.computeerrorpseudo();
 [Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
 
 % Z
