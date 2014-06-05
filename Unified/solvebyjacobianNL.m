@@ -14,7 +14,7 @@ k = obj.tStep;
 physics = obj.physics;
 tlim = obj.endTime;
 
-c2 = 1;
+
 
 
 obj.computeprimalpseudo();
@@ -49,34 +49,22 @@ te1 = sum(abs(tau(2:N+1)))/N
  t=0;
  u = ue;
  count = 0;
- dt = 0.0001;
-  if(obj.pOrder >= 4)
-% error('1')
-    dt = 0.00002;
- end
- kk = dt;
+ c2 = 10;
+ dt = 0.001;
+%   if(obj.pOrder >= 4)
+% % error('1')
+%     dt = 0.00002;
+%  end
+%  kk = dt;
  Rold = R;
  dtold = 1;
  while(max(abs(R)) > 1e-11 )
      J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
     
      count = count +1;
-%      if(count < 50)
-%  [ norm(Rold(2:N+1),2) norm(R(2:N+1),2)]
-
-% if(count > 1)
-    
-% dt = max(dtold*c2*(norm(Rold(2:N+1),2)/norm(R(2:N+1),2))^10,0.0001)
-% error('1')
-% end
-% error('1')
          
-        dt = kk*(40/N)^2; 
-         
-         Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
-%         if( Rratio> 1)
-%             Rratio
-           dt = dtold*c2*Rratio;
+     Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+     dt = dtold*c2*Rratio;
 
 
 
@@ -220,11 +208,11 @@ f = -Rend;
  ee(N+2) = NaN;
  count = 0;
  
-  kk = 0.0001;
- if(obj.qOrder > 4)
-% error('1')
-    kk = 0.00005;
- end
+  dt = 0.001;
+%  if(obj.qOrder > 4)
+% % error('1')
+%     kk = 0.00005;
+%  end
   
   
  while(max(abs(R)) > 1e-11 )
@@ -232,7 +220,7 @@ f = -Rend;
     
      count = count +1;
 %      if(count < 50)
-        dt = kk*(40/N)^2; 
+%         dt = kk*(40/N)^2; 
         
       Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
 
