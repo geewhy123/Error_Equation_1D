@@ -1,4 +1,4 @@
-function  [errerr2,x,cverr2,exacterr,ee  ] = solveeuler( obj )
+function  [errerr2,x,cverr2,exacterr,ee,te  ] = solveeuler( obj )
 %SOLVEEULER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -16,10 +16,18 @@ plot(x,U(:,1),x,U(:,2),x,U(:,3))
 obj.computeprimalpseudo();
 Z = obj.unstructuredrecon(U,p,'solution')
 
+figure
 obj.reconplot(Z(1:p,:),'solution')
+figure
 obj.reconplot(Z(p+1:2*p,:),'solution')
+figure
 obj.reconplot(Z(2*p+1:3*p,:),'solution')
 %
+
+
+
+% flux at boundaries
+[phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution')
 
 
 errerr2 = NaN;

@@ -336,10 +336,32 @@ U = NaN*ones(N+2,3);
            xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
 
-U(i,1) = (1/h(i))*(0.5*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
-U(i,2) = (1/h(i))*(1*(xr-xl)-(1/pi)*(cos(pi*xr)-cos(pi*xl)));
-U(i,3) = (1/h(i))*(0.4*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
-f(i) = 0;
+% U(i,1) = (1/h(i))*(0.5*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
+% U(i,2) = (1/h(i))*(1*(xr-xl)-(1/pi)*(cos(pi*xr)-cos(pi*xl)));
+% U(i,3) = (1/h(i))*(0.4*(xr-xl)+(1/pi)*(sin(pi*xr)-sin(pi*xl)));
+
+UL = obj.bcLeftVal;
+UR = obj.bcRightVal;
+
+% a = asin((UL(1)-1)/.5);
+% b = asin((UR(1)-1)/.5)-a;
+% U(i,1) = (1/h(i))*(xr-(0.5/a)*cos(a*xr+b)-xl+(0.5/a)*cos(a*xl+b));
+% a = asin((UL(2)-1)/.5);
+% b = asin((UR(2)-1)/.5)-a;
+% U(i,2) = (1/h(i))*(xr-(0.5/a)*cos(a*xr+b)-xl+(0.5/a)*cos(a*xl+b));
+% a = asin((UL(3)-1)/.5);
+% b = asin((UR(3)-1)/.5)-a;
+% U(i,3) = (1/h(i))*(xr-(0.5/a)*cos(a*xr+b)-xl+(0.5/a)*cos(a*xl+b));
+
+a = UR(1)-UL(1)-1;
+U(i,1) = (1/h(i))*(UL(1)*xr+(a/2)*xr^2+xr^3/3-UL(1)*xl-(a/2)*xl^2-xl^3/3);
+a = UR(2)-UL(2)-1;
+U(i,2) = (1/h(i))*(UL(2)*xr+(a/2)*xr^2+xr^3/3-UL(2)*xl-(a/2)*xl^2-xl^3/3);
+a = UR(3)-UL(3)-1;
+U(i,3) = (1/h(i))*(UL(3)*xr+(a/2)*xr^2+xr^3/3-UL(3)*xl-(a/2)*xl^2-xl^3/3);
+
+
+f(i,1:3) = 0;
     end
 
 obj.initialSolution = U;
