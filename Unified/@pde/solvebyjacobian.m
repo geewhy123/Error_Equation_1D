@@ -118,7 +118,7 @@ max(abs(v))
  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  
- 
+ exacterr= ue-u;
 % error('1')
 if(q>0 && r >0)
 
@@ -202,7 +202,7 @@ figure
 plot(x,exacterr,'o',x,ee,'*')
 else
     errerr2 = NaN;
-    exacterr = NaN;
+%     exacterr = NaN;
     ee = NaN;
     
 end

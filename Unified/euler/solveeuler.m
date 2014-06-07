@@ -9,6 +9,7 @@ initializeeuler(obj);
 
 x = obj.cellCentroids;
 U = obj.initialSolution
+% error('1')
 p = obj.pOrder;
 figure
 plot(x,U(:,1),x,U(:,2),x,U(:,3))
@@ -30,9 +31,12 @@ obj.reconplot(Z(2*p+1:3*p,:),'solution')
 [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution')
 
 
+
+
 errerr2 = NaN;
 cverr2 = NaN;
 ee = NaN;
 exacterr = NaN;
+te = NaN;
 end
 
