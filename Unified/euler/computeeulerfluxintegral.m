@@ -3,6 +3,7 @@ function [ phi1,phi2,phi3 ] = computeeulerfluxintegral( obj,Z,eqn )
 %   Detailed explanation goes here
 N=obj.nCells;
 h = obj.cellWidths;
+x = obj.cellCentroids;
 rhol  = zeros(N+2,1);
 rhor  = zeros(N+2,1);
 ul = zeros(N+2,1);
@@ -18,7 +19,9 @@ gam = 1.4;
 bAtilde = zeros(3,3,N+2);
 FrAve = zeros(N+2,3);
 FlAve = zeros(N+2,3);
-Z
+Ae = 0.4;
+At = 0.2;
+% Z
 for i = 2:N+1
     
     for k = 1:obj.pOrder
@@ -33,12 +36,18 @@ for i = 2:N+1
     cl(i) = sqrt(gam*Pl(i)/rhol(i));
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
-[rhol rhor ul ur Pl Pr]
+V = [rhol rhor ul ur Pl Pr]
+% Z
 % error('1')
+
+if(min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0)
+ error('1')
+ 
+end
 [U1l,U2l,U3l]=toconservedvars(rhol,ul,Pl);
 [U1r,U2r,U3r]=toconservedvars(rhor,ur,Pr);
 
-[U1l U1r U2l U2r U3l U3r]
+U = [U1l U1r U2l U2r U3l U3r]
 
 
 F1l = zeros(N+2,1);
@@ -53,9 +62,11 @@ for i = 2:N+1
 [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
 end
 
-[F1l F1r F2l F2r F3l F3r]
+ [F1l F1r F2l F2r F3l F3r]
 % error('1')
 %faces
+% [ur ul cr cl]
+% error('2')
 for i = 2:N+1
 [Ut1(i),Ut2(i),Ut3(i)]=computeroeavg(U1l(i+1),U2l(i+1),U3l(i+1),U1r(i),U2r(i),U3r(i));    
 
@@ -68,35 +79,93 @@ l1 = (ur(i)+ul(i+1))/2;
 l2 = (ur(i)+cr(i)+ul(i+1)+cl(i+1))/2;
 l3 = (ur(i)-cr(i)+ul(i+1)-cl(i+1))/2;
 
+if(i==N+1)
+l1 = (ur(i));
+l2 = (ur(i)+cr(i));
+l3 = (ur(i)-cr(i));
+end
 
-[l1 l2 l3]
+
+L = [l1 l2 l3]
 % error('2')
 bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i),l1,l2,l3);
 end
+
 
 
 for i = 2:N+1
 FrAve(i,1:3) =( 0.5*[(F1r(i)+F1l(i+1)); (F2r(i)+F2l(i+1)); (F3r(i)+F3l(i+1))]  -0.5*bAtilde(:,:,i)*  ([ U1l(i+1); U2l(i+1); U3l(i+1)]- [ U1r(i); U2r(i); U3r(i)]) )';
 FlAve(i,1:3) =( 0.5*[(F1l(i)+F1r(i-1)); (F2l(i)+F2r(i-1)); (F3l(i)+F3r(i-1))]  -0.5*bAtilde(:,:,i-1)*([ U1l(i); U2l(i); U3l(i)]- [ U1r(i-1); U2r(i-1); U3r(i-1)]) )';
 end
-
+[FlAve FrAve]
 FlAve(2,1:3) = [F1l(2); F2l(2); F3l(2)]';
 % FrAve(1:3,2) = [0;0;0];
 % FlAve(1:3,N+1)= [ 0;0;0];
 FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
-[FlAve FrAve]
-error('2')
-A = ones(N+2,1);
-P = A;
-Ap = A;
+F = [FlAve FrAve]
+% error('2')
+PAp = NaN*ones(N+2,1);
+Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
+A = zeros(N+2,1);
+phi1 = zeros(N+2,1);
+phi2 = zeros(N+2,1);
+phi3 = zeros(N+2,1);
+
+  c1 = 0.3478548451;
+c2 = 0.6521451549;
+c3 = 0.6521451549;
+c4 = 0.3478548451;
+x1= 0.8611363116;
+x2 = 0.339981436;
+x3 = -0.339981436;
+x4= -0.8611363116;
 
 for i = 2:N+1
+    xr = x(i)+h(i)/2;   
+    A(i) = (25/9)*(Ae-At)*(xr-2/5)^2+At; 
+end
+A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
+
+
+
+% A
+% error('1')
+for i = 2:N+1
+    xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+    
+    
+     xx1 = ((xr-xl)/2)*x1+(xr+xl)/2;
+ xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
+ xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
+ xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
+ P1 = 0;
+ P2 = 0;
+ P3 = 0;
+ P4 = 0;
+    for k = 1:obj.pOrder
+       P1 = P1 + Z(k+2*obj.pOrder,i)*(xx1-x(i))^(k-1); 
+       P2 = P2 + Z(k+2*obj.pOrder,i)*(xx2-x(i))^(k-1) ;
+       P3 = P3 + Z(k+2*obj.pOrder,i)*(xx3-x(i))^(k-1) ;
+       P4 = P4 + Z(k+2*obj.pOrder,i)*(xx4-x(i))^(k-1) ;
+    end
+ 
+ 
+ PAp(i) = (1/h(i))*(c1*P1*Ap(xx1)+c2*P2*Ap(xx2)+c3*P3*Ap(xx3)+c4*P4*Ap(xx4))*(xr-xl)/2;
    
  phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
-phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- P(i)*Ap(i);
+phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
  phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
 end
+
+
+i = N+1;
+[A(N+1) A(N) FrAve(N+1,1) FrAve(N+1,2) FrAve(N+1,3) FlAve(N+1,1) FlAve(N+1,2) FlAve(N+1,3) ] 
+0.5*[(F1l(i)+F1r(i-1)); (F2l(i)+F2r(i-1)); (F3l(i)+F3r(i-1))]
+-0.5*bAtilde(:,:,i-1)*([ U1l(i); U2l(i); U3l(i)]- [ U1r(i-1); U2r(i-1); U3r(i-1)]) 
+% [Ut1(N+1) Ut2(N+1) Ut3(N+1)]
+% error('3')
 
 % El = (1/(gam-1))*Pl./rhol+0.5*ul.^2;
 % f1l = rhol.*ul;
