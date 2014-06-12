@@ -5,17 +5,18 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ] = solveeuler( obj )
 %errordriver(10,2,0,0,0,'D',[0.904828205821313 0.523900072935957 0.869359219563748],'D',[0.18462798898162 1.854354424142687 0.093932645732845],10,7,'EulerQ','SS');
 
 initializeeuler(obj);
-
-
+N = obj.nCells
+v = zeros(N+2,3);
+U = zeros(N+2,3);
 x = obj.cellCentroids;
-U = obj.initialSolution
+V = obj.initialSolution
 % error('1')
 p = obj.pOrder;
 figure
-plot(x,U(:,1),x,U(:,2),x,U(:,3))
+plot(x,V(:,1),x,V(:,2),x,V(:,3))
 %reconstruct
 obj.computeprimalpseudo();
-Z = obj.unstructuredrecon(U,p,'solution');
+Z = obj.unstructuredrecon(V,p,'solution');
 
 figure
 obj.reconplot(Z(1:p,:),'solution')
@@ -32,22 +33,35 @@ obj.reconplot(Z(2*p+1:3*p,:),'solution')
 % error('2')
 k = 0.0001;
 % while(norm([phi1 phi2 phi3]) > 0.1)
-for j = 1:5
+
+
+for j = 1:2
+
+ for i = 2:N+1
+ [U(i,1) U(i,2) U(i,3)] = toconservedvars(V(i,1),V(i,2),V(i,3));
+ end
+
    unew = U+k*[phi1 phi2 phi3];
    [phi1 phi2 phi3]
 %     error('2')
-   Z = obj.unstructuredrecon(unew,p,'solution');
+
+ for i = 2:N+1
+ [V(i,1) V(i,2) V(i,3)] = toprimitivevars(unew(i,1),unew(i,2),unew(i,3));
+ end
+    Z = obj.unstructuredrecon(V,p,'solution');
    
+
 %    figure
 % obj.reconplot(Z(1:p,:),'solution')
-% figure
+% 
 % obj.reconplot(Z(p+1:2*p,:),'solution')
-% figure
+% 
 % obj.reconplot(Z(2*p+1:3*p,:),'solution')
 % error('2')
    
    
    [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution');
+   
 end
 figure
 plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))

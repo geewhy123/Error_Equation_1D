@@ -41,7 +41,16 @@ V = [rhol rhor ul ur Pl Pr]
 % error('1')
 
 if(min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0)
- error('1')
+   figure
+obj.reconplot(Z(1:obj.pOrder,:),'solution')
+
+obj.reconplot(Z(obj.pOrder+1:2*obj.pOrder,:),'solution')
+
+obj.reconplot(Z(2*obj.pOrder+1:3*obj.pOrder,:),'solution')
+error('2')
+   
+    
+    error('1')
  
 end
 [U1l,U2l,U3l]=toconservedvars(rhol,ul,Pl);
