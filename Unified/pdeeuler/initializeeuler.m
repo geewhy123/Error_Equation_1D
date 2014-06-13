@@ -1,31 +1,39 @@
 function [ output_args ] = initializeeuler(obj )
 %INITIALIZEEULER Summary of this function goes here
 %   Detailed explanation goes here
-Ae = 0.4;
-At = 0.2;
+% Ae = 0.4;
+% At = 0.2;
+P0 = 1;
+T0 = 1;
+Pb = 0.95*P0;
+
 x = linspace(0,1,1000);
 
 
-A = (25/9)*(Ae-At)*(x-2/5).^2+At;
-As = At;
-gam = 1.4;
+% A= (25/9)*(Ae-At)*(x-2/5).^2+At;
+A = zeros(size(x));
 for i = 1:length(x)
-   F = @(m) (A(i)/As)-(1/m)*((2/(gam+1))*(1+((gam-1)/2)*m^2))^((gam+1)/(2*(gam-1)));
-   if (x(i) <= 2/5)
-      M(i) = fzero(F,[0.01,1]); 
-%       
-%       M(i)
-%       x(i)
-%       F(M(i))
-   else
-      M(i) = fzero(F,[1,100]);
-   end
-    
+A(i) = getArea(x(i));
+end
+As = 1;%At;
+gam = 1.4;
+
+fprintf('subsonic constant')
+for i = 1:length(x)
+
+%     F = @(m) (A(i)/As)-(1/m)*((2/(gam+1))*(1+((gam-1)/2)*m^2))^((gam+1)/(2*(gam-1)));
+%    if (x(i) <= 2/5 )
+%        
+%       M(i) = fzero(F,[0.01,1]); 
+%    else
+%       M(i) = fzero(F,[1,100]);
+%    end
+M(i) = sqrt((2/(gam-1))*((P0/Pb)^((gam-1)/gam)-1));
 end
 
 rho = (1+((gam-1)/2)*M.^2).^(-1/(gam-1));
-P = (1+((gam-1)/2)*M.^2).^(-gam/(gam-1));
-T = (1+((gam-1)/2)*M.^2).^-1;
+P = P0*(1+((gam-1)/2)*M.^2).^(-gam/(gam-1));
+T = T0*(1+((gam-1)/2)*M.^2).^-1;
 figure
 subplot(3,1,1)
 plot(x,M,x,A,x,P)

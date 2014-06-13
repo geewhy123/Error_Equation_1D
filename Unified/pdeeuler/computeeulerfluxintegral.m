@@ -115,7 +115,8 @@ FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 F = [FlAve FrAve]
 % error('2')
 PAp = NaN*ones(N+2,1);
-Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
+% Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
+
 A = zeros(N+2,1);
 phi1 = zeros(N+2,1);
 phi2 = zeros(N+2,1);
@@ -130,11 +131,14 @@ x2 = 0.339981436;
 x3 = -0.339981436;
 x4= -0.8611363116;
 
+
 for i = 2:N+1
     xr = x(i)+h(i)/2;   
-    A(i) = (25/9)*(Ae-At)*(xr-2/5)^2+At; 
+   A(i)=getArea(xr);
+%     A(i) = (25/9)*(Ae-At)*(xr-2/5)^2+At; 
 end
-A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
+A(1) = getArea(0);
+% A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
 
 
 
@@ -161,7 +165,7 @@ for i = 2:N+1
     end
  
  
- PAp(i) = (1/h(i))*(c1*P1*Ap(xx1)+c2*P2*Ap(xx2)+c3*P3*Ap(xx3)+c4*P4*Ap(xx4))*(xr-xl)/2;
+ PAp(i) = (1/h(i))*(c1*P1*getAp(xx1)+c2*P2*getAp(xx2)+c3*P3*getAp(xx3)+c4*P4*getAp(xx4))*(xr-xl)/2;
    
  phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
 phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
