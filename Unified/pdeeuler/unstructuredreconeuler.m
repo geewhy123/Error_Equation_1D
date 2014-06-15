@@ -142,11 +142,35 @@ ub2 = u(cv2);
 ub3 = u(cv3);
 ub4 = u(cv4);
 ubi = u(i);
-uL = obj.bcLeftVal(iUnk);
+% uL = obj.bcLeftVal(iUnk);
+
+
 % uL
 % error('1')
 
 
+%%%
+
+if(iUnk ~=  3)
+    gam = 1.4;
+    Pa = obj.bcLeftVal(3);
+    T0=1;
+    P0=1;
+    Ta = T0*(Pa/P0)^((gam-1)/gam);
+    rhoa = Pa/Ta;%*gam
+    ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
+    fprintf('check quant definitions, and consistent')
+    
+    
+    if(iUnk==1)
+       obj.bcLeftVal(1) = rhoa;
+       uL = rhoa;
+    elseif(iUnk==2)
+        obj.bcLeftVal(2) = ua;
+        uL = ua;
+    end
+    
+    
 
 A = AA(:,:,i);
 xbi = obj.moments(i,2);
@@ -159,11 +183,7 @@ b = (b-[(A(1,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;
        (A(3,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;
        (A(4,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;]);
     
-%    
-% C =           ([(A(1,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2) ; 
-%                 (A(2,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2)  ;
-%                 (A(3,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2)  ;
-%                 (A(4,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2) ]);   
+   
 C = zeros(4,p-2);
 for jj = 1:p-2
    C(1,jj) = (A(1,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1)); 
@@ -172,14 +192,6 @@ for jj = 1:p-2
    C(4,jj) = (A(4,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
 end
 
-
-% [m,n] = size(A);
-% if(n == 1)
-%     i
-%     AA
-%     eqn
-%     obj.errorRM
-% end
 
 A = (A(:,2:p-1)-C);
         
@@ -198,6 +210,56 @@ end
 
 y(1:2) = P\q;
 Z(:,i) = y;
+
+% if(iUnk==2)
+%    uL
+%    T0
+%    Ta
+%    P0
+%    Pa
+%    error('1')
+% end
+
+
+else
+
+    
+    
+   b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+
+% AD = obj.primalPI;
+
+Y(2:p) = AD(:,:,i)*b;
+
+
+
+
+ Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
+%q = y(1)-ubi
+
+for k = 1:p-1
+   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+end
+
+
+ Z(:,i) = Y;
+  
+
+ 
+ 
+ PRB = 0;
+ for k = 1:p
+    PRB = PRB+ Z(k,i)*(-h(i)/2)^(k-1); 
+ end
+ obj.bcLeftVal(3) = PRB;
+ 
+%  PRB
+%  Z
+%  obj.bcLeftVal
+%  error('1')
+end
+
+% % % 
 
 
 i = N+1;
@@ -218,7 +280,12 @@ ub2 = u(cv2);
 ub3 = u(cv3);
 ub4 = u(cv4);
 ubi = u(i);
-uL = obj.bcRightVal(iUnk);
+% % % uL = obj.bcRightVal(iUnk);
+
+% % % 
+if(iUnk == 3)
+ uL = 0.95%obj.bcRightVal(3);
+
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 b = (b-[(A(1,1)/(xbi-(h(i)/2)))*(u(i)-uL) ; 
@@ -254,6 +321,43 @@ y(1:2) = P\q;
 
 Z(:,i) = y;
 
+
+
+else
+      b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+
+Y(2:p) = AD(:,:,i)*b;
+
+
+ Y(1) = ubi;
+
+for k = 1:p-1
+   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+end
+
+ Z(:,i) = Y;
+  
+ 
+ if(iUnk == 1)
+ rhoRB = 0;
+ for k = 1:p
+    rhoRB = rhoRB+ Z(k,i)*(h(i)/2)^(k-1); 
+ end
+ obj.bcLeftVal(1) = rhoRB;
+   
+ elseif(iUnk==2)
+     
+      uRB = 0;
+ for k = 1:p
+    uRB = uRB+ Z(k,i)*(h(i)/2)^(k-1); 
+ end
+ obj.bcLeftVal(2) = uRB;
+ end
+    
+    
+    
+end
+%%%
 
 
 

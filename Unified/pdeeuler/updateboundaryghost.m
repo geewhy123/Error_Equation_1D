@@ -17,7 +17,8 @@ l3 = (u1-c1)*k/h;
 P0 = 1;
 T0 = 1;
 
-cv = 1;
+%cv = 1;
+cv = 1/(gam-1);
 cs = 2*gam*((gam-1)/(gam+1))*cv*T0;
 dPdu = P0*(gam/(gam-1))*(1-((gam-1)/(gam+1))*u1^2/cs^2)^(1/(gam-1))*(-2*(u1/cs)*(gam-1)/(gam+1));
 

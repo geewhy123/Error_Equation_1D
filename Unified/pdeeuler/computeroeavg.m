@@ -19,6 +19,7 @@ ut = (sqrt(rhor)*ur+sqrt(rhol)*ul)/(sqrt(rhor)+sqrt(rhol));
 
 ht = (sqrt(rhor)*hr+sqrt(rhol)*hl)/(sqrt(rhor)+sqrt(rhol));
 
+
 Pt =(ht-0.5*ut^2)*((gam-1)/(gam))*rhot;
 
 

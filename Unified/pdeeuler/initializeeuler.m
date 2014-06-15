@@ -30,15 +30,27 @@ for i = 1:length(x)
 %    end
 M(i) = sqrt((2/(gam-1))*((P0/Pb)^((gam-1)/gam)-1));
 end
-
-rho = (1+((gam-1)/2)*M.^2).^(-1/(gam-1));
+% 
+% rho = (1+((gam-1)/2)*M.^2).^(-1/(gam-1));
 P = P0*(1+((gam-1)/2)*M.^2).^(-gam/(gam-1));
+
 T = T0*(1+((gam-1)/2)*M.^2).^-1;
 figure
 subplot(3,1,1)
 plot(x,M,x,A,x,P)
 legend('M','A','P')
+
+% [ sqrt(gam*P(1)/rho(1)) sqrt(T(1))]
+
+
+rho = (1+((gam-1)/2)*M.^2).^(-1/(gam-1));
+% T
+% rho = P/T
+
 u = sqrt(gam*P./rho).*M;
+% error('1')
+
+
 E = (1/(gam-1))*(P./rho)+0.5*u.^2;
 subplot(3,1,2)
 plot(x,rho,x,rho.*u,x,rho.*E)

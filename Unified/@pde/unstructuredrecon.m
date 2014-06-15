@@ -2,9 +2,12 @@ function [ Z] = unstructuredrecon(obj,u,p,eqn)
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 % p = obj.pOrder;
 if(strcmp(obj.physics,'EulerQ')==1)
-        [Z1] = unstructuredreconeuler (obj,u(:,1),p,eqn,1); 
-       [Z2] = unstructuredreconeuler (obj,u(:,2),p,eqn,2);
+        
                [Z3] = unstructuredreconeuler (obj,u(:,3),p,eqn,3);
+               
+               
+               [Z1] = unstructuredreconeuler (obj,u(:,1),p,eqn,1); 
+       [Z2] = unstructuredreconeuler (obj,u(:,2),p,eqn,2);
                Z = [Z1; Z2;Z3];
         return ;
     end

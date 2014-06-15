@@ -36,7 +36,10 @@ for i = 2:N+1
     cl(i) = sqrt(gam*Pl(i)/rhol(i));
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
+
 V = [rhol rhor ul ur Pl Pr]
+
+
 % Z
 % error('1')
 
@@ -47,6 +50,7 @@ obj.reconplot(Z(1:obj.pOrder,:),'solution')
 obj.reconplot(Z(obj.pOrder+1:2*obj.pOrder,:),'solution')
 
 obj.reconplot(Z(2*obj.pOrder+1:3*obj.pOrder,:),'solution')
+Z
 error('2')
    
     
@@ -72,11 +76,13 @@ for i = 2:N+1
 end
 
  [F1l F1r F2l F2r F3l F3r]
-% error('1')
-%faces
+
+
+ 
+ %faces
 % [ur ul cr cl]
 % error('2')
-for i = 2:N+1
+for i = 2:N
 [Ut1(i),Ut2(i),Ut3(i)]=computeroeavg(U1l(i+1),U2l(i+1),U3l(i+1),U1r(i),U2r(i),U3r(i));    
 
 % [Ut1 Ut2 Ut3]
@@ -84,14 +90,29 @@ for i = 2:N+1
 
 % end check
 
-l1 = (ur(i)+ul(i+1))/2;
-l2 = (ur(i)+cr(i)+ul(i+1)+cl(i+1))/2;
-l3 = (ur(i)-cr(i)+ul(i+1)-cl(i+1))/2;
+% l1 = (ur(i)+ul(i+1))/2;
+% l2 = (ur(i)+cr(i)+ul(i+1)+cl(i+1))/2;
+% l3 = (ur(i)-cr(i)+ul(i+1)-cl(i+1))/2;
+
+u = Ut2(i)/Ut1(i);
+c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
+
+l1 = u;
+l2 = u+c;
+l3 = u-c;
+
+
 
 if(i==N+1)
-l1 = (ur(i));
-l2 = (ur(i)+cr(i));
-l3 = (ur(i)-cr(i));
+    u = Ut2(i)/Ut1(i);
+c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
+
+l1 = u;
+l2 = u+c;
+l3 = u-c;
+% l1 = (ur(i));
+% l2 = (ur(i)+cr(i));
+% l3 = (ur(i)-cr(i));
 end
 
 
@@ -101,6 +122,16 @@ bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i),l1,l2,l3);
 end
 
 
+%  U1L = U1l(3:6)  
+%  U1R = U1r(2:5)
+%   U2L = U2l(3:6) 
+%  U2R = U2r(2:5)
+%   U3L = U3l(3:6)
+%  U3R = U3r(2:5)
+%  
+%  [Ut1 Ut2 Ut3]
+ 
+% error('1')
 
 for i = 2:N+1
 FrAve(i,1:3) =( 0.5*[(F1r(i)+F1l(i+1)); (F2r(i)+F2l(i+1)); (F3r(i)+F3l(i+1))]  -0.5*bAtilde(:,:,i)*  ([ U1l(i+1); U2l(i+1); U3l(i+1)]- [ U1r(i); U2r(i); U3r(i)]) )';

@@ -359,9 +359,20 @@ UR = obj.bcRightVal;
 % % % U(i,2) = (1/h(i))*(UL(2)*xr+(a/2)*xr^2+xr^3/3-UL(2)*xl-(a/2)*xl^2-xl^3/3);
 % % % a = UR(3)-UL(3)-1;
 % % % U(i,3) = (1/h(i))*(UL(3)*xr+(a/2)*xr^2+xr^3/3-UL(3)*xl-(a/2)*xl^2-xl^3/3);
-U(i,1) = (1/h(i))*0.964024984265400*(xr-xl);
-U(i,2) = (1/h(i))*0.319121501427128*(xr-xl);
-U(i,3) = (1/h(i))*0.95*(xr-xl);
+%     gam = 1.4;
+% %     Pa = obj.bcLeftVal(3);
+% Pa = 0.95
+%     T0=1;
+%     P0=1;
+%     Ta = T0*(Pa/P0)^((gam-1)/gam);
+%     rhoa = Pa/Ta;%*gam
+%     ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
+%     fprintf('check quant definitions, and consistent')
+
+
+U(i,1) = (1/h(i))*0.964024984265400*(xr-xl)+(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+U(i,2) = (1/h(i))*0.319121501427128*(xr-xl)+(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+U(i,3) = (1/h(i))*0.95*(xr-xl)             +(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 
 

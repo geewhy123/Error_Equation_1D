@@ -14,7 +14,7 @@ Xl = [1 0 -1/ct^2; 0 0.5 1/(2*rhot*ct); 0 0.5 -1/(2*rhot*ct)];
 
 
 
-L = [l1 0 0; 0 l2 0; 0 0 l3];
+L = abs([l1 0 0; 0 l2 0; 0 0 l3]);
 
 
 barAtilde = dUdV*Xr*L*Xl*dVdU;
