@@ -9,8 +9,8 @@ H = E+P/rho;
 
 J = [ 0 1 0;
     0.5*(gam-3)*u^2 (3-gam)*u gam-1;
-    u*(0.5*(gam-1)*u^2-H) H-(gam-1)*u^2 gam*u];
-
+    u*(0.5*(gam-1)*u^2-H) H-(gam-1)*u^2 gam*u]
+error('1')
 
 U1 = U+ 1e-8*[1 0 0 ];
 U2 = U+ 1e-8*[0 1 0 ];

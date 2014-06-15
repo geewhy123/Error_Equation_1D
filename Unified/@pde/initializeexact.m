@@ -370,12 +370,22 @@ UR = obj.bcRightVal;
 %     fprintf('check quant definitions, and consistent')
 
 
-U(i,1) = (1/h(i))*0.964024984265400*(xr-xl)+(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
-U(i,2) = (1/h(i))*0.319121501427128*(xr-xl)+(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
-U(i,3) = (1/h(i))*0.95*(xr-xl)             +(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+U(i,1) = (1/h(i))*0.964024984265400*(xr-xl)+(1/h(i))*0.01*(xr-xl)%(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+U(i,2) = (1/h(i))*0.319121501427128*(xr-xl)+(1/h(i))*0.01*(xr-xl);%(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+U(i,3) = (1/h(i))*0.95*(xr-xl)             +(1/h(i))*0.01*(xr-xl);%(1/h(i))*(0.01/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 
 
+
+%%%
+
+pleft = 1.0;  pright = 0.1; rholeft = 1.0;  rhoright = 0.125;
+uleft = 0;  uright = 0; tend = 0.17; lambda = 0.35;
+ if x(i) < 0.5, U(i,3) = pleft; U(i,1) = rholeft;  U(i,2) = uleft; 
+ else,	      U(i,3) = pright; U(i,1) = rhoright; U(i,2) = uright;
+  end 
+
+%%%
 
 
 f(i,1:3) = 0;
