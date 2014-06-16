@@ -244,22 +244,35 @@ cell(10)%wR(3) =    0.952485154141762
 do j = 1, ncells-1
 !wLeft = wL(1)!cell(j  )%w + half*cell(j  )%dw !State extrapolated to j+1/2 from j
 !wRight = wR(1)!cell(j+1)%w - half*cell(j+1)%dw !State extrapolated to j+1/2 from j+1
-flux = roe_flux(cell(j)%wL,cell(j)%wR,gamma)           !Numerical flux at j+1/2
+
+flux = roe_flux(cell(j)%wR,cell(j+1)%wL,gamma)           !Numerical flux at j+1/2
+
 !cell(j  )%res = cell(j  )%res + flux   !Add it to the left cell.
 !cell(j+1)%res = cell(j+1)%res - flux   !Subtract from the right cell.
-write(*,*) flux!cell(i)%u
+!write(*,*) cell(j+1)%wL!flux!cell(i)%u
+!write(*,*) cell(j)%wR
+!write(*,*) flux
+!end do
+
+
+
+
+ !do j = 1, ncells-1
+  !    wL = cell(j  )%w + half*cell(j  )%dw !State extrapolated to j+1/2 from j                                                                                                                                      
+   !   wR = cell(j+1)%w - half*cell(j+1)%dw !State extrapolated to j+1/2 from j+1                                                                                                                                    
+    !flux = roe_flux(wL,wR,gamma)           !Numerical flux at j+1/2                                                                                                                                                 
+    cell(j  )%res = cell(j  )%res + flux   !Add it to the left cell.                                                                                                                                                
+    cell(j+1)%res = cell(j+1)%res - flux   !Subtract from the right cell.                                                                                                                             
+   
+  end do 
+
+write(*,*)
+do j=1,ncells-1
+    write(*,*) cell(j)%res/dx
+
 end do
 
 
-
-do i=0,nCells+1
-!write(*,*) cell(i)%wL
-end do
-
-!write(*,*)
-do i=0,nCells+1
-!write(*,*) cell(i)%wR!cell(i)%u
-end do
 stop
 
 !--------------------------------------------------------------------------------

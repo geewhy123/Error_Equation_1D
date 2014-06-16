@@ -263,21 +263,21 @@ end
 
 % % % 
 
-%tmp
-b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
-
-% AD = obj.primalPI;
-
-Y(2:p) = AD(:,:,i)*b;
- Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
-%q = y(1)-ubi
-
-for k = 1:p-1
-   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
-end
-
-
- Z(:,i) = Y;
+% %tmp
+% b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+% 
+% % AD = obj.primalPI;
+% 
+% Y(2:p) = AD(:,:,i)*b;
+%  Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
+% %q = y(1)-ubi
+% 
+% for k = 1:p-1
+%    Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+% end
+% 
+% 
+%  Z(:,i) = Y;
 %%%
 
 
@@ -303,7 +303,7 @@ ubi = u(i);
 
 % % % 
 if(iUnk == 3)
- uL = 0.95%obj.bcRightVal(3);
+ uL = 0.4%obj.bcRightVal(3);
 
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
@@ -378,25 +378,25 @@ end
 end
 %%%
 
-%tmp
-b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
-
-% AD = obj.primalPI;
-
-Y(2:p) = AD(:,:,i)*b;
-
-
-
-
- Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
-%q = y(1)-ubi
-
-for k = 1:p-1
-   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
-end
-
-
- Z(:,i) = Y;
+% %tmp
+% b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+% 
+% % AD = obj.primalPI;
+% 
+% Y(2:p) = AD(:,:,i)*b;
+% 
+% 
+% 
+% 
+%  Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
+% %q = y(1)-ubi
+% 
+% for k = 1:p-1
+%    Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+% end
+% 
+% 
+%  Z(:,i) = Y;
 %%%
 
 
