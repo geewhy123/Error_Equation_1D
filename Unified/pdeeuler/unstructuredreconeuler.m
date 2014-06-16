@@ -154,6 +154,8 @@ ubi = u(i);
 if(iUnk ~=  3)
     gam = 1.4;
     Pa = obj.bcLeftVal(3);
+
+
     T0=1;
     P0=1;
     Ta = T0*(Pa/P0)^((gam-1)/gam);
@@ -261,6 +263,23 @@ end
 
 % % % 
 
+%tmp
+b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+
+% AD = obj.primalPI;
+
+Y(2:p) = AD(:,:,i)*b;
+ Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
+%q = y(1)-ubi
+
+for k = 1:p-1
+   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+end
+
+
+ Z(:,i) = Y;
+%%%
+
 
 i = N+1;
 xbi = obj.moments(i,2);
@@ -359,6 +378,26 @@ end
 end
 %%%
 
+%tmp
+b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+
+% AD = obj.primalPI;
+
+Y(2:p) = AD(:,:,i)*b;
+
+
+
+
+ Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
+%q = y(1)-ubi
+
+for k = 1:p-1
+   Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
+end
+
+
+ Z(:,i) = Y;
+%%%
 
 
 

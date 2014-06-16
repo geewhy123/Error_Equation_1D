@@ -33,28 +33,42 @@ obj.reconplot(Z(2*p+1:3*p,:),'solution')
 % flux at boundaries
 [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution');
 % error('2')
-h = obj.cellWidths(2);
-k = 0.00005;
+h = obj.cellWidths;
+k = 0.05;
 % while(norm([phi1 phi2 phi3]) > 0.1)
 
 % updateboundaryghost(U);
 
 [phi1,phi2,phi3]
-% error('1')
 
-   entropy = log(V(:,3)./(V(:,1).^gam));
-   figure
-   plot(x,entropy,'o')
+for i = 2:N+1
+[U(i,1),U(i,2),U(i,3)]=toconservedvars(V(i,1),V(i,2),V(i,3));
+end
+U
 error('1')
 
+%    entropy = log(V(:,3)./(V(:,1).^gam));
+%    figure
+%    subplot(2,2,1)
+%    plot(x,V(:,1),'o')
+%       subplot(2,2,2)
+%    plot(x,V(:,2),'o')
+%       subplot(2,2,3)
+%    plot(x,V(:,3),'o')
+%       subplot(2,2,4)
+%    plot(x,entropy,'o')
+   
+[mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
+%  error('1')
 
-for j = 1:5000
+
+for j = 1:4
 
  for i = 2:N+1
  [U(i,1) U(i,2) U(i,3)] = toconservedvars(V(i,1),V(i,2),V(i,3));
  end
 
-   unew = U-k*[phi1 phi2 phi3];
+   unew = U+k*[phi1 phi2 phi3];
    
   
  for i = 2:N+1
@@ -103,8 +117,16 @@ for j = 1:5000
    
 
 end
-   entropy = log(V(:,3)./(V(:,1).^gam));
+
+entropy = log(V(:,3)./(V(:,1).^gam));
    figure
+   subplot(2,2,1)
+   plot(x,V(:,1),'o')
+      subplot(2,2,2)
+   plot(x,V(:,2),'o')
+      subplot(2,2,3)
+   plot(x,V(:,3),'o')
+      subplot(2,2,4)
    plot(x,entropy,'o')
 
 
@@ -113,7 +135,7 @@ figure
 plot(x,V(:,1),x,V(:,2),x,V(:,3))
 [phi1 phi2 phi3]
 
-[mean(phi1(2:N+1)) mean(phi2(2:N+1)) mean(phi3(2:N+1))]
+[mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
 
 
 errerr2 = NaN;
