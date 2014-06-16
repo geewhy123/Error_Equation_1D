@@ -70,7 +70,14 @@ global dir
 dir = NaN*ones(N+2,1);
 
 
+if(strcmp(physics,'EulerQ')==1)
+problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+else
 problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+end
+
+
+
 problem.initializeexact();
 
  
