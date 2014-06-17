@@ -8,6 +8,10 @@ obj.Pb = obj.bcRightVal(1);
 obj.areatype = obj.bcRightVal(2);
 
 
+
+
+
+
 %errordriver(10,2,0,0,0,'D',[0.904828205821313 0.523900072935957 0.869359219563748],'D',[0.18462798898162 1.854354424142687 0.093932645732845],10,7,'EulerQ','SS');
 gam = 1.4;
 obj.initializeeuler();
@@ -17,12 +21,21 @@ U = zeros(N+2,3);
 x = obj.cellCentroids;
 V = obj.initialSolution
 
+
+
+
 % error('1')
 p = obj.pOrder;
 figure
 plot(x,V(:,1),x,V(:,2),x,V(:,3))
 %reconstruct
 obj.computeprimalpseudo();
+
+
+J = computeeulerfluxjacobian(obj,V,'solution');
+error('1')
+
+
 Z = obj.unstructuredrecon(V,p,'solution');
 
 figure
@@ -69,7 +82,7 @@ U
 %  error('1')
 
 
-for j = 1:floor(100/k)%5000
+for j = 1:5000%floor(100/k)%5000
 
  for i = 2:N+1
  [U(i,1) U(i,2) U(i,3)] = toconservedvars(V(i,1),V(i,2),V(i,3));

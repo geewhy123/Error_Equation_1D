@@ -1,4 +1,4 @@
-function [ output_args ] = computeeulerjacobian( input_args )
+function [ output_args ] = solvebyeulerjacobian( obj)
 %COMPUTEEULERJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 ue = obj.exactSolution;
