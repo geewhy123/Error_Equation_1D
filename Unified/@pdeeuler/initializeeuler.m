@@ -8,8 +8,8 @@ T0 = obj.T0;
 Pb = obj.Pb;%0.97*P0;
 
 x = linspace(0,1,1000);
-
-
+N = obj.nCells;
+h = obj.cellWidths;
 % A= (25/9)*(Ae-At)*(x-2/5).^2+At;
 A = zeros(size(x));
 for i = 1:length(x)
@@ -74,6 +74,7 @@ P(end)
 
 
 %%%
+if(obj.areatype == 1)
 As = Ae/( (1/M(end))*((2/(gam+1))*(1+((gam-1)/2)*M(end)^2))^((gam+1)/(2*(gam-1))) );
 for i = 1:length(x)
     F = @(m) (A(i)/As)-(1/m)*((2/(gam+1))*(1+((gam-1)/2)*m^2))^((gam+1)/(2*(gam-1)));
@@ -84,8 +85,24 @@ for i = 1:length(x)
     P(i) = (1+((gam-1)/2)*M(i)^2)^(-gam/(gam-1));
     u(i) = M(i)*sqrt(gam*P(i)/rho(i));
 end
-
+end
 %%%
+
+rsp = spapi(8,x,rho);
+rspi = fnint(rsp);
+usp = spapi(8,x,u);
+uspi = fnint(usp);
+Psp = spapi(8,x,P);
+Pspi = fnint(Psp);
+
+xx = obj.cellCentroids;
+uav = NaN*ones(N+2,3);
+for i = 2:N+1
+    uav(i,1) = (1/h(i))*(fnval(rspi,xx(i)+h(i)/2)-fnval(rspi,xx(i)-h(i)/2)); 
+    uav(i,2) = (1/h(i))*(fnval(uspi,xx(i)+h(i)/2)-fnval(uspi,xx(i)-h(i)/2)); 
+    uav(i,3) = (1/h(i))*(fnval(Pspi,xx(i)+h(i)/2)-fnval(Pspi,xx(i)-h(i)/2)); 
+end
+obj.exactSolution = uav;
 
 end
 

@@ -1,5 +1,10 @@
 
 tic
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
+assert(max(abs(cverr2-[0.0069    0.0222    0.0098])/norm(cverr2)) < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.95 0],10,7,'EulerQ','SS');
+assert(max(abs(cverr2-[0.0    0.0    0.0])) < 0.001)
 
 
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,2,4,0,'P',0,'P',0,10,7,'Poisson','SS');

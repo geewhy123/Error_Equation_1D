@@ -40,6 +40,12 @@ end
 % % % V = [rhol rhor ul ur Pl Pr]
 
 
+% rhor(N+1) = obj.bcRightVal(1);
+% ur(N+1) = obj.bcRightVal(2);
+% Pr(N+1) = obj.Pb;
+
+%%%
+
 % Z
 % error('1')
 

@@ -41,8 +41,14 @@ obj.computeprimalpseudo();
 %%%
 % obj
 % error('1')
+if(strcmp(obj.goal,'SS')==1)
 solvebyeulerjacobian( obj);
-error('1')
+U = obj.convSoln;
+for i = 2:N+1
+  [ V(i,1),V(i,2),V(i,3)] = toprimitivevars(U(i,1),U(i,2),U(i,3)); 
+end
+% error('1')
+else
 
 
 
@@ -167,37 +173,47 @@ for j = 1:5000%floor(100/k)%5000
 end
 
 
+[phi1 phi2 phi3]
 
-[xx,rho,u,P] = initializeeuler(obj);
+[mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
+end
+
+% [xx,rho,u,P] = initializeeuler(obj);
+
+Ue = obj.exactSolution;
+rho = obj.exactSolution(:,1);
+u = obj.exactSolution(:,2);
+P = obj.exactSolution(:,3);
 % error('1')
 entropy = log(V(:,3)./(V(:,1).^gam));
    figure
    subplot(2,2,1)
-   plot(x,V(:,1),'o',xx,rho)
+   plot(x,V(:,1),'*',x,rho,'o')
    xlabel('$\rho$','Interpreter','Latex')
       subplot(2,2,2)
-   plot(x,V(:,2),'o',xx,u)
+   plot(x,V(:,2),'*',x,u,'o')
    xlabel('u')
       subplot(2,2,3)
-   plot(x,V(:,3),'o',xx,P)
+   plot(x,V(:,3),'*',x,P,'o')
  xlabel('P')
       subplot(2,2,4)
-   plot(x,entropy,'o')
+   plot(x,entropy,'*')
 xlabel('entropy')
 
 figure
 % plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
 plot(x,V(:,1),x,V(:,2),x,V(:,3))
 [V(:,1) V(:,2) V(:,3)]
-[phi1 phi2 phi3]
 
-[mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
 
 
 errerr2 = NaN;
-cverr2 = NaN;
+exacterr = Ue-V
 ee = NaN;
-exacterr = NaN;
+cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
 te = NaN;
+
+
+
 end
 

@@ -376,6 +376,7 @@ end
     uRB = uRB+ Z(k,i)*(h(i)/2)^(k-1); 
  end
  obj.bcRightVal(2) = uRB;
+ 
  end
     
     
