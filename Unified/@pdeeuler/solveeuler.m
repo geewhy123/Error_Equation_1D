@@ -2,10 +2,16 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ] = solveeuler( obj )
 %SOLVEEULER Summary of this function goes here
 %   Detailed explanation goes here
 
+
 obj.T0 = obj.bcLeftVal(2);
 obj.P0 = obj.bcLeftVal(1);
 obj.Pb = obj.bcRightVal(1);
 obj.areatype = obj.bcRightVal(2);
+
+
+
+
+
 
 
 
@@ -32,8 +38,30 @@ plot(x,V(:,1),x,V(:,2),x,V(:,3))
 obj.computeprimalpseudo();
 
 
-J = computeeulerfluxjacobian(obj,V,'solution');
+%%%
+% obj
+% error('1')
+solvebyeulerjacobian( obj);
 error('1')
+
+
+
+
+
+ J = computeeulerfluxjacobian(obj,V,'solution')
+ for m = 2:3*N+1
+     for n = 2:3*N+1
+        if(abs(J(m,n))<1e-4)
+            J(m,n) = 0;
+        end
+     end
+ end
+ spy(J(2:3*N+1,2:3*N+1))
+ 
+%  error('1')
+%%%
+
+
 
 
 Z = obj.unstructuredrecon(V,p,'solution');

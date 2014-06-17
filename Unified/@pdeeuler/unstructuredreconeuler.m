@@ -165,7 +165,7 @@ if(iUnk ~=  3)
     Ta = T0*(Pa/P0)^((gam-1)/gam);
     rhoa = Pa/Ta;%*gam
     ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
-    fprintf('check quant definitions, and consistent')
+% % %     fprintf('check quant definitions, and consistent')
 %     [P0 T0 rhoa ua Ta Pa]
 %     error('1')
     
