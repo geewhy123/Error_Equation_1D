@@ -31,7 +31,7 @@ obj.computeprimalpseudo();
 
 
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
-
+% J = (J+J')/2;
 
 % [d,c] =  eig(J(2:N+1,2:N+1))
 
@@ -86,7 +86,7 @@ sum(abs(tau(2:N+1)))/N
 
 %  [er]=reconplot(x,h,N,p,Z);
  [R]=reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-    del = K\R(2:N+1);
+    del = K\-R(2:N+1);
      uu = u0(2:N+1) + del*dt;
      u0 = NaN*ones(N+2,1);
      u0(2:N+1) = uu;
@@ -135,7 +135,7 @@ if(q>0 && r >0)
 
 Rend = obj.computefluxintegral(Zr,'residual')
 
-% error('1')
+%  error('1')
  
  
  
@@ -164,7 +164,7 @@ f = -Rend;
  
 %  Je
 %  error('1')
-w = Je(2:N+1,2:N+1)\tauE(2:N+1)
+w = Je(2:N+1,2:N+1)\-tauE(2:N+1)
 
 % x1 = ones(N,1);
 %  null(Je(2:N+1,2:N+1),'r')
