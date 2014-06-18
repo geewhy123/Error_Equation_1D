@@ -21,16 +21,27 @@ FrAve = zeros(N+2,3);
 FlAve = zeros(N+2,3);
 Ae = 0.4;
 At = 0.2;
-% Z
+
+if(strcmp(eqn,'solution')==1)
+   order = obj.pOrder; 
+elseif(strcmp(eqn,'residual')==1)
+   order = obj.rOrder;
+elseif(strcmp(eqn,'error')==1)
+   order = obj.qOrder;
+else
+    assert(0)
+end
+
+
 for i = 2:N+1
     
-    for k = 1:obj.pOrder
+    for k = 1:order
     rhor(i) = rhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
     rhol(i) = rhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);
-    ur(i)   = ur(i)+ Z(k+obj.pOrder,i)*(h(i)/2)^(k-1);
-    ul(i)   = ul(i)+ Z(k+obj.pOrder,i)*(-h(i)/2)^(k-1);
-    Pr(i)   = Pr(i)+ Z(k+2*obj.pOrder,i)*(h(i)/2)^(k-1);
-    Pl(i)   = Pl(i)+ Z(k+2*obj.pOrder,i)*(-h(i)/2)^(k-1);
+    ur(i)   = ur(i)+ Z(k+order,i)*(h(i)/2)^(k-1);
+    ul(i)   = ul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
+    Pr(i)   = Pr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
+    Pl(i)   = Pl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
     end
     
     cl(i) = sqrt(gam*Pl(i)/rhol(i));
@@ -51,11 +62,11 @@ end
 
 if(min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0)
    figure
-obj.reconplot(Z(1:obj.pOrder,:),'solution')
+obj.reconplot(Z(1:order,:),'solution')
 
-obj.reconplot(Z(obj.pOrder+1:2*obj.pOrder,:),'solution')
+obj.reconplot(Z(order+1:2*order,:),'solution')
 
-obj.reconplot(Z(2*obj.pOrder+1:3*obj.pOrder,:),'solution')
+obj.reconplot(Z(2*order+1:3*order,:),'solution')
 Z
 error('2')
    
@@ -199,11 +210,11 @@ for i = 2:N+1
  P2 = 0;
  P3 = 0;
  P4 = 0;
-    for k = 1:obj.pOrder
-       P1 = P1 + Z(k+2*obj.pOrder,i)*(xx1-x(i))^(k-1); 
-       P2 = P2 + Z(k+2*obj.pOrder,i)*(xx2-x(i))^(k-1) ;
-       P3 = P3 + Z(k+2*obj.pOrder,i)*(xx3-x(i))^(k-1) ;
-       P4 = P4 + Z(k+2*obj.pOrder,i)*(xx4-x(i))^(k-1) ;
+    for k = 1:order
+       P1 = P1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
+       P2 = P2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
+       P3 = P3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
+       P4 = P4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
     end
  
  

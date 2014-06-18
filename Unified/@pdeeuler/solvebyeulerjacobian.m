@@ -1,0 +1,340 @@
+function [ output_args ] = solvebyeulerjacobian( obj)
+%COMPUTEEULERJACOBIAN Summary of this function goes here
+%   Detailed explanation goes here
+ue = obj.exactSolution;
+p = obj.pOrder;
+q = obj.qOrder;
+r = obj.rOrder;
+h = obj.cellWidths;
+N = obj.nCells;
+x = obj.cellCentroids;
+k = obj.tStep;
+physics = obj.physics;
+tlim = obj.endTime;
+
+V = obj.initialSolution
+U = NaN*ones(3*N+2,1);
+obj.computeprimalpseudo();
+
+ %truncation error need exact sol
+% J = computeeulerfluxjacobian(obj,ue,'solution');%,x,h,N,p);
+% 
+% [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
+% 
+% %   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
+% %   error('1')
+% f = obj.source;
+%  [tau]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
+% 
+%   tau
+% te1 = sum(abs(tau(2:N+1)))/N 
+% 
+% te = tau;
+% % errerr2= NaN;
+% % cverr2 = NaN;
+% % exacterr = NaN;
+% % ee = NaN;
+% % return;
+% %   error('1')
+%  
+%  max(abs(tau))
+ 
+ %truncation error need exact sol
+  
+ del = ones(3*N,1);
+ R = ones(3*N+2,1);
+ t=0;
+ u = ue;
+ count = 0;
+ c2 = 10;
+ dt = 0.0001;
+%   if(obj.pOrder >= 4)
+% % error('1')
+%     dt = 0.00002;
+%  end
+%  kk = dt;
+ Rold = R;
+ dtold = 1;
+ 
+ while(max(abs(R(2:3*N+1))) > 1e-11 )
+     J = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
+    
+     count = count +1;
+         
+     Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+     dt = dtold*c2*Rratio;
+
+
+
+
+ K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
+
+[Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
+
+%  [er]=reconplot(x,h,N,p,Z);
+Rold = R;
+ [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+ 
+R(2:3:3*N-1) = phi1(2:N+1);
+R(3:3:3*N) = phi2(2:N+1);
+R(4:3:3*N+1) = phi3(2:N+1);
+u = NaN*ones(size(3*N+2,1));
+for j = 2:N+1
+[u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
+end
+
+
+
+
+    del = K\-R(2:3*N+1);
+    
+%     if(mod(count,100)==0)
+    max(abs(R(2:3*N+1)))
+%     end
+
+U(2:3:3*N-1) = u(2:N+1,1);
+U(3:3:3*N) = u(2:N+1,2);
+U(4:3:3*N+1) = u(2:N+1,3);
+
+
+UU = U(2:3*N+1) + del;%*dt;
+     U = NaN*ones(3*N+2,1);
+     U(2:3*N+1) = UU;
+     
+     
+     u(2:N+1,1) = U(2:3:3*N-1) ;
+u(2:N+1,2) = U(3:3:3*N) ;
+u(2:N+1,3) = U(4:3:3*N+1);
+
+for j = 2:N+1
+[V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
+end
+     
+     
+     t = t+dt;
+     
+     
+     dtold = dt;
+     
+ end
+ 
+ 
+%   u
+%   error('1')
+%   max(abs(u-ue))
+
+[V]
+figure
+plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
+
+% % % vv = u-ue;
+%   cverr1 = sum(abs(vv(2:N+1)))/N
+% % %   cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
+
+% % %    plot(x,u,'*',x,ue,'o')
+
+
+ obj.convSoln = u;
+ 
+%  obj.convSoln
+
+
+
+
+
+%%%%residual
+
+if(q> 0 && r>0)
+
+  obj.computerespseudo();
+  
+ 
+
+  
+  
+  Zr = obj.unstructuredrecon(V,r,'residual');
+
+figure
+obj.reconplot(Zr(1:r,:),'residual')
+figure
+obj.reconplot(Zr(r+1:2*r,:),'residual')
+figure
+obj.reconplot(Zr(2*r+1:3*r,:),'residual')
+%
+
+% [Zr] = obj.unstructuredrecon(u,r,'residual');
+%   figure
+%   obj.reconplot(Zr,'residual');
+% error('1')
+  
+  
+  
+%     [left,right] = computeflux(Zr,h,N,r,physics,'residual',obj);
+%     Rend= (right-left)./h-f;
+[R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
+ 
+[R1 R2 R3]
+
+norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
+   error('2')
+ 
+ 
+
+
+obj.computeerrorpseudo();
+
+
+ Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+ obj.convSolnRecon = Zu;
+ 
+ 
+ 
+%%%%error equation
+% 
+% if(obj.bcLeftType == 'D')
+%    obj.bcLeftVal = 0; 
+% end
+% if(obj.bcRightType == 'D')
+%     obj.bcRightVal = 0;
+% end
+% 
+% exacterr = ue-u;
+% 
+% %  obj.computeerrorpseudo();
+% [Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
+% 
+% % Z
+% % figure
+% % obj.reconplot(Z,'error')
+% % hold on
+% % plot(x,exacterr)
+% % error('1')
+% 
+% f = -Rend;
+%    obj.errorSource = f;%tau;
+%  
+%  
+%  Je = obj.computefluxjacobian(exacterr,'error');
+% % obj.errorRM
+% % error('1')
+% 
+% 
+% 
+% % error('1')
+% %  [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,obj)
+% %  error('1')
+%  [tauE]= obj.computefluxintegral(Z,'error')
+% %   error('1')
+%  
+% 
+% 
+%  del = ones(N,1);
+%  R = ones(N+2,1);
+%  t=0;
+%  
+%  e = exacterr;
+%  ee = ones(N+2,1);
+%  ee(1)=NaN;
+%  ee(N+2) = NaN;
+%  count = 0;
+%  
+%   dt = 0.001;
+% %  if(obj.qOrder > 4)
+% % % error('1')
+% %     kk = 0.00005;
+% %  end
+%   
+%   
+%  while(max(abs(R)) > 1e-11 )
+%      Je = obj.computefluxjacobian(e,'error');%,x,h,N,p);
+%     
+%      count = count +1;
+% %      if(count < 50)
+% %         dt = kk*(40/N)^2; 
+%         
+%       Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+% 
+%            dt = dtold*c2*Rratio;
+% 
+% 
+% 
+%  K = Je(2:N+1,2:N+1)+eye(N)/dt;
+% 
+% 
+% [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
+% 
+% %  [er]=reconplot(x,h,N,p,Z);
+% Rold = R;
+%  [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+%     del = K\-R(2:N+1);
+%     
+% %     if(mod(count,100)==0)
+%     max(abs(R(2:N+1)))
+% %     end
+%     
+%      ee(2:N+1) = e(2:N+1) + del;%*dt;
+%      e = NaN*ones(N+2,1);
+%      e = ee;
+%      t = t+dt;
+%      dtold = dt;
+%  end
+% 
+% 
+% 
+% w = exacterr-ee
+% 
+% % % % %  Je
+% % % % %  error('1')
+% % % % w = Je(2:N+1,2:N+1)\tauE(2:N+1)
+% % % % 
+% % % % % x1 = ones(N,1);
+% % % % %  null(Je(2:N+1,2:N+1),'r')
+% % % % % Je
+% % % % %   error('1')
+% % % % if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(Je(2:N+1,2:N+1)))) < 1e-5)
+% % % % %   error('5')
+% % % % %   [Q,R] = qr(Je(2:N+1,2:N+1)') ;
+% % % % % w = Q*(R'\tauE(2:N+1)) ;
+% % % % % w = Je(2:N+1,2:N+1)'*Je(2:N+1,2:N+1)\Je(2:N+1,2:N+1)'*tauE(2:N+1)
+% % % % 
+% % % % % w = w-dot(w,x1')*x1*dot(w,w);
+% % % %     w = pinv(Je(2:N+1,2:N+1))*tauE(2:N+1)
+% % % %   end
+% 
+% 
+% max(abs(w))
+% % error('1')
+% figure
+% plot(x,w)
+% 
+% % error('2')
+%  
+% 
+% % w(2:N+1) = w;
+% % w(1) = NaN;
+% % w(N+2) = NaN;
+% % cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
+% 
+% ee = exacterr - w;
+% errerr2 = sqrt(sum((exacterr(2:N+1)-ee(2:N+1)).^2)/N) 
+% w
+% figure
+% plot(x,ee,'*',x,exacterr,'o')
+% 
+% 
+% else
+%    errerr2 = NaN;
+%    exacterr = NaN;
+%    ee = NaN;
+%     
+% end
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+
+end
+

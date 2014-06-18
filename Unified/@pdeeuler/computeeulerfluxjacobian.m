@@ -21,7 +21,7 @@ Z = obj.unstructuredrecon(v,order,eqn);
 %        R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
 % R = obj.computefluxintegral(Z);%,x,h,N,p)
 
-[phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,eqn);
+[phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,eqn);
 
 R0 = NaN*ones(3*N+2,1);
 R1 = NaN*ones(3*N+2,1);

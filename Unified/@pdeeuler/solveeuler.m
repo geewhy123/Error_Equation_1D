@@ -42,7 +42,7 @@ obj.computeprimalpseudo();
 % obj
 % error('1')
 if(strcmp(obj.goal,'SS')==1)
-solvebyeulerjacobian( obj);
+obj.solvebyeulerjacobian();
 U = obj.convSoln;
 for i = 2:N+1
   [ V(i,1),V(i,2),V(i,3)] = toprimitivevars(U(i,1),U(i,2),U(i,3)); 
@@ -54,15 +54,15 @@ else
 
 
 
- J = computeeulerfluxjacobian(obj,V,'solution')
- for m = 2:3*N+1
-     for n = 2:3*N+1
-        if(abs(J(m,n))<1e-4)
-            J(m,n) = 0;
-        end
-     end
- end
- spy(J(2:3*N+1,2:3*N+1))
+%  J = computeeulerfluxjacobian(obj,V,'solution')
+%  for m = 2:3*N+1
+%      for n = 2:3*N+1
+%         if(abs(J(m,n))<1e-4)
+%             J(m,n) = 0;
+%         end
+%      end
+%  end
+%  spy(J(2:3*N+1,2:3*N+1))
  
 %  error('1')
 %%%
@@ -84,7 +84,7 @@ obj.reconplot(Z(2*p+1:3*p,:),'solution')
 % error('1')
 
 % flux at boundaries
-[phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution');
+[phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');
 % error('2')
 h = obj.cellWidths;
 C = 0.2;
@@ -166,7 +166,7 @@ for j = 1:5000%floor(100/k)%5000
 % error('2')
    
    
-   [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,'solution');
+   [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');
   
    
 

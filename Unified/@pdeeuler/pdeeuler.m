@@ -37,6 +37,9 @@ classdef pdeeuler < pde
        A = getArea(obj,xx);
        Ap = getAp(obj,xx);
        [xx,rho,u,P] = initializeeuler(obj);
+       solvebyeulerjacobian(obj);
+       [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,eqn);
+       J = computeeulerfluxjacobian(obj,v,eqn);
 %        [ u1,u2,u3 ] = toconservedvars(obj, rho,u,P );
     end
     
