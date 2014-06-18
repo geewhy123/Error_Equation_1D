@@ -180,7 +180,7 @@ end
 
 % [xx,rho,u,P] = initializeeuler(obj);
 
-Ue = obj.exactSolution;
+Ve = obj.exactSolution;
 rho = obj.exactSolution(:,1);
 u = obj.exactSolution(:,2);
 P = obj.exactSolution(:,3);
@@ -208,7 +208,7 @@ plot(x,V(:,1),x,V(:,2),x,V(:,3))
 
 
 errerr2 = NaN;
-exacterr = Ue-V
+exacterr = Ve-V
 ee = NaN;
 cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
 te = NaN;

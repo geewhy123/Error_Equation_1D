@@ -167,7 +167,7 @@ Rend = obj.computefluxintegral(Zr,'residual');
  
 Rend
 R1  = sum(abs(Rend(2:N+1)))/N
-  error('2')
+   error('2')
  
  
 
@@ -221,7 +221,7 @@ f = -Rend;
  R = ones(N+2,1);
  t=0;
  
- e = exacterr;
+ e = exacterr
  ee = ones(N+2,1);
  ee(1)=NaN;
  ee(N+2) = NaN;

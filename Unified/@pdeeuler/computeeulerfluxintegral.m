@@ -60,7 +60,7 @@ end
 % Z
 % error('1')
 
-if(min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0)
+if(strcmp(eqn,'solution') && (min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0))
    figure
 obj.reconplot(Z(1:order,:),'solution')
 
@@ -247,5 +247,12 @@ end
 % [f1l f2l f3l]
 
 % error('1')
+
+% if(strcmp(eqn,'error')==1)
+%    phi1 = phi1 - obj.errorSource(:,1);
+%    phi2 = phi2 - obj.errorSource(:,2);
+%    phi3 = phi3 - obj.errorSource(:,3);
+% end
+
 end
 
