@@ -144,7 +144,8 @@ obj.bcRightVal = 0;
  
  obj.computeerrorpseudo();
 [Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
-f = -Rend;
+
+f = -Rend%tau
    obj.errorSource = f;
 %    f
 %    error('2')
@@ -160,6 +161,10 @@ f = -Rend;
 %  [tauE]=reconfluxsoln(Z,f,h,N,q,physics,tlim,obj)
 %  error('1')
  [tauE]= obj.computefluxintegral(Z,'error')
+%  Z
+%  tauE
+%  error('1')
+ 
 %  error('1')
  
 %  Je
@@ -200,6 +205,14 @@ w
  
 figure
 plot(x,exacterr,'o',x,ee,'*')
+figure
+plot(x,exacterr-ee,'x')
+
+-tauE
+% error('1')
+% eig(Je(2:N+1,2:N+1))
+
+% -Rend
 else
     errerr2 = NaN;
 %     exacterr = NaN;

@@ -148,18 +148,18 @@ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
 %     xx
 %     error('4')
     
-    yy = pi*cos(pi*xx);
-%     yy = 2*xx-3*xx.^2;
-    yy(end+1) = 0;
-    obj.reconplot(Z,eqn)
-    size(FlAve)
-    size(FrAve)
-    size(yy')
-    [FlAve FrAve yy' ]
-FrAve(2:N)-yy(2:N)'
-     cverr1 = sum(abs(FrAve(2:N)-yy(2:N)'))/(N-1)
-     abs(Fr(4)-yy(4))
-     [Fl Fr]
+% % %     yy = pi*cos(pi*xx);
+% % % %     yy = 2*xx-3*xx.^2;
+% % %     yy(end+1) = 0;
+% % %     obj.reconplot(Z,eqn)
+% % %     size(FlAve)
+% % %     size(FrAve)
+% % %     size(yy')
+% % %     [FlAve FrAve yy' ]
+% % % FrAve(2:N)-yy(2:N)'
+% % %      cverr1 = sum(abs(FrAve(2:N)-yy(2:N)'))/(N-1)
+% % %      abs(Fr(4)-yy(4))
+% % %      [Fl Fr]
 
 %     error('2')
     
@@ -415,7 +415,7 @@ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 %              obj.computeerrorpseudo();%
 %                 obj.convSoln
 %                 error('1')
- Zu
+ Zu;
 % error('1')
          end
         

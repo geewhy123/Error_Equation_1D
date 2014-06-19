@@ -253,7 +253,8 @@ f = -[R1 R2 R3];
 
  while(max(abs(R)) > 1e-11 )
      Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
-    
+    Je
+    error('1')
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 

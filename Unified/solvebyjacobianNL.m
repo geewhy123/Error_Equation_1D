@@ -167,7 +167,7 @@ Rend = obj.computefluxintegral(Zr,'residual');
  
 Rend
 R1  = sum(abs(Rend(2:N+1)))/N
-   error('2')
+%    error('2')
  
  
 
