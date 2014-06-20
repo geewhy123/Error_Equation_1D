@@ -78,7 +78,7 @@ Rold = R;
 R(2:3:3*N-1) = phi1(2:N+1);
 R(3:3:3*N) = phi2(2:N+1);
 R(4:3:3*N+1) = phi3(2:N+1);
-u = NaN*ones(size(3*N+2,1));
+u = NaN*ones(N+2,3);
 for j = 2:N+1
 [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
 end
@@ -139,7 +139,7 @@ plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 %  obj.convSoln
 
 
-
+error('1')
 
 
 %%%%residual
@@ -176,12 +176,15 @@ obj.reconplot(Zr(2*r+1:3*r,:),'residual')
 [R1 R2 R3]
 
 norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
-%    error('2')
- 
+
+    
+
+
  
 
 
 obj.computeerrorpseudo();
+
 
 
  Zu = obj.unstructuredrecon(V,obj.qOrder,'error');
@@ -249,12 +252,19 @@ f = -[R1 R2 R3];
 % % error('1')
 %     kk = 0.00005;
 %  end
-  
+
 
  while(max(abs(R)) > 1e-11 )
-     Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
-    Je
-    error('1')
+    Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
+%      Jue = obj.computeeulerfluxjacobian(u+e,'error');%,x,h,N,p);
+%      Ju = obj.computeeulerfluxjacobian(u,'error');%,x,h,N,p);
+% Jue 
+% Ju
+% error('1')
+%      Je = Jue-Ju
+% e
+%      Je
+%     error('1')
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 
@@ -283,7 +293,10 @@ for j = 2:N+1
 end
 
  K
- error('1')
+if(isnan(K))
+error('1')
+end
+%  error('1')
  del = K\-R(2:3*N+1);
     
 %     if(mod(count,100)==0)

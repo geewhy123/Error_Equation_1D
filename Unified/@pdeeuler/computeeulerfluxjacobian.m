@@ -15,6 +15,7 @@ N = obj.nCells;
 J = zeros(3*N+2,3*N+2);
 
 Z = obj.unstructuredrecon(v,order,eqn);
+
 % Z
 % error('1')
 
@@ -22,6 +23,15 @@ Z = obj.unstructuredrecon(v,order,eqn);
 % R = obj.computefluxintegral(Z);%,x,h,N,p)
 
 [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,eqn);
+
+
+% if(strcmp(eqn,'error')==1)
+%      Z
+ 
+% [phi1 phi2 phi3]
+% error('1')
+% end
+
 
 R0 = NaN*ones(3*N+2,1);
 R1 = NaN*ones(3*N+2,1);
@@ -38,6 +48,9 @@ U = NaN*ones(3*N+2,1);
 U(2:3:3*N-1) = u(2:N+1,1);
 U(3:3:3*N) = u(2:N+1,2);
 U(4:3:3*N+1) = u(2:N+1,3);
+
+
+% U
 % error('1')
 
 
@@ -92,10 +105,14 @@ end
 %         error('1')
 %        end
    J(2:3*N+1,i) = (R1(2:3*N+1)-R0(2:3*N+1))/ep;  
-    
+   
+%     if( i == 2 && strcmp(eqn,'error')==1)
+%      [U U1]
+%         [R1(2:3*N+1) R0(2:3*N+1)]
+%      error('1')
+%     end
 %    end
 end
-
 
 
 

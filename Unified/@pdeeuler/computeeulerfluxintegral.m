@@ -8,6 +8,13 @@ rhol  = zeros(N+2,1);
 rhor  = zeros(N+2,1);
 ul = zeros(N+2,1);
 ur = zeros(N+2,1);
+U1l = zeros(N+2,1);
+U2l = zeros(N+2,1);
+U3l = zeros(N+2,1);
+U1r = zeros(N+2,1);
+U2r = zeros(N+2,1);
+U3r = zeros(N+2,1);
+
 Pl = zeros(N+2,1);
 Pr = zeros(N+2,1);
 cr = zeros(N+2,1);
@@ -74,9 +81,10 @@ error('2')
   
  
 end
-[U1l,U2l,U3l]=toconservedvars(rhol,ul,Pl);
-[U1r,U2r,U3r]=toconservedvars(rhor,ur,Pr);
-
+for i = 2:N+1
+[U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
+[U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
+end
 U = [U1l U1r U2l U2r U3l U3r];
 
 
@@ -92,9 +100,14 @@ for i = 2:N+1
 [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
 end
 
-% % %  [F1l F1r F2l F2r F3l F3r]
 
-
+% if(strcmp(eqn,'error')==1 && obj.T0 == 0)
+%  [F1l F1r F2l F2r F3l F3r]
+%  U
+%  [rhol rhor ul ur Pl Pr]
+%   error('1')
+% end
+ 
  
  %faces
 % [ur ul cr cl]

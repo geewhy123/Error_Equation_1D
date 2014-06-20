@@ -118,6 +118,7 @@ wt = obj.weight;
 %         obj.bcRightVal = 1;
        AA = obj.errorRM;
        AD = obj.errorPI;
+       
     elseif(strcmp(eqn,'residual')==1)
        AA = obj.resRM;
        AD = obj.resPI;
@@ -166,9 +167,16 @@ if(iUnk ~=  3)
     rhoa = Pa/Ta;%*gam
     ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
 % % %     fprintf('check quant definitions, and consistent')
-%     [P0 T0 rhoa ua Ta Pa]
-%     error('1')
-    
+
+if(strcmp(eqn,'error')==1 && T0 ==0 && P0 == 0)
+% [P0 T0 rhoa ua Ta Pa]
+rhoa = 0;
+ua = 0;
+Ta = 0;
+Pa = 0;
+% [P0 T0 rhoa ua Ta Pa]
+%      error('1')
+end
     if(iUnk==1)
        obj.bcLeftVal(1) = rhoa;
        uL = rhoa;
@@ -693,5 +701,8 @@ end
 %  Z(:,2)
 % assert(0)
 end
+
+
+
 
 

@@ -43,6 +43,11 @@ te1 = sum(abs(tau(2:N+1)))/N
 te = tau;
 
 
+% tau6 = tau;
+% save('tauB.mat','tau6','-append')
+% error('1')
+
+
 % errerr2= NaN;
 % cverr2 = NaN;
 % exacterr = NaN;
@@ -178,6 +183,17 @@ obj.computeerrorpseudo();
  Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
  obj.convSolnRecon = Zu;
  
+
+% test using TE for p~=q 
+% load('tauB.mat')
+% [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
+% Rq = obj.computefluxintegral(Zq,'residual');
+
+% [tau4 tau4-Rq -Rend]
+% error('1')
+
+
+
 %%%%error equation
 
 if(obj.bcLeftType == 'D')
@@ -199,8 +215,9 @@ exacterr = ue-u;
 % plot(x,exacterr)
 % error('1')
 
+
 f = -Rend;
-   obj.errorSource = f;%tau;
+   obj.errorSource = f;%tau6-Rq;%f;%tau;
  
  
  Je = obj.computefluxjacobian(exacterr,'error');
@@ -237,6 +254,13 @@ f = -Rend;
  while(max(abs(R)) > 1e-11 )
      Je = obj.computefluxjacobian(e,'error');%,x,h,N,p);
     
+     
+%      Jue = obj.computefluxjacobian(u+e,'error');%,x,h,N,p);
+%      Ju = obj.computefluxjacobian(u,'error');%,x,h,N,p);
+%      Je = Jue-Ju;
+     
+     
+     
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 
@@ -255,6 +279,8 @@ f = -Rend;
 %  [er]=reconplot(x,h,N,p,Z);
 Rold = R;
  [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+ 
+ 
     del = K\-R(2:N+1);
     
 %     if(mod(count,100)==0)
