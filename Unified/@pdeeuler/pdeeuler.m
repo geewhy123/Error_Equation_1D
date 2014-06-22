@@ -8,6 +8,8 @@ classdef pdeeuler < pde
         P0;
         T0;
         Pb;
+        exactSolutionV;
+        exactSolutionU;
     end
     
     methods

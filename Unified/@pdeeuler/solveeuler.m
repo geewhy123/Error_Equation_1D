@@ -180,25 +180,34 @@ end
 
 % [xx,rho,u,P] = initializeeuler(obj);
 
-Ve = obj.exactSolution;
-rho = obj.exactSolution(:,1);
-u = obj.exactSolution(:,2);
-P = obj.exactSolution(:,3);
+Ve = obj.exactSolutionV;
+rho = obj.exactSolutionV(:,1);
+u = obj.exactSolutionV(:,2);
+P = obj.exactSolutionV(:,3);
 % error('1')
 entropy = log(V(:,3)./(V(:,1).^gam));
    figure
-   subplot(2,2,1)
+   subplot(2,4,1)
    plot(x,V(:,1),'*',x,rho,'o')
    xlabel('$\rho$','Interpreter','Latex')
-      subplot(2,2,2)
+      subplot(2,4,2)
    plot(x,V(:,2),'*',x,u,'o')
    xlabel('u')
-      subplot(2,2,3)
+      subplot(2,4,3)
    plot(x,V(:,3),'*',x,P,'o')
  xlabel('P')
-      subplot(2,2,4)
+      subplot(2,4,4)
    plot(x,entropy,'*')
 xlabel('entropy')
+
+subplot(2,4,5)
+plot(x,rho-V(:,1),'x')
+subplot(2,4,6)
+plot(x,u-V(:,2),'x')
+subplot(2,4,7)
+plot(x,P-V(:,3),'x')
+
+
 
 figure
 % plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
@@ -211,6 +220,17 @@ errerr2 = NaN;
 exacterr = Ve-V
 ee = NaN;
 cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
+
+
+Ue = zeros(N+2,3);
+for i = 2:N+1
+    [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
+end
+exacterr = Ue-obj.convSoln
+cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
+
+
+
 te = NaN;
 
 

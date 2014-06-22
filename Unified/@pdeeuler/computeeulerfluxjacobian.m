@@ -25,12 +25,12 @@ Z = obj.unstructuredrecon(v,order,eqn);
 [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,eqn);
 
 
-% if(strcmp(eqn,'error')==1)
-%      Z
+%  if(strcmp(eqn,'error')==1)
+%       Z
  
-% [phi1 phi2 phi3]
-% error('1')
-% end
+%  [phi1 phi2 phi3]
+%  error('2')
+%  end
 
 
 R0 = NaN*ones(3*N+2,1);
@@ -40,8 +40,17 @@ R0(3:3:3*N) = phi2(2:N+1);
 R0(4:3:3*N+1) = phi3(2:N+1);
 
 u = NaN*ones(size(v));
+
+if(strcmp(eqn,'error')==1)
+    for j = 2:N+1
+    u(j,1) = v(j,1);
+    u(j,2) = v(j,2);
+    u(j,3) = v(j,3);
+    end
+else
 for j = 2:N+1
 [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
+end
 end
 
 U = NaN*ones(3*N+2,1);
@@ -77,8 +86,30 @@ u1(2:N+1,1) = U1(2:3:3*N-1) ;
 u1(2:N+1,2) = U1(3:3:3*N) ;
 u1(2:N+1,3) = U1(4:3:3*N+1);
 
+if(strcmp(eqn,'error')==1)
+     [phi1 phi2 phi3]
+%      figure
+     x = obj.cellCentroids;
+     plot(x,phi1,x,phi2,x,phi3);
+     Z
+     v
+%        figure
+% obj.reconplot(Z(1:order,:),'solution')
+% 
+% obj.reconplot(Z(order+1:2*order,:),'solution')
+% 
+% obj.reconplot(Z(2*order+1:3*order,:),'solution')
+%     error('3')
+    
+    for j = 2:N+1
+    v1(j,1) = u1(j,1);
+    v1(j,2) = u1(j,2);
+    v1(j,3) = u1(j,3);
+    end
+else
 for j = 2:N+1
 [v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
+end
 end
 
        Z1 = obj.unstructuredrecon(v1,order,eqn);

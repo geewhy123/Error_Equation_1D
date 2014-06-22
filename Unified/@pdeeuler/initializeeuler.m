@@ -102,7 +102,26 @@ for i = 2:N+1
     uav(i,2) = (1/h(i))*(fnval(uspi,xx(i)+h(i)/2)-fnval(uspi,xx(i)-h(i)/2)); 
     uav(i,3) = (1/h(i))*(fnval(Pspi,xx(i)+h(i)/2)-fnval(Pspi,xx(i)-h(i)/2)); 
 end
-obj.exactSolution = uav;
+obj.exactSolutionV = uav;
+
+
+
+rsp = spapi(8,x,rho);
+rspi = fnint(rsp);
+rusp = spapi(8,x,rho.*u);
+ruspi = fnint(rusp);
+rEsp = spapi(8,x,rho.*E);
+rEspi = fnint(rEsp);
+
+xx = obj.cellCentroids;
+uav = NaN*ones(N+2,3);
+for i = 2:N+1
+    uav(i,1) = (1/h(i))*(fnval(rspi,xx(i)+h(i)/2)-fnval(rspi,xx(i)-h(i)/2)); 
+    uav(i,2) = (1/h(i))*(fnval(ruspi,xx(i)+h(i)/2)-fnval(ruspi,xx(i)-h(i)/2)); 
+    uav(i,3) = (1/h(i))*(fnval(rEspi,xx(i)+h(i)/2)-fnval(rEspi,xx(i)-h(i)/2)); 
+end
+
+obj.exactSolutionU = uav;
 
 end
 

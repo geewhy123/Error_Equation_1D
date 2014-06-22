@@ -1,11 +1,6 @@
-function [ phi1,phi2,phi3 ] = computeeulerfluxintegral( obj,Z,eqn )
+function [ phi1,phi2,phi3 ] = computeeulererrorfluxintegral( obj,Z,eqn )
 %COMPUTEEULERFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
-if(strcmp(eqn,'error')==1)
-   [ phi1,phi2,phi3 ] = computeeulererrorfluxintegral( obj,Z,eqn )
-    return
-end
-
 
 N=obj.nCells;
 h = obj.cellWidths;
@@ -62,8 +57,9 @@ for i = 2:N+1
 end
 
 % if(strcmp(eqn,'error')==1)
-% V = [rhol rhor ul ur Pl Pr]
+V = [rhol rhor ul ur Pl Pr]
 % end
+% error('1')
 
 % rhor(N+1) = obj.bcRightVal(1);
 % ur(N+1) = obj.bcRightVal(2);
@@ -72,7 +68,7 @@ end
 %%%
 
 % Z
-% error('1')
+%  error('1')
 
 if(strcmp(eqn,'solution') && (min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0))
    figure
@@ -89,11 +85,15 @@ error('2')
  
 end
 for i = 2:N+1
-[U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
-[U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
+U1l(i) =rhol(i);
+U2l(i) =ul(i);
+U3l(i) =Pl(i);%toconservedvars(rhol(i),ul(i),Pl(i));
+U1r(i) =rhor(i);
+U2r(i) = ur(i);
+U3r(i) =Pr(i);%toconservedvars(rhor(i),ur(i),Pr(i));
 end
-U = [U1l U1r U2l U2r U3l U3r];
-
+U = [U1l U1r U2l U2r U3l U3r]
+% error('1')
 
 F1l = zeros(N+2,1);
 F2l = zeros(N+2,1);
@@ -109,10 +109,10 @@ end
 
 
 % if(strcmp(eqn,'error')==1 && obj.T0 == 0)
-%  [F1l F1r F2l F2r F3l F3r]
+  [F1l F1r F2l F2r F3l F3r]
 %  U
 %  [rhol rhor ul ur Pl Pr]
-%   error('1')
+%    error('1')
 % end
  
  
@@ -120,7 +120,7 @@ end
 % [ur ul cr cl]
 % error('2')
 for i = 2:N
-[Ut1(i),Ut2(i),Ut3(i)]=computeroeavg(U1l(i+1),U2l(i+1),U3l(i+1),U1r(i),U2r(i),U3r(i));    
+[Ut1(i),Ut2(i),Ut3(i)]=computeerrorroeavg(obj,U1l(i+1),U2l(i+1),U3l(i+1),U1r(i),U2r(i),U3r(i),i);    
 
 % [Ut1 Ut2 Ut3]
 
@@ -166,10 +166,10 @@ end
 %   U3L = U3l(3:6)
 %  U3R = U3r(2:5)
 %  
-%  [Ut1 Ut2 Ut3]
+%    [Ut1 Ut2 Ut3]
  
 %  bAtilde
-%  error('1')
+%    error('1')
 
 % % % [U1l(3) U1r(2)]
 % % % bAtilde(:,:,2)

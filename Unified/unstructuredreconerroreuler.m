@@ -1,11 +1,7 @@
-function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
+function [ Z ] = unstructuredreconerroreuler(obj,u,p,eqn,iUnk)
 %UNSTRUCTUREDRECONEULER Summary of this function goes here
 %   Detailed explanation goes here
 
-if(strcmp(eqn,'error')==1)
-  [ Z ]= unstructuredreconerroreuler(obj,u,p,eqn,iUnk) ;
-  return;
-end
 
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 %   Detailed explanation goes here
@@ -18,99 +14,7 @@ Z = zeros(p,N+2);
 wt = obj.weight;
 
 
-% if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-%     if(strcmp(eqn,'solution')==1)
-%        AD = obj.primalPI;
-%     elseif(strcmp(eqn,'error')==1)
-% %         obj.bcLeftType = 'D';
-% %         obj.bcLeftVal = 1;
-% %         obj.bcRightType = 'D';
-% %         obj.bcRightVal = 1;
-%        AD = obj.errorPI;
-%     elseif(strcmp(eqn,'residual')==1)
-%        AD = obj.resPI;
-%     else
-%         eqn
-%         error('1')
-% end
-%     
-%     
-% for i = 2:N+1
-% switch i
-%     case 2
-% cv1 = N+1;
-% cv2 = i+1;
-% cv3 = N;
-% cv4 = i+2;
-%     case 3
-%         cv1 = i-1;
-% cv2 = i+1;
-% cv3 = N+1;
-% cv4 = i+2;
-%     case N
-%         cv1 = i-1;
-% cv2 = i+1;
-% cv3 = i-2;
-% cv4 = 2;
-%     case N+1
-%         cv1 = i-1;
-% cv2 = 2;
-% cv3 = i-2;
-% cv4 = 3;
-%     otherwise
-%         cv1 =i-1;
-% cv2 = i+1;
-% cv3 = i-2;
-% cv4 = i+2;
-%  
-% end
-% 
-% wi1 = 1/abs(x(cv1)-x(i))^wt;
-% wi2 = 1/abs(x(cv2)-x(i))^wt;
-% wi3 = 1/abs(x(cv3)-x(i))^wt;
-% wi4 = 1/abs(x(cv4)-x(i))^wt;
-% 
-% ub1 = u(cv1);
-% ub2 = u(cv2);
-% ub3 = u(cv3);
-% ub4 = u(cv4);
-% ubi = u(i);
-% 
-% 
-% b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
-% 
-% % AD = obj.primalPI;
-% 
-% Y(2:p) = AD(:,:,i)*b;
-% 
-% 
-% Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
-% %q = y(1)-ubi
-% 
-% 
-% for k = 1:p-1
-%    Y(1) = Y(1) - Y(k+1)*moments(i,k+1); 
-% end
-% 
-%  Z(:,i) = Y;
-%  
-%  
-% %  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
-% 
-% 
-% % y(1) = ubi-xbi*y(2)-x2bi*y(3);%ubi-xbi*y(2)
-% %q = y(1)-ubi
-% 
-%  
-%  
-%  
-%  
-% end
-% 
-% elseif(obj.bcLeftType=='D' && obj.bcRightType == 'D')
-%     
-%     AA = obj.reconM;
-% AA = zeros(4,p-1,N+2);
+
   if(strcmp(eqn,'solution')==1)
        AA = obj.primalRM;
        AD = obj.primalPI;
@@ -155,7 +59,7 @@ ubi = u(i);
 
 %%%
 
-if(iUnk ~=  3)
+if(1)%iUnk ~=  3)
     gam = 1.4;
     Pa = obj.bcLeftVal(3);
 
@@ -183,10 +87,12 @@ end
 
     if(iUnk==1)
        obj.bcLeftVal(1) = rhoa;
-       uL = rhoa;
+       uL = 0;%rhoa;
     elseif(iUnk==2)
         obj.bcLeftVal(2) = ua;
-        uL = ua;
+        uL = 0;%ua;
+    else
+        uL = 0;
     end
     
     
@@ -319,8 +225,8 @@ ubi = u(i);
 % % % uL = obj.bcRightVal(iUnk);
 
 % % % 
-if(iUnk == 3)
- uL = obj.Pb;%0.97;obj.bcRightVal(3);
+if(1)%iUnk == 3)
+ uL = 0;%obj.Pb;%0.97;obj.bcRightVal(3);
 
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];

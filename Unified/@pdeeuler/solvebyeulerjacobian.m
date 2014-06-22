@@ -138,8 +138,26 @@ plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
  
 %  obj.convSoln
 
+% primrhor = zeros(N+2,1);
+% primrhol = zeros(N+2,1);
+% primur = zeros(N+2,1);
+% primul = zeros(N+2,1);
+% primPr = zeros(N+2,1);
+% primPl = zeros(N+2,1);
+% order  = obj.pOrder
+% for i = 2:N+1
+%     for k = 1:order
+%     primrhor(i) = primrhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
+%     primrhol(i) = primrhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);
+%     primur(i)   = primur(i)+ Z(k+order,i)*(h(i)/2)^(k-1);
+%     primul(i)   = primul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
+%     primPr(i)   = primPr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
+%     primPl(i)   = primPl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
+%     end
+% end
 
-error('1')
+%  [primrhol,primrhor,primul,primur,primPl,primPr]
+%  error('1')
 
 
 %%%%residual
@@ -203,7 +221,11 @@ if(obj.bcRightType == 'D')
     obj.Pb = 0;
 end
 
-exacterr = obj.exactSolution-V
+exacterr = obj.exactSolutionV-V;
+exacterru = obj.exactSolutionU-u
+% obj.exactSolutionU
+% error('1')
+
 % figure
 % plot(x,exacterr,'x')
 %  error('1')
@@ -241,26 +263,33 @@ f = -[R1 R2 R3];
  R = ones(3*N+2,1);
  t=0;
  
- e = exacterr;
+ e = exacterru;
  ee = ones(3*N+2,1);
  ee(1)=NaN;
  ee(3*N+2) = NaN;
  count = 0;
  E = NaN*ones(3*N+2,1);
   dt = 0.001;
+  c2 = 1;
 %  if(obj.qOrder > 4)
 % % error('1')
 %     kk = 0.00005;
 %  end
 
+%  e = 1e-3*ones(size(e));
+
 
  while(max(abs(R)) > 1e-11 )
+     
     Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
 %      Jue = obj.computeeulerfluxjacobian(u+e,'error');%,x,h,N,p);
 %      Ju = obj.computeeulerfluxjacobian(u,'error');%,x,h,N,p);
 % Jue 
 % Ju
-% error('1')
+ Je
+
+%  spy(Je)
+%   error('1')
 %      Je = Jue-Ju
 % e
 %      Je
@@ -289,11 +318,14 @@ R(3:3:3*N) = phi2(2:N+1);
 R(4:3:3*N+1) = phi3(2:N+1);
 eu = NaN*ones(size(3*N+2,1));
 for j = 2:N+1
-[eu(j,1),eu(j,2),eu(j,3)] = toconservedvars(e(j,1),e(j,2),e(j,3));
+    eu(j,1) = e(j,1);
+    eu(j,2) = e(j,2);
+    eu(j,3) = e(j,3);
+% [eu(j,1),eu(j,2),eu(j,3)] = toconservedvars(e(j,1),e(j,2),e(j,3));
 end
 
  K
-if(isnan(K))
+if(isnan(K) )%|| (norm(K) > 1e3))
 error('1')
 end
 %  error('1')
@@ -317,7 +349,10 @@ E(4:3:3*N+1) = eu(2:N+1,3);
      eu(2:N+1,3) = E(4:3:3*N+1);
 
 for j = 2:N+1
-[e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
+    e(j,1) = eu(j,1);
+    e(j,2) = eu(j,2);
+    e(j,3) = eu(j,3);
+% [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
 end
      
      
