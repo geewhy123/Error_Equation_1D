@@ -56,7 +56,7 @@ obj.computeprimalpseudo();
  Rold = R;
  dtold = 1;
  
- while(max(abs(R(2:3*N+1))) > 1e-11 )
+ while(max(abs(R(2:3*N+1))) > 1e-13 )
      J = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
     
      count = count +1;
@@ -279,7 +279,12 @@ f = -[R1 R2 R3];
 %  e = 1e-3*ones(size(e));
 
 
- while(max(abs(R)) > 1e-11 )
+ obj.errorSource = obj.errorSource*0;
+ e = e*0;
+% error('1')
+%use 0 source, still get NaNs...
+
+ while(max(abs(R)) > 1e-13 )
      
     Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
 %      Jue = obj.computeeulerfluxjacobian(u+e,'error');%,x,h,N,p);
@@ -287,13 +292,12 @@ f = -[R1 R2 R3];
 % Jue 
 % Ju
  Je
-
 %  spy(Je)
 %   error('1')
 %      Je = Jue-Ju
 % e
 %      Je
-%     error('1')
+     error('1')
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 

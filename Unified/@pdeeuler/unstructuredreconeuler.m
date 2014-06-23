@@ -187,6 +187,8 @@ end
     elseif(iUnk==2)
         obj.bcLeftVal(2) = ua;
         uL = ua;
+%     else
+%         uL = 0.95;
     end
     
     
@@ -320,6 +322,7 @@ ubi = u(i);
 
 % % % 
 if(iUnk == 3)
+%     obj.bcRightVal(3) = obj.Pb;
  uL = obj.Pb;%0.97;obj.bcRightVal(3);
 
 if(p>2)

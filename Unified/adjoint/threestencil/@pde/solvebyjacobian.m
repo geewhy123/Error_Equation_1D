@@ -31,7 +31,9 @@ obj.computeprimalpseudo();
 
 
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
-%  J = (J+J')/2;
+% J
+% error('1')
+% J = (J+J')/2;
 
 % [d,c] =  eig(J(2:N+1,2:N+1))
 

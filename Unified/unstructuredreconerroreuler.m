@@ -59,7 +59,7 @@ ubi = u(i);
 
 %%%
 
-if(1)%iUnk ~=  3)
+if(iUnk ~=  3)
     gam = 1.4;
     Pa = obj.bcLeftVal(3);
 
@@ -91,8 +91,8 @@ end
     elseif(iUnk==2)
         obj.bcLeftVal(2) = ua;
         uL = 0;%ua;
-    else
-        uL = 0;
+%     else
+%         uL = 0;
     end
     
     
@@ -225,8 +225,8 @@ ubi = u(i);
 % % % uL = obj.bcRightVal(iUnk);
 
 % % % 
-if(1)%iUnk == 3)
- uL = 0;%obj.Pb;%0.97;obj.bcRightVal(3);
+if(iUnk == 3)
+ uL = obj.Pb;%0.97;obj.bcRightVal(3);
 
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];

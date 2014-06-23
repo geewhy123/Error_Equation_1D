@@ -166,10 +166,10 @@ end
 %   U3L = U3l(3:6)
 %  U3R = U3r(2:5)
 %  
-%    [Ut1 Ut2 Ut3]
+%     [Ut1 Ut2 Ut3]
  
-%  bAtilde
-%    error('1')
+  bAtilde
+     error('1')
 
 % % % [U1l(3) U1r(2)]
 % % % bAtilde(:,:,2)
