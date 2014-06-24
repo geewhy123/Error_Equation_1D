@@ -1,7 +1,7 @@
 function [ Z ] = higherunstructuredreconeuler(obj,u,p,eqn,iUnk)
 %UNSTRUCTUREDRECONEULER Summary of this function goes here
 %   Detailed explanation goes here
-
+error('1')
 if(strcmp(eqn,'error')==1)
   [ Z ]= unstructuredreconerroreuler(obj,u,p,eqn,iUnk) ;
   return;

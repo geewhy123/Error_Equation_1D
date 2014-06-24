@@ -33,8 +33,6 @@ gam = 1.4;
 bAtilde = zeros(3,3,N+2);
 FrAve = zeros(N+2,3);
 FlAve = zeros(N+2,3);
-Ae = 0.4;
-At = 0.2;
 
 if(strcmp(eqn,'solution')==1)
    order = obj.pOrder; 
@@ -48,9 +46,9 @@ end
 
 
 for i = 2:N+1
-if(i==2 || i == 3 || i == N || i == N+1)
-    order = obj.hOrder;
-end
+% if(i==2 || i == 3 || i == N || i == N+1)
+%     order = obj.hOrder;
+% end
 
 
 

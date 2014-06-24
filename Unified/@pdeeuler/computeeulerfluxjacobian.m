@@ -15,16 +15,16 @@ N = obj.nCells;
 J = zeros(3*N+2,3*N+2);
 
 Z = obj.unstructuredrecon(v,order,eqn);
-%%%%%%
-m = obj.hOrder;
-% [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
-  [Z3] = higherunstructuredreconeuler (obj,v(:,3),m,'solution',3);                          
-  [Z1] = higherunstructuredreconeuler (obj,v(:,1),m,'solution',1); 
-  [Z2] = higherunstructuredreconeuler (obj,v(:,2),m,'solution',2);
-               Z = [Z1; Z2;Z3];
-
-
-%%%%%%
+% % %%%%%%
+% % m = obj.hOrder;
+% % % [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
+% %   [Z3] = higherunstructuredreconeuler (obj,v(:,3),m,'solution',3);                          
+% %   [Z1] = higherunstructuredreconeuler (obj,v(:,1),m,'solution',1); 
+% %   [Z2] = higherunstructuredreconeuler (obj,v(:,2),m,'solution',2);
+% %                Z = [Z1; Z2;Z3];
+% % 
+% % 
+% % %%%%%%
 
 
 
@@ -128,15 +128,15 @@ end
 
        Z1 = obj.unstructuredrecon(v1,order,eqn);
 
-%%%%%%
-% [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
-  [Z3] = higherunstructuredreconeuler (obj,v1(:,3),m,'solution',3);                          
-  [Z0] = higherunstructuredreconeuler (obj,v1(:,1),m,'solution',1); 
-  [Z2] = higherunstructuredreconeuler (obj,v1(:,2),m,'solution',2);
-               Z1 = [Z0; Z2;Z3];
-
-
-%%%%%%
+% % %%%%%%
+% % % [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
+% %   [Z3] = higherunstructuredreconeuler (obj,v1(:,3),m,'solution',3);                          
+% %   [Z0] = higherunstructuredreconeuler (obj,v1(:,1),m,'solution',1); 
+% %   [Z2] = higherunstructuredreconeuler (obj,v1(:,2),m,'solution',2);
+% %                Z1 = [Z0; Z2;Z3];
+% % 
+% % 
+% % %%%%%%
 
 
  
