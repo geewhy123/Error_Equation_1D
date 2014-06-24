@@ -1,6 +1,22 @@
 function [ Ut1,Ut2,Ut3 ] = computeerrorroeavg(obj, Ul1,Ul2,Ul3,Ur1,Ur2,Ur3,i )
 %COMPUTEROEAVG Summary of this function goes here
 %   Detailed explanation goes here
+tmp1 = Ul1;
+tmp2 = Ul2;
+tmp3 = Ul3;
+tmp4 = Ur1;
+tmp5 = Ur2;
+tmp6 = Ur3;
+
+Vl = obj.convVleft(i,:);
+Vr = obj.convVright(i,:);
+rhor = Vr(1); 
+rhol = Vl(1);
+ur = Vr(2);
+ul = Vl(2);
+Pr = Vr(3);
+Pl = Vl(3);
+
 
 N = obj.nCells;
 h = obj.cellWidths;
@@ -48,40 +64,47 @@ Z = obj.convSolnRecon;
 %   [Ul1 Ul2 Ul3 Ur1 Ur2 Ur3]
 %   error('3')
 gam = 1.4;
-% [rhor, ur,Pr]= toprimitivevars(Ur1,Ur2,Ur3);
-rhor = Ur1;
-ur = Ur2;
-Pr = Ur3;
+%  [rhor, ur,Pr]= toprimitivevars(Ur1,Ur2,Ur3);
+% rhor = Ur1;
+% ur = Ur2;
+% Pr = Ur3;
 
 Er = (1/(gam-1))*(Pr./rhor)+0.5*ur.^2;
 hr = Er+Pr/rhor;
-if(rhor == 0 )
-    hr = 0;
-end
+% if(rhor == 0 )
+%     hr = 0;
+% end
 
 
-% [rhol, ul,Pl]= toprimitivevars(Ul1,Ul2,Ul3);
-rhol = Ul1;
-ul = Ul2;
-Pl = Ul3;
+%  [rhol, ul,Pl]= toprimitivevars(Ul1,Ul2,Ul3);
+% rhol = Ul1;
+% ul = Ul2;
+% Pl = Ul3;
 
 
 El = (1/(gam-1))*(Pl./rhol)+0.5*ul.^2;
 hl = El+Pl/rhol;
 
-if(rhol == 0)
-    hl = 0;
-end
+% if(rhol == 0)
+%     hl = 0;
+% end
 
 
 % [rhol rhor ul ur Pl Pr]
 % error('3')
 
- rhot = (rhor+rhol)/2;%sqrt(primrhor*primrhol);%sqrt(rhor*rhol);
+%  rhot = (rhor+rhol)/2;%sqrt(primrhor*primrhol);%sqrt(rhor*rhol);
+% 
+% ut = (ur+ul)/2;%(sqrt(primrhor)*ur+sqrt(primrhol)*ul)/(sqrt(primrhor)+sqrt(primrhol));
+% 
+% ht = (hr+hl)/2;%(sqrt(primrhor)*hr+sqrt(primrhol)*hl)/(sqrt(primrhor)+sqrt(primrhol));
+ rhot = sqrt(rhor*rhol);
 
-ut = (ur+ul)/2;%(sqrt(primrhor)*ur+sqrt(primrhol)*ul)/(sqrt(primrhor)+sqrt(primrhol));
+ut = (sqrt(rhor)*ur+sqrt(rhol)*ul)/(sqrt(rhor)+sqrt(rhol));
 
-ht = (hr+hl)/2;%(sqrt(primrhor)*hr+sqrt(primrhol)*hl)/(sqrt(primrhor)+sqrt(primrhol));
+ht = (sqrt(rhor)*hr+sqrt(rhol)*hl)/(sqrt(rhor)+sqrt(rhol));
+
+
 
 
 Pt =(ht-0.5*ut^2)*((gam-1)/(gam))*rhot;
@@ -93,12 +116,17 @@ Ut3 = rhot*ht-Pt;
 
 
 %no conversion...
-Ut1 = (Ul1+Ur1)/2;
-Ut2 = (Ul2+Ur2)/2;
-Ut3 = (Ul3+Ur3)/2;
+% Ut1 = (Ul1+Ur1)/2;
+% Ut2 = (Ul2+Ur2)/2;
+% Ut3 = (Ul3+Ur3)/2;
 
 
-
+Ul1 = tmp1;
+Ul2 = tmp2;
+Ul3 = tmp3;
+Ur1 = tmp4;
+Ur2 = tmp5;
+Ur3 = tmp6;
 
 
 

@@ -93,7 +93,7 @@ U2r(i) = ur(i);
 U3r(i) =Pr(i);%toconservedvars(rhor(i),ur(i),Pr(i));
 end
 U = [U1l U1r U2l U2r U3l U3r]
-% error('1')
+%  error('1')
 
 F1l = zeros(N+2,1);
 F2l = zeros(N+2,1);
@@ -103,8 +103,8 @@ F2r = zeros(N+2,1);
 F3r = zeros(N+2,1);
 
 for i = 2:N+1
-[F1l(i),F2l(i),F3l(i)]=conservedtoflux(U1l(i),U2l(i),U3l(i));
-[F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
+[F1l(i),F2l(i),F3l(i)]=conservedtofluxerror(U1l(i),U2l(i),U3l(i));
+[F1r(i),F2r(i),F3r(i)]=conservedtofluxerror(U1r(i),U2r(i),U3r(i));
 end
 
 
@@ -112,7 +112,7 @@ end
   [F1l F1r F2l F2r F3l F3r]
 %  U
 %  [rhol rhor ul ur Pl Pr]
-%    error('1')
+   error('1')
 % end
  
  
@@ -155,7 +155,7 @@ for i = 2:N
 
 % L = [l1 l2 l3];
 % error('2')
-bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
+bAtilde(:,:,i) = computeerrorAtilde(Ut1(i),Ut2(i),Ut3(i));
 end
 
 
@@ -168,8 +168,8 @@ end
 %  
 %     [Ut1 Ut2 Ut3]
  
-  bAtilde
-     error('1')
+%   bAtilde
+%      error('1')
 
 % % % [U1l(3) U1r(2)]
 % % % bAtilde(:,:,2)

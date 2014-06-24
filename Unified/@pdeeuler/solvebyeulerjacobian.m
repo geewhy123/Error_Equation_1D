@@ -1,6 +1,7 @@
-function [ output_args ] = solvebyeulerjacobian( obj)
+function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 %COMPUTEEULERJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
+gam = 1.4;
 ue = obj.exactSolution;
 p = obj.pOrder;
 q = obj.qOrder;
@@ -61,7 +62,7 @@ obj.computeprimalpseudo();
     
      count = count +1;
          
-     Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+     Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
      dt = dtold*c2*Rratio;
 
 
@@ -138,26 +139,87 @@ plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
  
 %  obj.convSoln
 
-% primrhor = zeros(N+2,1);
-% primrhol = zeros(N+2,1);
-% primur = zeros(N+2,1);
-% primul = zeros(N+2,1);
-% primPr = zeros(N+2,1);
-% primPl = zeros(N+2,1);
-% order  = obj.pOrder
-% for i = 2:N+1
-%     for k = 1:order
-%     primrhor(i) = primrhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
-%     primrhol(i) = primrhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);
-%     primur(i)   = primur(i)+ Z(k+order,i)*(h(i)/2)^(k-1);
-%     primul(i)   = primul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
-%     primPr(i)   = primPr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
-%     primPl(i)   = primPl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
-%     end
-% end
 
-%  [primrhol,primrhor,primul,primur,primPl,primPr]
-%  error('1')
+
+
+
+Ve = obj.exactSolutionV;
+rho = obj.exactSolutionV(:,1);
+u = obj.exactSolutionV(:,2);
+P = obj.exactSolutionV(:,3);
+% error('1')
+entropy = log(V(:,3)./(V(:,1).^gam));
+   figure
+   subplot(2,4,1)
+   plot(x,V(:,1),'*',x,rho,'o')
+   xlabel('$\rho$','Interpreter','Latex')
+      subplot(2,4,2)
+   plot(x,V(:,2),'*',x,u,'o')
+   xlabel('u')
+      subplot(2,4,3)
+   plot(x,V(:,3),'*',x,P,'o')
+ xlabel('P')
+      subplot(2,4,4)
+   plot(x,entropy,'*')
+xlabel('entropy')
+
+subplot(2,4,5)
+plot(x,rho-V(:,1),'x')
+subplot(2,4,6)
+plot(x,u-V(:,2),'x')
+subplot(2,4,7)
+plot(x,P-V(:,3),'x')
+
+
+
+figure
+% plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
+plot(x,V(:,1),x,V(:,2),x,V(:,3))
+[V(:,1) V(:,2) V(:,3)]
+
+
+
+errerr2 = NaN;
+exacterr = Ve-V
+ee = NaN;
+cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
+
+
+Ue = zeros(N+2,3);
+for i = 2:N+1
+    [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
+end
+exacterr = Ue-obj.convSoln
+cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
+
+
+
+te = NaN;
+
+
+
+
+
+ u=obj.convSoln;
+obj.convVreconp = Z;
+
+% Z
+% obj.convVreconp
+% error('1')
+
+
+
+
+% error('1')
+
+
+obj.computeprimalleftright();
+
+
+
+% obj.convVleft
+% obj.convVright
+% error('1')
 
 
 %%%%residual
@@ -270,6 +332,7 @@ f = -[R1 R2 R3];
  count = 0;
  E = NaN*ones(3*N+2,1);
   dt = 0.001;
+dtold = dt;
   c2 = 1;
 %  if(obj.qOrder > 4)
 % % error('1')
@@ -278,13 +341,18 @@ f = -[R1 R2 R3];
 
 %  e = 1e-3*ones(size(e));
 
+% for i = 2:N+1
+% e(i) = e(i) +1e-4*sin(2*pi*x(i));
+% end
 
- obj.errorSource = obj.errorSource*0;
- e = e*0;
+%   obj.errorSource = obj.errorSource*0;
+%   e = e*0;
+
 % error('1')
 %use 0 source, still get NaNs...
-
- while(max(abs(R)) > 1e-13 )
+% e
+% error('1')
+ while(max(abs(R(2:3*N+1))) > 1e-13 && count < 10 )
      
     Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
 %      Jue = obj.computeeulerfluxjacobian(u+e,'error');%,x,h,N,p);
@@ -292,20 +360,20 @@ f = -[R1 R2 R3];
 % Jue 
 % Ju
  Je
-%  spy(Je)
-%   error('1')
+%   spy(Je)
+%     error('1')
 %      Je = Jue-Ju
 % e
 %      Je
-     error('1')
+       error('1')
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 
         
-      Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+      Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
 
-           dt = dtold*c2*Rratio;
-
+           dt = 0.001;%dtold*c2*Rratio;
+% Rratio
 
 
  K = Je(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
@@ -330,11 +398,22 @@ end
 
  K
 if(isnan(K) )%|| (norm(K) > 1e3))
+e
+count
+Rratio
 error('1')
 end
-%  error('1')
- del = K\-R(2:3*N+1);
-    
+ Je
+ K
+% dt
+% Rratio
+% dtold
+% R
+
+%   error('1')
+ del = K\-R(2:3*N+1)
+
+%   error('1')  
 %     if(mod(count,100)==0)
     max(abs(R(2:3*N+1)))
 %     end
@@ -359,14 +438,19 @@ for j = 2:N+1
 % [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
 end
      
-     
+     e
+exacterr
+del
+% error('1')
      
      t = t+dt;
      dtold = dt;
  end
 
-
-
+ee = e;
+ee
+size(exacterr)
+size(ee)
 w = exacterr-ee
 
 % % % %  Je
@@ -405,8 +489,12 @@ ee = exacterr - w;
 errerr2 = sqrt(sum((exacterr(2:N+1)-ee(2:N+1)).^2)/N) 
 w
 figure
-plot(x,ee,'*',x,exacterr,'o')
-
+subplot(3,1,1)
+plot(x,ee(:,1),'*',x,exacterr(:,1),'o')
+subplot(3,1,2)
+plot(x,ee(:,2),'*',x,exacterr(:,2),'o')
+subplot(3,1,3)
+plot(x,ee(:,3),'*',x,exacterr(:,3),'o')
 
 else
    errerr2 = NaN;

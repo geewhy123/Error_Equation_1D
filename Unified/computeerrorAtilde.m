@@ -1,6 +1,12 @@
-function [ barAtilde ] = computeAtilde( Ut1,Ut2,Ut3 )
+function [ barAtilde ] = computeerrorAtilde( Ut1,Ut2,Ut3 )
 %COMPUTEATILDE Summary of this function goes here
 %   Detailed explanation goes here
+% tmp1 = Ut1;
+% tmp2 = Ut2;
+% tmp3 = Ut3;
+
+
+
 gam = 1.4;
 u = Ut2/Ut1;
 c = sqrt(gam*(gam-1)*(Ut3/Ut1-0.5*Ut2^2/Ut1^2));
@@ -14,10 +20,10 @@ ut = Ut2;
 Pt = Ut3;
 
 
-ct = sqrt(gam*Pt/rhot);
-if(Pt <=0 || rhot <=0)
-   ct = 0; 
-end
+ ct = sqrt(gam*Pt/rhot);
+% if(Pt <=0 || rhot <=0)
+%    ct = 0; 
+% end
 
 
 
@@ -42,7 +48,11 @@ L = abs([l1 0 0; 0 l2 0; 0 0 l3]);
 
 barAtilde = dUdV*Xr*L*Xl*dVdU;
 
+% barAtilde = zeros(size(barAtilde));
 
-
+% 
+% Ut1 = tmp1;
+% Ut2 = tmp2;
+% Ut3 = tmp3;
 end
 

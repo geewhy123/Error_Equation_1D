@@ -10,6 +10,11 @@ classdef pdeeuler < pde
         Pb;
         exactSolutionV;
         exactSolutionU;
+        convVleft;
+        convVright;
+        convUleft;
+        convUright;
+        convVreconp;
     end
     
     methods
@@ -39,9 +44,11 @@ classdef pdeeuler < pde
        A = getArea(obj,xx);
        Ap = getAp(obj,xx);
        [xx,rho,u,P] = initializeeuler(obj);
-       solvebyeulerjacobian(obj);
+        [errerr2,x,cverr2,exacterr,ee,te  ] =solvebyeulerjacobian(obj);
        [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,eqn);
        J = computeeulerfluxjacobian(obj,v,eqn);
+        computeprimalleftright(obj);
+
 %        [ u1,u2,u3 ] = toconservedvars(obj, rho,u,P );
     end
     
