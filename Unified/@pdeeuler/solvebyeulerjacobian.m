@@ -13,9 +13,17 @@ k = obj.tStep;
 physics = obj.physics;
 tlim = obj.endTime;
 
-V = obj.initialSolution
+V = obj.initialSolution;
 U = NaN*ones(3*N+2,1);
 obj.computeprimalpseudo();
+
+
+
+obj.hOrder = 5;
+obj.computehigherpseudo();
+[Z,Zm] = obj.unstructuredrecon(V,p,'solution');
+ error('1')
+
 
  %truncation error need exact sol
 % J = computeeulerfluxjacobian(obj,ue,'solution');%,x,h,N,p);

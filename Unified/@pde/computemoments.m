@@ -8,7 +8,7 @@ function  computemoments( obj)
  N = obj.nCells;
  
  
-m = max(obj.pOrder,max(obj.qOrder,obj.rOrder));
+m = 6;%max(max(obj.pOrder,max(obj.qOrder,obj.rOrder)),obj.hOrder);
  A = NaN*ones(N+2,m);
  for i = 2:N+1
     for j = 1 : m+1

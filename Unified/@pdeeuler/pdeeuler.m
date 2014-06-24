@@ -15,6 +15,9 @@ classdef pdeeuler < pde
         convUleft;
         convUright;
         convVreconp;
+        higherprimalPI;
+        higherprimalRM;
+        hOrder;
     end
     
     methods
@@ -48,6 +51,8 @@ classdef pdeeuler < pde
        [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,eqn);
        J = computeeulerfluxjacobian(obj,v,eqn);
         computeprimalleftright(obj);
+        computehigherpseudo(obj);
+        
 
 %        [ u1,u2,u3 ] = toconservedvars(obj, rho,u,P );
     end
