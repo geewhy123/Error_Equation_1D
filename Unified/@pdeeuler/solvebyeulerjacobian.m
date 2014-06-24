@@ -1,24 +1,21 @@
 function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 %COMPUTEEULERJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
-gam = 1.4;
+gam = obj.gamma;
 ue = obj.exactSolution;
 p = obj.pOrder;
 q = obj.qOrder;
 r = obj.rOrder;
-h = obj.cellWidths;
 N = obj.nCells;
 x = obj.cellCentroids;
-k = obj.tStep;
-physics = obj.physics;
-tlim = obj.endTime;
+
 
 V = obj.initialSolution;
 U = NaN*ones(3*N+2,1);
 obj.computeprimalpseudo();
 
 
-
+%%%%%% higher order near bdy
 % [Z] = obj.unstructuredrecon(V,p,'solution');
 
 % obj.hOrder = 5;
@@ -31,6 +28,7 @@ obj.computeprimalpseudo();
 %                Zm = [Z1; Z2;Z3];
 % 
 % error('1')
+
 
 
  %truncation error need exact sol
@@ -65,11 +63,7 @@ obj.computeprimalpseudo();
  count = 0;
  c2 = 10;
  dt = 0.0001;
-%   if(obj.pOrder >= 4)
-% % error('1')
-%     dt = 0.00002;
-%  end
-%  kk = dt;
+
  Rold = R;
  dtold = 1;
  
@@ -81,8 +75,9 @@ obj.computeprimalpseudo();
      Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
      dt = dtold*c2*Rratio;
 
-% spy(J)
-% error('1')
+%  spy(J)
+%  J
+%   error('1')
 
 
  K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
@@ -97,7 +92,7 @@ obj.computeprimalpseudo();
 % 
 % 
 %%%%%%
-%  [er]=reconplot(x,h,N,p,Z);
+
 Rold = R;
  [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
  
@@ -110,20 +105,16 @@ for j = 2:N+1
 end
 
 
-
-
     del = K\-R(2:3*N+1);
     
-%     if(mod(count,100)==0)
     max(abs(R(2:3*N+1)))
-%     end
 
 U(2:3:3*N-1) = u(2:N+1,1);
 U(3:3:3*N) = u(2:N+1,2);
 U(4:3:3*N+1) = u(2:N+1,3);
 
 
-UU = U(2:3*N+1) + del;%*dt;
+UU = U(2:3*N+1) + del;
      U = NaN*ones(3*N+2,1);
      U(2:3*N+1) = UU;
      
@@ -161,11 +152,6 @@ plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 
 
  obj.convSoln = u;
- 
-%  obj.convSoln
-
-
-
 
 
 Ve = obj.exactSolutionV;
@@ -200,12 +186,12 @@ plot(x,P-V(:,3),'x')
 figure
 % plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
 plot(x,V(:,1),x,V(:,2),x,V(:,3))
-[V(:,1) V(:,2) V(:,3)]
+
 
 
 
 errerr2 = NaN;
-exacterr = Ve-V
+exacterr = Ve-V;
 ee = NaN;
 cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
 
@@ -214,7 +200,7 @@ Ue = zeros(N+2,3);
 for i = 2:N+1
     [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
 end
-exacterr = Ue-obj.convSoln
+exacterr = Ue-obj.convSoln;
 cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)]
 
 
@@ -308,7 +294,7 @@ if(obj.bcRightType == 'D')
     obj.Pb = 0;
 end
 
-exacterr = obj.exactSolutionV-V;
+exacterrv = obj.exactSolutionV-V
 exacterru = obj.exactSolutionU-u
 % obj.exactSolutionU
 % error('1')
@@ -350,7 +336,7 @@ f = -[R1 R2 R3];
  R = ones(3*N+2,1);
  t=0;
  
- e = exacterru;
+ e = exacterrv;
  ee = ones(3*N+2,1);
  ee(1)=NaN;
  ee(3*N+2) = NaN;
@@ -386,7 +372,7 @@ dtold = dt;
 % Ju
  Je
 %   spy(Je)
-%     error('1')
+%      error('1')
 %      Je = Jue-Ju
 % e
 %      Je

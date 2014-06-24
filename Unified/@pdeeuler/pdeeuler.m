@@ -3,7 +3,7 @@ classdef pdeeuler < pde
     %   Detailed explanation goes here
     
     properties
-        gam = 1.4;
+        gamma = 1.4;
         areatype ;
         P0;
         T0;

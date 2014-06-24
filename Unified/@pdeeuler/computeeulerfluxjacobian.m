@@ -159,11 +159,19 @@ end
 %        if(i==4)
 %            Z1-Z
 %            U1-U
-%          [R1-R0]
+
+%           [R1 R0 R1-R0]
 %         error('1')
 %        end
    J(2:3*N+1,i) = (R1(2:3*N+1)-R0(2:3*N+1))/ep;  
+
    
+for k = 2:3*N+1
+  if(abs(R1(k)-R0(k)) < 1e-13)
+    J(k,i) = 0;   
+  end
+end
+
 %     if( i == 2 && strcmp(eqn,'error')==1)
 %      [U U1]
 %         [R1(2:3*N+1) R0(2:3*N+1)]

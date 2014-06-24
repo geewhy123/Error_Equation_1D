@@ -29,8 +29,7 @@ gam = 1.4;
 bAtilde = zeros(3,3,N+2);
 FrAve = zeros(N+2,3);
 FlAve = zeros(N+2,3);
-Ae = 0.4;
-At = 0.2;
+
 
 if(strcmp(eqn,'solution')==1)
    order = obj.pOrder; 
@@ -41,6 +40,37 @@ elseif(strcmp(eqn,'error')==1)
 else
     assert(0)
 end
+
+
+
+
+% error('1')
+U = obj.convSoln;
+
+for i = 2:N+1
+% [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
+% [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
+[V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
+V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
+V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
+V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
+
+end
+fprintf('hack avg');
+% V
+% error('1')
+Z = obj.unstructuredrecon(V,order,eqn);
+
+
+
+U1l = U1l + obj.convUleft(:,1);
+U2l = U2l + obj.convUleft(:,2);
+U3l = U3l + obj.convUleft(:,3);
+U1r = U1r + obj.convUright(:,1);
+U2r = U2r + obj.convUright(:,2);
+U3r = U3r + obj.convUright(:,3);
+
+
 
 
 for i = 2:N+1
@@ -58,9 +88,19 @@ for i = 2:N+1
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
 
-% if(strcmp(eqn,'error')==1)
-% V = [rhol rhor ul ur Pl Pr]
-% end
+
+
+
+
+ if(strcmp(eqn,'error')==1)
+ V = [rhol rhor ul ur Pl Pr]
+error('1')
+ end
+
+
+
+
+
 
 % rhor(N+1) = obj.bcRightVal(1);
 % ur(N+1) = obj.bcRightVal(2);
@@ -89,34 +129,35 @@ for i = 2:N+1
 [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
 [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
 end
-U = [U1l U1r U2l U2r U3l U3r];
+U = [U1l U1r U2l U2r U3l U3r]
 
 
 %%%
-
-U = obj.convSoln;
-for i = 2:N+1
-% [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
-% [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
-[V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
-V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
-V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
-V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
-
-end
-fprintf('hack avg');
-% V
 % error('1')
-Z = obj.unstructuredrecon(V,order,eqn);
-
-
-
-U1l = U1l + obj.convUleft(:,1);
-U2l = U2l + obj.convUleft(:,2);
-U3l = U3l + obj.convUleft(:,3);
-U1r = U1r + obj.convUright(:,1);
-U2r = U2r + obj.convUright(:,2);
-U3r = U3r + obj.convUright(:,3);
+% U = obj.convSoln;
+% 
+% for i = 2:N+1
+% % [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
+% % [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
+% [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
+% V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
+% V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
+% V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
+% 
+% end
+% fprintf('hack avg');
+% % V
+% % error('1')
+% Z = obj.unstructuredrecon(V,order,eqn);
+% 
+% 
+% 
+% U1l = U1l + obj.convUleft(:,1);
+% U2l = U2l + obj.convUleft(:,2);
+% U3l = U3l + obj.convUleft(:,3);
+% U1r = U1r + obj.convUright(:,1);
+% U2r = U2r + obj.convUright(:,2);
+% U3r = U3r + obj.convUright(:,3);
 
 %%%
 F1l = zeros(N+2,1);
