@@ -48,7 +48,12 @@ end
 
 
 for i = 2:N+1
-    
+if(i==2 || i == 3 || i == N || i == N+1)
+    order = obj.hOrder;
+end
+
+
+
     for k = 1:order
     rhor(i) = rhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
     rhol(i) = rhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);

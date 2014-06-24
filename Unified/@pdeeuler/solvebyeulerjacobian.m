@@ -19,10 +19,18 @@ obj.computeprimalpseudo();
 
 
 
-obj.hOrder = 5;
+% [Z] = obj.unstructuredrecon(V,p,'solution');
+
+obj.hOrder = 4;
+m = obj.hOrder ;
 obj.computehigherpseudo();
-[Z,Zm] = obj.unstructuredrecon(V,p,'solution');
- error('1')
+% 
+%       [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
+%                [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
+%                 [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
+%                Zm = [Z1; Z2;Z3];
+% 
+% error('1')
 
 
  %truncation error need exact sol
@@ -78,8 +86,16 @@ obj.computehigherpseudo();
 
  K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
 
-[Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
 
+%%%%%%
+% [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
+  [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
+  [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
+  [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
+               Z = [Z1; Z2;Z3];
+
+
+%%%%%%
 %  [er]=reconplot(x,h,N,p,Z);
 Rold = R;
  [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
