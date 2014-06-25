@@ -6,6 +6,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ] = solveeuler( obj )
 obj.T0 = obj.bcLeftVal(2);
 obj.P0 = obj.bcLeftVal(1);
 obj.Pb = obj.bcRightVal(1);
+obj.primalT0 = obj.T0;
+obj.primalP0 = obj.P0;
+obj.primalPb = obj.Pb;
 obj.areatype = obj.bcRightVal(2);
 
 %errordriver(10,2,0,0,0,'D',[0.904828205821313 0.523900072935957 0.869359219563748],'D',[0.18462798898162 1.854354424142687 0.093932645732845],10,7,'EulerQ','SS');

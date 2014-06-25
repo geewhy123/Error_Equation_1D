@@ -8,6 +8,9 @@ classdef pdeeuler < pde
         P0;
         T0;
         Pb;
+        primalP0;
+        primalT0;
+        primalPb;
         exactSolutionV;
         exactSolutionU;
         convVleft;

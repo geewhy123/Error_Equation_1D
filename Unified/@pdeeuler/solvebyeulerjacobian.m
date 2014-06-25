@@ -285,16 +285,16 @@ obj.computeerrorpseudo();
  
  
  
- 
+
 %%%error equation
 
-% if(obj.bcLeftType == 'D')
-%    obj.T0 = 0; 
-%    obj.P0 = 0;
-% end
-% if(obj.bcRightType == 'D')
-%     obj.Pb = 0;
-% end
+if(obj.bcLeftType == 'D')
+   obj.T0 = 0; 
+   obj.P0 = 0;
+end
+if(obj.bcRightType == 'D')
+    obj.Pb = 0;
+end
 
 exacterrv = obj.exactSolutionV-V
 exacterru = obj.exactSolutionU-u
@@ -331,7 +331,6 @@ f = -[R1 R2 R3];
 % % % %  error('1')
 % % %  [tauE]= obj.computefluxintegral(Z,'error')
 % % % %   error('1')
- 
 
 
  del = ones(3*N,1);
@@ -344,9 +343,9 @@ f = -[R1 R2 R3];
  ee(3*N+2) = NaN;
  count = 0;
  E = NaN*ones(3*N+2,1);
-  dt = 0.001;
+  dt = 0.01;
 dtold = dt;
-  c2 = 1;
+  c2 = 10;
 %  if(obj.qOrder > 4)
 % % error('1')
 %     kk = 0.00005;
@@ -358,14 +357,100 @@ dtold = dt;
 % e(i) = e(i) +1e-4*sin(2*pi*x(i));
 % end
 
-%   obj.errorSource = obj.errorSource*0;
-  e = e*0;
+ %  obj.errorSource = obj.errorSource*0;
+  % e = e*0;
 
 % error('1')
 %use 0 source, still get NaNs...
 % e
 % error('1')
- while(max(abs(R(2:3*N+1))) > 1e-13 && count < 10 )
+
+
+
+
+
+
+
+
+
+%%%%%%%
+% % % U = zeros(N+2,3);
+% % %     Z = obj.unstructuredrecon(e,q,'error');
+% % % 
+% % % [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'error');
+% % % % error('2')
+% % % h = obj.cellWidths;
+% % % C = 0.002;
+% % % k = C*mean(h(2:N+1));%0.02;
+% % % % while(norm([phi1 phi2 phi3]) > 0.1)
+% % % 
+% % % % updateboundaryghost(U);
+% % % 
+% % % [phi1,phi2,phi3]
+% % % 
+% % % for i = 2:N+1
+% % % [U(i,1),U(i,2),U(i,3)]=toconservedvars(V(i,1),V(i,2),V(i,3));
+% % % end
+% % % 
+% % % % error('1')
+% % % 
+% % % [mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
+% % % %  error('1')
+% % % 
+% % % 
+% % % for j = 1:50000%floor(100/k)%5000
+% % % 
+% % %  for i = 2:N+1
+% % %  [U(i,1) U(i,2) U(i,3)] = toconservedvars(V(i,1),V(i,2),V(i,3));
+% % %  end
+% % % 
+% % %    unew = U-k*[phi1 phi2 phi3];
+% % %    
+% % %   
+% % %  for i = 2:N+1
+% % %  [V(i,1) V(i,2) V(i,3)] = toprimitivevars(unew(i,1),unew(i,2),unew(i,3));
+% % %  end
+% % % % % %  updateboundaryghost(unew,h,k,N);
+% % %     Z = obj.unstructuredrecon(V,p,'error');
+% % %       
+% % %    [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'error');
+% % %   [phi1 phi2 phi3]
+% % %    
+% % % end
+% % % error('9')
+
+
+
+
+
+%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ while(max(abs(R(2:3*N+1))) > 1e-13  )
      
 % % % % if(obj.bcLeftType == 'D')
 % % % %    obj.T0 = 0; 
@@ -395,8 +480,8 @@ dtold = dt;
 % Jue 
 % Ju
 %  Je
-%     spy(Je)
-%      error('1')
+%      spy(Je)
+%       error('1')
 %      Je = Jue-Ju
 % e
 %      Je
@@ -407,7 +492,8 @@ dtold = dt;
         
       Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
 
-           dtold*c2*Rratio;
+          dt= dtold*c2*Rratio;
+
 % Rratio
 
 
@@ -431,22 +517,21 @@ for j = 2:N+1
 % [eu(j,1),eu(j,2),eu(j,3)] = toconservedvars(e(j,1),e(j,2),e(j,3));
 end
 
- K
+ 
 if(isnan(K) )%|| (norm(K) > 1e3))
 e
 count
 Rratio
 error('1')
 end
- Je
- K
+ 
 % dt
 % Rratio
 % dtold
 % R
 
 %   error('1')
- del = K\-R(2:3*N+1)
+ del = K\-R(2:3*N+1);
 
 %   error('1')  
 %     if(mod(count,100)==0)
@@ -473,9 +558,9 @@ for j = 2:N+1
 % [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
 end
      
-     e
-exacterr
-del
+%      e
+% exacterr
+
 % error('1')
      
      t = t+dt;

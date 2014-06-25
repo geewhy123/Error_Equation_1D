@@ -14,6 +14,8 @@ end
 N = obj.nCells;
 J = zeros(3*N+2,3*N+2);
 
+
+
 Z = obj.unstructuredrecon(v,order,eqn);
 % % %%%%%%
 % % m = obj.hOrder;
@@ -42,7 +44,7 @@ Z = obj.unstructuredrecon(v,order,eqn);
 % % [p1,p2,p3]= obj.computeeulerfluxintegral(Z,eqn);
 % %        Z
 % %  
-     [phi1 phi2 phi3]
+     [phi1 phi2 phi3];
 %        error('2')
      end
 
@@ -160,7 +162,7 @@ end
 %            Z1-Z
 %            U1-U
 
-           [R1 R0 R1-R0]
+           [R1 R0 R1-R0];
 % if(strcmp(eqn,'error')==1)
 %         error('1')
 % end

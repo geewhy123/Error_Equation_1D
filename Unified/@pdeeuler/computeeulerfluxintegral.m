@@ -3,7 +3,7 @@ function [ phi1,phi2,phi3 ] = computeeulerfluxintegral( obj,Z,eqn )
 %   Detailed explanation goes here
 if(strcmp(eqn,'error')==1)
 %    [ phi1,phi2,phi3 ] = computeeulererrorfluxintegral( obj,Z,eqn )
-   [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
+   [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn );
     return
 end
 
@@ -66,7 +66,7 @@ for i = 2:N+1
 end
 
 % if(strcmp(eqn,'error')==1)
- V = [rhol rhor ul ur Pl Pr]
+ V = [rhol rhor ul ur Pl Pr];
 % end
 
 % rhor(N+1) = obj.bcRightVal(1);
@@ -96,7 +96,7 @@ for i = 2:N+1
 [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
 [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
 end
-U = [U1l U1r U2l U2r U3l U3r]
+U = [U1l U1r U2l U2r U3l U3r];
 
 
 
@@ -115,7 +115,7 @@ end
 
 
 % if(strcmp(eqn,'error')==1 && obj.T0 == 0)
-  [F1l F1r F2l F2r F3l F3r]
+  [F1l F1r F2l F2r F3l F3r];
 %  U
 %  [rhol rhor ul ur Pl Pr]
 %   error('1')
@@ -191,7 +191,7 @@ FlAve(2,1:3) = [F1l(2); F2l(2); F3l(2)]';
 % FlAve(1:3,N+1)= [ 0;0;0];
 FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
-F = [FlAve FrAve]
+F = [FlAve FrAve];
 % error('2')
 PAp = NaN*ones(N+2,1);
 % Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
@@ -251,8 +251,8 @@ phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
  phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
 end
 
-PAp
-Z
+PAp;
+Z;
 % [phi1(N+1) phi2(N+1) phi3(N+1)]
 % % %  [FlAve(:,:) FrAve(:,:)]
 

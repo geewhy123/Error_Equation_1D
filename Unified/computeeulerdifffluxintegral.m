@@ -22,6 +22,11 @@ Pl = zeros(N+2,1);
 Pr = zeros(N+2,1);
 cr = zeros(N+2,1);
 cl = zeros(N+2,1);
+rhob= zeros(N+2,1);
+ub= zeros(N+2,1);
+Pb= zeros(N+2,1);
+
+
 Ut1 = zeros(N+2,1);
 Ut2 = zeros(N+2,1);
 Ut3 =zeros(N+2,1);
@@ -59,7 +64,7 @@ end
 % fprintf('hack avg');
 % % V
 % % error('1')
-% Z = obj.unstructuredrecon(V,order,eqn);
+%  Z = obj.unstructuredrecon(V,order,eqn);
 % 
 % 
 % 
@@ -82,15 +87,23 @@ for i = 2:N+1
     ul(i)   = ul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
     Pr(i)   = Pr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
     Pl(i)   = Pl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
+
+
+    rhob(i) = rhob(i) + (Z(k,i))*obj.moments(i,k);
+    ub(i) = ub(i) + (Z(k+order,i))*obj.moments(i,k);
+    Pb(i) = Pb(i) + (Z(k+2*order,i))*obj.moments(i,k);
     end
-    
+
     cl(i) = sqrt(gam*Pl(i)/rhol(i));
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
 
+% error('1')
+
+
 
 rhol = rhol + obj.convVleft(:,1);
-ul = ul + obj.convVleft(:,2)
+ul = ul + obj.convVleft(:,2);
 Pl = Pl + obj.convVleft(:,3);
 rhor = rhor + obj.convVright(:,1);
 ur = ur + obj.convVright(:,2);
@@ -99,17 +112,43 @@ Pr = Pr + obj.convVright(:,3);
 
 
  if(strcmp(eqn,'error')==1)
- Vpe = [rhol rhor ul ur Pl Pr]
- V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)]
+ Vpe = [rhol rhor ul ur Pl Pr];
+ V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)];
 for i = 2:N+1
  [U(i,1),U(i,2),U(i,3)] = toconservedvars(V(i,1),V(i,3),V(i,5));
 end
-U
+U;
 % error('1')
  end
 
 
 
+if(obj.bcLeftType == 'D')
+   obj.T0 = obj.primalT0; 
+   obj.P0 = obj.primalP0;
+end
+if(obj.bcRightType == 'D')
+    obj.Pb = obj.primalPb;
+end
+U = obj.convSoln;
+V = zeros(N+2,3);
+for i = 2:N+1
+[V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
+end
+V(:,1) = V(:,1) + rhob;
+V(:,2) = V(:,2) + ub;
+V(:,3) = V(:,3) + Pb;
+% V
+% error('1')
+
+Z = obj.unstructuredrecon(V,order,eqn);
+if(obj.bcLeftType == 'D')
+   obj.T0 = 0; 
+   obj.P0 = 0;
+end
+if(obj.bcRightType == 'D')
+    obj.Pb = 0;
+end
 
 
 
@@ -355,10 +394,6 @@ end
 
 
 
-
-
-
-
 U1l = obj.convUleft(:,1);
 U2l = obj.convUleft(:,2);
 U3l = obj.convUleft(:,3);
@@ -372,7 +407,30 @@ for i = 2:N+1
 [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
 end
 
+
+
+
+if(obj.bcLeftType == 'D')
+   obj.T0 = obj.primalT0; 
+   obj.P0 = obj.primalP0;
+end
+if(obj.bcRightType == 'D')
+    obj.Pb = obj.primalPb;
+end
+
 Z = obj.unstructuredrecon(V,order,eqn);
+
+if(obj.bcLeftType == 'D')
+   obj.T0 = 0; 
+   obj.P0 = 0;
+end
+if(obj.bcRightType == 'D')
+    obj.Pb = 0;
+end
+
+
+
+
 % VV = [V1l' V1r' V2l' V2r' V3l' V3r']
 % UU = [U1l U1r U2l U2r U3l U3r]
 % error('1')
@@ -392,7 +450,7 @@ end
 
 
  if(strcmp(eqn,'error')==1 )%&& obj.T0 == 0)
-  [F1l F1r F2l F2r F3l F3r]
+  [F1l F1r F2l F2r F3l F3r];
 %  U
 %  [rhol rhor ul ur Pl Pr]
 %    error('1')
@@ -468,7 +526,7 @@ FlAve(2,1:3) = [F1l(2); F2l(2); F3l(2)]';
 % FlAve(1:3,N+1)= [ 0;0;0];
 FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
-F = [FlAve FrAve]
+F = [FlAve FrAve];
 % error('2')
 
 
@@ -548,13 +606,15 @@ phi2 = phia2-phib2;
 phi3 = phia3-phib3;
 
 
+    phi1 = phi1 - obj.errorSource(:,1);
+    phi2 = phi2 - obj.errorSource(:,2);
+    phi3 = phi3 - obj.errorSource(:,3);
 
 
 
+PP = [phia1 phia2 phia3 phib1 phib2 phib3];
 
-PP = [phia1 phia2 phia3 phib1 phib2 phib3]
-
-% error('1')
+%  error('1')
 
 
 
@@ -582,10 +642,10 @@ PP = [phia1 phia2 phia3 phib1 phib2 phib3]
 
 % error('1')
 
-% if(strcmp(eqn,'error')==1)
-%    phi1 = phi1 - obj.errorSource(:,1);
-%    phi2 = phi2 - obj.errorSource(:,2);
-%    phi3 = phi3 - obj.errorSource(:,3);
+% % if(strcmp(eqn,'error')==1)
+%     phi1 = phi1 - obj.errorSource(:,1);
+%     phi2 = phi2 - obj.errorSource(:,2);
+%     phi3 = phi3 - obj.errorSource(:,3);
 % end
 
 end
