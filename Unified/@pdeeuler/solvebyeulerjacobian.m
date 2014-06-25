@@ -32,26 +32,37 @@ obj.computeprimalpseudo();
 
 
  %truncation error need exact sol
-% J = computeeulerfluxjacobian(obj,ue,'solution');%,x,h,N,p);
+teu = zeros(N+2,3);
+% tev = zeros(N+2,3);
+Ve = obj.exactSolutionV;
+J = computeeulerfluxjacobian(obj,Ve,'solution');%,x,h,N,p);
+
+[Z] = obj.unstructuredrecon(Ve,p,'solution');%ue,x,h,N,NaN,NaN,p);
+
+%   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
+%   error('1')
+f = obj.source;
+ [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
+
+  [tauu1 tauu2 tauu3]
+te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
+
+teu = [tauu1 tauu2 tauu3];
+
+
+% for i = 2:N+1
+% [tev(i,1),tev(i,2),tev(i,3)] = toprimitivevars(teu(i,1),teu(i,2),teu(i,3));
 % 
-% [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
-% 
-% %   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
-% %   error('1')
-% f = obj.source;
-%  [tau]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
-% 
-%   tau
-% te1 = sum(abs(tau(2:N+1)))/N 
-% 
-% te = tau;
-% % errerr2= NaN;
-% % cverr2 = NaN;
-% % exacterr = NaN;
-% % ee = NaN;
-% % return;
-% %   error('1')
-%  
+% end
+% tev
+% error('1')
+% errerr2= NaN;
+% cverr2 = NaN;
+% exacterr = NaN;
+% ee = NaN;
+% return;
+%    error('1')
+ 
 %  max(abs(tau))
  
  %truncation error need exact sol
@@ -317,7 +328,7 @@ exacterru = obj.exactSolutionU-u
 % % % % error('1')
 
 f = -[R1 R2 R3];
-   obj.errorSource = f;%tau;
+   obj.errorSource = teu;%f;%tau;
  
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
