@@ -43,7 +43,7 @@ Z = obj.unstructuredrecon(v,order,eqn);
 % %        Z
 % %  
      [phi1 phi2 phi3]
-     error('2')
+%        error('2')
      end
 
 
@@ -160,8 +160,10 @@ end
 %            Z1-Z
 %            U1-U
 
-%           [R1 R0 R1-R0]
+           [R1 R0 R1-R0]
+% if(strcmp(eqn,'error')==1)
 %         error('1')
+% end
 %        end
    J(2:3*N+1,i) = (R1(2:3*N+1)-R0(2:3*N+1))/ep;  
 

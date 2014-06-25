@@ -45,31 +45,31 @@ end
 
 
 % error('1')
-U = obj.convSoln;
-
-for i = 2:N+1
-% [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
-% [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
-[V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
-V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
-V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
-V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
-
-end
-fprintf('hack avg');
-% V
-% error('1')
-Z = obj.unstructuredrecon(V,order,eqn);
-
-
-
-U1l = U1l + obj.convUleft(:,1);
-U2l = U2l + obj.convUleft(:,2);
-U3l = U3l + obj.convUleft(:,3);
-U1r = U1r + obj.convUright(:,1);
-U2r = U2r + obj.convUright(:,2);
-U3r = U3r + obj.convUright(:,3);
-
+% U = obj.convSoln;
+% 
+% for i = 2:N+1
+% % [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
+% % [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
+% [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
+% V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
+% V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
+% V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
+% 
+% end
+% fprintf('hack avg');
+% % V
+% % error('1')
+% Z = obj.unstructuredrecon(V,order,eqn);
+% 
+% 
+% 
+% U1l = U1l + obj.convUleft(:,1);
+% U2l = U2l + obj.convUleft(:,2);
+% U3l = U3l + obj.convUleft(:,3);
+% U1r = U1r + obj.convUright(:,1);
+% U2r = U2r + obj.convUright(:,2);
+% U3r = U3r + obj.convUright(:,3);
+% 
 
 
 
@@ -89,12 +89,23 @@ for i = 2:N+1
 end
 
 
+rhol = rhol + obj.convVleft(:,1);
+ul = ul + obj.convVleft(:,2)
+Pl = Pl + obj.convVleft(:,3);
+rhor = rhor + obj.convVright(:,1);
+ur = ur + obj.convVright(:,2);
+Pr = Pr + obj.convVright(:,3);
 
 
 
  if(strcmp(eqn,'error')==1)
- V = [rhol rhor ul ur Pl Pr]
-error('1')
+ Vpe = [rhol rhor ul ur Pl Pr]
+ V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)]
+for i = 2:N+1
+ [U(i,1),U(i,2),U(i,3)] = toconservedvars(V(i,1),V(i,3),V(i,5));
+end
+U
+% error('1')
  end
 
 
@@ -129,7 +140,7 @@ for i = 2:N+1
 [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
 [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
 end
-U = [U1l U1r U2l U2r U3l U3r]
+% U = [U1l U1r U2l U2r U3l U3r]
 
 
 %%%
@@ -280,9 +291,9 @@ PAp = NaN*ones(N+2,1);
 % Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
 
 A = zeros(N+2,1);
-phib1 = zeros(N+2,1);
-phib2 = zeros(N+2,1);
-phib3 = zeros(N+2,1);
+phia1 = zeros(N+2,1);
+phia2 = zeros(N+2,1);
+phia3 = zeros(N+2,1);
 
   c1 = 0.3478548451;
 c2 = 0.6521451549;
@@ -329,13 +340,10 @@ for i = 2:N+1
  
  PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
- phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
-phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
- phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
+ phia1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
+phia2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
+ phia3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
 end
-
-
-
 
 
 
@@ -365,7 +373,9 @@ for i = 2:N+1
 end
 
 Z = obj.unstructuredrecon(V,order,eqn);
-
+% VV = [V1l' V1r' V2l' V2r' V3l' V3r']
+% UU = [U1l U1r U2l U2r U3l U3r]
+% error('1')
 
 
 F1l = zeros(N+2,1);
@@ -381,12 +391,12 @@ for i = 2:N+1
 end
 
 
-% if(strcmp(eqn,'error')==1 && obj.T0 == 0)
-%  [F1l F1r F2l F2r F3l F3r]
+ if(strcmp(eqn,'error')==1 )%&& obj.T0 == 0)
+  [F1l F1r F2l F2r F3l F3r]
 %  U
 %  [rhol rhor ul ur Pl Pr]
-%   error('1')
-% end
+%    error('1')
+ end
  
  
  %faces
@@ -458,7 +468,7 @@ FlAve(2,1:3) = [F1l(2); F2l(2); F3l(2)]';
 % FlAve(1:3,N+1)= [ 0;0;0];
 FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
-F = [FlAve FrAve];
+F = [FlAve FrAve]
 % error('2')
 
 
@@ -475,6 +485,9 @@ PAp = NaN*ones(N+2,1);
 % Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
 
 A = zeros(N+2,1);
+phib1 = zeros(N+2,1);
+phib2 = zeros(N+2,1);
+phib3 = zeros(N+2,1);
 phi1 = zeros(N+2,1);
 phi2 = zeros(N+2,1);
 phi3 = zeros(N+2,1);
@@ -530,13 +543,18 @@ phib2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
 end
 
 
-phi1 = phi1-phib1;
-phi2 = phi2-phib2;
-phi3 = phi3-phib3;
+phi1 = phia1-phib1;
+phi2 = phia2-phib2;
+phi3 = phia3-phib3;
 
 
 
 
+
+
+PP = [phia1 phia2 phia3 phib1 phib2 phib3]
+
+% error('1')
 
 
 

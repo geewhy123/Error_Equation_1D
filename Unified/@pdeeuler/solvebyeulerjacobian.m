@@ -232,7 +232,9 @@ obj.computeprimalleftright();
 % obj.convVright
 % error('1')
 
+[phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution')
 
+% error('5')
 %%%%residual
 
 if(q> 0 && r>0)
@@ -286,13 +288,13 @@ obj.computeerrorpseudo();
  
 %%%error equation
 
-if(obj.bcLeftType == 'D')
-   obj.T0 = 0; 
-   obj.P0 = 0;
-end
-if(obj.bcRightType == 'D')
-    obj.Pb = 0;
-end
+% if(obj.bcLeftType == 'D')
+%    obj.T0 = 0; 
+%    obj.P0 = 0;
+% end
+% if(obj.bcRightType == 'D')
+%     obj.Pb = 0;
+% end
 
 exacterrv = obj.exactSolutionV-V
 exacterru = obj.exactSolutionU-u
@@ -357,7 +359,7 @@ dtold = dt;
 % end
 
 %   obj.errorSource = obj.errorSource*0;
-%   e = e*0;
+  e = e*0;
 
 % error('1')
 %use 0 source, still get NaNs...
@@ -365,25 +367,47 @@ dtold = dt;
 % error('1')
  while(max(abs(R(2:3*N+1))) > 1e-13 && count < 10 )
      
+% % % % if(obj.bcLeftType == 'D')
+% % % %    obj.T0 = 0; 
+% % % %    obj.P0 = 0;
+% % % % end
+% % % % if(obj.bcRightType == 'D')
+% % % %     obj.Pb = 0;
+% % % % end
+
+
+
     Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
+
+
+% % % % % if(obj.bcLeftType == 'D')
+% % % % %    obj.T0 = 1; 
+% % % % %    obj.P0 = 1;
+% % % % % end
+% % % % % if(obj.bcRightType == 'D')
+% % % % %     obj.Pb = 0.95;
+% % % % % end
+
+
+
 %      Jue = obj.computeeulerfluxjacobian(u+e,'error');%,x,h,N,p);
 %      Ju = obj.computeeulerfluxjacobian(u,'error');%,x,h,N,p);
 % Jue 
 % Ju
- Je
-%   spy(Je)
+%  Je
+%     spy(Je)
 %      error('1')
 %      Je = Jue-Ju
 % e
 %      Je
-       error('1')
+%         error('1')
      count = count +1;
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 
         
       Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
 
-           dt = 0.001;%dtold*c2*Rratio;
+           dtold*c2*Rratio;
 % Rratio
 
 
