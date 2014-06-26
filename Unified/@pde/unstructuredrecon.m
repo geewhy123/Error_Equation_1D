@@ -2,6 +2,14 @@ function [ Z] = unstructuredrecon(obj,u,p,eqn)
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 % p = obj.pOrder;
 if(strcmp(obj.physics,'EulerQ')==1)
+        if( (strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+             [Z3] = higherunstructuredreconeuler (obj,u(:,3),obj.hOrder,eqn,3);                          
+               [Z1] = higherunstructuredreconeuler (obj,u(:,1),obj.hOrder,eqn,1); 
+                [Z2] = higherunstructuredreconeuler (obj,u(:,2),obj.hOrder,eqn,2);
+               Z = [Z1; Z2;Z3];
+               return;
+
+        end
         if(p<6)
                [Z3] = unstructuredreconeuler (obj,u(:,3),p,eqn,3);                          
                [Z1] = unstructuredreconeuler (obj,u(:,1),p,eqn,1); 

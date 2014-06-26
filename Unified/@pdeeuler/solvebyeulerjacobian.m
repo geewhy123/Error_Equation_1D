@@ -18,9 +18,9 @@ obj.computeprimalpseudo();
 %%%%% higher order near bdy
 % [Z] = obj.unstructuredrecon(V,p,'solution');
 % 
-% obj.hOrder = 5;
+obj.hOrder = 0;%obj.pOrder;
 % m = obj.hOrder ;
-% obj.computehigherpseudo();
+obj.computehigherpseudo();
 % 
 %       [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
 %                [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
@@ -35,6 +35,7 @@ obj.computeprimalpseudo();
 teu = zeros(N+2,3);
 % tev = zeros(N+2,3);
 Ve = obj.exactSolutionV;
+
 J = computeeulerfluxjacobian(obj,Ve,'solution');%,x,h,N,p);
 
 

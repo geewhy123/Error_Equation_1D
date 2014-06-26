@@ -75,6 +75,7 @@ classdef pde < handle
         [AD,AA] = computepseudo(obj,p);
         computeerrorpseudo(obj);
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobian(obj);
+        [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj);
         
     end
     

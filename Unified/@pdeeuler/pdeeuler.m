@@ -20,7 +20,8 @@ classdef pdeeuler < pde
         convVreconp;
         higherprimalPI;
         higherprimalRM;
-        hOrder;
+        hOrder=0;
+
     end
     
     methods

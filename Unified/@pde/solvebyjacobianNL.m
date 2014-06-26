@@ -14,7 +14,10 @@ k = obj.tStep;
 physics = obj.physics;
 tlim = obj.endTime;
 
-
+%%%%%%
+obj.hOrder = 0;
+obj.computehigherpseudo();
+%%%%%%
 
 obj.computeprimalpseudo();
 

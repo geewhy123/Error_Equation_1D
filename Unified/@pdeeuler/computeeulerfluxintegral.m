@@ -48,9 +48,11 @@ end
 for i = 2:N+1
 
 %%%%higher
-% if(i==2 || i == 3 || i == N || i == N+1)
-%     order = obj.hOrder;
-% end
+if((strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+if(i==2 || i == 3 || i == N || i == N+1)
+    order = obj.hOrder;
+end
+end
 % %%%%higher
 
 
@@ -196,7 +198,7 @@ FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 F = [FlAve FrAve];
 % error('2')
 PAp = NaN*ones(N+2,1);
-% Ap = @(x) (50/9)*(Ae-At)*(x-2/5);
+
 
 A = zeros(N+2,1);
 phi1 = zeros(N+2,1);
@@ -216,15 +218,11 @@ x4= -0.8611363116;
 for i = 2:N+1
     xr = x(i)+h(i)/2;   
    A(i)=obj.getArea(xr);
-%     A(i) = (25/9)*(Ae-At)*(xr-2/5)^2+At; 
+ 
 end
 A(1) = obj.getArea(0);
-% A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
 
 
-
-% A
-% error('1')
 for i = 2:N+1
     xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;

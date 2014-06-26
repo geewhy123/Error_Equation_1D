@@ -25,7 +25,7 @@ wt = obj.weight;
   if(strcmp(eqn,'solution')==1)
        AA = obj.primalRM;
        AD = obj.primalPI;
-       AA = obj.higherprimalPI;
+       AA = obj.higherprimalRM;
        ADm = obj.higherprimalPI;
 
     elseif(strcmp(eqn,'error')==1)

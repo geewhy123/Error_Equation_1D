@@ -3,7 +3,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobian( obj )
 %   Detailed explanation goes here
 
 if(strcmp(obj.physics,'BurgersMod')==1 || strcmp(obj.physics,'BurgersVisc')==1)
-   [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj); 
+   [errerr2,x,cverr2,exacterr,ee,te  ]=obj.solvebyjacobianNL(); 
    return;
 end
 

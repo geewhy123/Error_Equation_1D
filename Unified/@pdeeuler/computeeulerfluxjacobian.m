@@ -18,7 +18,7 @@ J = zeros(3*N+2,3*N+2);
 
 Z = obj.unstructuredrecon(v,order,eqn);
 %%%%%%
-% m = obj.hOrder;
+%  m = obj.hOrder;
 % % [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
 %   [Z3] = higherunstructuredreconeuler (obj,v(:,3),m,'solution',3);                          
 %   [Z1] = higherunstructuredreconeuler (obj,v(:,1),m,'solution',1); 
