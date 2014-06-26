@@ -45,6 +45,11 @@ assert(abs(cverr2-5.683313096888770e-06)/cverr2 < 0.001)
 % assert(abs(errerr2-5.774687156486830e-06)/errerr2 < 0.001)
 assert(abs(errerr2-5.683313774878044e-06)/errerr2 < 0.001)
 
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'D',tanh(0),'D',-2*tanh(1),10,7,'BurgersVisc','SS');
+assert(abs( errerr2-1.636222437037368e-04)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,3,4,5,0,'D',tanh(0),'D',-2*tanh(1),10,7,'BurgersVisc','SS');
+assert(abs( errerr2- 6.993251444499368e-04)/errerr2 < 0.001)
 
 % [errerr2,x,cverr2,exacterr,ee]=errordriver(10,2,2,4,1/3,'D',0,'D',0,0.3,7,'Advection','TimeAccurate');
 % assert(abs(errerr2-0.304897658837351)/errerr2 < 0.001)

@@ -15,9 +15,9 @@ U = NaN*ones(3*N+2,1);
 obj.computeprimalpseudo();
 
 
-%%%%%% higher order near bdy
+%%%%% higher order near bdy
 % [Z] = obj.unstructuredrecon(V,p,'solution');
-
+% 
 % obj.hOrder = 5;
 % m = obj.hOrder ;
 % obj.computehigherpseudo();
@@ -27,7 +27,7 @@ obj.computeprimalpseudo();
 %                 [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
 %                Zm = [Z1; Z2;Z3];
 % 
-% error('1')
+% % error('1')
 
 
 
@@ -37,7 +37,18 @@ teu = zeros(N+2,3);
 Ve = obj.exactSolutionV;
 J = computeeulerfluxjacobian(obj,Ve,'solution');%,x,h,N,p);
 
+
+% % % % higher
 [Z] = obj.unstructuredrecon(Ve,p,'solution');%ue,x,h,N,NaN,NaN,p);
+% % % % %  [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
+% % % % %                [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
+% % % % %                 [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
+% % % % %                Z = [Z1; Z2;Z3];
+% % % % % % % % % % 
+
+
+
+
 
 %   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
 %   error('1')
@@ -94,15 +105,15 @@ teu = [tauu1 tauu2 tauu3];
  K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
 
 [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
-% %%%%%%
+% % %%%%%
 % % [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
-%   [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
-%   [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
-%   [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
-%                Z = [Z1; Z2;Z3];
-% 
-% 
-%%%%%%
+% %   [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
+% %   [Z1] = higherunstructuredreconeuler (obj,V(:,1),m,'solution',1); 
+% %   [Z2] = higherunstructuredreconeuler (obj,V(:,2),m,'solution',2);
+% %                Z = [Z1; Z2;Z3];
+% % 
+% % 
+% % %%%%
 
 Rold = R;
  [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
@@ -328,7 +339,7 @@ exacterru = obj.exactSolutionU-u
 % % % % error('1')
 
 f = -[R1 R2 R3];
-   obj.errorSource = teu;%f;%tau;
+   obj.errorSource = f;%tau;
  
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
@@ -642,7 +653,7 @@ plot(x,w)
 % cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 
 ee = exacterr - w;
-errerr2 = sqrt(sum((exacterr(2:N+1)-ee(2:N+1)).^2)/N) 
+errerr2 = [sqrt(sum((exacterr(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterr(2:N+1,3)-ee(2:N+1,3)).^2)/N) ]
 w
 figure
 subplot(3,1,1)

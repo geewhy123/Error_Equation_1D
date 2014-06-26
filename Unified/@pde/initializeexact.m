@@ -11,6 +11,8 @@ elseif(strcmp(obj.physics,'Poisson')==1)
 poissoninitialize(obj);
 elseif(strcmp(obj.physics,'BurgersMod')==1)
     burgersmodinitialize(obj);
+elseif(strcmp(obj.physics,'BurgersVisc')==1)
+    burgersviscinitialize(obj);
 elseif(strcmp(obj.physics,'EulerQ')==1)
     eulerinitialize(obj);
 else
@@ -199,6 +201,49 @@ f(N+2) = NaN;
  obj.source = f;
 end
 
+function  burgersviscinitialize(obj)
+%BURGERSINITIALIZE Summary of this function goes here
+%   Detailed explanation goes here
+tlim = obj.endTime;
+x = obj.cellCentroids;
+N = obj.nCells;
+h = obj.cellWidths;
+
+u0 = zeros(N+2,1);
+ue = zeros(N+2,1);
+f = zeros(N+2,1);
+  for i = 2:N+1
+           xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+ 
+    if(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    
+    ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
+     u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
+     
+
+     
+%     MMS
+%     ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
+%     u0 = ue;
+%     f(i) = -(1/h(i))*( ( - sin(pi*xr) - pi*cos(pi*xr) - cos(pi*xr)^2/2) -(- sin(pi*xl) - pi*cos(pi*xl) - cos(pi*xl)^2/2));
+else
+    assert(0)
+end
+
+% f(i) = 0;
+    end
+f(1) = NaN;
+f(N+2) = NaN;
+ ue(1) = NaN;
+ ue(N+2) = NaN;
+ u0(1) = NaN;
+ u0(N+2)= NaN;
+ obj.exactSolution = ue;
+ obj.initialSolution = u0;
+ obj.source = f;
+end
+
 
 function  burgersinitialize(obj )
 %BURGERSINITIALIZE Summary of this function goes here
@@ -323,6 +368,9 @@ end
 % tlim
 
 % end
+
+
+
 
 
 function eulerinitialize(obj)

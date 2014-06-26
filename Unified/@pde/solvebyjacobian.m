@@ -2,7 +2,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobian( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 
-if(strcmp(obj.physics,'BurgersMod')==1)
+if(strcmp(obj.physics,'BurgersMod')==1 || strcmp(obj.physics,'BurgersVisc')==1)
    [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj); 
    return;
 end

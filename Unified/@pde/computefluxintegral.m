@@ -5,6 +5,12 @@ elseif(strcmp(obj.physics,'Advection')==1)
     FI=computeadvectionfluxintegral(obj,Z,eqn);
 elseif(strcmp(obj.physics,'BurgersMod')==1)
     FI=computeburgersmodfluxintegral(obj,Z,eqn);
+elseif(strcmp(obj.physics,'BurgersVisc')==1)
+    if(strcmp(eqn,'error')==1)
+    FI=computeburgersviscfluxintegralb(obj,Z,eqn);
+    else
+    FI=computeburgersviscfluxintegral(obj,Z,eqn);
+    end
 else
     assert(0)
 end
@@ -568,3 +574,272 @@ end
 
  
 end
+
+
+
+function [ FI ] = computeburgersviscfluxintegral( obj,Z,eqn )
+%COMPUTEFLUXINTEGRAL Summary of this function goes here
+%   Detailed explanation goes here
+
+if(strcmp(eqn,'solution')==1)
+    p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
+else
+   assert(0); 
+end
+
+x = obj.cellCentroids;
+h = obj.cellWidths;
+N = obj.nCells;
+
+
+Fr = zeros(N+2,1);
+Fl = zeros(N+2,1);
+FrAve = zeros(N+2,1);
+FlAve = zeros(N+2,1);
+
+
+if(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+     
+     ur = zeros(N+2,1);
+        upr = zeros(N+2,1);
+        ul = zeros(N+2,1);
+        upl = zeros(N+2,1);
+        utilder = zeros(N+2,1);
+        utildel = zeros(N+2,1);
+        
+        nonlinearerror = 1;
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+%              obj.computerespseudo();%
+%              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      Zu = obj.convSolnRecon;%obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      uorder = obj.qOrder;
+%              obj.computeerrorpseudo();%
+%                 obj.convSoln
+%                 error('1')
+ Zu;
+% error('1')
+         end
+                
+jump = zeros(N+2,1);
+for i=2:N+1
+
+    for k = 1:p
+        ur(i) = ur(i)+Z(k,i)*(h(i)/2)^(k-1);
+        ul(i) = ul(i)+Z(k,i)*(-h(i)/2)^(k-1);
+    end
+    for k = 1:p-1
+        upr(i) = upr(i)+k*Z(k+1,i)*(h(i)/2)^(k-1);
+        upl(i) = upl(i)+k*Z(k+1,i)*(-h(i)/2)^(k-1);
+    end
+
+%         assert(ur(i)-1 < 0);
+   Fr(i) = -1*(ur(i)^2/2-upr(i)); %factor the flux function?
+   Fl(i) = -1*(ul(i)^2/2-upl(i));
+    
+   if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:uorder
+        utilder(i) = utilder(i)+Zu(k,i)*(h(i)/2)^(k-1);
+        utildel(i) = utildel(i)+Zu(k,i)*(-h(i)/2)^(k-1);
+        end
+  
+
+      Fr(i) = Fr(i) - ur(i) * utilder(i);
+      Fl(i) = Fl(i) - ul(i) * utildel(i);
+      
+   end
+
+     if(p==2)
+        jump(i) = (.2/((h(i)+h(i-1))/2))*(ul(i)-ur(i-1)) ;
+      end
+
+end
+
+jump(2) = 0;
+for i=2:N+1
+
+
+    if i==2
+        FrAve(i) = (Fr(i)+Fl(i+1))/2;
+        FlAve(i) = Fl(i); 
+    
+        
+    elseif i==N+1
+        FrAve(i) = Fr(i);
+        FlAve(i) = (Fr(i-1)+Fl(i))/2;
+    else
+  
+      FrAve(i) = (Fr(i)+Fl(i+1))/2+jump(i+1);
+      FlAve(i) = (Fr(i-1)+Fl(i))/2+jump(i);
+      
+
+    end
+
+end
+
+else
+   assert(0) 
+end
+ 
+ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
+
+     FI = (FrAve-FlAve)./h-obj.source;
+
+
+elseif(strcmp(eqn,'error')==1)
+
+  FI = (FrAve-FlAve)./h-obj.errorSource;
+
+
+end
+
+ 
+end
+
+
+
+
+
+
+function [ FI ] = computeburgersviscfluxintegralb( obj,Z,eqn )
+%COMPUTEFLUXINTEGRAL Summary of this function goes here
+%   Detailed explanation goes here
+
+if(strcmp(eqn,'solution')==1)
+    p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
+else
+   assert(0); 
+end
+
+x = obj.cellCentroids;
+h = obj.cellWidths;
+N = obj.nCells;
+
+
+Fr = zeros(N+2,1);
+Fl = zeros(N+2,1);
+FrAve = zeros(N+2,1);
+FlAve = zeros(N+2,1);
+
+
+if(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+     
+     ur = zeros(N+2,1);
+        upr = zeros(N+2,1);
+        ul = zeros(N+2,1);
+        upl = zeros(N+2,1);
+        utilder = zeros(N+2,1);
+        utildel = zeros(N+2,1);
+         utilderp = zeros(N+2,1);
+        utildelp = zeros(N+2,1);
+        
+        nonlinearerror = 1;
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+%              obj.computerespseudo();%
+%              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      Zu = obj.convSolnRecon;%obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+                      uorder = obj.qOrder;
+%              obj.computeerrorpseudo();%
+%                 obj.convSoln
+%                 error('1')
+ Zu;
+% error('1')
+         end
+                
+jump = zeros(N+2,1);
+for i=2:N+1
+
+    for k = 1:p
+        ur(i) = ur(i)+Z(k,i)*(h(i)/2)^(k-1);
+        ul(i) = ul(i)+Z(k,i)*(-h(i)/2)^(k-1);
+    end
+    for k = 1:p-1
+        upr(i) = upr(i)+k*Z(k+1,i)*(h(i)/2)^(k-1);
+        upl(i) = upl(i)+k*Z(k+1,i)*(-h(i)/2)^(k-1);
+    end
+
+%         assert(ur(i)-1 < 0);
+%    Fr(i) = -1*(ur(i)^2/2-upr(i)); %factor the flux function?
+%    Fl(i) = -1*(ul(i)^2/2-upl(i));
+     
+
+    if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:uorder
+        utilder(i) = utilder(i)+Zu(k,i)*(h(i)/2)^(k-1);
+        utildel(i) = utildel(i)+Zu(k,i)*(-h(i)/2)^(k-1);
+        end
+        for k = 1:uorder-1
+        utilderp(i) = utilderp(i) + k*Zu(k+1,i)*(h(i)/2)^(k-1);
+        utildelp(i) = utildelp(i) + k*Zu(k+1,i)*(-h(i)/2)^(k-1);
+        end
+
+
+     Fr(i) = -1*((ur(i)+utilder(i))^2/2-(upr(i)+utilderp(i)) -( utilder(i)^2/2-utilderp(i) ) ); %factor the flux function?
+     Fl(i) = -1*((ul(i)+utildel(i))^2/2-(upl(i)+utildelp(i)) -( utildel(i)^2/2-utildelp(i) ) );    
+
+
+%   
+% 
+%       Fr(i) = Fr(i) - ur(i) * utilder(i);
+%       Fl(i) = Fl(i) - ul(i) * utildel(i);
+%       
+    end
+
+     if(p==2)
+        jump(i) = (.2/((h(i)+h(i-1))/2))*(ul(i)-ur(i-1)) ;
+      end
+
+end
+
+jump(2) = 0;
+for i=2:N+1
+
+
+    if i==2
+        FrAve(i) = (Fr(i)+Fl(i+1))/2;
+        FlAve(i) = Fl(i); 
+    
+        
+    elseif i==N+1
+        FrAve(i) = Fr(i);
+        FlAve(i) = (Fr(i-1)+Fl(i))/2;
+    else
+  
+      FrAve(i) = (Fr(i)+Fl(i+1))/2+jump(i+1);
+      FlAve(i) = (Fr(i-1)+Fl(i))/2+jump(i);
+      
+
+    end
+
+end
+
+else
+   assert(0) 
+end
+ 
+ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
+
+     FI = (FrAve-FlAve)./h-obj.source;
+
+
+elseif(strcmp(eqn,'error')==1)
+
+  FI = (FrAve-FlAve)./h-obj.errorSource;
+
+
+end
+
+% obj.bcLeftVal
+% obj.bcRightVal
+% error('1')
+ 
+end
+
+

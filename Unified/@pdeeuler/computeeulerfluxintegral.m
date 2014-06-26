@@ -46,10 +46,12 @@ end
 
 
 for i = 2:N+1
+
+%%%%higher
 % if(i==2 || i == 3 || i == N || i == N+1)
 %     order = obj.hOrder;
 % end
-
+% %%%%higher
 
 
     for k = 1:order
