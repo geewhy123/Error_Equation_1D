@@ -1,7 +1,7 @@
 function [ F1,F2,F3 ] = conservedtofluxerror( U1,U2,U3 )
 %CONSERVEDTOFLUX Summary of this function goes here
 %   Detailed explanation goes here
-
+error('1')
 gam = 1.4;
 
 

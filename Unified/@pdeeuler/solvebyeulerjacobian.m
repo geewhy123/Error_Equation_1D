@@ -216,7 +216,7 @@ cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/
 
 
 
-te = NaN;
+te = teu;
 
 
 
@@ -460,7 +460,8 @@ dtold = dt;
 
 
 
-
+Upe =zeros(N+2,3);
+Vpe = zeros(N+2,3);
  while(max(abs(R(2:3*N+1))) > 1e-13  )
      
 % % % % if(obj.bcLeftType == 'D')
@@ -520,15 +521,27 @@ Rold = R;
  R(2:3:3*N-1) = phi1(2:N+1);
 R(3:3:3*N) = phi2(2:N+1);
 R(4:3:3*N+1) = phi3(2:N+1);
-eu = NaN*ones(size(3*N+2,1));
+eu = NaN*ones(N+2,3);
+
+
+%%%%%new translation
+Vpe = e+V;
+
+
 for j = 2:N+1
-    eu(j,1) = e(j,1);
-    eu(j,2) = e(j,2);
-    eu(j,3) = e(j,3);
+%     eu(j,1) = e(j,1);
+%     eu(j,2) = e(j,2);
+%     eu(j,3) = e(j,3);
 % [eu(j,1),eu(j,2),eu(j,3)] = toconservedvars(e(j,1),e(j,2),e(j,3));
+[Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
 end
 
+eu = Upe-u
+% error('1')
  
+
+%%%%%new translation
+
 if(isnan(K) )%|| (norm(K) > 1e3))
 e
 count
@@ -562,13 +575,26 @@ E(4:3:3*N+1) = eu(2:N+1,3);
      eu(2:N+1,2) = E(3:3:3*N) ;
      eu(2:N+1,3) = E(4:3:3*N+1);
 
+
+%%%%%%new trans
+
+Upe = eu+u;
+
+
 for j = 2:N+1
-    e(j,1) = eu(j,1);
-    e(j,2) = eu(j,2);
-    e(j,3) = eu(j,3);
+%     e(j,1) = eu(j,1);
+%     e(j,2) = eu(j,2);
+%     e(j,3) = eu(j,3);
 % [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
+[Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
 end
      
+e
+e = Vpe-V;
+% error('1')
+%%%%%%new trans
+
+
 %      e
 % exacterr
 
@@ -580,8 +606,7 @@ end
 
 ee = e;
 ee
-size(exacterr)
-size(ee)
+
 w = exacterr-ee
 
 % % % %  Je
