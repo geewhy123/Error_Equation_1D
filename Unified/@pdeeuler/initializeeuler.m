@@ -96,14 +96,17 @@ Psp = spapi(8,x,P);
 Pspi = fnint(Psp);
 
 xx = obj.cellCentroids;
-uav = NaN*ones(N+2,3);
+vav = NaN*ones(N+2,3);
 for i = 2:N+1
-    uav(i,1) = (1/h(i))*(fnval(rspi,xx(i)+h(i)/2)-fnval(rspi,xx(i)-h(i)/2)); 
-    uav(i,2) = (1/h(i))*(fnval(uspi,xx(i)+h(i)/2)-fnval(uspi,xx(i)-h(i)/2)); 
-    uav(i,3) = (1/h(i))*(fnval(Pspi,xx(i)+h(i)/2)-fnval(Pspi,xx(i)-h(i)/2)); 
+    vav(i,1) = (1/h(i))*(fnval(rspi,xx(i)+h(i)/2)-fnval(rspi,xx(i)-h(i)/2)); 
+    vav(i,2) = (1/h(i))*(fnval(uspi,xx(i)+h(i)/2)-fnval(uspi,xx(i)-h(i)/2)); 
+    vav(i,3) = (1/h(i))*(fnval(Pspi,xx(i)+h(i)/2)-fnval(Pspi,xx(i)-h(i)/2)); 
 end
-obj.exactSolutionV = uav;
+obj.exactSolutionV = vav;
 
+fnval(rspi,xx(end)+h(end)/2)
+fnplt(rspi)
+error('2')
 
 
 rsp = spapi(8,x,rho);

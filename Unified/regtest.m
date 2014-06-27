@@ -9,6 +9,8 @@ assert(max(abs(cverr2-[0.0    0.0    0.0])) < 0.001)
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,4,0,0,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
 assert(max(abs(cverr2-1.0e-03 *[  0.3109    0.6598    0.4991])) < 0.001)
 
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(5,2,2,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
+assert(max(abs(errerr2-[0.027616666942943   0.039095218342091   0.087619043539303])) < 0.001)
 
 
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,2,4,0,'P',0,'P',0,10,7,'Poisson','SS');

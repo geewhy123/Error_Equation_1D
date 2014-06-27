@@ -27,7 +27,10 @@ if(strcmp(obj.physics,'EulerQ')==1)
             
     end
     
-
+%  if( (strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+%       [Z] = higherunstructuredreconp (obj,u,obj.hOrder,eqn); 
+% return;
+%  end
 
 switch p    
    

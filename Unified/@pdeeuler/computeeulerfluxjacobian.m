@@ -29,24 +29,7 @@ Z = obj.unstructuredrecon(v,order,eqn);
 % %%%%%%
 
 
-
-% Z
-% error('1')
-
-%        R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
-% R = obj.computefluxintegral(Z);%,x,h,N,p)
-
   [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,eqn);
-
-
-% 
-    if(strcmp(eqn,'error')==1)
-% % [p1,p2,p3]= obj.computeeulerfluxintegral(Z,eqn);
-% %        Z
-% %  
-     [phi1 phi2 phi3];
-%        error('2')
-     end
 
 
 R0 = NaN*ones(3*N+2,1);
@@ -58,14 +41,24 @@ R1 = NaN*ones(3*N+2,1);
 u = NaN*ones(size(v));
 
 if(strcmp(eqn,'error')==1)
+Upe =zeros(N+2,3);
+Vpe = zeros(N+2,3);
+%     for j = 2:N+1
+%     u(j,1) = v(j,1);
+%     u(j,2) = v(j,2);
+%     u(j,3) = v(j,3);
+%     end
+    Vpe = v+obj.convSolutionV;
     for j = 2:N+1
-    u(j,1) = v(j,1);
-    u(j,2) = v(j,2);
-    u(j,3) = v(j,3);
+    [Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
     end
+    u = Upe-obj.convSoln
+v
+error('1')
+%     Vpe = u+V;
 else
 for j = 2:N+1
-[u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
+    [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
 end
 end
 
@@ -103,20 +96,7 @@ u1(2:N+1,2) = U1(3:3:3*N) ;
 u1(2:N+1,3) = U1(4:3:3*N+1);
 
 if(strcmp(eqn,'error')==1)
-%      [phi1 phi2 phi3]
-%      figure
-%      x = obj.cellCentroids;
-%      plot(x,phi1,x,phi2,x,phi3);
-%      Z
-%      v
-%        figure
-% obj.reconplot(Z(1:order,:),'solution')
-% 
-% obj.reconplot(Z(order+1:2*order,:),'solution')
-% 
-% obj.reconplot(Z(2*order+1:3*order,:),'solution')
-%      error('3')
-    
+
     for j = 2:N+1
     v1(j,1) = u1(j,1);
     v1(j,2) = u1(j,2);

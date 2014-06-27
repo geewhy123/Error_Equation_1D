@@ -36,6 +36,9 @@ classdef pde < handle
          weight;
          convSoln;
          convSolnRecon;
+higherprimalPI;
+        higherprimalRM;
+        hOrder=0;
     end
     
     methods
@@ -76,7 +79,7 @@ classdef pde < handle
         computeerrorpseudo(obj);
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobian(obj);
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj);
-        
+        computehigherpseudo(obj);
     end
     
     methods(Access=private)

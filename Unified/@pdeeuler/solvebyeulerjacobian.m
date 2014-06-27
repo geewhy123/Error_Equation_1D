@@ -36,7 +36,7 @@ teu = zeros(N+2,3);
 % tev = zeros(N+2,3);
 Ve = obj.exactSolutionV;
 
-J = computeeulerfluxjacobian(obj,Ve,'solution');%,x,h,N,p);
+
 
 
 % % % % higher
@@ -49,47 +49,25 @@ J = computeeulerfluxjacobian(obj,Ve,'solution');%,x,h,N,p);
 
 
 
+%truncation error
 
-
-%   [er]=obj.reconplot(Z,'solution')%x,h,N,p,Z);
-%   error('1')
-f = obj.source;
  [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
   [tauu1 tauu2 tauu3]
 te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
 
 teu = [tauu1 tauu2 tauu3];
-
-
-% for i = 2:N+1
-% [tev(i,1),tev(i,2),tev(i,3)] = toprimitivevars(teu(i,1),teu(i,2),teu(i,3));
-% 
-% end
-% tev
-% error('1')
-% errerr2= NaN;
-% cverr2 = NaN;
-% exacterr = NaN;
-% ee = NaN;
-% return;
-%    error('1')
  
-%  max(abs(tau))
- 
- %truncation error need exact sol
+%truncation error need exact sol
+
   
- del = ones(3*N,1);
  R = ones(3*N+2,1);
  t=0;
  u = ue;
  count = 0;
  c2 = 10;
- dt = 0.0001;
-
+ dtold = 0.01;
  Rold = R;
- dtold = 1;
- 
  while(max(abs(R(2:3*N+1))) > 1e-13 )
      J = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
     
@@ -103,9 +81,9 @@ teu = [tauu1 tauu2 tauu3];
 %   error('1')
 
 
- K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
+     K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
 
-[Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
+     [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
 % % %%%%%
 % % [Z] = obj.unstructuredrecon(V,p,'solution');%u,x,h,N,NaN,NaN,p);
 % %   [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
@@ -116,39 +94,39 @@ teu = [tauu1 tauu2 tauu3];
 % % 
 % % %%%%
 
-Rold = R;
- [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+     Rold = R;
+     [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
  
-R(2:3:3*N-1) = phi1(2:N+1);
-R(3:3:3*N) = phi2(2:N+1);
-R(4:3:3*N+1) = phi3(2:N+1);
-u = NaN*ones(N+2,3);
-for j = 2:N+1
-[u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
-end
+     R(2:3:3*N-1) = phi1(2:N+1);
+     R(3:3:3*N) = phi2(2:N+1);
+     R(4:3:3*N+1) = phi3(2:N+1);
+     u = NaN*ones(N+2,3);
+     for j = 2:N+1
+          [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
+     end
 
 
-    del = K\-R(2:3*N+1);
+     del = K\-R(2:3*N+1);
     
-    max(abs(R(2:3*N+1)))
+     max(abs(R(2:3*N+1)))
 
-U(2:3:3*N-1) = u(2:N+1,1);
-U(3:3:3*N) = u(2:N+1,2);
-U(4:3:3*N+1) = u(2:N+1,3);
+    U(2:3:3*N-1) = u(2:N+1,1);
+    U(3:3:3*N) = u(2:N+1,2);
+    U(4:3:3*N+1) = u(2:N+1,3);
 
 
-UU = U(2:3*N+1) + del;
+    UU = U(2:3*N+1) + del;
      U = NaN*ones(3*N+2,1);
      U(2:3*N+1) = UU;
      
      
      u(2:N+1,1) = U(2:3:3*N-1) ;
-u(2:N+1,2) = U(3:3:3*N) ;
-u(2:N+1,3) = U(4:3:3*N+1);
+     u(2:N+1,2) = U(3:3:3*N) ;
+     u(2:N+1,3) = U(4:3:3*N+1);
 
-for j = 2:N+1
-[V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
-end
+    for j = 2:N+1
+        [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
+    end
      
      
      t = t+dt;
@@ -159,19 +137,8 @@ end
  end
  
  
-%   u
-%   error('1')
-%   max(abs(u-ue))
-
-[V]
 figure
 plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
-
-% % % vv = u-ue;
-%   cverr1 = sum(abs(vv(2:N+1)))/N
-% % %   cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
-
-% % %    plot(x,u,'*',x,ue,'o')
 
 
  obj.convSoln = u;
@@ -181,7 +148,8 @@ Ve = obj.exactSolutionV;
 rho = obj.exactSolutionV(:,1);
 u = obj.exactSolutionV(:,2);
 P = obj.exactSolutionV(:,3);
-% error('1')
+
+
 entropy = log(V(:,3)./(V(:,1).^gam));
    figure
    subplot(2,4,1)
@@ -231,42 +199,24 @@ cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/
 te = teu;
 
 
-
-
-
  u=obj.convSoln;
+obj.convSolutionV = V;
 obj.convVreconp = Z;
-
-% Z
-% obj.convVreconp
-% error('1')
-
-
-
-
-% error('1')
 
 
 obj.computeprimalleftright();
 
 
 
-% obj.convVleft
-% obj.convVright
-% error('1')
-
 [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution')
 
-% error('5')
+
 %%%%residual
 
 if(q> 0 && r>0)
 
   obj.computerespseudo();
-  
- 
-
-  
+   
   
   Zr = obj.unstructuredrecon(V,r,'residual');
 
@@ -293,11 +243,6 @@ obj.reconplot(Zr(2*r+1:3*r,:),'residual')
 
 norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
 
-    
-
-
- 
-
 
 obj.computeerrorpseudo();
 
@@ -319,8 +264,24 @@ if(obj.bcRightType == 'D')
     obj.Pb = 0;
 end
 
-exacterrv = obj.exactSolutionV-V
+exacterrv = obj.exactSolutionV-V;
 exacterru = obj.exactSolutionU-u
+
+obj.exactSolutionV
+UU =zeros(N+2,3);
+for z = 2:N+1
+[UU(z,1),UU(z,2),UU(z,3)] = toconservedvars(obj.exactSolutionV(z,1),obj.exactSolutionV(z,2),obj.exactSolutionV(z,3)); 
+end
+UU
+
+obj.exactSolutionU
+error('1')
+
+
+
+
+% error('1')
+
 % obj.exactSolutionU
 % error('1')
 
@@ -366,110 +327,9 @@ f = -[R1 R2 R3];
  ee(3*N+2) = NaN;
  count = 0;
  E = NaN*ones(3*N+2,1);
-  dt = 0.01;
-dtold = dt;
+  
+dtold = 0.01;
   c2 = 10;
-%  if(obj.qOrder > 4)
-% % error('1')
-%     kk = 0.00005;
-%  end
-
-%  e = 1e-3*ones(size(e));
-
-% for i = 2:N+1
-% e(i) = e(i) +1e-4*sin(2*pi*x(i));
-% end
-
- %  obj.errorSource = obj.errorSource*0;
-  % e = e*0;
-
-% error('1')
-%use 0 source, still get NaNs...
-% e
-% error('1')
-
-
-
-
-
-
-
-
-
-%%%%%%%
-% % % U = zeros(N+2,3);
-% % %     Z = obj.unstructuredrecon(e,q,'error');
-% % % 
-% % % [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'error');
-% % % % error('2')
-% % % h = obj.cellWidths;
-% % % C = 0.002;
-% % % k = C*mean(h(2:N+1));%0.02;
-% % % % while(norm([phi1 phi2 phi3]) > 0.1)
-% % % 
-% % % % updateboundaryghost(U);
-% % % 
-% % % [phi1,phi2,phi3]
-% % % 
-% % % for i = 2:N+1
-% % % [U(i,1),U(i,2),U(i,3)]=toconservedvars(V(i,1),V(i,2),V(i,3));
-% % % end
-% % % 
-% % % % error('1')
-% % % 
-% % % [mean(abs(phi1(2:N+1))) mean(abs(phi2(2:N+1))) mean(abs(phi3(2:N+1)))]
-% % % %  error('1')
-% % % 
-% % % 
-% % % for j = 1:50000%floor(100/k)%5000
-% % % 
-% % %  for i = 2:N+1
-% % %  [U(i,1) U(i,2) U(i,3)] = toconservedvars(V(i,1),V(i,2),V(i,3));
-% % %  end
-% % % 
-% % %    unew = U-k*[phi1 phi2 phi3];
-% % %    
-% % %   
-% % %  for i = 2:N+1
-% % %  [V(i,1) V(i,2) V(i,3)] = toprimitivevars(unew(i,1),unew(i,2),unew(i,3));
-% % %  end
-% % % % % %  updateboundaryghost(unew,h,k,N);
-% % %     Z = obj.unstructuredrecon(V,p,'error');
-% % %       
-% % %    [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'error');
-% % %   [phi1 phi2 phi3]
-% % %    
-% % % end
-% % % error('9')
-
-
-
-
-
-%%%%%%%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Upe =zeros(N+2,3);
@@ -514,69 +374,52 @@ Vpe = zeros(N+2,3);
 %      if(count < 50)
 %         dt = kk*(40/N)^2; 
         
-      Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
+     Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
 
-          dt= dtold*c2*Rratio;
+     dt= dtold*c2*Rratio;
 
-% Rratio
-
-
- K = Je(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
+     K = Je(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
 
 
-[Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
+    [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
 
-%  [er]=reconplot(x,h,N,p,Z);
-Rold = R;
- [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+
+    Rold = R;
+    [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
     
- R(2:3:3*N-1) = phi1(2:N+1);
-R(3:3:3*N) = phi2(2:N+1);
-R(4:3:3*N+1) = phi3(2:N+1);
-eu = NaN*ones(N+2,3);
+    R(2:3:3*N-1) = phi1(2:N+1);
+    R(3:3:3*N) = phi2(2:N+1);
+    R(4:3:3*N+1) = phi3(2:N+1);
+    eu = NaN*ones(N+2,3);
 
 
 %%%%%new translation
-Vpe = e+V;
+    Vpe = e+V;
 
 
-for j = 2:N+1
+    for j = 2:N+1
 %     eu(j,1) = e(j,1);
 %     eu(j,2) = e(j,2);
 %     eu(j,3) = e(j,3);
 % [eu(j,1),eu(j,2),eu(j,3)] = toconservedvars(e(j,1),e(j,2),e(j,3));
-[Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
-end
+        [Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
+    end
 
-eu = Upe-u
+    eu = Upe-u;
 % error('1')
  
 
 %%%%%new translation
-
-if(isnan(K) )%|| (norm(K) > 1e3))
-e
-count
-Rratio
-error('1')
-end
  
-% dt
-% Rratio
-% dtold
-% R
 
-%   error('1')
- del = K\-R(2:3*N+1);
+    del = K\-R(2:3*N+1);
 
-%   error('1')  
-%     if(mod(count,100)==0)
-    max(abs(R(2:3*N+1)))
-%     end
+    [Rratio max(abs(R(2:3*N+1)))]
+
     
-E(2:3:3*N-1) = eu(2:N+1,1);
-E(3:3:3*N) = eu(2:N+1,2);
-E(4:3:3*N+1) = eu(2:N+1,3);
+    E(2:3:3*N-1) = eu(2:N+1,1);
+    E(3:3:3*N) = eu(2:N+1,2);
+    E(4:3:3*N+1) = eu(2:N+1,3);
 
 
      EE = E(2:3*N+1) + del;%*dt;
@@ -590,19 +433,19 @@ E(4:3:3*N+1) = eu(2:N+1,3);
 
 %%%%%%new trans
 
-Upe = eu+u;
+    Upe = eu+u;
 
 
-for j = 2:N+1
+    for j = 2:N+1
 %     e(j,1) = eu(j,1);
 %     e(j,2) = eu(j,2);
 %     e(j,3) = eu(j,3);
 % [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
-[Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
-end
+        [Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
+    end
      
-e
-e = Vpe-V;
+    
+    e = Vpe-V;
 % error('1')
 %%%%%%new trans
 
@@ -670,12 +513,6 @@ else
    ee = NaN;
     
 end
-
-
-
-
-
-
 
 
 end
