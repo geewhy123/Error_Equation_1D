@@ -171,6 +171,8 @@ subplot(2,4,6)
 plot(x,u-V(:,2),'x')
 subplot(2,4,7)
 plot(x,P-V(:,3),'x')
+subplot(2,4,8)
+plot(x,V(:,3)./V(:,1).^gam,'+')
 
 
 
@@ -275,7 +277,7 @@ end
 UU
 
 obj.exactSolutionU
-error('1')
+% % error('1')
 
 
 
@@ -363,9 +365,9 @@ Vpe = zeros(N+2,3);
 %      Ju = obj.computeeulerfluxjacobian(u,'error');%,x,h,N,p);
 % Jue 
 % Ju
-%  Je
-%      spy(Je)
-%       error('1')
+%   Je
+%       spy(Je)
+%        error('1')
 %      Je = Jue-Ju
 % e
 %      Je

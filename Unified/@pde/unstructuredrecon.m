@@ -7,6 +7,7 @@ if(strcmp(obj.physics,'EulerQ')==1)
                [Z1] = higherunstructuredreconeuler (obj,u(:,1),obj.hOrder,eqn,1); 
                 [Z2] = higherunstructuredreconeuler (obj,u(:,2),obj.hOrder,eqn,2);
                Z = [Z1; Z2;Z3];
+
                return;
 
         end
@@ -15,6 +16,8 @@ if(strcmp(obj.physics,'EulerQ')==1)
                [Z1] = unstructuredreconeuler (obj,u(:,1),p,eqn,1); 
                 [Z2] = unstructuredreconeuler (obj,u(:,2),p,eqn,2);
                Z = [Z1; Z2;Z3];
+Z 
+error('1')
                return;
         else
 %                 [Z3] = unstructuredreconeulerlong (obj,u(:,3),p,eqn,3);                          

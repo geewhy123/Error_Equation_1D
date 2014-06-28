@@ -85,44 +85,44 @@ switch i
     case 2
 cv1 = N+1;
 cv2 = i+1;
-cv3 = N;
-cv4 = i+2;
+% cv3 = N;
+% cv4 = i+2;
     case 3
         cv1 = i-1;
 cv2 = i+1;
-cv3 = N+1;
-cv4 = i+2;
+% cv3 = N+1;
+% cv4 = i+2;
     case N
         cv1 = i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = 2;
+% cv3 = i-2;
+% cv4 = 2;
     case N+1
         cv1 = i-1;
 cv2 = 2;
-cv3 = i-2;
-cv4 = 3;
+% cv3 = i-2;
+% cv4 = 3;
     otherwise
         cv1 =i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = i+2;
+% cv3 = i-2;
+% cv4 = i+2;
  
 end
 
 wi1 = 1/abs(x(cv1)-x(i))^wt;
 wi2 = 1/abs(x(cv2)-x(i))^wt;
-wi3 = 1/abs(x(cv3)-x(i))^wt;
-wi4 = 1/abs(x(cv4)-x(i))^wt;
+% wi3 = 1/abs(x(cv3)-x(i))^wt;
+% wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
-ub3 = u(cv3);
-ub4 = u(cv4);
+% ub3 = u(cv3);
+% ub4 = u(cv4);
 ubi = u(i);
 
 
-b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+b = [wi1*(ub1-ubi); wi2*(ub2-ubi);];% wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
 % AD = obj.primalPI;
 

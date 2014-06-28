@@ -1,7 +1,7 @@
    clear all
    close all
-   N = 20;
-    unif = 1/3;
+   N = 10;
+    unif = 0;1/3;
    p = 2;
    q = 0;
    r = 0;

@@ -104,6 +104,12 @@ sum(abs(tau(2:N+1)))/N
 
  v=J(2:N+1,2:N+1)\tau(2:N+1)
 
+%  J(2,2) = -40;
+%  J(3,2) = 20;
+%  J(N+1,N+1) = J(2,2);
+%  J(N,N+1) = J(3,2);
+ J
+
   if(obj.bcLeftType=='P' && obj.bcRightType == 'P' && min(abs(eig(J(2:N+1,2:N+1)))) < 1e-5)
     v = pinv(J(2:N+1,2:N+1))*tau(2:N+1);
   end

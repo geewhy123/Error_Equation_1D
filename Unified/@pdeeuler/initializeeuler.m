@@ -106,7 +106,7 @@ obj.exactSolutionV = vav;
 
 fnval(rspi,xx(end)+h(end)/2)
 fnplt(rspi)
-error('2')
+% error('2')
 
 
 rsp = spapi(8,x,rho);

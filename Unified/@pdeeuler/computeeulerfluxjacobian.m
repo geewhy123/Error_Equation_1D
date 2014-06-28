@@ -43,18 +43,20 @@ u = NaN*ones(size(v));
 if(strcmp(eqn,'error')==1)
 Upe =zeros(N+2,3);
 Vpe = zeros(N+2,3);
-%     for j = 2:N+1
-%     u(j,1) = v(j,1);
-%     u(j,2) = v(j,2);
-%     u(j,3) = v(j,3);
-%     end
+% %     for j = 2:N+1
+% %     u(j,1) = v(j,1);
+% %     u(j,2) = v(j,2);
+% %     u(j,3) = v(j,3);
+% %     end
+% % incomplete here
     Vpe = v+obj.convSolutionV;
     for j = 2:N+1
     [Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
     end
     u = Upe-obj.convSoln
 v
-error('1')
+% error('1')
+
 %     Vpe = u+V;
 else
 for j = 2:N+1
@@ -97,11 +99,19 @@ u1(2:N+1,3) = U1(4:3:3*N+1);
 
 if(strcmp(eqn,'error')==1)
 
+% %     for j = 2:N+1
+% %     v1(j,1) = u1(j,1);
+% %     v1(j,2) = u1(j,2);
+% %     v1(j,3) = u1(j,3);
+% %     end
+    Upe = u1+obj.convSoln;
     for j = 2:N+1
-    v1(j,1) = u1(j,1);
-    v1(j,2) = u1(j,2);
-    v1(j,3) = u1(j,3);
+    [Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
     end
+    v1 = Vpe-obj.convSolutionV;
+    
+
+% incomplete here
 else
 for j = 2:N+1
 [v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
