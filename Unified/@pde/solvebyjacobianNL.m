@@ -118,7 +118,7 @@ Rold = R;
 %   u
 %   error('1')
 %   max(abs(u-ue))
-vv = u-ue;
+vv = ue-u;
 %   cverr1 = sum(abs(vv(2:N+1)))/N
   cverr2 = sqrt(sum((vv(2:N+1)).^2)/N)
 
@@ -149,7 +149,8 @@ vv = u-ue;
 % %  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  obj.convSoln = u;
- 
+ u
+vv
 %  obj.convSoln
 %  error('1')
  count
@@ -339,6 +340,7 @@ w
 figure
 plot(x,ee,'*',x,exacterr,'o')
 
+-tauE
 
 else
    errerr2 = NaN;
