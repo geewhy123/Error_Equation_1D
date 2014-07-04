@@ -2,22 +2,11 @@ function [ Z] = unstructuredrecon(obj,u,p,eqn)
 %UNSTRUCTUREDRECON3 Summary of this function goes here
 % p = obj.pOrder;
 if(strcmp(obj.physics,'EulerQ')==1)
-        if( (strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
-             [Z3] = higherunstructuredreconeuler (obj,u(:,3),obj.hOrder,eqn,3);                          
-               [Z1] = higherunstructuredreconeuler (obj,u(:,1),obj.hOrder,eqn,1); 
-                [Z2] = higherunstructuredreconeuler (obj,u(:,2),obj.hOrder,eqn,2);
-               Z = [Z1; Z2;Z3];
-
-               return;
-
-        end
         if(p<6)
                [Z3] = unstructuredreconeuler (obj,u(:,3),p,eqn,3);                          
                [Z1] = unstructuredreconeuler (obj,u(:,1),p,eqn,1); 
                 [Z2] = unstructuredreconeuler (obj,u(:,2),p,eqn,2);
                Z = [Z1; Z2;Z3];
-% Z 
-% error('1')
                return;
         else
 %                 [Z3] = unstructuredreconeulerlong (obj,u(:,3),p,eqn,3);                          
@@ -30,10 +19,7 @@ if(strcmp(obj.physics,'EulerQ')==1)
             
     end
     
-%  if( (strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
-%       [Z] = higherunstructuredreconp (obj,u,obj.hOrder,eqn); 
-% return;
-%  end
+
 
 switch p    
    
@@ -99,44 +85,44 @@ switch i
     case 2
 cv1 = N+1;
 cv2 = i+1;
-cv3 = N;
-cv4 = i+2;
+% cv3 = N;
+% cv4 = i+2;
     case 3
         cv1 = i-1;
 cv2 = i+1;
-cv3 = N+1;
-cv4 = i+2;
+% cv3 = N+1;
+% cv4 = i+2;
     case N
         cv1 = i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = 2;
+% cv3 = i-2;
+% cv4 = 2;
     case N+1
         cv1 = i-1;
 cv2 = 2;
-cv3 = i-2;
-cv4 = 3;
+% cv3 = i-2;
+% cv4 = 3;
     otherwise
         cv1 =i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = i+2;
+% cv3 = i-2;
+% cv4 = i+2;
  
 end
 
 wi1 = 1/abs(x(cv1)-x(i))^wt;
 wi2 = 1/abs(x(cv2)-x(i))^wt;
-wi3 = 1/abs(x(cv3)-x(i))^wt;
-wi4 = 1/abs(x(cv4)-x(i))^wt;
+% wi3 = 1/abs(x(cv3)-x(i))^wt;
+% wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
-ub3 = u(cv3);
-ub4 = u(cv4);
+% ub3 = u(cv3);
+% ub4 = u(cv4);
 ubi = u(i);
 
 
-b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+b = [wi1*(ub1-ubi); wi2*(ub2-ubi);];% wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
 % AD = obj.primalPI;
 
@@ -192,17 +178,17 @@ end
 i=2;
 cv1 =i+1;
 cv2 = i+2;
-cv3 = i+3;
-cv4 = i+4;
+% cv3 = i+3;
+% cv4 = i+4;
 wi1 = 1/abs(x(cv1)-x(i))^wt;
 wi2 = 1/abs(x(cv2)-x(i))^wt;
-wi3 = 1/abs(x(cv3)-x(i))^wt;
-wi4 = 1/abs(x(cv4)-x(i))^wt;
+% wi3 = 1/abs(x(cv3)-x(i))^wt;
+% wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
-ub3 = u(cv3);
-ub4 = u(cv4);
+% ub3 = u(cv3);
+% ub4 = u(cv4);
 ubi = u(i);
 uL = obj.bcLeftVal;
 % uL
@@ -214,24 +200,24 @@ A = AA(:,:,i);
 xbi = obj.moments(i,2);
 x2bi = obj.moments(i,3);
 if(p>2)
- b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+ b = [wi1*(ub1-ubi); wi2*(ub2-ubi);];% wi3*(ub3-ubi); wi4*(ub4-ubi) ];
  
 b = (b-[(A(1,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ; 
        (A(2,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;
-       (A(3,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;
-       (A(4,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;]);
+       ]);%(A(3,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;
+       %(A(4,1)/(xbi-(-h(i)/2)))*(u(i)-uL) ;]);
     
 %    
 % C =           ([(A(1,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2) ; 
 %                 (A(2,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2)  ;
 %                 (A(3,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2)  ;
 %                 (A(4,1)/(xbi-(-h(i)/2)))*(x2bi-(-h(i)/2)^2) ]);   
-C = zeros(4,p-2);
+C = zeros(2,p-2);
 for jj = 1:p-2
    C(1,jj) = (A(1,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1)); 
    C(2,jj) = (A(2,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
-   C(3,jj) = (A(3,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
-   C(4,jj) = (A(4,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
+%    C(3,jj) = (A(3,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
+%    C(4,jj) = (A(4,1)/(xbi-(-h(i)/2)))*(obj.moments(i,jj+2)-(-h(i)/2)^(jj+1));
 end
 
 
@@ -268,33 +254,33 @@ x2bi = obj.moments(i,3);
 A = AA(:,:,i);
 cv1 =i-1;
 cv2 = i-2;
-cv3 = i-3;
-cv4 = i-4;
+% cv3 = i-3;
+% cv4 = i-4;
 wi1 = 1/abs(x(cv1)-x(i))^wt;
 wi2 = 1/abs(x(cv2)-x(i))^wt;
-wi3 = 1/abs(x(cv3)-x(i))^wt;
-wi4 = 1/abs(x(cv4)-x(i))^wt;
+% wi3 = 1/abs(x(cv3)-x(i))^wt;
+% wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
-ub3 = u(cv3);
-ub4 = u(cv4);
+% ub3 = u(cv3);
+% ub4 = u(cv4);
 ubi = u(i);
 uL = obj.bcRightVal;
 if(p>2)
- b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+ b = [wi1*(ub1-ubi); wi2*(ub2-ubi);];% wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 b = (b-[(A(1,1)/(xbi-(h(i)/2)))*(u(i)-uL) ; 
        (A(2,1)/(xbi-(h(i)/2)))*(u(i)-uL) ;
-       (A(3,1)/(xbi-(h(i)/2)))*(u(i)-uL) ;
-       (A(4,1)/(xbi-(h(i)/2)))*(u(i)-uL) ;]);
+      ]);% (A(3,1)/(xbi-(h(i)/2)))*(u(i)-uL) ;
+       %(A(4,1)/(xbi-(h(i)/2)))*(u(i)-uL) ;]);
 
 
-   C = zeros(4,p-2);
+   C = zeros(2,p-2);
 for jj = 1:p-2
    C(1,jj) = (A(1,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1)); 
    C(2,jj) = (A(2,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1));
-   C(3,jj) = (A(3,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1));
-   C(4,jj) = (A(4,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1));
+%    C(3,jj) = (A(3,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1));
+%    C(4,jj) = (A(4,1)/(xbi-(h(i)/2)))*(obj.moments(i,jj+2)-(h(i)/2)^(jj+1));
 end
 A = (A(:,2:p-1)-C);
             
@@ -326,36 +312,36 @@ switch i
       case 3
                cv1 =i-1;
 cv2 = i+1;
-cv3 = i+2;
-cv4 = i+3;
+% cv3 = i+2;
+% cv4 = i+3;
 
     case N
                 cv1 =i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = i-3;
+% cv3 = i-2;
+% cv4 = i-3;
   
     
 
     otherwise
                 cv1 =i-1;
 cv2 = i+1;
-cv3 = i-2;
-cv4 = i+2;
+% cv3 = i-2;
+% cv4 = i+2;
 end
 wi1 = 1/abs(x(cv1)-x(i))^wt;
 wi2 = 1/abs(x(cv2)-x(i))^wt;
-wi3 = 1/abs(x(cv3)-x(i))^wt;
-wi4 = 1/abs(x(cv4)-x(i))^wt;
+% wi3 = 1/abs(x(cv3)-x(i))^wt;
+% wi4 = 1/abs(x(cv4)-x(i))^wt;
 
 ub1 = u(cv1);
 ub2 = u(cv2);
-ub3 = u(cv3);
-ub4 = u(cv4);
+% ub3 = u(cv3);
+% ub4 = u(cv4);
 ubi = u(i);
 
 
-b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+b = [wi1*(ub1-ubi); wi2*(ub2-ubi);];% wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
 % AD = obj.primalPI;
 
