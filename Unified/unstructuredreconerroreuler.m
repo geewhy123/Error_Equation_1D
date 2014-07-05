@@ -59,7 +59,7 @@ ubi = u(i);
 
 %%%
 
-if(iUnk ~=  3)
+if(iUnk ~=  3 )
     gam = 1.4;
     Pa = obj.bcLeftVal(3);
 

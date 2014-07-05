@@ -123,13 +123,13 @@ U;
 
 
 
-if(obj.bcLeftType == 'D')
-   obj.T0 = obj.primalT0; 
-   obj.P0 = obj.primalP0;
-end
-if(obj.bcRightType == 'D')
-    obj.Pb = obj.primalPb;
-end
+% % % % if(obj.bcLeftType == 'D')
+% % % %    obj.T0 = obj.primalT0; 
+% % % %    obj.P0 = obj.primalP0;
+% % % % end
+% % % % if(obj.bcRightType == 'D')
+% % % %     obj.Pb = obj.primalPb;
+% % % % end
 U = obj.convSoln;
 V = zeros(N+2,3);
 for i = 2:N+1
@@ -142,13 +142,13 @@ V(:,3) = V(:,3) + Pb;
 % error('1')
 
 Z = obj.unstructuredrecon(V,order,eqn);
-if(obj.bcLeftType == 'D')
-   obj.T0 = 0; 
-   obj.P0 = 0;
-end
-if(obj.bcRightType == 'D')
-    obj.Pb = 0;
-end
+% % % % if(obj.bcLeftType == 'D')
+% % % %    obj.T0 = 0; 
+% % % %    obj.P0 = 0;
+% % % % end
+% % % % if(obj.bcRightType == 'D')
+% % % %     obj.Pb = 0;
+% % % % end
 
 
 
@@ -410,23 +410,23 @@ end
 
 
 
-if(obj.bcLeftType == 'D')
-   obj.T0 = obj.primalT0; 
-   obj.P0 = obj.primalP0;
-end
-if(obj.bcRightType == 'D')
-    obj.Pb = obj.primalPb;
-end
+% % % % if(obj.bcLeftType == 'D')
+% % % %    obj.T0 = obj.primalT0; 
+% % % %    obj.P0 = obj.primalP0;
+% % % % end
+% % % % if(obj.bcRightType == 'D')
+% % % %     obj.Pb = obj.primalPb;
+% % % % end
 
 Z = obj.unstructuredrecon(V,order,eqn);
 
-if(obj.bcLeftType == 'D')
-   obj.T0 = 0; 
-   obj.P0 = 0;
-end
-if(obj.bcRightType == 'D')
-    obj.Pb = 0;
-end
+% % % % if(obj.bcLeftType == 'D')
+% % % %    obj.T0 = 0; 
+% % % %    obj.P0 = 0;
+% % % % end
+% % % % if(obj.bcRightType == 'D')
+% % % %     obj.Pb = 0;
+% % % % end
 
 
 

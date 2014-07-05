@@ -236,7 +236,7 @@ f = -Rend;
  [tauE]= obj.computefluxintegral(Z,'error')
 %   error('1')
  
-
+% error('1')
 
  del = ones(N,1);
  R = ones(N+2,1);

@@ -139,24 +139,8 @@ end
      R1(3:3:3*N) = phi2(2:N+1);
      R1(4:3:3*N+1) = phi3(2:N+1);
      
-%        R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
+     
 
-       
-%     if(strcmp(eqn,'error')==1)
-%     R0
-% error('1')
-%  end
-
-       
-%        if(i==4)
-%            Z1-Z
-%            U1-U
-
-           [R1 R0 R1-R0];
-% if(strcmp(eqn,'error')==1)
-%         error('1')
-% end
-%        end
    J(2:3*N+1,i) = (R1(2:3*N+1)-R0(2:3*N+1))/ep;  
 
    
@@ -166,12 +150,7 @@ for k = 2:3*N+1
   end
 end
 
-%     if( i == 2 && strcmp(eqn,'error')==1)
-%      [U U1]
-%         [R1(2:3*N+1) R0(2:3*N+1)]
-%      error('1')
-%     end
-%    end
+
 end
 
 

@@ -159,6 +159,15 @@ obj.bcRightVal = 0;
 
 
 f = -Rend;%tau6-Rq;%-Rend%tau
+
+
+% [f tau f-tau]
+% plot(x,f,'*',x,tau,'o')
+% figure
+% plot(x,u,'+')
+% mean(abs(f(2:N+1)-tau(2:N+1)))
+% error('1')
+
    obj.errorSource = f;
 %    f
 %    error('2')

@@ -203,6 +203,7 @@ te = teu;
 
  u=obj.convSoln;
 obj.convSolutionV = V;
+ [Z] = obj.unstructuredrecon(V,p,'solution');
 obj.convVreconp = Z;
 
 
@@ -303,7 +304,8 @@ obj.exactSolutionU
 % % % % error('1')
 
 f = -[R1 R2 R3];
-   obj.errorSource = f;%tau;
+   obj.errorSource = teu;%f;%tau;
+   fprintf('using t.e. as source')
  
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
@@ -336,6 +338,8 @@ dtold = 0.01;
 
 Upe =zeros(N+2,3);
 Vpe = zeros(N+2,3);
+
+
  while(max(abs(R(2:3*N+1))) > 1e-13  )
      
 % % % % if(obj.bcLeftType == 'D')
@@ -383,6 +387,8 @@ Vpe = zeros(N+2,3);
      K = Je(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
 
 
+
+
     [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
 
 
@@ -393,7 +399,14 @@ Vpe = zeros(N+2,3);
     R(3:3:3*N) = phi2(2:N+1);
     R(4:3:3*N+1) = phi3(2:N+1);
     eu = NaN*ones(N+2,3);
-
+%     V
+%     obj.convVreconp
+%     [obj.convVleft obj.convVright]
+Z
+    [phi1 phi2 phi3]
+    figure
+    plot(x,phi1,x,phi2,x,phi3)
+    error('1')
 
 %%%%%new translation
     Vpe = e+V;
@@ -409,7 +422,8 @@ Vpe = zeros(N+2,3);
 
     eu = Upe-u;
 % error('1')
- 
+[Vpe Upe]
+error('1')
 
 %%%%%new translation
  

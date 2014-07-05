@@ -137,53 +137,11 @@ for i = 2:N
 
 % end check
 
-% l1 = (ur(i)+ul(i+1))/2;
-% l2 = (ur(i)+cr(i)+ul(i+1)+cl(i+1))/2;
-% l3 = (ur(i)-cr(i)+ul(i+1)-cl(i+1))/2;
 
-% % u = Ut2(i)/Ut1(i);
-% % c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
-
-% % l1 = u;
-% % l2 = u+c;
-% % l3 = u-c;
-% % 
-% % 
-% % 
-% % if(i==N+1)
-% %     u = Ut2(i)/Ut1(i);
-% % c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
-% % 
-% % l1 = u;
-% % l2 = u+c;
-% % l3 = u-c;
-% % % l1 = (ur(i));
-% % % l2 = (ur(i)+cr(i));
-% % % l3 = (ur(i)-cr(i));
-% % end
-
-
-% L = [l1 l2 l3];
-% error('2')
 bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
 end
 
 
-%  U1L = U1l(3:6)  
-%  U1R = U1r(2:5)
-%   U2L = U2l(3:6) 
-%  U2R = U2r(2:5)
-%   U3L = U3l(3:6)
-%  U3R = U3r(2:5)
-%  
-%  [Ut1 Ut2 Ut3]
- 
-%  bAtilde
-%  error('1')
-
-% % % [U1l(3) U1r(2)]
-% % % bAtilde(:,:,2)
-% error('2')
 
 for i = 2:N+1
 FrAve(i,1:3) =(0.5*[(F1r(i)+F1l(i+1)); (F2r(i)+F2l(i+1)); (F3r(i)+F3l(i+1))]  -0.5*bAtilde(:,:,i)*  ([ U1l(i+1); U2l(i+1); U3l(i+1)]- [ U1r(i); U2r(i); U3r(i)]) )';
@@ -251,36 +209,6 @@ phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
  phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
 end
 
-PAp;
-Z;
-% [phi1(N+1) phi2(N+1) phi3(N+1)]
-% % %  [FlAve(:,:) FrAve(:,:)]
-
-% error('1')
-
-
-% i = N+1;
-% [A(N+1) A(N) FrAve(N+1,1) FrAve(N+1,2) FrAve(N+1,3) FlAve(N+1,1) FlAve(N+1,2) FlAve(N+1,3) ] 
-% 0.5*[(F1l(i)+F1r(i-1)); (F2l(i)+F2r(i-1)); (F3l(i)+F3r(i-1))]
-% -0.5*bAtilde(:,:,i-1)*([ U1l(i); U2l(i); U3l(i)]- [ U1r(i-1); U2r(i-1); U3r(i-1)]) 
-
-
-% [Ut1(N+1) Ut2(N+1) Ut3(N+1)]
-% error('3')
-
-% El = (1/(gam-1))*Pl./rhol+0.5*ul.^2;
-% f1l = rhol.*ul;
-% f2l = rhol.*ul.^2+Pl;
-% f3l = rhol.*ul.*(El+Pl./rhol);
-% [f1l f2l f3l]
-
-% error('1')
-
-% if(strcmp(eqn,'error')==1)
-%    phi1 = phi1 - obj.errorSource(:,1);
-%    phi2 = phi2 - obj.errorSource(:,2);
-%    phi3 = phi3 - obj.errorSource(:,3);
-% end
 
 end
 
