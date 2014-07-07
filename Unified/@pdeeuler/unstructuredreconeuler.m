@@ -65,7 +65,7 @@ ubi = u(i);
 % uL = obj.bcLeftVal(iUnk);
 
 
-if(iUnk ~=  3)
+if(iUnk ~=  3 )
     gam = 1.4;
     Pa = obj.bcLeftVal(3);
 

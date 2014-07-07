@@ -75,7 +75,7 @@ if(iUnk ~=  3 )
     ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
 % % %     fprintf('check quant definitions, and consistent')
 
-if(strcmp(eqn,'error')==1 && T0 ==0 && P0 == 0)
+if(strcmp(eqn,'error')==1 )%&& T0 ==0 && P0 == 0)
 % [P0 T0 rhoa ua Ta Pa]
 rhoa = 0;
 ua = 0;
@@ -91,8 +91,8 @@ end
     elseif(iUnk==2)
         obj.bcLeftVal(2) = ua;
         uL = 0;%ua;
-%     else
-%         uL = 0;
+    else
+         uL = 0;
     end
     
     
@@ -225,7 +225,7 @@ ubi = u(i);
 % % % uL = obj.bcRightVal(iUnk);
 
 % % % 
-if(iUnk == 3)
+if(iUnk == 3 )
  uL = obj.Pb;%0.97;obj.bcRightVal(3);
 
 if(p>2)

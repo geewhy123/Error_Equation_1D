@@ -339,6 +339,20 @@ dtold = 0.01;
 Upe =zeros(N+2,3);
 Vpe = zeros(N+2,3);
 
+%
+    [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
+    [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+
+%      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
+%     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+
+    obj.convVleft
+    obj.convVright
+    
+    [phi1 phi2 phi3]
+    plot(x,phi1,x,phi2,x,phi3)
+    error('1')
+%
 
  while(max(abs(R(2:3*N+1))) > 1e-13  )
      
@@ -402,11 +416,13 @@ Vpe = zeros(N+2,3);
 %     V
 %     obj.convVreconp
 %     [obj.convVleft obj.convVright]
-Z
-    [phi1 phi2 phi3]
-    figure
-    plot(x,phi1,x,phi2,x,phi3)
-    error('1')
+% Z
+%     [phi1 phi2 phi3]
+%      figure
+%      plot(x,phi1,x,phi2,x,phi3)
+%     figure
+%     plot(x,e)
+%      error('1')
 
 %%%%%new translation
     Vpe = e+V;
@@ -423,7 +439,7 @@ Z
     eu = Upe-u;
 % error('1')
 [Vpe Upe]
-error('1')
+% error('1')
 
 %%%%%new translation
  
@@ -446,6 +462,10 @@ error('1')
      eu(2:N+1,2) = E(3:3:3*N) ;
      eu(2:N+1,3) = E(4:3:3*N+1);
 
+%      if(count == 100)
+%      eu
+%      error('1')
+%      end
 
 %%%%%%new trans
 
@@ -474,6 +494,10 @@ error('1')
      t = t+dt;
      dtold = dt;
  end
+ 
+
+    
+    
 
 ee = e;
 ee

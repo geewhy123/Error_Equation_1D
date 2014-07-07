@@ -98,6 +98,17 @@ for i = 2:N+1
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
 
+   figure
+obj.reconplot(Z(1:order,:),'solution')
+
+obj.reconplot(Z(order+1:2*order,:),'solution')
+
+obj.reconplot(Z(2*order+1:3*order,:),'solution')
+error('1')
+
+% Z
+% [rhol ul Pl rhor ur Pr]
+% error('1')
 % error('1')
 
 
@@ -120,7 +131,6 @@ end
 U;
 % error('1')
  end
-
 
 
 % % % % if(obj.bcLeftType == 'D')

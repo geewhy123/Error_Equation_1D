@@ -213,12 +213,15 @@ f = -[R1 R2 R3];
   
 dtold = 0.01;
   c2 = 10;
-k = k/2;
+k = 0.001;
 
 Upe =zeros(N+2,3);
 Vpe = zeros(N+2,3);
 Upenew =zeros(N+2,3);
 Vpenew = zeros(N+2,3); 
+
+
+% load('e.mat')
 
   Z = obj.unstructuredrecon(e,q,'error');
 [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'error');
@@ -232,15 +235,11 @@ while(max(max( max(abs(phi1(2:N+1)),abs(phi2(2:N+1))),abs(phi3(2:N+1)))) > 1e-13
 count = count+1;%floor(100/k)%5000
 
 
- for i = 2:N+1
- Vpe(i,1) = V(i,1)+e(i,1);
- Vpe(i,2) = V(i,2)+e(i,2);
- Vpe(i,3) = V(i,3)+e(i,3);
- end
+Vpe = V+e;
 
 
  for i = 2:N+1
- [Upe(i,1) Upe(i,2) Upe(i,3)] = toconservedvars(Vpe(i,1),Vpe(i,2),Vpe(i,3));
+ [Upe(i,1),Upe(i,2),Upe(i,3)] = toconservedvars(Vpe(i,1),Vpe(i,2),Vpe(i,3));
  end
 
 
@@ -248,10 +247,15 @@ count = count+1;%floor(100/k)%5000
  
    enew = E-k*([phi1 phi2 phi3]);
    
+%    if(count == 100)
+%    enew
+%    error('1')
+%    end
+   
   Upenew = u+enew;
    
  for i = 2:N+1
- [Vpenew(i,1) Vpenew(i,2) Vpenew(i,3)] = toprimitivevars(Upenew(i,1),Upenew(i,2),Upenew(i,3));
+ [Vpenew(i,1),Vpenew(i,2),Vpenew(i,3)] = toprimitivevars(Upenew(i,1),Upenew(i,2),Upenew(i,3));
  end
 
  for i = 2:N+1

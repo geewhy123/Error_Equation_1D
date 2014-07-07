@@ -42,6 +42,7 @@ for i = 2:N+1
         cv4 = i+3;
    
     end
+
    end
     if i==N
         cv1 = i-1;
@@ -102,6 +103,8 @@ for i = 2:N+1
     x3 = x3+x(cv3);
     x4 = x4+x(cv4);
     xi = x(i);
+    
+    
    
 wi1 = 1/abs(x1-xi)^wt;
 wi2 = 1/abs(x2-xi)^wt;
