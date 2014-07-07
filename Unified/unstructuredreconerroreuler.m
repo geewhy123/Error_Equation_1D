@@ -77,8 +77,8 @@ if(iUnk ~=  3 )
 
 if(strcmp(eqn,'error')==1 )%&& T0 ==0 && P0 == 0)
 % [P0 T0 rhoa ua Ta Pa]
-rhoa = 0;
-ua = 0;
+rhoa =  -0.004865576693068;-0.003914214896987;
+ua = 0.020411227830388;0.016509441345977;
 Ta = 0;
 Pa = 0;
 % [P0 T0 rhoa ua Ta Pa]
@@ -87,12 +87,12 @@ end
 
     if(iUnk==1)
        obj.bcLeftVal(1) = rhoa;
-       uL = 0;%rhoa;
+       uL = rhoa;
     elseif(iUnk==2)
         obj.bcLeftVal(2) = ua;
-        uL = 0;%ua;
+        uL = ua;
     else
-         uL = 0;
+         uL =  0;-0.006697694350559;
     end
     
     

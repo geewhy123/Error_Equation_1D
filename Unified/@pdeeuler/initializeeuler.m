@@ -56,21 +56,14 @@ u = sqrt(gam*P./rho).*M;
 
 
 E = (1/(gam-1))*(P./rho)+0.5*u.^2;
-subplot(3,1,2)
-plot(x,rho,x,rho.*u,x,rho.*E)
-legend('\rho','\rho u','\rho E','Interpreter','Latex')
-subplot(3,1,3)
-plot(x,rho,x,u,x,P)
-legend('\rho','u','P','Interpreter','Latex')
+% subplot(3,1,2)
+% plot(x,rho,x,rho.*u,x,rho.*E)
+% legend('\rho','\rho u','\rho E','Interpreter','Latex')
+% subplot(3,1,3)
+% plot(x,rho,x,u,x,P)
+% legend('\rho','u','P','Interpreter','Latex')
+% 
 
-
-
-rho(1)
-rho(end)
-u(1)
-u(end)
-P(1)
-P(end)
 
 
 %%%
@@ -87,6 +80,24 @@ for i = 1:length(x)
 end
 end
 %%%
+
+rho(1)
+rho(end)
+u(1)
+u(end)
+P(1)
+P(end)
+% error('1')
+
+
+subplot(3,1,2)
+plot(x,rho,x,rho.*u,x,rho.*E)
+legend('\rho','\rho u','\rho E','Interpreter','Latex')
+subplot(3,1,3)
+plot(x,rho,x,u,x,P)
+legend('\rho','u','P','Interpreter','Latex')
+
+% error('1')
 
 rsp = spapi(8,x,rho);
 rspi = fnint(rsp);

@@ -19,6 +19,7 @@ classdef pdeeuler < pde
         convUright;
         convVreconp;
         convSolutionV;
+        reconexactsolutionV;
 %         higherprimalPI;
 %         higherprimalRM;
 %         hOrder=0;

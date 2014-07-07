@@ -48,7 +48,6 @@ end
 
 
 
-
 % error('1')
 % U = obj.convSoln;
 % 
@@ -98,17 +97,18 @@ for i = 2:N+1
     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 end
 
-   figure
-obj.reconplot(Z(1:order,:),'solution')
-
-obj.reconplot(Z(order+1:2*order,:),'solution')
-
-obj.reconplot(Z(2*order+1:3*order,:),'solution')
-error('1')
+%    figure
+% obj.reconplot(Z(1:order,:),'solution')
+% 
+% obj.reconplot(Z(order+1:2*order,:),'solution')
+% 
+% obj.reconplot(Z(2*order+1:3*order,:),'solution')
+% % error('1')
 
 % Z
+%
 % [rhol ul Pl rhor ur Pr]
-% error('1')
+%  error('1')
 % error('1')
 
 
@@ -120,17 +120,18 @@ rhor = rhor + obj.convVright(:,1);
 ur = ur + obj.convVright(:,2);
 Pr = Pr + obj.convVright(:,3);
 
+% [rhol ul Pl rhor ur Pr]
+%  error('1')
 
-
- if(strcmp(eqn,'error')==1)
- Vpe = [rhol rhor ul ur Pl Pr];
- V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)];
-for i = 2:N+1
- [U(i,1),U(i,2),U(i,3)] = toconservedvars(V(i,1),V(i,3),V(i,5));
-end
-U;
-% error('1')
- end
+% %  if(strcmp(eqn,'error')==1)
+% %  Vpe = [rhol rhor ul ur Pl Pr];
+% %  V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)];
+% % for i = 2:N+1
+% %  [U(i,1),U(i,2),U(i,3)] = toconservedvars(V(i,1),V(i,3),V(i,5));
+% % end
+% % U;
+% % % error('1')
+% %  end
 
 
 % % % % if(obj.bcLeftType == 'D')
@@ -178,13 +179,63 @@ obj.reconplot(Z(1:order,:),'solution')
 obj.reconplot(Z(order+1:2*order,:),'solution')
 
 obj.reconplot(Z(2*order+1:3*order,:),'solution')
-Z
-error('2')
-   
-    
-  
+
+% error('2')
+ 
+
+
+
+
  
 end
+
+
+
+    %
+% Z = obj.reconexactsolutionV;  
+
+Z
+obj.reconexactsolutionV
+% error('1')
+% Z(2,2) = obj.reconexactsolutionV(2,2);
+% Z(4,2) = obj.reconexactsolutionV(4,2);
+% Z(6,N+1) = obj.reconexactsolutionV(6,N+1);
+z = Z;
+%  Z = obj.reconexactsolutionV;
+% %  Z(6,N+1) = z(6,N+1);
+% % Z-z
+% %  error('1')
+% 
+% rhol = rhol*0;
+% rhor = rhor*0;
+% ul = ul*0;
+% ur = ur*0;
+% Pl = Pl*0;
+% Pr = Pr*0;
+% for i = 2:N+1
+%     
+%     for k = 1:order
+%     rhor(i) = rhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
+%     rhol(i) = rhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);
+%     ur(i)   = ur(i)+ Z(k+order,i)*(h(i)/2)^(k-1);
+%     ul(i)   = ul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
+%     Pr(i)   = Pr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
+%     Pl(i)   = Pl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
+% 
+% 
+%     rhob(i) = rhob(i) + (Z(k,i))*obj.moments(i,k);
+%     ub(i) = ub(i) + (Z(k+order,i))*obj.moments(i,k);
+%     Pb(i) = Pb(i) + (Z(k+2*order,i))*obj.moments(i,k);
+%     end
+% 
+%     cl(i) = sqrt(gam*Pl(i)/rhol(i));
+%     cr(i) = sqrt(gam*Pr(i)/rhor(i));
+% end
+%  Z(6,N+1) = z(6,N+1);
+
+
+
+
 for i = 2:N+1
 [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
 [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
@@ -395,8 +446,12 @@ phia2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
 end
 
 
+% [phia1 phia2 phia3]
 
-
+% if(i==N+1)
+% PAp
+% error('1')
+% end
 
 
 

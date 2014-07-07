@@ -50,7 +50,7 @@ Ve = obj.exactSolutionV;
 
 
 %truncation error
-
+obj.reconexactsolutionV = Z;
  [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
   [tauu1 tauu2 tauu3]
@@ -350,10 +350,13 @@ Vpe = zeros(N+2,3);
     obj.convVright
     
     [phi1 phi2 phi3]
+    figure
     plot(x,phi1,x,phi2,x,phi3)
-    error('1')
+%     error('1')
 %
-
+    R(2:3:3*N-1) = phi1(2:N+1);
+    R(3:3:3*N) = phi2(2:N+1);
+    R(4:3:3*N+1) = phi3(2:N+1);
  while(max(abs(R(2:3*N+1))) > 1e-13  )
      
 % % % % if(obj.bcLeftType == 'D')
@@ -497,12 +500,12 @@ Vpe = zeros(N+2,3);
  
 
     
-    
+    count
 
 ee = e;
 ee
 
-w = exacterr-ee
+w = exacterrv-ee
 
 % % % %  Je
 % % % %  error('1')
