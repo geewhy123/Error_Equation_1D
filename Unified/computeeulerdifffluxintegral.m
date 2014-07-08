@@ -231,9 +231,11 @@ z = Z;
 %     cl(i) = sqrt(gam*Pl(i)/rhol(i));
 %     cr(i) = sqrt(gam*Pr(i)/rhor(i));
 % end
-%  Z(6,N+1) = z(6,N+1);
-
-
+%  Z(2*order+1:3*order,N+1) = z(2*order+1:3*order,N+1);
+% 
+% rhol(2)-obj.convVleft(2,1)
+% ul(2)-obj.convVleft(2,2)
+% error('1')
 
 
 for i = 2:N+1

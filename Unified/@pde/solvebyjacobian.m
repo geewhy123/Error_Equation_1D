@@ -57,8 +57,8 @@ f = obj.source;
 %  sqrt(sum((tau(2:N+1)).^2)/N)
 te = tau;
 % 
-% tau6 = tau;
-% save('tau.mat','tau6','-append')
+% tau2 = tau;
+% save('tau.mat','tau2','-append')
 % error('1')
 
 
@@ -151,22 +151,23 @@ obj.bcRightVal = 0;
 [Z] = obj.unstructuredrecon(ue-u,q,'error');%ue,x,h,N,NaN,NaN,p);
 
 %TE test for p ~= q
-% load('tau.mat')
-% [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
-% Rq = obj.computefluxintegral(Zq,'residual');
+%  load('tau.mat')
+%   [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
+%   Rq = obj.computefluxintegral(Zq,'residual');
 % [tau4 -Rq -Rend]
 % error('1')
-
+% mean(Rq(2:N+1))
+% error('1')
 
 f = -Rend;%tau6-Rq;%-Rend%tau
 
 
-% [f tau f-tau]
+%  [f tau f-tau]
 % plot(x,f,'*',x,tau,'o')
 % figure
 % plot(x,u,'+')
-% mean(abs(f(2:N+1)-tau(2:N+1)))
-% error('1')
+%  mean(abs(f(2:N+1)-tau(2:N+1)))
+%  error('1')
 
    obj.errorSource = f;
 %    f

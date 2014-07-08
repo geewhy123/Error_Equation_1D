@@ -50,7 +50,7 @@ Ve = obj.exactSolutionV;
 
 
 %truncation error
-obj.reconexactsolutionV = Z;
+
  [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
   [tauu1 tauu2 tauu3]
@@ -251,6 +251,12 @@ obj.computeerrorpseudo();
 
 
 
+%%%%
+[Zq] = obj.unstructuredrecon(Ve,q,'error');%ue,x,h,N,NaN,NaN,p);
+obj.reconexactsolutionV = Zq;
+%%%%
+
+
  Zu = obj.unstructuredrecon(V,obj.qOrder,'error');
  obj.convSolnRecon = Zu;
  
@@ -303,10 +309,13 @@ obj.exactSolutionU
 % % % % plot(x,exacterr)
 % % % % error('1')
 
+
+% load('tau4.mat')
+
 f = -[R1 R2 R3];
    obj.errorSource = teu;%f;%tau;
    fprintf('using t.e. as source')
- 
+
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
 % % % % obj.errorRM
@@ -352,7 +361,7 @@ Vpe = zeros(N+2,3);
     [phi1 phi2 phi3]
     figure
     plot(x,phi1,x,phi2,x,phi3)
-%     error('1')
+%      error('1')
 %
     R(2:3:3*N-1) = phi1(2:N+1);
     R(3:3:3*N) = phi2(2:N+1);
