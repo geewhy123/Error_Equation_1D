@@ -47,11 +47,21 @@ F = zeros(N+2,1);
 jump = zeros(N+2,1);
 for i=2:N+1
 
-% if(i==2)
-%    Z(2,i)
-% %    error('1')
-% end
+    
+    %%%%higher
+if((strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+if(i==2 || i == 3 || i == N || i == N+1)
+    p = obj.hOrder;
+    
+    
 
+end
+end
+% %%%%higher
+
+    
+    
+    
 
     for k = 1:p-1
    Fr(i) = Fr(i) + k*Z(k+1,i)*(+h(i)/2)^(k-1); 

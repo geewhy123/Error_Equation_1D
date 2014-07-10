@@ -48,7 +48,7 @@ end
 for i = 2:N+1
 
 %%%%higher
-if((strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+if(obj.hOrder > 0)%|| (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
 if(i==2 || i == 3 || i == N || i == N+1)
     order = obj.hOrder;
 end

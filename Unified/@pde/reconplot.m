@@ -16,7 +16,7 @@ elseif(strcmp(eqn,'error')==1)
 p = obj.qOrder;
 end
 
-
+p
 N = obj.nCells;
 
 for i = 2:N+1
@@ -42,6 +42,8 @@ hold on
 % ye = sin(pi*xx);
 % ye = xx.^2.*(1-xx);
 ye = 1-tanh(xx/2);
+
+ye = sin(pi*xx);
 %  ye = (xx-0.5).^4;
 err = max(err,max(abs(yy-ye)));
 % plot(xx,ye)

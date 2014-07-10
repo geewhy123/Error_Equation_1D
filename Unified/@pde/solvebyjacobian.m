@@ -26,6 +26,11 @@ physics = obj.physics;
 tlim = obj.endTime;
 
 
+
+
+
+
+
 obj.computeprimalpseudo();
 
 
@@ -42,6 +47,12 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % J(2:N+1,2:N+1)
 % 
 % error('1')
+
+
+
+
+
+
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 Z
 % error('2')
@@ -51,7 +62,6 @@ Z
   
 f = obj.source;
  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
-
  max(abs(tau))
  
 %  sqrt(sum((tau(2:N+1)).^2)/N)
@@ -62,18 +72,72 @@ te = tau;
 % error('1')
 
 
-sum(abs(tau(2:N+1)))/N
+[sum(abs(tau(2:N+1)))/N sqrt(sum((tau(2:N+1).^2)/N)) max(abs(tau(2:N+1)))]
 
 % errerr2= NaN;
 % cverr2 = NaN;
 % exacterr = NaN;
 % ee = NaN;
 % return;
+figure
+plot(x,tau,'o')
+te=  sum(abs(tau(2:N+1)))/N;
 
 
-% te=  sum(abs(tau(2:N+1)))/N;
-% error('1') 
- del = ones(N,1);
+
+obj.hOrder = 4;
+refinecells = [2 3  N N+1];%2 3 4 5 N-2 N-1 N N+1];
+if(obj.hOrder > 0)
+   obj.computehigherpseudo();
+    [Zh] = obj.unstructuredrecon(ue,obj.hOrder,'solution'); 
+    Znew = zeros(max(obj.hOrder,p),N+2);
+    Znew(1:p,:) = Z;
+    if(obj.hOrder >= p)
+        for ii = 1:length(refinecells)
+%     Znew(:,2) = Zh(:,2);
+%     Znew(:,3) = Zh(:,3);
+%     Znew(:,3) = Zh(:,4);
+%     Znew(:,N) = Zh(:,N);
+%     Znew(:,N+1) = Zh(:,N+1);
+          Znew(:,refinecells(ii)) = Zh(:,refinecells(ii));
+        end
+    else
+%     Znew(1:obj.hOrder,2) = Zh(1:obj.hOrder,2);
+%     Znew(obj.hOrder+1:end,2) = zeros(p-obj.hOrder,1);
+%     Znew(1:obj.hOrder,3) = Zh(1:obj.hOrder,3);
+%     Znew(obj.hOrder+1:end,3) = zeros(p-obj.hOrder,1);
+%     Znew(1:obj.hOrder,N) = Zh(1:obj.hOrder,N);
+%     Znew(obj.hOrder+1:end,N) = zeros(p-obj.hOrder,1);
+%     Znew(1:obj.hOrder,N+1) = Zh(1:obj.hOrder,N+1);
+%     Znew(obj.hOrder+1:end,N+1) = zeros(p-obj.hOrder,1);
+        for ii = 1:length(refinecells)
+            Znew(1:obj.hOrder,refinecells(ii)) = Zh(1:obj.hOrder,refinecells(ii));
+            Znew(obj.hOrder+1:end,refinecells(ii)) = zeros(p-obj.hOrder,1);
+        end
+    end
+%     Znew
+%     error('1')
+    [tau]=obj.computefluxintegral(Znew,'solution');
+end
+
+[sum(abs(tau(2:N+1)))/N sqrt(sum((tau(2:N+1).^2)/N)) max(abs(tau(2:N+1)))]
+
+figure
+plot(x,tau,'o')
+
+figure
+% obj.pOrder = obj.hOrder;
+obj.reconplot(Znew,'solution')
+% obj.reconplot(Z,'solution')
+error('1') 
+
+
+
+
+
+
+
+del = ones(N,1);
  t=0;
  u0 = ue;
  count = 0;

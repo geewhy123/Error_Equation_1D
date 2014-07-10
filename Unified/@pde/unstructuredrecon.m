@@ -53,6 +53,7 @@ switch p
     otherwise 
         
         [Z] = unstructuredreconp (obj,u,p,eqn); 
+
         
 %         p
 %         
@@ -173,6 +174,10 @@ elseif(obj.bcLeftType=='D' && obj.bcRightType == 'D')
   if(strcmp(eqn,'solution')==1)
        AA = obj.primalRM;
        AD = obj.primalPI;
+       if(obj.hOrder > 0)
+        AA = obj.higherprimalRM;
+        AD = obj.higherprimalPI;
+       end
     elseif(strcmp(eqn,'error')==1)
 %         obj.bcLeftType = 'D';
 %         obj.bcLeftVal = 1;
