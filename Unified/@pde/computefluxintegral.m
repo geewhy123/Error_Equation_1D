@@ -1,6 +1,37 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1)
-    FI=computepoissonfluxintegral(obj,Z,eqn);
+%     FI=computepoissonfluxintegral(obj,Z,eqn);
+    h = obj.cellWidths;
+    N = obj.nCells;
+    F = zeros(N+2,1);
+    FI = zeros(N+2,1);
+    if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
+    f = obj.source;
+    elseif(strcmp(eqn,'error')==1)
+        f = obj.errorSource;
+        
+    end
+    for i = 1:N+1
+        F(i) = computepoissonflux(obj,Z(:,i),Z(:,i+1),eqn,i);
+        
+        if(i==1)
+            if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+                F(i) = computepoissonflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+            end
+        elseif(i==N+1)
+            if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+                F(i) = computepoissonflux(obj,Z(:,i),Z(:,2),eqn,i);
+            end
+        end
+        
+        if(i>1)
+        FI(i) = (F(i)-F(i-1))/h(i)-f(i);
+        end
+    end
+    F
+    
+    
+    
 elseif(strcmp(obj.physics,'Advection')==1)
     FI=computeadvectionfluxintegral(obj,Z,eqn);
 elseif(strcmp(obj.physics,'BurgersMod')==1)
@@ -17,7 +48,7 @@ end
 
 end
 
-function [ FI ] = computepoissonfluxintegral( obj,Z,eqn )
+function [ F ] = computepoissonflux( obj,left,right,eqn,i )
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
 x = obj.cellCentroids;
@@ -35,7 +66,127 @@ else
 end
 
 
+
+
+
+
 % Z=unstructuredrecon(u,x,h,N,NaN,NaN,p);
+
+
+
+if(~isempty(obj.refinecells))
+    if(i==1)
+        p = obj.hOrder;
+    elseif(i==N+1)
+        p = obj.hOrder;
+    else
+        n = length(obj.refinecells);
+        if(i <= obj.refinecells(n/2)) 
+            pl = obj.hOrder;
+            pr = obj.hOrder;
+        elseif(i==obj.refinecells(n/2)+1)
+            pl = obj.hOrder;
+            pr = obj.pOrder;
+        elseif(i== obj.refinecells(n/2+1)+1)
+            pl = obj.pOrder;
+            pr = obj.hOrder;
+        elseif(i>= obj.refinecells(n/2+1))
+            pl = obj.hOrder;
+            pr = obj.hOrder;
+        else
+             pl = obj.pOrder;
+        pr = obj.pOrder;
+        end
+            
+    end
+else
+    p = obj.pOrder;
+    pr = obj.pOrder;
+    pl = orj.pOrder;
+end       
+ 
+%     case 1
+%         p =obj.hOrder;
+%         
+%     case 2
+%         pl = obj.hOrder;
+%         pr = obj.hOrder;
+%     case 3
+%         pl = obj.hOrder;
+%         pr = obj.pOrder;
+%     case N-1 
+%         pl = obj.pOrder;
+%         pr = obj.hOrder;
+%     case N
+%         pl = obj.hOrder;
+%         pr = obj.hOrder;
+%     case N+1
+%         p = obj.hOrder;
+%     otherwise 
+%         pl = obj.pOrder;
+%         pr = obj.pOrder;
+% end
+
+
+if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+   F = 0;
+    for k = 1:p-1
+     F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
+    end
+    return;
+elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+   F = 0;
+    for k = 1:p-1
+     F = F + k*left(k+1)*(h(i)/2)^(k-1);
+    end
+    return;
+else
+    Fl = 0;
+    Fr = 0;
+    F = 0;
+    for k = 1:pr-1
+     Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+    end
+    for k = 1:pl-1
+     Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+    end
+     F = 0.5*(Fr+Fl);
+     
+     if(pr==2 && pl == 2)
+%          if(i==1)
+%              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+%                 ul1 = right(1)+right(2)*(-h(i+1)/2);
+%                 ul2 = left(1)+ left(2)*(h(N+1)/2);
+%                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+%              end
+%          elseif(i==N+1)
+%                 ul1 = right(1)+right(2)*(-h(i)/2);
+%                 ul2 = left(1)+ left(2)*(h()/2);
+%                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+%              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+%                  
+%              end
+%          
+%          else
+              ul1 = right(1)+right(2)*(-h(i+1)/2);
+            ul2 = left(1) + left(2)*(h(i)/2);
+                  jump = (.2/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+%          end
+
+      F = F+jump;
+     end
+%     end
+    
+    return;
+    
+end
+    
+    
+
+
+
+
+
 
 Fr = zeros(N+2,1);
 Fl = zeros(N+2,1);
@@ -50,10 +201,10 @@ for i=2:N+1
     
     %%%%higher
 if((strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
-if(i==2 || i == 3 || i == N || i == N+1)
-    p = obj.hOrder;
-    
-    
+if(i==2 || i == 3  || i == N || i == N+1)
+    p(i) = obj.hOrder;
+else
+   p(i) = obj.pOrder; 
 
 end
 end
@@ -63,36 +214,43 @@ end
     
     
 
-    for k = 1:p-1
+    for k = 1:p(i)-1
    Fr(i) = Fr(i) + k*Z(k+1,i)*(+h(i)/2)^(k-1); 
    Fl(i) = Fl(i) + k*Z(k+1,i)*(-h(i)/2)^(k-1);
-   
+ 
     end
 
 
     
 end
 
+[Fl Fr]
+% error('1')
 
 %       jump = zeros(N+2,1);
       
-  if(p==2)
+%   if(p==2)
    for i = 3:N+1
+       if(p(i) == 2)
         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2);
         ul2 = Z(1,i-1) + Z(2,i-1)*(h(i-1)/2);
       jump(i) = (.2/((h(i)+h(i-1))/2))*(ul1-ul2) ;
-    
-      
+    ul1
+    ul2
+    error('1')
+       end
    end
    
    
     if(obj.bcLeftType=='P' && obj.bcRightType == 'P')
         i=2;
+        if(p(i)==2)
         ul1 = Z(1,i)+Z(2,i)*(-h(i)/2);
         ul2 = Z(1,N+1) + Z(2,N+1)*(h(i-1)/2);
       jump(i) = (.2/((h(i)+h(i-1))/2))*(ul1-ul2) ;
+        end
     end
-  end
+%   end
 
   
   
@@ -151,7 +309,8 @@ end
 % plot(x,Fr,x,Fl);
 % FrAve(N+1) = Fr(N+1);
 % FlAve(2) = Fl(2);
-
+[FlAve FrAve]
+% error('1')
 
 
 % plot(x,FrAve,x,FlAve)

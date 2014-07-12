@@ -35,58 +35,47 @@ obj.computeprimalpseudo();
 
 
 
-J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
-%  J = (J+J')/2;
-
-% [d,c] =  eig(J(2:N+1,2:N+1))
-
-
-% nu = null(J(2:N+1,2:N+1));
-
-%  error('1')
-% J(2:N+1,2:N+1)
-% 
-% error('1')
-
 
 
 
 
 
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
-Z
-% error('2')
-  [er]=obj.reconplot(Z,'solution')%reconplot(x,h,N,p,Z)
-%   error('1')
-  
-  
-f = obj.source;
- [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
- max(abs(tau))
- 
-%  sqrt(sum((tau(2:N+1)).^2)/N)
-te = tau;
-% 
-% tau2 = tau;
-% save('tau.mat','tau2','-append')
-% error('1')
+% % % % % % % % Z
+% % % % % % % % % error('2')
+% % % % % % % %   [er]=obj.reconplot(Z,'solution')%reconplot(x,h,N,p,Z)
+% % % % % % % % %   error('1')
+% % % % % % % %   
+% % % % % % % %   
+% % % % % % % % f = obj.source;
+% % % % % % % %  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
+% % % % % % % %  max(abs(tau))
+% % % % % % % %  
+% % % % % % % % %  sqrt(sum((tau(2:N+1)).^2)/N)
+% % % % % % % % te = tau;
+% % % % % % % % % 
+% % % % % % % % % tau2 = tau;
+% % % % % % % % % save('tau.mat','tau2','-append')
+% % % % % % % % % error('1')
+% % % % % % % % 
+% % % % % % % % 
+% % % % % % % % [sum(abs(tau(2:N+1)))/N sqrt(sum((tau(2:N+1).^2)/N)) max(abs(tau(2:N+1)))]
+% % % % % % % % 
+% % % % % % % % % errerr2= NaN;
+% % % % % % % % % cverr2 = NaN;
+% % % % % % % % % exacterr = NaN;
+% % % % % % % % % ee = NaN;
+% % % % % % % % % return;
+% % % % % % % % figure
+% % % % % % % % plot(x,tau,'o')
+% % % % % % % % te=  sum(abs(tau(2:N+1)))/N;
 
-
-[sum(abs(tau(2:N+1)))/N sqrt(sum((tau(2:N+1).^2)/N)) max(abs(tau(2:N+1)))]
-
-% errerr2= NaN;
-% cverr2 = NaN;
-% exacterr = NaN;
-% ee = NaN;
-% return;
-figure
-plot(x,tau,'o')
-te=  sum(abs(tau(2:N+1)))/N;
 
 
 
 obj.hOrder = 4;
 refinecells = [2 3  N N+1];%2 3 4 5 N-2 N-1 N N+1];
+obj.refinecells = refinecells;
 if(obj.hOrder > 0)
    obj.computehigherpseudo();
     [Zh] = obj.unstructuredrecon(ue,obj.hOrder,'solution'); 
@@ -115,7 +104,7 @@ if(obj.hOrder > 0)
             Znew(obj.hOrder+1:end,refinecells(ii)) = zeros(p-obj.hOrder,1);
         end
     end
-%     Znew
+    Znew
 %     error('1')
     [tau]=obj.computefluxintegral(Znew,'solution');
 end
@@ -129,9 +118,22 @@ figure
 % obj.pOrder = obj.hOrder;
 obj.reconplot(Znew,'solution')
 % obj.reconplot(Z,'solution')
-error('1') 
+% error('1') 
 
 
+
+J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
+%  J = (J+J')/2;
+
+% [d,c] =  eig(J(2:N+1,2:N+1))
+
+
+% nu = null(J(2:N+1,2:N+1));
+
+%  error('1')
+% J(2:N+1,2:N+1)
+% 
+% error('1')
 
 
 

@@ -39,6 +39,7 @@ classdef pde < handle
 higherprimalPI;
         higherprimalRM;
         hOrder=0;
+        refinecells;
     end
     
     methods

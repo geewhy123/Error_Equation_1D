@@ -16,7 +16,7 @@ elseif(strcmp(eqn,'error')==1)
 p = obj.qOrder;
 end
 
-p
+
 N = obj.nCells;
 
 for i = 2:N+1
