@@ -17,10 +17,12 @@ if(strcmp(obj.physics,'Poisson')==1)
         if(i==1)
             if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
                 F(i) = computepoissonflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+                
             end
         elseif(i==N+1)
             if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-                F(i) = computepoissonflux(obj,Z(:,i),Z(:,2),eqn,i);
+%                 F(i) = computepoissonflux(obj,Z(:,i),Z(:,2),eqn,i);
+                F(i) = F(1);
             end
         end
         
@@ -28,8 +30,8 @@ if(strcmp(obj.physics,'Poisson')==1)
         FI(i) = (F(i)-F(i-1))/h(i)-f(i);
         end
     end
-    F
     
+
     
     
 elseif(strcmp(obj.physics,'Advection')==1)
@@ -81,16 +83,16 @@ if(~isempty(obj.refinecells))
         p = obj.hOrder;
     else
         n = length(obj.refinecells);
-        if(i <= obj.refinecells(n/2)) 
+        if(i < obj.refinecells(n/2)) 
             pl = obj.hOrder;
             pr = obj.hOrder;
-        elseif(i==obj.refinecells(n/2)+1)
+        elseif(i==obj.refinecells(n/2))
             pl = obj.hOrder;
             pr = obj.pOrder;
-        elseif(i== obj.refinecells(n/2+1)+1)
+        elseif(i== obj.refinecells(n/2+1)-1)
             pl = obj.pOrder;
             pr = obj.hOrder;
-        elseif(i>= obj.refinecells(n/2+1))
+        elseif(i> obj.refinecells(n/2+1)-1)
             pl = obj.hOrder;
             pr = obj.hOrder;
         else
@@ -100,32 +102,16 @@ if(~isempty(obj.refinecells))
             
     end
 else
-    p = obj.pOrder;
-    pr = obj.pOrder;
-    pl = orj.pOrder;
+%     if(strcmp(eqn,'solution')==1)
+%     p = obj.pOrder;
+    pr = p;%obj.pOrder;
+    pl = p;%obj.pOrder;
+%     elseif(strcmp(eqn,'residual')==1)
+%     elseif(strcmp(eqn,'error')==1)
+%     end
 end       
  
-%     case 1
-%         p =obj.hOrder;
-%         
-%     case 2
-%         pl = obj.hOrder;
-%         pr = obj.hOrder;
-%     case 3
-%         pl = obj.hOrder;
-%         pr = obj.pOrder;
-%     case N-1 
-%         pl = obj.pOrder;
-%         pr = obj.hOrder;
-%     case N
-%         pl = obj.hOrder;
-%         pr = obj.hOrder;
-%     case N+1
-%         p = obj.hOrder;
-%     otherwise 
-%         pl = obj.pOrder;
-%         pr = obj.pOrder;
-% end
+
 
 
 if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
@@ -140,6 +126,26 @@ elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
      F = F + k*left(k+1)*(h(i)/2)^(k-1);
     end
     return;
+elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+     Fl = 0;
+    Fr = 0;
+    F = 0;
+    for k = 1:p-1
+     Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+    end
+    for k = 1:p-1
+     Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+    end
+     F = 0.5*(Fr+Fl);
+     [Fl Fr i]
+     if(p==2)
+              ul1 = right(1)+right(2)*(-h(i+1)/2);
+            ul2 = left(1) + left(2)*(h(i)/2);
+                  jump = (.2/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                   F = F+jump;
+     end
+     return;
+
 else
     Fl = 0;
     Fr = 0;
@@ -151,7 +157,7 @@ else
      Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
     end
      F = 0.5*(Fr+Fl);
-     
+     [Fl Fr i]
      if(pr==2 && pl == 2)
 %          if(i==1)
 %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')

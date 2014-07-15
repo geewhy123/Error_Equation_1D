@@ -9,7 +9,7 @@ x = obj.cellCentroids;
 h = obj.cellWidths;
 
 if(strcmp(eqn,'solution')==1)
-p = obj.pOrder;
+p = max(obj.pOrder,obj.hOrder);
 elseif(strcmp(eqn,'residual')==1)
 p = obj.rOrder;
 elseif(strcmp(eqn,'error')==1)

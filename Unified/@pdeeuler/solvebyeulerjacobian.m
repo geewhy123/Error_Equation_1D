@@ -313,9 +313,16 @@ obj.exactSolutionU
 % load('tau4.mat')
 
 f = -[R1 R2 R3];
-   obj.errorSource = teu;%f;%tau;
+   obj.errorSource = f;teu;%f;%tau;
    fprintf('using t.e. as source')
 
+   figure
+   plot(x,f(:,1),'*',x,teu(:,1),'*')
+   figure
+   plot(x,f(:,2),'*',x,teu(:,2),'*')
+   figure
+   plot(x,f(:,3),'*',x,teu(:,3),'*')
+   error('1')
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
 % % % % obj.errorRM

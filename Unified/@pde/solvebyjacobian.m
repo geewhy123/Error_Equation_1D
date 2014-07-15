@@ -73,8 +73,8 @@ obj.computeprimalpseudo();
 
 
 
-obj.hOrder = 4;
-refinecells = [2 3  N N+1];%2 3 4 5 N-2 N-1 N N+1];
+obj.hOrder = obj.pOrder;
+ refinecells = [];%[2 3 4 N-1 N N+1];%2 3 4 5 N-2 N-1 N N+1];
 obj.refinecells = refinecells;
 if(obj.hOrder > 0)
    obj.computehigherpseudo();
@@ -119,6 +119,9 @@ figure
 obj.reconplot(Znew,'solution')
 % obj.reconplot(Z,'solution')
 % error('1') 
+Znew
+te = tau;
+
 
 
 
@@ -204,7 +207,7 @@ if(q>0 && r >0)
 % error('1')
 
 Rend = obj.computefluxintegral(Zr,'residual')
-
+Zr
 %  error('1')
  
  
@@ -226,7 +229,6 @@ obj.bcRightVal = 0;
 % error('1')
 
 f = -Rend;%tau6-Rq;%-Rend%tau
-
 
 %  [f tau f-tau]
 % plot(x,f,'*',x,tau,'o')

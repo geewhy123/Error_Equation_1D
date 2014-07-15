@@ -136,10 +136,11 @@ if(q>0 && r >0)
 % Zr
 % obj.resPI
 % error('1')
-
+Zr
+% error('1')
 Rend = obj.computefluxintegral(Zr,'residual')
 
-%  error('1')
+ error('1')
  
  
  
@@ -160,8 +161,8 @@ obj.bcRightVal = 0;
 
 f = -Rend;%tau6-Rq;%-Rend%tau
    obj.errorSource = f;
-%    f
-%    error('2')
+    f
+    error('2')
  
  
  Je = obj.computefluxjacobian(ue,'error');

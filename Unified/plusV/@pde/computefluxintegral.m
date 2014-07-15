@@ -169,6 +169,9 @@ if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
 
 %     error('2')
     
+% FlAve
+% error('1')
+
  FI = (FrAve-FlAve)./h-obj.source;
 elseif(strcmp(eqn,'error')==1)
 
@@ -178,7 +181,7 @@ elseif(strcmp(eqn,'error')==1)
 end
  
  
-%  FI
+ FlAve
 % error('1')
 %  FrAve(3)
 % FlAve(3)
