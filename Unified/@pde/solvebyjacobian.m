@@ -134,8 +134,9 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 % nu = null(J(2:N+1,2:N+1));
 
 %  error('1')
-% J(2:N+1,2:N+1)
+%  J(2:N+1,2:N+1)*
 % 
+
 % error('1')
 
 
@@ -191,8 +192,19 @@ max(abs(v))
  cverr2 = sqrt(sum((v(2:N+1)).^2)/N)
 
  
+
  exacterr= ue-u;
+ 
+ 
+%  J(2:N+1,2:N+1)*u(2:N+1)-obj.source(2:N+1)
+%  
+%  
+%  
 % error('1')
+
+
+
+
 if(q>0 && r >0)
 
 
@@ -244,7 +256,7 @@ f = -Rend;%tau6-Rq;%-Rend%tau
  
  Je = obj.computefluxjacobian(ue,'error');
 % obj.errorRM
-% error('1')
+%  error('1')
 
 
 
@@ -310,4 +322,11 @@ else
     ee = NaN;
     
 end
+% 
+% Je(2:N+1,2:N+1)*exacterr(2:N+1)
+% tau(2:N+1)
+Je(2:N+1,2:N+1)*w(2:N+1)
+tauE(2:N+1)
+% error('1')
+
 end

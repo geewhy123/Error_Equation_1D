@@ -113,7 +113,7 @@ Rold = R;
      dtold = dt;
      
  end
- 
+
  
 %   u
 %   error('1')
@@ -348,5 +348,14 @@ else
    ee = NaN;
     
 end
+
+
+% J(2:N+1,2:N+1)*exacterr(2:N+1)
+% tau(2:N+1)
+%  J(2:N+1,2:N+1)*ue(2:N+1)
+%  obj.source(2:N+1)
+% Je(2:N+1,2:N+1)*w(2:N+1)
+% tauE(2:N+1)
+% error('1')
 end
 

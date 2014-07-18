@@ -214,6 +214,40 @@ obj.computeprimalleftright();
 [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution')
 
 
+
+
+Pinf = 1;
+Tinf = 1;
+T0 = obj.T0;
+P0 = obj.P0;
+rhoinf = Pinf/Tinf;
+cinf = sqrt(gam*Pinf/rhoinf);
+uinf = cinf*sqrt((2/(gam-1))*(T0/Tinf-1));
+
+rhoi = 0;
+ui = 0;
+Pi = 0;
+
+h = obj.cellWidths;
+for k = 1:p
+    
+    rhoi = rhoi+ Z(k,2)*(-h(2)/2)^(k-1);
+    ui   = ui+ Z(k+p,2)*(-h(2)/2)^(k-1);
+    Pi   = Pi+ Z(k+2*p,2)*(-h(2)/2)^(k-1);
+end
+
+Vi= [rhoi ui Pi]'
+ci = sqrt(gam*Pi/rhoi);
+
+A = [cinf^2 0 -1; 0 -rhoinf*cinf -1; 0 rhoi*ci -1];
+b = [rhoinf-Pinf; -rhoinf*cinf*uinf-Pinf; rhoi*ci*ui-Pi];
+
+A\b
+
+A\b-Vi
+
+
+% error('1')
 %%%%residual
 
 if(q> 0 && r>0)
@@ -313,7 +347,7 @@ obj.exactSolutionU
 % load('tau4.mat')
 
 f = -[R1 R2 R3];
-   obj.errorSource = f;teu;%f;%tau;
+   obj.errorSource = teu;%f;%tau;
    fprintf('using t.e. as source')
 
    figure
@@ -322,7 +356,9 @@ f = -[R1 R2 R3];
    plot(x,f(:,2),'*',x,teu(:,2),'*')
    figure
    plot(x,f(:,3),'*',x,teu(:,3),'*')
-   error('1')
+   [f teu]
+   [ mean(abs(f(2:N+1,1))) mean(abs(f(2:N+1,2))) mean(abs(f(2:N+1,3)))]
+%    error('1')
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
 % % % % obj.errorRM
