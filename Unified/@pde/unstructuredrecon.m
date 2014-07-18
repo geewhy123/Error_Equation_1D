@@ -264,6 +264,22 @@ end
 
 
 y(1:2) = P\q;
+
+
+
+%%%%%
+% 
+% A(2:5) = A(1:4);
+% A(1) = -h(i)/2-xbi;
+%  b = [wi1*(uL-ubi); wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+% 
+% y(2) = (A'*A)\(A'*b);
+% y(1) = ubi-y(2)*xbi;
+% % y
+% % error('1')
+%%%%%
+
+
 Z(:,i) = y;
 
 
@@ -319,6 +335,20 @@ end
 
 y(1:2) = P\q;
 
+
+
+
+%%%%%
+% 
+% A(2:5) = A(1:4);
+% A(1) = h(i)/2-xbi;
+%  b = [wi1*(uL-ubi); wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+% 
+% y(2) = (A'*A)\(A'*b);
+% y(1) = ubi-y(2)*xbi;
+% % y
+% % error('1')
+% %%%%%
 Z(:,i) = y;
 
 

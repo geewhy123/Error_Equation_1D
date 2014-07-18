@@ -122,7 +122,7 @@ obj.reconplot(Znew,'solution')
 Znew
 te = tau;
 
-
+error('1')
 
 
 J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
