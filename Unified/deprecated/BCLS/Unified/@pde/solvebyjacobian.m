@@ -121,7 +121,8 @@ obj.reconplot(Znew,'solution')
 % error('1') 
 Znew
 te = tau;
-
+figure
+plot(x,tau,'o')
 % error('1')
 
 
@@ -325,8 +326,8 @@ end
 % 
 % Je(2:N+1,2:N+1)*exacterr(2:N+1)
 % tau(2:N+1)
-Je(2:N+1,2:N+1)*w(2:N+1)
-tauE(2:N+1)
+% Je(2:N+1,2:N+1)*w(2:N+1)
+% tauE(2:N+1)
 % error('1')
 
 end
