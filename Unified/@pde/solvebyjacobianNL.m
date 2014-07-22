@@ -26,6 +26,8 @@ obj.computeprimalpseudo();
 
 
 
+
+
 % 
 % J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 %  J
@@ -259,6 +261,53 @@ vv
 
 
 
+% % % % accuracy
+% % % % pp=obj.pOrder;
+% % % % obj.pOrder = obj.qOrder;
+% % % % p = obj.pOrder;
+% % % % s = f;
+% % % % obj.hOrder = 0;obj.pOrder;
+% % % % obj.computeprimalpseudo();
+% % % %  [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
+% % % %  [tauq]=obj.computefluxintegral(Z,'solution');
+% % % % 
+% % % %  tauq
+% % % %  obj.source = obj.source*0;
+% % % %   [Z] = obj.unstructuredrecon(u,q,'solution');%ue,x,h,N,NaN,NaN,p);
+% % % %  FIq = obj.computefluxintegral(Z,'solution');
+% % % %  FIq
+% % % % %  obj.computerespseudo();
+% % % % obj.pOrder = r;
+% % % %  obj.computeprimalpseudo();
+% % % %   [Z] = obj.unstructuredrecon(u,r,'solution');%ue,x,h,N,NaN,NaN,p);
+% % % %  FIr = obj.computefluxintegral(Z,'solution'); 
+% % % %   FIr
+% % % %  
+% % % % 
+% % % % % mean(abs(tauq(2:N+1)))
+% % % % g=tauq-(FIq-FIr)
+% % % % 
+% % % % J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
+% % % % J(2:N+1,2:N+1)\(tauq(2:N+1)-FIq(2:N+1)+s(2:N+1))
+% % % % J(2:N+1,2:N+1)\(-FIr(2:N+1)+s(2:N+1))
+% % % % ue-u
+% % % % % -FIr+s
+% % % % mean(abs(g(2:N+1)))
+% % % % 
+% % % % b = tauq+s-FIq
+% % % % mean(abs(b(2:N+1)))
+% % % % c = FIr-s
+% % % % mean(abs(c(2:N+1)))
+% % % % 
+% % % %  error('1')
+% % % % obj.pOrder = pp;
+% % % % p = pp;
+% % % % obj.source = s;
+% % % % 
+ 
+
+
+
 %%%%residual
 
 if(q> 0 && r>0)
@@ -322,6 +371,8 @@ exacterr = ue-u;
 f = -Rend;
    obj.errorSource = f;%tau6-Rq;%f;%tau;
  
+%    [f -FIr+s]
+%    error('1')
  
  Je = obj.computefluxjacobian(exacterr,'error');
 % obj.errorRM
@@ -442,7 +493,7 @@ figure
 plot(x,ee,'*',x,exacterr,'o')
 
 -tauE
-
+ee
 else
    errerr2 = NaN;
    exacterr = NaN;
