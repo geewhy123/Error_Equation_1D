@@ -393,7 +393,9 @@ ubi = u(i);
 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
 % AD = obj.primalPI;
-
+size(AD(:,:,i)*b)
+p
+i
 Y(2:p) = AD(:,:,i)*b;
 
 

@@ -1,9 +1,10 @@
 function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobian( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
-
-if(strcmp(obj.physics,'BurgersMod')==1 || strcmp(obj.physics,'BurgersVisc')==1)
-   [errerr2,x,cverr2,exacterr,ee,te  ]=obj.solvebyjacobianNL(); 
+% error('1')
+if(strcmp(obj.physics,'BurgersMod')==1 || strcmp(obj.physics,'BurgersVisc')==1 )
+% if(strcmp(obj.physics,'EulerQ')~=1)   
+[errerr2,x,cverr2,exacterr,ee,te  ]=obj.solvebyjacobianNL(); 
    return;
 end
 
@@ -73,8 +74,8 @@ obj.computeprimalpseudo();
 
 
 
-obj.hOrder = obj.pOrder;
- refinecells = [];%[2 3 4 N-1 N N+1];%2 3 4 5 N-2 N-1 N N+1];
+obj.hOrder = 4;obj.pOrder;
+ refinecells = [2 3 4 N-1 N N+1];%[2 3 4 N-1 N N+1];%2 3 4 5 N-2 N-1 N N+1];
 obj.refinecells = refinecells;
 if(obj.hOrder > 0)
    obj.computehigherpseudo();
@@ -147,6 +148,59 @@ del = ones(N,1);
  t=0;
  u0 = ue;
  count = 0;
+% R = ones(N+2,1);
+%  t=0;
+%  u = ue;
+%  c2 = 10;
+%  Rold = R;
+%  dtold = 1;
+%  while(max(abs(R)) > 1e-11 )
+%      J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
+%     
+%      count = count +1;
+%          
+%      Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
+%      dt = dtold*c2*Rratio;
+% 
+% 
+% 
+% 
+%  K = J(2:N+1,2:N+1)+eye(N)/dt;
+% % K
+% % error('1')
+% %  K = (K+K')/2;
+% 
+% [Z] = obj.unstructuredrecon(u,p,'solution');%u,x,h,N,NaN,NaN,p);
+% 
+% %  [er]=reconplot(x,h,N,p,Z);
+% Rold = R;
+%  [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+%     del = K\-R(2:N+1);
+%     
+% %     if(mod(count,100)==0)
+%     max(abs(R(2:N+1)))
+% %     end
+% 
+% 
+%      uu = u(2:N+1) + del;%*dt;
+%      u = NaN*ones(N+2,1);
+%      u(2:N+1) = uu;
+%      t = t+dt;
+%      
+%      
+%      dtold = dt;
+%      
+%  end
+%  
+%  
+%  u
+%  error('1')
+ 
+ 
+ 
+ 
+ 
+ 
  while(max(abs(del)) > 1e-10 && 0)
      count = count +1;
      dt = .01;
