@@ -43,6 +43,7 @@ if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || str
     end
     Z
     F
+%     error('1')
     if(strcmp(eqn,'error')==1)
 %     error('1')
     end
@@ -949,6 +950,9 @@ else
 end       
  
 
+        nonlinearerror = 1;
+    utilder = 0;
+    utildel = 0;
 if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
    F = 0;
     for k = 1:p-1
@@ -959,6 +963,25 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
      U = U+(right(k)*(-h(i+1)/2)^(k-1));
     end
      F = F-U^2/2;
+     
+     
+     
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+
+                      Zu = obj.convSolnRecon;
+                      uorder = obj.qOrder;
+         end
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:uorder
+%         utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+        utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+        end
+        F = F - U * utilder;
+%         Fl = Fl - ul * utildel;
+         end
+     
+     
+     
     return;
 elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
    F = 0;
@@ -970,35 +993,84 @@ elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
        U = U+(left(k)*(h(i)/2)^(k-1)) ;
     end
     F = F-U^2/2;
+    
+    
+    
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+
+                      Zu = obj.convSolnRecon;
+                      uorder = obj.qOrder;
+         end
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:uorder
+        utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+%         utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+        end
+%         F = F - ur * utilder;
+        F = F - U * utildel;
+        
+         end
+         
+    
+    
     return;
 elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
      Fl = 0;
     Fr = 0;
     F = 0;
-    U=0;
+    ur=0;
     for k = 1:p-1
      Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
     end
     for k = 1:p
-        U = U+(right(k)*(-h(i+1)/2)^(k-1));
+        ur = ur+(right(k)*(-h(i+1)/2)^(k-1));
     end
-    Fr = Fr-U^2/2;
-    U=0;
+    Fr = Fr-ur^2/2;
+    
+    ul=0;
     for k = 1:p-1
      Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
     end
     for k = 1:p
-      U= U+ k*left(k+1)*(h(i)/2)^(k-1); 
-      Fl = Fl-U^2/2;
+      ul= ul+ left(k)*(h(i)/2)^(k-1);
     end
-     F = 0.5*(Fr+Fl);
-     [Fl Fr i]
+     Fl = Fl-ul^2/2;
+     
+%      [Fl Fr i]
+
+     
+     
+
+    if(nonlinearerror && strcmp(eqn,'error')==1)
+
+                      Zu = obj.convSolnRecon;
+                      uorder = obj.qOrder;
+         end
+         if(nonlinearerror && strcmp(eqn,'error')==1)
+        for k = 1:uorder
+        utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+        utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+        end
+        Fr = Fr - ur * utilder;
+        Fl = Fl - ul * utildel;
+
+    
+         end
+
+
+         
+         
+         F = 0.5*(Fr+Fl);
+
+
      if(p==2)
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
                   jump = (.2/((h(i+1)+h(i))/2))*(ul1-ul2) ;
                    F = F+jump;
      end
+     
+%      [ul1 ul2]
      return;
 
 else
@@ -1006,8 +1078,7 @@ else
     Fl = 0;
     Fr = 0;
     F = 0;
-    utilder = 0;
-    utildel = 0;
+
     for k = 1:pr-1
      Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
     end
@@ -1037,7 +1108,6 @@ else
 
 
 
-        nonlinearerror = 1;
          if(nonlinearerror && strcmp(eqn,'error')==1)
 
                       Zu = obj.convSolnRecon;
@@ -1050,17 +1120,7 @@ else
         end
         Fr = Fr - ur * utilder;
         Fl = Fl - ul * utildel;
-%     Fr = -1*((ur+utilder)^2/2-(upr+utilderp) -( utilder^2/2-utilderp ) ); %factor the flux function?
-%      Fl = -1*((ul+utildel)^2/2-(upl+utildelp) -( utildel^2/2-utildelp ) );          
 
-if(i==3)
-    ur
-    utilder
-    ul 
-    utildel
-    right
-    left
-end
     
          end
 
@@ -1068,8 +1128,6 @@ end
 
 
      F = 0.5*(Fr+Fl);
-
-
 
 
 
@@ -1099,7 +1157,6 @@ end
      end
 %     end
     
-
 
 
     return;

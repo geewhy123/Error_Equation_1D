@@ -215,8 +215,13 @@ f = zeros(N+2,1);
   for i = 2:N+1
            xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
- 
-    if(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+    ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+     u0(i) = ue(i);
+%     f(i) = -(2/h(i))*((2*pi+sin(pi*xr)^2)*(sin(pi*xr)^2-1) - (2*pi+sin(pi*xl)^2)*(sin(pi*xl)^2-1));
+% f(i) = -(1/h(i))*( (2*(2*pi + sin(pi*xr)^2)*(sin(pi*xr)^2 - 1)) - (2*(2*pi + sin(pi*xl)^2)*(sin(pi*xl)^2 - 1)) )
+f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 - 1)*(2*pi - sin(pi*xl)^2)))
+ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     
     ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
