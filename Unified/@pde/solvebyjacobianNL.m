@@ -435,9 +435,9 @@ Rold = R;
  [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
  
  
-%   [K\-R(2:N+1) pinv(K)*-R(2:N+1) R(2:N+1)]
-%  error('1')
-    del = pinv(K)*-R(2:N+1);%K\-R(2:N+1);
+   [K\-R(2:N+1) pinv(K)*-R(2:N+1) (K'*K)\(K'*-R(2:N+1)) R(2:N+1)]
+%   error('1')
+    del = (K'*K)\(K'*-R(2:N+1));%pinv(K)*-R(2:N+1);%K\-R(2:N+1);
     
 %     if(mod(count,100)==0)
     max(abs(R(2:N+1)))

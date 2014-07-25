@@ -347,15 +347,20 @@ obj.exactSolutionU
 % load('tau4.mat')
 
 f = -[R1 R2 R3];
-   obj.errorSource = teu;%f;%tau;
+   obj.errorSource = f;teu;%f;%tau;
    fprintf('using t.e. as source')
 
+   
    figure
-   plot(x,f(:,1),'*',x,teu(:,1),'*')
-   figure
-   plot(x,f(:,2),'*',x,teu(:,2),'*')
-   figure
-   plot(x,f(:,3),'*',x,teu(:,3),'*')
+   subplot(3,1,1)
+   plot(x,f(:,1),'+',x,teu(:,1),'^')
+%    figure
+   subplot(3,1,2)
+   plot(x,f(:,2),'+',x,teu(:,2),'^')
+%    figure
+subplot(3,1,3)
+   plot(x,f(:,3),'+',x,teu(:,3),'^')
+   legend('residual source','te source')
    [f teu]
    [ mean(abs(f(2:N+1,1))) mean(abs(f(2:N+1,2))) mean(abs(f(2:N+1,3)))]
 %    error('1')
