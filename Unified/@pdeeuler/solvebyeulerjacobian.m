@@ -247,6 +247,14 @@ A\b
 A\b-Vi
 
 
+
+figure
+obj.reconplot(Z(1:p,:),'solution')
+figure
+obj.reconplot(Z(p+1:2*p,:),'solution')
+figure
+obj.reconplot(Z(2*p+1:3*p,:),'solution')
+save('tmp.mat','Z')
 % error('1')
 %%%%residual
 

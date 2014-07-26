@@ -26,8 +26,6 @@ obj.computeprimalpseudo();
 
 
 
-
-
 % 
 % J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 %  J
