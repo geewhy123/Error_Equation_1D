@@ -8,9 +8,11 @@ wt = obj.weight;
 
 
 if(p < 6)
+    
+    m = obj.stencilSize;
 % p = obj.pOrder;
-AD = zeros(p-1,4,N+2);
-AA = zeros(4,p-1,N+2);
+AD = zeros(p-1,m-1,N+2);
+AA = zeros(m-1,p-1,N+2);
 
 
 for i = 2:N+1
@@ -115,7 +117,7 @@ wi4 = 1/abs(x4-xi)^wt;
 % x2b1
 
  
- xhat = zeros(4,p-1);
+ xhat = zeros(m-1,p-1);
 for k = 1:p-1
    for ii = 1:k+1
 %       if(k==2 && ii==1)
@@ -124,8 +126,10 @@ for k = 1:p-1
 %       end
 xhat(1,k) = xhat(1,k)+ nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2);   
 xhat(2,k) = xhat(2,k)+nchoosek(k,ii-1)*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2);
+if(m ==5)
 xhat(3,k) = xhat(3,k)+nchoosek(k,ii-1)*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2);
 xhat(4,k) = xhat(4,k)+nchoosek(k,ii-1)*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2);
+end
    end
 
         
@@ -138,8 +142,10 @@ end
 for j = 1:p-1
    AA(1,j,i) = wi1*(xhat(1,j)-obj.moments(i,j+1)); 
    AA(2,j,i) = wi2*(xhat(2,j)-obj.moments(i,j+1));
+   if(m==5)
    AA(3,j,i) = wi3*(xhat(3,j)-obj.moments(i,j+1));
    AA(4,j,i) = wi4*(xhat(4,j)-obj.moments(i,j+1));
+   end
 end
 
 % AA;

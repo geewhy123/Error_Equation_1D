@@ -76,6 +76,7 @@ obj.computeprimalpseudo();
 
 
 obj.hOrder = obj.pOrder;
+
  refinecells = [];%[2 3 4 N-1 N N+1];%2 3 4 5 N-2 N-1 N N+1];
 obj.refinecells = refinecells;
 if(obj.hOrder > 0)
@@ -106,6 +107,8 @@ if(obj.hOrder > 0)
             Znew(obj.hOrder+1:end,refinecells(ii)) = zeros(p-obj.hOrder,1);
         end
     end
+    
+
 %      c = -[1 -2 1]/h(3)^2;
 c = -[1 0 -1]/(2*h(3));
     d = [Znew(1,2) Znew(1,3) Znew(1,4)];
@@ -116,7 +119,8 @@ c = -[1 0 -1]/(2*h(3));
     
 % Znew(:,3)
 % error('1')
-    Znew(2,3) = dot(c,d);%2.987132;dot(c,d);
+   
+Znew(2,3) = dot(c,d);%2.987132;dot(c,d);
     
 %     Znew(2,2) = pi*cos(pi*h(2));
     err = abs(Znew(2,2)-pi*cos(pi*h(2)))
@@ -133,7 +137,7 @@ end
 
 figure
 plot(x,tau,'o')
-
+error('1')
 figure
 % obj.pOrder = obj.hOrder;
 obj.reconplot(Znew,'solution')

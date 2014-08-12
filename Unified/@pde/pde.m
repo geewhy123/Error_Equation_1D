@@ -40,6 +40,7 @@ higherprimalPI;
         higherprimalRM;
         hOrder=0;
         refinecells;
+        stencilSize =5;
     end
     
     methods
