@@ -24,6 +24,9 @@ N = 40
 % end
 
 load('errorarrayplot.mat');
+
+   [err4bb(20),x,cverr4b(20),exacterr(:,20),ee(:,20)] = errordriver(N,2,6,6,1/3,100,.3,7,'Advection');
+
 h=figure
 set(gca,'FontSize',14)
 for k = 1:20

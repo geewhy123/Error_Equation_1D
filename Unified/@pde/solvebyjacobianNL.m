@@ -116,18 +116,48 @@ c = -[1 0 -1]/(2*h(3));
 %     Znew(2,2) = dot(c,d);
 
 %     Znew(2,2) = dot(cc,d);
-    
+ccc = [-43/24 69/24 -33/24 7/24]/(h(2));
+ddd = [Znew(1,2) Znew(1,3) Znew(1,4) Znew(1,5)];
+% % % Znew(2,2) = dot(ccc,ddd);
+
 % Znew(:,3)
 % error('1')
    
-Znew(2,3) = dot(c,d);%2.987132;dot(c,d);
-    
+% Znew(2,3) = dot(c,d);%2.987132;dot(c,d);
+
+Zgradexact = Znew;
+Zstruct = Znew;
+for kk = 2:N+1
+Zgradexact(2,kk) =pi*cos(pi*x(kk))
+if(kk == 2)
+    Zstruct(2,kk) = dot(cc,Znew(1,kk:kk+2));
+elseif(kk==N+1)
+    Zstruct(2,kk) = dot(-cc(end:-1:1),Znew(1,kk-2:kk));
+else
+    Zstruct(2,kk) = dot(c,Znew(1,kk-1:kk+1));
+end
+end
+% Znew(2,:) = Zgradexact(2,:);
+
+
+
+% Znew(2,2) = dot(ccc,Znew(1,2:5));
+% Znew(2,2) = dot(cc,Znew(1,2:4));
+
+
+
+[Znew(2,4)  dot(c,Znew(1,3:5)) dot([5/48 -34/48 0 34/48 -5/48]/h(4),Znew(1,2:6)) pi*cos(pi*x(4))]    
+%   [Znew(2,4)  dot(ccc,Znew(1,4:7)) pi*cos(pi*x(4))]    
 %     Znew(2,2) = pi*cos(pi*h(2));
     err = abs(Znew(2,2)-pi*cos(pi*h(2)))
     
     
     
     Znew
+    Zgradexact
+    Zstruct
+%     Znew = Zstruct
+    
 %      error('1')
     [tau]=obj.computefluxintegral(Znew,'solution')
 %     error('1')
@@ -137,7 +167,7 @@ end
 
 figure
 plot(x,tau,'o')
-error('1')
+% error('1')
 figure
 % obj.pOrder = obj.hOrder;
 obj.reconplot(Znew,'solution')
