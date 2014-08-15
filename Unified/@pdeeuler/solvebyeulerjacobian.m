@@ -246,8 +246,11 @@ A\b
 
 A\b-Vi
 
-
-
+%%%%
+V = obj.exactSolutionV
+ [Z] = obj.unstructuredrecon(V,p,'solution');
+ Z(1:2,:)
+%%%%
 figure
 obj.reconplot(Z(1:p,:),'solution')
 figure
