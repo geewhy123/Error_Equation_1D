@@ -247,9 +247,13 @@ A\b
 A\b-Vi
 
 %%%%
-V = obj.exactSolutionV
- [Z] = obj.unstructuredrecon(V,p,'solution');
- Z(1:2,:)
+VV = obj.exactSolutionV
+  [Z] = obj.unstructuredrecon(VV,p,'solution');
+ 
+ [Z(1,2)+Z(2,2)*-h(2)/2 Z(3,2)+Z(4,2)*-h(2)/2]
+% error('1') 
+
+ 
 %%%%
 figure
 obj.reconplot(Z(1:p,:),'solution')
@@ -358,7 +362,8 @@ obj.exactSolutionU
 % load('tau4.mat')
 
 f = -[R1 R2 R3];
-   obj.errorSource = f;teu;%f;%tau;
+
+obj.errorSource = f;teu;%f;%tau;
    fprintf('using t.e. as source')
 
    
