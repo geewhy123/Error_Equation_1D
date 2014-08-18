@@ -1,5 +1,9 @@
 
 function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump)
+if nargin == 13
+   jump = 0.2; 
+end
+
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 

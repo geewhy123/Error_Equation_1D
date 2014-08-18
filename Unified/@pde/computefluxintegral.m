@@ -177,7 +177,7 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
      elseif(p==4)
           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (0*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
                    F = F+jump;
          
      end
@@ -211,6 +211,8 @@ else
 %              end
 %          
 %          else
+             
+
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
                   jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
@@ -228,7 +230,7 @@ else
       elseif(pr==4 && pl==4)
           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (0*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
                    F = F+jump;
          
     
