@@ -160,7 +160,7 @@ end
     
 %      error('1')
     [tau]=obj.computefluxintegral(Znew,'solution')
-    error('1')
+%     error('1')
 end
 
 [sum(abs(tau(2:N+1)))/N sqrt(sum((tau(2:N+1).^2)/N)) max(abs(tau(2:N+1)))]

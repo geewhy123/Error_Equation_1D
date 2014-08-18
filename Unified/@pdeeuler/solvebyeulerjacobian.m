@@ -325,6 +325,8 @@ end
 exacterrv = obj.exactSolutionV-V;
 exacterru = obj.exactSolutionU-u
 
+
+
 obj.exactSolutionV
 UU =zeros(N+2,3);
 for z = 2:N+1
@@ -612,16 +614,22 @@ plot(x,w)
 % w(N+2) = NaN;
 % cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 
-ee = exacterr - w;
-errerr2 = [sqrt(sum((exacterr(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterr(2:N+1,3)-ee(2:N+1,3)).^2)/N) ]
+
+% exacterr = exacterrv;
+
+
+% ee = exacterr - w;
+errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ]
 w
 figure
 subplot(3,1,1)
-plot(x,ee(:,1),'*',x,exacterr(:,1),'o')
+plot(x,ee(:,1),'*',x,exacterrv(:,1),'o')
 subplot(3,1,2)
-plot(x,ee(:,2),'*',x,exacterr(:,2),'o')
+plot(x,ee(:,2),'*',x,exacterrv(:,2),'o')
 subplot(3,1,3)
-plot(x,ee(:,3),'*',x,exacterr(:,3),'o')
+plot(x,ee(:,3),'*',x,exacterrv(:,3),'o')
+ee
+
 
 else
    errerr2 = NaN;

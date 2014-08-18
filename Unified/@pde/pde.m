@@ -41,6 +41,7 @@ higherprimalPI;
         hOrder=0;
         refinecells;
         stencilSize =5;
+        jump;
     end
     
     methods

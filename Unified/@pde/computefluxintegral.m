@@ -1,7 +1,8 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1)
 %     FI=computepoissonfluxintegral(obj,Z,eqn);
-    h = obj.cellWidths;
+    
+h = obj.cellWidths;
     N = obj.nCells;
     F = zeros(N+2,1);
     FI = zeros(N+2,1);
@@ -73,6 +74,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
 x = obj.cellCentroids;
 h = obj.cellWidths;
 N = obj.nCells;
+alpha = obj.jump;
 
 if(strcmp(eqn,'solution')==1)
 p = obj.pOrder;
@@ -163,13 +165,20 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
      if(p==2 )
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
-                  jump = (1.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
                    F = F+jump;
-% % %      elseif(p==4)
-% % %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
-% % %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-% % %                   jump = (1./((h(i+1)+h(i))/2))*(ul1-ul2) ;
-% % %                    F = F+jump;
+                   
+% %                       elseif(p==3)
+% %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2;
+% %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2;
+% %                   jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+% %                    F = F+jump;
+
+     elseif(p==4)
+          ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
+            ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                   F = F+jump;
          
      end
      return;
@@ -204,15 +213,23 @@ else
 %          else
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
-                  jump = (1.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
 %          end
 
       F = F+jump;
-% % %       elseif(pr==4 && pl==4)
-% % %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
-% % %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-% % %                   jump = (1./((h(i+1)+h(i))/2))*(ul1-ul2) ;
-% % %                    F = F+jump;
+      
+% %             elseif(pr==3 && pl==3)
+% %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2;
+% %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2;
+% %                   jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+% %                    F = F+jump;
+         
+      
+      elseif(pr==4 && pl==4)
+          ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
+            ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                   F = F+jump;
          
     
 
@@ -922,6 +939,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
 x = obj.cellCentroids;
 h = obj.cellWidths;
 N = obj.nCells;
+alpha = obj.jump;
 
 if(strcmp(eqn,'solution')==1)
 p = obj.pOrder;
@@ -1088,7 +1106,7 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
      if(p==2)
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
-                  jump = (.2/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
                    F = F+jump;
      end
      
@@ -1172,7 +1190,7 @@ else
 %          else
               ul1 = right(1)+right(2)*(-h(i+1)/2);
             ul2 = left(1) + left(2)*(h(i)/2);
-                  jump = (.2/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+                  jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
 %          end
 
       F = F+jump;
