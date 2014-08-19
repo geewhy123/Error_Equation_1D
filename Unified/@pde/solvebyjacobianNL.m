@@ -25,7 +25,6 @@ obj.computeprimalpseudo();
 
 
 
-
 % 
 % J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
 %  J
@@ -40,6 +39,10 @@ obj.computeprimalpseudo();
 % error('1')
 
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
+
+% Z
+% obj.reconplot(Z,'solution')
+% error('1')
 
 
 
@@ -128,7 +131,7 @@ ddd = [Znew(1,2) Znew(1,3) Znew(1,4) Znew(1,5)];
 Zgradexact = Znew;
 Zstruct = Znew;
 for kk = 2:N+1
-Zgradexact(2,kk) =pi*cos(pi*x(kk))
+Zgradexact(2,kk) =pi*cos(pi*x(kk));
 if(kk == 2)
     Zstruct(2,kk) = dot(cc,Znew(1,kk:kk+2));
 elseif(kk==N+1)
@@ -153,9 +156,9 @@ end
     
     
     
-    Znew
-    Zgradexact
-    Zstruct
+    Znew;
+    Zgradexact;
+    Zstruct;
 %     Znew = Zstruct
     
 %      error('1')
@@ -219,17 +222,14 @@ J = obj.computefluxjacobian(ue,'solution');%,x,h,N,p);
  u = ue;
  count = 0;
  c2 = 10;
- dt = 0.001;
-%   if(obj.pOrder >= 4)
-% % error('1')
-%     dt = 0.00002;
-%  end
-%  kk = dt;
+ 
+ total_time = 0;
+ 
  Rold = R;
  dtold = 1;
  while(max(abs(R)) > 1e-11 )
      J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
-    
+     
      count = count +1;
          
      Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
@@ -251,7 +251,7 @@ Rold = R;
     del = K\-R(2:N+1);
     
 %     if(mod(count,100)==0)
-    max(abs(R(2:N+1)))
+    
 %     end
 
 
@@ -262,6 +262,9 @@ Rold = R;
      
      
      dtold = dt;
+     
+     total_time = total_time+dt;
+     fprintf('dt = %e , time = %e, Residual = %e \n', dt,total_time,max(abs(R)))
      
  end
 

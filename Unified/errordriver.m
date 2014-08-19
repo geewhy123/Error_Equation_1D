@@ -57,7 +57,7 @@ end
 
 x(1) = NaN;%0-(1-x(N+1));%-x(2);
 x(N+2) = NaN;%1+x(2);%1+(1-x(N+1));
-x
+
 
 h = zeros(N+2,1);
 for i = 2:N+1
@@ -96,7 +96,7 @@ problem.computemoments();
 u=u0;
 %uu = zeros(N+2,1);
 
-problem.exactSolution
+
 
 
 

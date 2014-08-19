@@ -217,7 +217,7 @@ uL = obj.bcLeftVal;
 
 A = AA(:,:,i);
 xbi = obj.moments(i,2);
-x2bi = obj.moments(i,3);
+
 if(p>2)
  b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
  
@@ -282,10 +282,13 @@ y(1:2) = P\q;
 
 Z(:,i) = y;
 
+% Z
+% error('1')
+
 
 i = N+1;
 xbi = obj.moments(i,2);
-x2bi = obj.moments(i,3);
+
 A = AA(:,:,i);
 cv1 =i-1;
 cv2 = i-2;
@@ -358,6 +361,13 @@ Z(:,i) = y;
     for i = 3:N
 
 switch i
+    case 2
+        cv1 = i+1;
+        cv2 = i+2;
+        cv3 = i+3;
+        cv4 = i+4;
+    
+    
       case 3
                cv1 =i-1;
 cv2 = i+1;
@@ -415,7 +425,6 @@ end
 
 
  Z(:,i) = Y;
- 
  
  
     end
