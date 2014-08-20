@@ -316,14 +316,26 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
 % %%%%%
         Z(:,i) = y;
 
-        for i = 3:N    
+        if(strcmp(obj.bchandle,'HC')==1)
+           start = 3;
+           fin = N;
+        elseif(strcmp(obj.bchandle,'Jump')==1)
+           start = 2;
+           fin = N+1;
+        end
+               
+        for i = start:fin    
             switch i
             case 2
                 cv1 = i+1;
                 cv2 = i+2;
                 cv3 = i+3;
                 cv4 = i+4;
-       
+            case N+1
+                cv1 = i-1;
+                cv2 = i-2;
+                cv3 = i-3;
+                cv4 = i-4;
             case 3
                 cv1 =i-1;
                 cv2 = i+1;

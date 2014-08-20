@@ -5,7 +5,6 @@ function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
 %   [ Z ]= higherunstructuredreconeuler(obj,u,p,eqn,iUnk) ;
 % return;
 
-
 if(strcmp(eqn,'error')==1)
   [ Z ]= unstructuredreconerroreuler(obj,u,p,eqn,iUnk) ;
   return;
@@ -146,6 +145,11 @@ else
    b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
 
 % AD = obj.primalPI;
+ if(obj.stencilSize == 3)
+    b = [wi1*(ub1-ubi); wi2*(ub2-ubi); ];
+  end
+
+
 
 Y(2:p) = AD(:,:,i)*b;
 
@@ -261,8 +265,14 @@ Z(:,i) = y;
 
 else
       b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+ 
+ if(obj.stencilSize == 3)
+      b = [wi1*(ub1-ubi); wi2*(ub2-ubi); ];
+ end
+      
 
-Y(2:p) = AD(:,:,i)*b;
+      
+ Y(2:p) = AD(:,:,i)*b;
 
 
  Y(1) = ubi;
@@ -354,7 +364,16 @@ ub4 = u(cv4);
 ubi = u(i);
 
 
+
+
 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
+
+
+ if(obj.stencilSize == 3)
+       b = [wi1*(ub1-ubi); wi2*(ub2-ubi); ];
+ end
+
+
 
 % AD = obj.primalPI;
 

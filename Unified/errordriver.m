@@ -1,8 +1,12 @@
 
-function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump)
+function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle)
 if nargin == 13
    jump = 0.2; 
+   bchandle = 'HC';
+elseif nargin == 14
+   bchandle = 'HC';
 end
+
 
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
@@ -79,6 +83,7 @@ problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goa
 else
 problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.jump = jump;
+problem.bchandle = bchandle;
 end
 
 
@@ -102,7 +107,7 @@ u=u0;
 
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
  if(strcmp(goal,'SS')==1 )
-    fprintf('solving by Jacobian');
+    fprintf('Implicit solve using Jacobian \n');
 %     [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
     if(strcmp(problem.physics,'EulerQ')~=1)   
         [errerr2,x,cverr2,exacterr,ee,te  ]=problem.solvebyjacobianNL(); 
@@ -132,7 +137,7 @@ problem.computeprimalpseudo();
  
  
  
-er = problem.reconplot(Z,'solution')
+er = problem.reconplot(Z,'solution');
 
 % Z
 % error('1')

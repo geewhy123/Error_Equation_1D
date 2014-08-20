@@ -194,8 +194,9 @@ end
     %
 % Z = obj.reconexactsolutionV;  
 
-Z
-obj.reconexactsolutionV
+Z;
+obj.reconexactsolutionV;
+
 % error('1')
 % Z(2,2) = obj.reconexactsolutionV(2,2);
 % Z(4,2) = obj.reconexactsolutionV(4,2);

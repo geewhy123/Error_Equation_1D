@@ -18,7 +18,7 @@ end
 As = At;
 gam = 1.4;
 
-fprintf('subsonic constant')
+fprintf('Quasi-1D Euler subsonic \n')
 for i = 1:length(x)
 
 %     F = @(m) (A(i)/As)-(1/m)*((2/(gam+1))*(1+((gam-1)/2)*m^2))^((gam+1)/(2*(gam-1)));
@@ -81,21 +81,23 @@ end
 end
 %%%
 
-rho(1)
-rho(end)
-u(1)
-u(end)
-P(1)
-P(end)
+rho(1);
+rho(end);
+u(1);
+u(end);
+P(1);
+P(end);
 % error('1')
 
 
 subplot(3,1,2)
-plot(x,rho,x,rho.*u,x,rho.*E)
-legend('\rho','\rho u','\rho E','Interpreter','Latex')
+plot(x,rho,x,rho.*u,x,rho.*E);
+l1 = legend('$\rho$','$\rho u$','$\rho E$');
+set(l1,'Interpreter','Latex')
 subplot(3,1,3)
 plot(x,rho,x,u,x,P)
-legend('\rho','u','P','Interpreter','Latex')
+l2 = legend('$\rho$','u','P');
+set(l2,'Interpreter','Latex')
 
 % error('1')
 
@@ -115,7 +117,7 @@ for i = 2:N+1
 end
 obj.exactSolutionV = vav;
 
-fnval(rspi,xx(end)+h(end)/2)
+fnval(rspi,xx(end)+h(end)/2);
 fnplt(rspi)
 % error('2')
 
