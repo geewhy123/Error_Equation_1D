@@ -454,7 +454,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
             Rold = R;
             [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-    error('1')
+   
             R(2:3:3*N-1) = phi1(2:N+1);
             R(3:3:3*N) = phi2(2:N+1);
             R(4:3:3*N+1) = phi3(2:N+1);
