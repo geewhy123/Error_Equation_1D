@@ -317,6 +317,11 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
         Rend = obj.computefluxintegral(Zr,'residual');
  
         
+%         figure
+%         plot(x,tau,'o',x,-Rend,'*')
+%         sum(abs(tau(2:N+1)+Rend(2:N+1)))/N
+%         error('1')
+        
 %    error('2')
  % clearvars -except x obj 
         obj.computeerrorpseudo();

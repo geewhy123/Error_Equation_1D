@@ -141,6 +141,7 @@ for i = 2:N
 bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
 end
 
+save('atilde.mat','bAtilde')
 
 
 for i = 2:N+1

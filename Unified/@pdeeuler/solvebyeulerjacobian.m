@@ -149,6 +149,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     rho = obj.exactSolutionV(:,1);
     u = obj.exactSolutionV(:,2);
     P = obj.exactSolutionV(:,3);
+    
+    
+    
 
     entropy = log(V(:,3)./(V(:,1).^gam));
     figure
@@ -179,9 +182,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     plot(x,V(:,1),x,V(:,2),x,V(:,3))
 
     errerr2 = NaN;
-    exacterr = Ve-V;
+    exacterrv = Ve-V;
     ee = NaN;
-    cverr2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)];
+    cverr2 = [sqrt(sum((exacterrv(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)).^2)/N) sqrt(sum((exacterrv(2:N+1,3)).^2)/N)];
 
     Ue = zeros(N+2,3);
     for i = 2:N+1
@@ -194,9 +197,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     fprintf ('\n\nt.e. rho   : %e   %e   %e\n' ,sum(abs(tauu1(2:N+1)))/N, sqrt(sum((tauu1(2:N+1)).^2)/N), max(abs(tauu1(2:N+1))));
     fprintf ('t.e. rho u : %e   %e   %e\n' ,sum(abs(tauu2(2:N+1)))/N, sqrt(sum((tauu2(2:N+1)).^2)/N), max(abs(tauu2(2:N+1))));
     fprintf ('t.e. rho E : %e   %e   %e\n\n' ,sum(abs(tauu3(2:N+1)))/N, sqrt(sum((tauu3(2:N+1)).^2)/N), max(abs(tauu3(2:N+1))));
-    cverrv1 = exacterr(2:N+1,1);
-    cverrv2 = exacterr(2:N+1,2);
-    cverrv3 = exacterr(2:N+1,3);
+    cverrv1 = exacterrv(2:N+1,1);
+    cverrv2 = exacterrv(2:N+1,2);
+    cverrv3 = exacterrv(2:N+1,3);
     
     fprintf ('d.e. rho : %e   %e   %e\n' ,sum(abs(cverrv1))/N, sqrt(sum((cverrv1).^2)/N), max(abs(cverrv1)));
     fprintf ('d.e.   u : %e   %e   %e\n' ,sum(abs(cverrv2))/N, sqrt(sum((cverrv2).^2)/N), max(abs(cverrv2)));
@@ -367,6 +370,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % % % plot(x,exacterr)
 % % % % error('1')
 
+
+V = obj.exactSolutionV;
+U = obj.exactSolutionU;
 
 
 

@@ -321,7 +321,8 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
 % error('2')
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
-
+    
+load('atilde.mat')
 
 %  U1L = U1l(3:6)  
 %  U1R = U1r(2:5)
@@ -532,6 +533,8 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
 
+    load('atilde.mat')
+    fprintf('atilde')
 
 %  U1L = U1l(3:6)  
 %  U1R = U1r(2:5)

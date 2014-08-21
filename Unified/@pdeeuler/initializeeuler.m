@@ -1,7 +1,44 @@
 function [x, rho,u,P ] = initializeeuler(obj )
 %INITIALIZEEULER Summary of this function goes here
 %   Detailed explanation goes here
- Ae = 0.4;
+ 
+
+% new MMS stuff
+% a0 = 2/3;
+% c1 = 1;
+% cx1 = 0.15;
+% ax1 = 0.075*pi;
+% 
+% c2 = 70;
+% cx2 = 7;
+% ax2 = 0.15*pi;
+% 
+% c3 = 1e-5;
+% cx3 = 2e-4;
+% ax3 = 0.1*pi;
+% 
+% 
+% N = obj.nCells;
+% x = obj.cellCentroids;
+% h = obj.cellWidths;
+% for i = 2:N+1
+%     xl = x(i)-h(i)/2;
+%     xr = x(i)+h(i)/2;
+% 
+% V(i,1) = (1/h(i))* (c1*(xr-xl)+ (cx1/ax1)*(-cos(ax1*xr)+cos(ax1*xl)));
+% V(i,2) = (1/h(i))* (c2*(xr-xl)+ (cx2/ax2)*(sin(ax2*xr)-sin(ax2*xl)));
+% V(i,3) = (1/h(i))* (c3*(xr-xl)+ (cx3/ax3)*(-cos(ax3*xr)+cos(ax3*xl)));
+% 
+% f(i,1:3) = 0;
+%     end
+% obj.exactSolutionV = V;
+% 
+% return;
+%
+
+
+
+Ae = 0.4;
  At = 0.2;
 P0 = obj.P0;
 T0 = obj.T0;
@@ -39,10 +76,10 @@ end
 P = P0*(1+((gam-1)/2)*M.^2).^(-gam/(gam-1));
 
 T = T0*(1+((gam-1)/2)*M.^2).^-1;
-figure
-subplot(3,1,1)
-plot(x,M,x,A,x,P)
-legend('M','A','P')
+% figure
+% subplot(3,1,1)
+% plot(x,M,x,A,x,P)
+% legend('M','A','P')
 
 % [ sqrt(gam*P(1)/rho(1)) sqrt(T(1))]
 
@@ -88,7 +125,10 @@ u(end);
 P(1);
 P(end);
 % error('1')
-
+figure
+subplot(3,1,1)
+plot(x,M,x,A,x,P)
+legend('M','A','P')
 
 subplot(3,1,2)
 plot(x,rho,x,rho.*u,x,rho.*E);
