@@ -141,7 +141,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
     obj.convSoln = u;
 
-    Ve = obj.exactSolutionV;
+    Ve = obj.exactSolutionV;    
+   
+    
+    
+    
     rho = obj.exactSolutionV(:,1);
     u = obj.exactSolutionV(:,2);
     P = obj.exactSolutionV(:,3);
@@ -260,7 +264,23 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     % error('1')
 
 
-    
+%     Ze = obj.unstructuredrecon(Ve,p,'solution');
+% Z
+% 
+% Ze = obj.unstructuredrecon(obj.convSolutionV,p,'solution')
+% % Ze = Z;
+% 0.957163318326954
+% 0.961077533223941-(Ze(1,2)+Ze(2,2)*-0.1/2)
+% 0.348597647123456
+% 0.332088205777479-(Ze(3,2)+Ze(4,2)*-0.1/2)
+% 0.97-(Ze(5,N+1)+Ze(6,N+1)*0.1/2)
+% 
+
+% 0.961077533223941-(Ze(1,2)+Ze(2,2)*-0.1/2+Ze(3,2)*(-0.1/2)^2+Ze(4,2)*(-0.1/2)^3)
+
+% 0.332088205777479-(Ze(5,2)+Ze(6,2)*-0.1/2+Ze(7,2)*(-0.1/2)^2+Ze(8,2)*(-0.1/2)^3)
+
+% error('1')
     
     
     
@@ -290,11 +310,15 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
  
         [R1 R2 R3];
 
-        norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
+
+%         norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
+%         error('1')
 
         
-        %%%error equation
         
+        
+        %%%error equation
+        fprintf('\n\nError Equation\n')
         obj.computeerrorpseudo();
         %%%%
         [Zq] = obj.unstructuredrecon(Ve,q,'error');%ue,x,h,N,NaN,NaN,p);
@@ -313,7 +337,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         end
 
         exacterrv = obj.exactSolutionV-V;
-        exacterru = obj.exactSolutionU-u
+        exacterru = obj.exactSolutionU-u;
 
         obj.exactSolutionV;
         UU =zeros(N+2,3);
@@ -342,6 +366,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % % % hold on
 % % % % plot(x,exacterr)
 % % % % error('1')
+
+
+
 
 
 % load('tau4.mat')
@@ -375,9 +402,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % % %   error('1')
        
         R = ones(3*N+2,1);
-        t=0;
+        total_time=0;
  
         e = exacterrv;
+        
         ee = ones(3*N+2,1);
         ee(1)=NaN;
         ee(3*N+2) = NaN;
@@ -389,7 +417,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
         Upe =zeros(N+2,3);
         Vpe = zeros(N+2,3);
-
+        
+        
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
@@ -397,8 +426,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 %      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
 %     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 
-        obj.convVleft
-        obj.convVright
+        obj.convVleft;
+        obj.convVright;
     
         [phi1 phi2 phi3];
         figure
@@ -409,7 +438,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
         
-        while(max(abs(R(2:3*N+1))) > 1e-13  )
+        while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
      
 % % % % if(obj.bcLeftType == 'D')
 % % % %    obj.T0 = 0; 
@@ -434,15 +463,14 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % Jue 
 % Ju
 %   Je
-%       spy(Je)
-%        error('1')
+%        spy(Je)
+%         error('1')
 %      Je = Jue-Ju
 % e
 %      Je
 %         error('1')
             count = count +1;
-%      if(count < 50)
-%         dt = kk*(40/N)^2; 
+
         
             Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
     
@@ -458,7 +486,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             R(2:3:3*N-1) = phi1(2:N+1);
             R(3:3:3*N) = phi2(2:N+1);
             R(4:3:3*N+1) = phi3(2:N+1);
-            eu = NaN*ones(N+2,3);
+            
 %     V
 %     obj.convVreconp
 %     [obj.convVleft obj.convVright]
@@ -485,7 +513,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             eu = Upe-u;
 % error('1')
             [Vpe Upe];
-% error('1')
+
 
 %%%%%new translation
  
@@ -497,7 +525,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             E(3:3:3*N) = eu(2:N+1,2);
             E(4:3:3*N+1) = eu(2:N+1,3);
 
-            EE = E(2:3*N+1) + del;%*dt;
+            EE = E(2:3*N+1) + del;
             E = NaN*ones(N+2,1);
             E(2:3*N+1) = EE;
      
@@ -527,10 +555,15 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
 % error('1')
      
-            t = t+dt;
+            total_time = total_time+dt;
             dtold = dt;
             
-            fprintf('time\n')
+            
+            fprintf('dt = %e , time = %e\n',  dt,total_time);
+            fprintf('\t\t e_ rho   Residual = %e \n' , max(abs(R(2:3:3*N-1))));
+            fprintf('\t\t e_ rho u Residual = %e \n' , max(abs(R(3:3:3*N-1))));
+            fprintf('\t\t e_ rho E Residual = %e \n' , max(abs(R(4:3:3*N-1))));
+            
         end
 
         ee = e;
@@ -556,7 +589,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % %     w = pinv(Je(2:N+1,2:N+1))*tauE(2:N+1)
 % % %   end
 
-        max(abs(w))
+        max(abs(w));
 % error('1')
         figure
         plot(x,w)
@@ -574,18 +607,39 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
 
 % ee = exacterr - w;
-        errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ]
+        errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ];
         w;
         figure
-        subplot(3,1,1)
+        subplot(3,2,1)
         plot(x,ee(:,1),'*',x,exacterrv(:,1),'o')
-        subplot(3,1,2)
+        subplot(3,2,3)
         plot(x,ee(:,2),'*',x,exacterrv(:,2),'o')
-        subplot(3,1,3)
+        subplot(3,2,5)
         plot(x,ee(:,3),'*',x,exacterrv(:,3),'o')
+        
+        subplot(3,2,2)
+        plot(x,eu(:,1),'*',x,exacterru(:,1),'o')
+        subplot(3,2,4)
+        plot(x,eu(:,2),'*',x,exacterru(:,2),'o')
+        subplot(3,2,6)
+        plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
+        
         ee;
 
+        errerrv1 = exacterrv(2:N+1,1)-ee(2:N+1,1);
+        errerrv2 = exacterrv(2:N+1,2)-ee(2:N+1,2);
+        errerrv3 = exacterrv(2:N+1,3)-ee(2:N+1,3);
+    
+        fprintf ('d.e. e_ rho : %e   %e   %e\n' ,sum(abs(errerrv1))/N, sqrt(sum((errerrv1).^2)/N), max(abs(errerrv1)));
+        fprintf ('d.e. e_  u : %e   %e   %e\n' ,sum(abs(errerrv2))/N, sqrt(sum((errerrv2).^2)/N), max(abs(errerrv2)));
+        fprintf ('d.e. e_  P : %e   %e   %e\n' ,sum(abs(errerrv3))/N, sqrt(sum((errerrv3).^2)/N), max(abs(errerrv3)));
+        
 
+        
+        exacterrv-ee
+        exacterru-eu
+        
+        errerr2 = max(errerr2);
     else
         errerr2 = NaN;
         exacterr = NaN;

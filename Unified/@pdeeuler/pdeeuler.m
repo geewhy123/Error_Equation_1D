@@ -23,7 +23,8 @@ classdef pdeeuler < pde
 %         higherprimalPI;
 %         higherprimalRM;
 %         hOrder=0;
-
+ebcL;
+ebcR;
     end
     
     methods

@@ -214,6 +214,13 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     disc_err = [cverr1 cverr2 cverrinf]
   
     plot(x,u,'*',x,ue,'o')
+    
+    
+%     cverr2 = te2;
+%     errerr2 = te2;
+%     exacterr = te2;
+%     ee = te2;
+%     return ;
 %    error('1')
 %   u-ue
 
@@ -328,11 +335,12 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %%%%error equation
 
         if(obj.bcLeftType == 'D')
-            obj.bcLeftVal = 0; 
+            obj.bcLeftVal = 0;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
         end
         if(obj.bcRightType == 'D')
-            obj.bcRightVal = 0;
+            obj.bcRightVal = 0;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
         end
+[obj.bcLeftVal obj.bcRightVal]
 
         exacterr = ue-u;
 

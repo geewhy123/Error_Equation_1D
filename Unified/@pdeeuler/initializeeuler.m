@@ -118,7 +118,13 @@ end
 obj.exactSolutionV = vav;
 
 fnval(rspi,xx(end)+h(end)/2);
-fnplt(rspi)
+figure
+subplot(3,1,1)
+fnplt(rsp)
+subplot(3,1,2)
+fnplt(usp)
+subplot(3,1,3)
+fnplt(Psp)
 % error('2')
 
 

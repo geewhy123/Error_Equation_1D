@@ -53,8 +53,8 @@ Vpe = zeros(N+2,3);
     for j = 2:N+1
     [Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
     end
-    u = Upe-obj.convSoln
-v
+    u = Upe-obj.convSoln;
+v;
 % error('1')
 
 %     Vpe = u+V;

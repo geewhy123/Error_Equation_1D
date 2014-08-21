@@ -122,7 +122,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             for k = 1:p
                 uu = uu + right(k)*(-h(i+1)/2)^(k-1);
             end 
-            F = F+2*alpha*(uu-obj.bcLeftVal)/(h(i+1)/2);
+            F = F+alpha*(uu-obj.bcLeftVal)/(h(i+1)/2);
             if(abs(uu-obj.bcLeftVal) > 1e-5)
 %             [uu obj.bcLeftVal]
         %     error('1')
@@ -143,7 +143,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             for k = 1:p
                 uu = uu + left(k)*(h(i)/2)^(k-1);
             end 
-            F = F-2*alpha*(uu-obj.bcRightVal)/(h(i)/2);
+            F = F-alpha*(uu-obj.bcRightVal)/(h(i)/2);
         end
         %boundary jump
         
