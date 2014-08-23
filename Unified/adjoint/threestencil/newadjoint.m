@@ -82,7 +82,7 @@ problem.exactSolution
 
     
     u = problem.exactSolution - exacterr;
- 
+%  load('up.mat')
     g = zeros(N+2,1);
     ve = zeros(N+2,1);
     for i = 2:N+1
@@ -154,7 +154,10 @@ F = @(x) -pi^2*sin(pi*x);
  J2i = (c1*V1*F(xx1)+c2*V2*F(xx2)+c3*V3*F(xx3)+c4*V4*F(xx4))*(xr-xl)/2;
  
  J1 = J1 + J1i;
-        J2 = J2 + J2i;%v(i)*f(i)*h(i);
+        J2 = J2 + J2i;
+        
+%         J1 = J1+ u(i)*g(i)*h(i);
+%        J2 = J2 + v(i)*f(i)*h(i);
     
     end
     [J1 J2]

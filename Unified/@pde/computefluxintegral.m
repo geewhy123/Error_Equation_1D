@@ -60,8 +60,9 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
 
     h = obj.cellWidths;
     N = obj.nCells;
-    alpha = obj.jump;
-
+    alpha = obj.jump(2);
+    alphaL = obj.jump(1);
+    alphaR = obj.jump(3);
     if(strcmp(eqn,'solution')==1)
         p = obj.pOrder;
     elseif(strcmp(eqn,'error')==1)
@@ -122,7 +123,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             for k = 1:p
                 uu = uu + right(k)*(-h(i+1)/2)^(k-1);
             end 
-            F = F+alpha*(uu-obj.bcLeftVal)/(h(i+1)/2);
+            F = F+alphaL*(uu-obj.bcLeftVal)/(h(i+1)/2);
             if(abs(uu-obj.bcLeftVal) > 1e-5)
 %             [uu obj.bcLeftVal]
         %     error('1')
@@ -143,7 +144,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             for k = 1:p
                 uu = uu + left(k)*(h(i)/2)^(k-1);
             end 
-            F = F-alpha*(uu-obj.bcRightVal)/(h(i)/2);
+            F = F-alphaR*(uu-obj.bcRightVal)/(h(i)/2);
         end
         %boundary jump
         
@@ -378,8 +379,9 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
 
     h = obj.cellWidths;
     N = obj.nCells;
-    alpha = obj.jump;
-
+    alpha = obj.jump(2);
+    alphaL = obj.jump(1);
+    alphaR = obj.jump(3);
     if(strcmp(eqn,'solution')==1)
         p = obj.pOrder;
     elseif(strcmp(eqn,'error')==1)

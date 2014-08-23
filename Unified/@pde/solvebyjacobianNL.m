@@ -251,7 +251,8 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % vv
 %  obj.convSoln
 %  error('1')
-
+% save('up.mat','u')
+% error('1')
 
 
 % % % % accuracy

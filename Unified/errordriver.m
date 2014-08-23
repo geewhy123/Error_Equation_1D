@@ -3,7 +3,7 @@ function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft
 ebcL = 0;
 ebcR = 0;
 if nargin == 13
-   jump = 0.2; 
+   jump(1:3) = 0.2; 
    bchandle = 'HC';
 elseif nargin == 14
    bchandle = 'HC';

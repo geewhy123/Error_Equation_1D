@@ -444,6 +444,43 @@ U = obj.exactSolutionU;
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
         
+        
+        
+        
+           delta = 1e-4*ones(size(e));
+        epd = e+delta;
+        [Z] = obj.unstructuredrecon(epd,q,'error');
+        [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
+        R(2:3:3*N-1) = phi1(2:N+1);
+        R(3:3:3*N) = phi2(2:N+1);
+        R(4:3:3*N+1) = phi3(2:N+1);
+        
+        Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
+        [Z] = obj.unstructuredrecon(e,q,'error');
+        [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
+        R0 = R;
+        R0(2:3:3*N-1) = phi1(2:N+1);
+        R0(3:3:3*N) = phi2(2:N+1);
+        R0(4:3:3*N+1) = phi3(2:N+1);
+        
+        Rdelta = R;
+   
+        Rdelta(2:3:3*N-1) = delta(2:N+1,1);
+        Rdelta(3:3:3*N) = delta(2:N+1,2);
+        Rdelta(4:3:3*N+1) = delta(2:N+1,3);
+
+        R1 = R0+Je*Rdelta;
+        [R-R1]
+        error('1')
+        
+        
+        
+        
+        
+        
+        
+        
+        
         while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
      
 % % % % if(obj.bcLeftType == 'D')
