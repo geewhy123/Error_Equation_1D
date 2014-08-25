@@ -93,6 +93,9 @@ u = sqrt(gam*P./rho).*M;
 
 
 E = (1/(gam-1))*(P./rho)+0.5*u.^2;
+
+
+% error('1')
 % subplot(3,1,2)
 % plot(x,rho,x,rho.*u,x,rho.*E)
 % legend('\rho','\rho u','\rho E','Interpreter','Latex')
@@ -117,6 +120,8 @@ for i = 1:length(x)
 end
 end
 %%%
+E = (1/(gam-1))*(P./rho)+0.5*u.^2;
+
 
 rho(1);
 rho(end);
@@ -183,6 +188,15 @@ for i = 2:N+1
     uav(i,3) = (1/h(i))*(fnval(rEspi,xx(i)+h(i)/2)-fnval(rEspi,xx(i)-h(i)/2)); 
 end
 
+% figure
+% fnplt(rEsp)
+% hold on
+% xx(end/2)
+% fnval(rsp,xx(end/2))
+% fnval(usp,xx(end/2))
+% fnval(Psp,xx(end/2))
+% fnval(rEsp,xx(end/2))
+% error('1')
 obj.exactSolutionU = uav;
 
 end

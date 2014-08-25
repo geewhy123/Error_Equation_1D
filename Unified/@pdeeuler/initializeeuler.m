@@ -118,6 +118,7 @@ end
 end
 %%%
 
+E = (1/(gam-1))*(P./rho)+0.5*u.^2;
 rho(1);
 rho(end);
 u(1);

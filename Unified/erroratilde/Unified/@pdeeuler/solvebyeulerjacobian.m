@@ -180,33 +180,64 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     u = obj.exactSolutionV(:,2);
     P = obj.exactSolutionV(:,3);
     
-    
+    u1 = obj.exactSolutionU(:,1);
+    u2 = obj.exactSolutionU(:,2);
+    u3 = obj.exactSolutionU(:,3);
+    uu = obj.convSoln;
     
 
+    rho(end/2)
+    u(end/2)
+    P(end/2)
+    rho(end/2)*((1/(0.4))*P(end/2)/rho(end/2)+0.5*u(end/2)^2)
+    V(end/2,:)
+    rho(end/2)*((1/(0.4))*V(end/2,3)/V(end/2,1)+0.5*V(end/2,2)^2)
+    
+    [u3(end/2) uu(end/2,3)]
+    
+    
+    
     entropy = log(V(:,3)./(V(:,1).^gam));
     figure
-    subplot(2,4,1)
+    subplot(4,4,1)
     plot(x,V(:,1),'*',x,rho,'o')
     xlabel('$\rho$','Interpreter','Latex')
-    subplot(2,4,2)
+    subplot(4,4,2)
     plot(x,V(:,2),'*',x,u,'o')
     xlabel('u')
-    subplot(2,4,3)
+    subplot(4,4,3)
     plot(x,V(:,3),'*',x,P,'o')
     xlabel('P')
-    subplot(2,4,4)
+    subplot(4,4,4)
     plot(x,entropy,'*')
     xlabel('entropy')
 
-    subplot(2,4,5)
+    subplot(4,4,5)
     plot(x,rho-V(:,1),'x')
-    subplot(2,4,6)
+    subplot(4,4,6)
     plot(x,u-V(:,2),'x')
-    subplot(2,4,7)
+    subplot(4,4,7)
     plot(x,P-V(:,3),'x')
-    subplot(2,4,8)
+    subplot(4,4,8)
     plot(x,V(:,3)./V(:,1).^gam,'+')
 
+    subplot(4,4,9)
+    plot(x,uu(:,1),'*',x,u1,'o')
+    xlabel('$\rho$','Interpreter','Latex')
+    subplot(4,4,10)
+    plot(x,uu(:,2),'*',x,u2,'o')
+    xlabel('u')
+    subplot(4,4,11)
+    plot(x,uu(:,3),'*',x,u3,'o')
+    xlabel('P')
+
+    subplot(4,4,13)
+    plot(x,u1-uu(:,1),'x')
+    subplot(4,4,14)
+    plot(x,u2-uu(:,2),'x')
+    subplot(4,4,15)
+    plot(x,u3-uu(:,3),'x')
+    
     figure
     % plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
     plot(x,V(:,1),x,V(:,2),x,V(:,3))

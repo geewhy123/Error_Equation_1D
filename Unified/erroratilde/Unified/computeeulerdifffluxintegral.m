@@ -106,12 +106,12 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
 %  error('1')
 % error('1')
 
-    rhol = rhol + obj.convUleft(:,1);
-    ul = ul + obj.convUleft(:,2);
-    Pl = Pl + obj.convUleft(:,3);
-    rhor = rhor + obj.convUright(:,1);
-    ur = ur + obj.convUright(:,2);
-    Pr = Pr + obj.convUright(:,3);
+    rhol = rhol + obj.convVleft(:,1);
+    ul = ul + obj.convVleft(:,2);
+    Pl = Pl + obj.convVleft(:,3);
+    rhor = rhor + obj.convVright(:,1);
+    ur = ur + obj.convVright(:,2);
+    Pr = Pr + obj.convVright(:,3);
 
 [rhol ul Pl rhor ur Pr]
 %  error('1')
@@ -229,10 +229,10 @@ U3l = Pl;
 U1r = rhor;
 U2r = ur;
 U3r = Pr;
-% % %     for i = 2:N+1
-% % %         [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
-% % %         [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
-% % %     end
+    for i = 2:N+1
+        [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
+        [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
+    end
 % U = [U1l U1r U2l U2r U3l U3r]
 
 
@@ -393,15 +393,25 @@ load('atilde.mat')
     A(1) = obj.getArea(0);
 % A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
 
+order = obj.pOrder;
 
-% eu = [Z(1,:) ; Z(order+1,:) ;Z(2*order+1,:)]';
-% epu = eu+obj.convSoln
-% Z = obj.unstructuredrecon(epu,order,'solution');
+eu = [Z(1,:) ; Z(order+1,:) ;Z(2*order+1,:)]';
+eupV = eu+obj.convSolutionV
+obj.T0 = 1;
+obj.P0 = 1;
+obj.Pb = 0.97;
+Z = obj.unstructuredrecon(eupV,order,'solution');
+obj.T0 = 0.;
+obj.P0 = 0.;
+obj.Pb = 0.;
+
 % Z
 % error('1')
 
-Z = obj.convSolnRecon;
-Z = obj.reconexactsolutionV;
+
+
+% % Z = obj.convSolnRecon;
+% Z = obj.reconexactsolutionV;
 % error('1')
 
 % A
@@ -470,12 +480,12 @@ PAp
 
 
 
-    U1l = obj.convUleft(:,1);
-    U2l = obj.convUleft(:,2);
-    U3l = obj.convUleft(:,3);
-    U1r = obj.convUright(:,1);
-    U2r = obj.convUright(:,2);
-    U3r = obj.convUright(:,3);
+    U1l = obj.convVleft(:,1);
+    U2l = obj.convVleft(:,2);
+    U3l = obj.convVleft(:,3);
+    U1r = obj.convVright(:,1);
+    U2r = obj.convVright(:,2);
+    U3r = obj.convVright(:,3);
     U = obj.convSoln;
 %     for i = 2:N+1
 %         [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
@@ -483,7 +493,10 @@ PAp
 %         [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
 %     end
 
-
+    for i = 2:N+1
+        [U1l(i),U2l(i),U3l(i)]=toconservedvars(U1l(i),U2l(i),U3l(i));
+        [U1r(i),U2r(i),U3r(i)]=toconservedvars(U1r(i),U2r(i),U3r(i));
+    end
 
 
 % % % % if(obj.bcLeftType == 'D')
