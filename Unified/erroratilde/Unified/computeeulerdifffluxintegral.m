@@ -177,7 +177,7 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
 % % %     end
 
     %
-%  Z = obj.reconexactsolutionV;  
+%   Z = obj.reconexactsolutionV;  
 
 % % %     Z;
 % % %     obj.reconexactsolutionV;
@@ -394,6 +394,15 @@ load('atilde.mat')
 % A(1) = (25/9)*(Ae-At)*(-2/5)^2+At; 
 
 
+% eu = [Z(1,:) ; Z(order+1,:) ;Z(2*order+1,:)]';
+% epu = eu+obj.convSoln
+% Z = obj.unstructuredrecon(epu,order,'solution');
+% Z
+% error('1')
+
+Z = obj.convSolnRecon;
+Z = obj.reconexactsolutionV;
+% error('1')
 
 % A
 % error('1')
@@ -436,10 +445,10 @@ load('atilde.mat')
             rE3 = rE3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
             rE4 = rE4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
         end
-        P1 = (gam-1)*(rE1-0.5*ru1^2/r1);
-        P2 = (gam-1)*(rE2-0.5*ru2^2/r2);
-        P3 = (gam-1)*(rE3-0.5*ru3^2/r3);
-        P4 = (gam-1)*(rE4-0.5*ru4^2/r4);
+        P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
+        P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
+        P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
+        P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
   
         PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
@@ -680,10 +689,10 @@ UU = [U1l U2l U3l U1r U2r U3r]
             rE3 = rE3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
             rE4 = rE4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
         end
-        P1 = (gam-1)*(rE1-0.5*ru1^2/r1);
-        P2 = (gam-1)*(rE2-0.5*ru2^2/r2);
-        P3 = (gam-1)*(rE3-0.5*ru3^2/r3);
-        P4 = (gam-1)*(rE4-0.5*ru4^2/r4);
+        P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
+        P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
+        P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
+        P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
  
  
         PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;

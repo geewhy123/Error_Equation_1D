@@ -4,7 +4,6 @@ function [ u1,u2,u3 ] = toconservedvars( rho,u,P )
 
 
 
-
 u1 = rho;
 
 u2 = rho.*u;
@@ -18,6 +17,12 @@ end
 
 
 u3 = rho.*E;
+
+
+
+% u1 = rho;
+% u2 = u;
+% u3 = P;
 
 
 

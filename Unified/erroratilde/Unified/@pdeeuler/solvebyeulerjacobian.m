@@ -65,6 +65,36 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     dtold = 0.01;
     Rold = R;
     
+%     delta = 1e-5*ones(size(V));
+%         Vpd = V+delta;
+%         [Z] = obj.unstructuredrecon(Vpd,p,'solution');
+%         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'solution');
+%         R(2:3:3*N-1) = phi1(2:N+1);
+%         R(3:3:3*N) = phi2(2:N+1);
+%         R(4:3:3*N+1) = phi3(2:N+1);
+%         
+%         Je = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
+%         [Z] = obj.unstructuredrecon(V,p,'solution');
+%         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'solution');
+%         R0 = R;
+%         R0(2:3:3*N-1) = phi1(2:N+1);
+%         R0(3:3:3*N) = phi2(2:N+1);
+%         R0(4:3:3*N+1) = phi3(2:N+1);
+%         
+%         Rdelta = R;
+%    
+%         Rdelta(2:3:3*N-1) = delta(2:N+1,1);
+%         Rdelta(3:3:3*N) = delta(2:N+1,2);
+%         Rdelta(4:3:3*N+1) = delta(2:N+1,3);
+% 
+%         R1 = R0+Je*Rdelta;
+%         [R R1 R-R1]
+%         mean(abs(R-R1))
+%         error('1')
+    
+    
+    
+    
     fprintf('Primal Equation\n')
     while(max(abs(R(2:3*N+1))) > 1e-13 )
         J = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
@@ -468,7 +498,7 @@ U = obj.exactSolutionU;
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
         
-        delta = 1e-3*ones(size(eu));
+        delta = 1e-5*ones(size(eu));
         eupd = eu+delta;
         [Z] = obj.unstructuredrecon(eupd,q,'error');
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
@@ -491,8 +521,9 @@ U = obj.exactSolutionU;
         Rdelta(4:3:3*N+1) = delta(2:N+1,3);
 
         R1 = R0+Je*Rdelta;
-        [R-R1]
-        error('1')
+        [R R1 R-R1]
+        mean(abs(R-R1))
+%         error('1')
          
         
         while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
