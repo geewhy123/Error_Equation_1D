@@ -471,7 +471,7 @@ U = obj.exactSolutionU;
 
         R1 = R0+Je*Rdelta;
         [R-R1]
-        error('1')
+%         error('1')
         
         
         
@@ -652,22 +652,28 @@ U = obj.exactSolutionU;
 % ee = exacterr - w;
         errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ];
         w;
-        figure
+          figure
         subplot(3,2,1)
         plot(x,ee(:,1),'*',x,exacterrv(:,1),'o')
+        xlabel('(computed)$\epsilon_\rho$','Interpreter','Latex');
+        legend('estimate','"exact"')
         subplot(3,2,3)
         plot(x,ee(:,2),'*',x,exacterrv(:,2),'o')
+        xlabel('(computed)$\epsilon_u$','Interpreter','Latex');
         subplot(3,2,5)
         plot(x,ee(:,3),'*',x,exacterrv(:,3),'o')
+        xlabel('(computed)$\epsilon_P$','Interpreter','Latex');
         
         subplot(3,2,2)
         plot(x,eu(:,1),'*',x,exacterru(:,1),'o')
+        xlabel('(translated)$\epsilon_\rho$','Interpreter','Latex');
         subplot(3,2,4)
         plot(x,eu(:,2),'*',x,exacterru(:,2),'o')
+        xlabel('(translated)$\epsilon_{\rho u}$','Interpreter','Latex');
         subplot(3,2,6)
         plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
+        xlabel('(translated)$\epsilon_{\rho E}$','Interpreter','Latex');
         
-        ee;
 
         errerrv1 = exacterrv(2:N+1,1)-ee(2:N+1,1);
         errerrv2 = exacterrv(2:N+1,2)-ee(2:N+1,2);

@@ -186,14 +186,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     uu = obj.convSoln;
     
 
-    rho(end/2)
-    u(end/2)
-    P(end/2)
-    rho(end/2)*((1/(0.4))*P(end/2)/rho(end/2)+0.5*u(end/2)^2)
-    V(end/2,:)
-    rho(end/2)*((1/(0.4))*V(end/2,3)/V(end/2,1)+0.5*V(end/2,2)^2)
     
-    [u3(end/2) uu(end/2,3)]
     
     
     
@@ -252,7 +245,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
     
-    Ue = obj.exactSolutionU;
+%     Ue = obj.exactSolutionU;
     
     exacterr = Ue-obj.convSoln;
     cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)];
@@ -722,26 +715,44 @@ U = obj.exactSolutionU;
 % cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 
 
-% exacterr = exacterrv;
-
-
+%exacterr = exacterrv;
+ Upe = eu+obj.convSoln;
+ 
+             for j = 2:N+1
+     e(j,1) = eu(j,1);
+     e(j,2) = eu(j,2);
+     e(j,3) = eu(j,3);
+ [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
+                 [Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
+             end
+          
+             ee = Vpe-obj.convSolutionV;
+            
 % ee = exacterr - w;
+
         errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ];
         w;
         figure
         subplot(3,2,1)
         plot(x,ee(:,1),'*',x,exacterrv(:,1),'o')
+        xlabel('(translated)$\epsilon_\rho$','Interpreter','Latex');
+        legend('estimate','"exact"')
         subplot(3,2,3)
         plot(x,ee(:,2),'*',x,exacterrv(:,2),'o')
+        xlabel('(translated)$\epsilon_u$','Interpreter','Latex');
         subplot(3,2,5)
         plot(x,ee(:,3),'*',x,exacterrv(:,3),'o')
+        xlabel('(translated)$\epsilon_P$','Interpreter','Latex');
         
         subplot(3,2,2)
         plot(x,eu(:,1),'*',x,exacterru(:,1),'o')
+        xlabel('(computed)$\epsilon_\rho$','Interpreter','Latex');
         subplot(3,2,4)
         plot(x,eu(:,2),'*',x,exacterru(:,2),'o')
+        xlabel('(computed)$\epsilon_{\rho u}$','Interpreter','Latex');
         subplot(3,2,6)
         plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
+        xlabel('(computed)$\epsilon_{\rho E}$','Interpreter','Latex');
         
         ee;
 
