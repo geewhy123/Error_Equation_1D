@@ -150,7 +150,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     u = obj.exactSolutionV(:,2);
     P = obj.exactSolutionV(:,3);
     
-    
+
     
 
     entropy = log(V(:,3)./(V(:,1).^gam));

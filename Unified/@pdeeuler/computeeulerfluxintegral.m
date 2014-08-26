@@ -11,6 +11,7 @@ end
 N=obj.nCells;
 h = obj.cellWidths;
 x = obj.cellCentroids;
+sourceMMS = obj.source;
 rhol  = zeros(N+2,1);
 rhor  = zeros(N+2,1);
 ul = zeros(N+2,1);
@@ -205,9 +206,10 @@ for i = 2:N+1
  
  PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
- phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
-phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
- phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
+ phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i) - sourceMMS(i,1);
+phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i) - sourceMMS(i,2);
+ phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i) - sourceMMS(i,3);
+ 
 end
 
 
