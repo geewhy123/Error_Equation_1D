@@ -5,17 +5,17 @@ function [x, rho,u,P ] = initializeeuler(obj )
 
 % new MMS stuff
 % a0 = 2/3;
-% c1 = 1;
-% cx1 = 0.15;
-% ax1 = 0.075*pi;
+% c1 = 0.925;
+% cx1 = 0.025;
+% ax1 = 2*pi;
 % 
-% c2 = 70;
-% cx2 = 7;
-% ax2 = 0.15*pi;
+% c2 = 0.25;
+% cx2 =0.25;
+% ax2 = pi;
 % 
-% c3 = 1e-5;
-% cx3 = 2e-4;
-% ax3 = 0.1*pi;
+% c3 = 0.9;
+% cx3 = 0.05;
+% ax3 = 2*pi;
 % 
 % 
 % N = obj.nCells;
@@ -34,7 +34,7 @@ function [x, rho,u,P ] = initializeeuler(obj )
 % obj.exactSolutionV = V;
 % 
 % return;
-%
+
 
 
 
@@ -162,10 +162,16 @@ fnval(rspi,xx(end)+h(end)/2);
 figure
 subplot(3,1,1)
 fnplt(rsp)
+% hold on
+% plot(xx,c1+cx1*cos(ax1*xx))
 subplot(3,1,2)
 fnplt(usp)
+% hold on
+% plot(xx,c2+cx2*sin(ax2*xx))
 subplot(3,1,3)
 fnplt(Psp)
+% hold on
+% plot(xx,c3+cx3*cos(ax3*xx))
 % error('2')
 
 
