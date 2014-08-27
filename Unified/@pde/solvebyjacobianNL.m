@@ -1,7 +1,7 @@
 function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %SOLVEBYJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
-
+    
     fprintf('\nPrimal Equation:\n')
     ue = obj.exactSolution;
     p = obj.pOrder;
@@ -339,13 +339,20 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % error('1')
 
 %%%%error equation
+        uRL = 0;
+        uRR = 0;
+        for k = 1:p
+           uRL = uRL + Z(k,2)*(-h(2)/2)^(k-1);
+           uRR = uRR + Z(k,N+1)*(h(N+1)/2)^(k-1);
+        end
 
         if(obj.bcLeftType == 'D')
-            obj.bcLeftVal = 0;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
+            obj.bcLeftVal = uRL;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
         end
         if(obj.bcRightType == 'D')
-            obj.bcRightVal = 0;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
+            obj.bcRightVal = uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
         end
+
 [obj.bcLeftVal obj.bcRightVal]
 
         exacterr = ue-u;

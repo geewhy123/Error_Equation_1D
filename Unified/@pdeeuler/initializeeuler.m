@@ -33,6 +33,8 @@ V(i,1) = (1/h(i))* (c1*(xr-xl)+ (cx1/ax1)*(sin(ax1*xr)-sin(ax1*xl)));
 V(i,2) = (1/h(i))* (c2*(xr-xl)+ (cx2/ax2)*(-cos(ax2*xr)+cos(ax2*xl)));
 V(i,3) = (1/h(i))* (c3*(xr-xl)+ (cx3/ax3)*(sin(ax3*xr)-sin(ax3*xl)));
 
+ar = obj.getArea(xr);
+al = obj.getArea(xl);
 rhor = (c1+cx1*cos(ax1*xr));
 rhol = (c1+cx1*cos(ax1*xl));
 ur = (c2+cx2*sin(ax2*xr));
@@ -42,9 +44,9 @@ Pl = (c3+cx3*cos(ax3*xl));
 Er = (1/(gam-1))*Pr/rhor + 0.5*ur^2;
 El = (1/(gam-1))*Pl/rhol + 0.5*ul^2;
 
-f(i,1) = (1/h(i))*( rhor*ur - rhol*ul ) ;
-f(i,2) = (1/h(i))*( (rhor*ur^2+Pr) - (rhol*ul^2+Pl)) - (1/h(i))*( (a1*cos(2*pi*xr)*(2*c3 + cx3*cos(2*pi*xr)))/2 - (a1*cos(2*pi*xl)*(2*c3 + cx3*cos(2*pi*xl)))/2);
-f(i,3) = (1/h(i))*( (rhor*ur*(Er+Pr/rhor)) -(rhol*ul*(El+Pl/rhol)));
+f(i,1) = (1/h(i))*( rhor*ur*ar - rhol*ul*al ) ;
+f(i,2) = (1/h(i))*( (rhor*ur^2+Pr)*ar - (rhol*ul^2+Pl)*al ) - (1/h(i))*( (a1*cos(2*pi*xr)*(2*c3 + cx3*cos(2*pi*xr)))/2 - (a1*cos(2*pi*xl)*(2*c3 + cx3*cos(2*pi*xl)))/2);
+f(i,3) = (1/h(i))*( (rhor*ur*(Er+Pr/rhor))*ar -(rhol*ul*(El+Pl/rhol))*al );
 end
 assert(obj.areatype == 2);
 %     f
@@ -62,6 +64,7 @@ assert(obj.areatype == 2);
 %     plot(x,f(:,2),x,g)
 %     error('1')
 f
+% error('1')
 obj.exactSolutionV = V;
 obj.source = f;
 x = linspace(0,1,1000);
