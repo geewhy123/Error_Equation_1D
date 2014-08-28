@@ -2,6 +2,7 @@
 function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle)
 ebcL = 0;
 ebcR = 0;
+
 if nargin == 13
    jump(1:3) = 0.2; 
    bchandle = 'HC';
@@ -84,6 +85,7 @@ if(strcmp(physics,'EulerQ')==1)
 problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.ebcL = ebcL;
 problem.ebcR = ebcR;
+problem.bchandle = bchandle;
 else
 problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.jump = jump;

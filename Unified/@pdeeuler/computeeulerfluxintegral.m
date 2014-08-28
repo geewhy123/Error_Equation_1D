@@ -128,6 +128,8 @@ for i = 2:N+1
 end
 
 if(strcmp(obj.bchandle,'HC')~=1)
+    obj.bchandle
+    error('1')
 [F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.P0,obj.T0);
 [F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.Pb);
 end
