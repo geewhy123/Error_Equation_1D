@@ -25,6 +25,7 @@ classdef pdeeuler < pde
 %         hOrder=0;
 ebcL;
 ebcR;
+NLfluxtype=2;
     end
     
     methods

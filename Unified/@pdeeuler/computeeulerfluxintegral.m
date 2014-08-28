@@ -3,7 +3,15 @@ function [ phi1,phi2,phi3 ] = computeeulerfluxintegral( obj,Z,eqn )
 %   Detailed explanation goes here
 if(strcmp(eqn,'error')==1)
 %    [ phi1,phi2,phi3 ] = computeeulererrorfluxintegral( obj,Z,eqn )
-   [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn );
+    switch obj.NLfluxtype
+        case 1 
+        [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn );
+        
+        case 2
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn );
+        case 3
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral3( obj,Z,eqn );
+    end
     return
 end
 

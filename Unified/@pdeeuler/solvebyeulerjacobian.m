@@ -456,10 +456,14 @@ U = obj.exactSolutionU;
         Vpe = zeros(N+2,3);
         
         
+        if(obj.NLfluxtype ~= 1)
+           eu = exacterru;
+           e = eu;
+        end
+        
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-
 %      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
 %     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 
@@ -506,11 +510,7 @@ U = obj.exactSolutionU;
         
 
         
-        
-        
-        
-        
-        
+   
         
         while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
      
@@ -573,6 +573,7 @@ U = obj.exactSolutionU;
 %      error('1')
 
 %%%%%new translation
+if(obj.NLfluxtype == 1)
             Vpe = e+V;
 
 
@@ -587,7 +588,9 @@ U = obj.exactSolutionU;
             eu = Upe-u;
 % error('1')
             [Vpe Upe];
-
+else
+    eu = e;
+end
 
 %%%%%new translation
  
@@ -608,7 +611,7 @@ U = obj.exactSolutionU;
             eu(2:N+1,3) = E(4:3:3*N+1);
 
 %%%%%%new trans
-
+if(obj.NLfluxtype == 1)
             Upe = eu+u;
 
             for j = 2:N+1
@@ -620,6 +623,9 @@ U = obj.exactSolutionU;
             end
          
             e = Vpe-V;
+else 
+    e = eu;
+end
 % error('1')
 %%%%%%new trans
 
@@ -640,8 +646,19 @@ U = obj.exactSolutionU;
             
         end
 
-        ee = e;
-        ee;
+        Upe = eu+obj.convSoln;
+ 
+             for j = 2:N+1
+     e(j,1) = eu(j,1);
+     e(j,2) = eu(j,2);
+     e(j,3) = eu(j,3);
+ [e(j,1),e(j,2),e(j,3)] = toprimitivevars(eu(j,1),eu(j,2),eu(j,3));
+                 [Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
+             end
+          
+             ee = Vpe-obj.convSolutionV;
+        
+        
 
         w = exacterrv-ee;
 
