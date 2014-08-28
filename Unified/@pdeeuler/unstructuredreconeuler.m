@@ -293,10 +293,28 @@ function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
 
     
     
-    for i = 3:N
+    if(strcmp(obj.bchandle,'HC')~=1)
+        start = 2;
+        fin = N+1;
+    else
+        start = 3;
+       fin = N;
+    end
+
+    for i = start:fin
 
         switch i
-        
+            case 2
+                cv1 = i+1;
+                cv2 = i+2;
+                cv3 = i+3;
+                cv4 = i+4;
+            case N+1
+                cv1 = i-1;
+                cv2 = i-2;
+                cv3 = i-3; 
+                cv4 = i-4;
+              
         case 3
             cv1 =i-1;
             cv2 = i+1;

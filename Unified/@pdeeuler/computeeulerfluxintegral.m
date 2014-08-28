@@ -60,6 +60,7 @@ for i = 2:N+1
 if(obj.hOrder > 0)%|| (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
 if(i==2 || i == 3 || i == N || i == N+1)
     order = obj.hOrder;
+ 
 end
 end
 % %%%%higher
@@ -126,6 +127,12 @@ for i = 2:N+1
 [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
 end
 
+if(strcmp(obj.bchandle,'HC')~=1)
+[F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.P0,obj.T0);
+[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.Pb);
+end
+% [F1r(N+1) F2r(N+1) F3r(N+1)]
+% error('1')
 
 % if(strcmp(eqn,'error')==1 && obj.T0 == 0)
   [F1l F1r F2l F2r F3l F3r];

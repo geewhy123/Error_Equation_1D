@@ -298,7 +298,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     Ze = obj.unstructuredrecon(Ve,p,'solution');
 % Z
 % 
-Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution')
+Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 (Ze(1,2)+Ze(2,2)*-0.1/2)-(Z(1,2)+Z(2,2)*-0.1/2)
 (Ze(3,2)+Ze(4,2)*-0.1/2)-(Z(3,2)+Z(4,2)*-0.1/2)
 % error('1')

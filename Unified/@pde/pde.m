@@ -42,7 +42,7 @@ higherprimalPI;
         refinecells;
         stencilSize =5;
         jump;
-        bchandle;
+        bchandle ;
     end
     
     methods
