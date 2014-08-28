@@ -66,7 +66,7 @@ function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
         gam = 1.4;
         Pa = obj.bcLeftVal(3);
 
-% Pa
+
 % error('1')
         T0=obj.T0;
         P0=obj.P0;

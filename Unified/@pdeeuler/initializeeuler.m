@@ -18,9 +18,16 @@ c3 = 0.9;
 cx3 = 0.07;
 ax3 = 2*pi;
 
+rho0 = c1;
+rho1 = cx1;
+u0 = c2;
+u1 = cx2;
+P0 = c3;
+P1 = cx3;
 gam = obj.gamma;
 N = obj.nCells;
 V = NaN*ones(N+2,3);
+U = V;
 f = NaN*ones(N+2,3);
 x = obj.cellCentroids;
 h = obj.cellWidths;
@@ -32,6 +39,12 @@ for i = 2:N+1
 V(i,1) = (1/h(i))* (c1*(xr-xl)+ (cx1/ax1)*(sin(ax1*xr)-sin(ax1*xl)));
 V(i,2) = (1/h(i))* (c2*(xr-xl)+ (cx2/ax2)*(-cos(ax2*xr)+cos(ax2*xl)));
 V(i,3) = (1/h(i))* (c3*(xr-xl)+ (cx3/ax3)*(sin(ax3*xr)-sin(ax3*xl)));
+
+U(i,1) = V(i,1);
+U(i,2) = (1/h(i))* ( (rho0*u0*xr - (2*rho0*u1*cos((pi*xr)/2)^2 - rho1*u1*cos((pi*xr)/2)^2 + (rho1*u1*cos((3*pi*xr)/2)^2)/3 - (rho1*u0*sin(2*pi*xr))/2)/pi) - (rho0*u0*xl - (2*rho0*u1*cos((pi*xl)/2)^2 - rho1*u1*cos((pi*xl)/2)^2 + (rho1*u1*cos((3*pi*xl)/2)^2)/3 - (rho1*u0*sin(2*pi*xl))/2)/pi) );
+U(i,3) = (1/h(i))* ( (((P1*sin(2*pi*xr))/2 + pi*P0*xr)/(pi*(gam - 1)) - ((rho0*u1^2*sin(2*pi*xr))/8 - (rho1*u0^2*sin(2*pi*xr))/4 - (rho1*u1^2*sin(2*pi*xr))/8 + (rho1*u1^2*sin(4*pi*xr))/32 + rho0*u0*u1*cos(pi*xr) - (rho1*u0*u1*cos(pi*xr))/2 + (rho1*u0*u1*cos(3*pi*xr))/6 - (pi*rho0*u0^2*xr)/2 - (pi*rho0*u1^2*xr)/4 + (pi*rho1*u1^2*xr)/8)/pi) -...
+                     (((P1*sin(2*pi*xl))/2 + pi*P0*xl)/(pi*(gam - 1)) - ((rho0*u1^2*sin(2*pi*xl))/8 - (rho1*u0^2*sin(2*pi*xl))/4 - (rho1*u1^2*sin(2*pi*xl))/8 + (rho1*u1^2*sin(4*pi*xl))/32 + rho0*u0*u1*cos(pi*xl) - (rho1*u0*u1*cos(pi*xl))/2 + (rho1*u0*u1*cos(3*pi*xl))/6 - (pi*rho0*u0^2*xl)/2 - (pi*rho0*u1^2*xl)/4 + (pi*rho1*u1^2*xl)/8)/pi ));
+
 
 ar = obj.getArea(xr);
 al = obj.getArea(xl);
@@ -63,9 +76,19 @@ assert(obj.areatype == 2);
 %     figure
 %     plot(x,f(:,2),x,g)
 %     error('1')
-f
+
+
+rr = c1+cx1;
+uu = c2;
+PP = c3+cx3;
+
+(PP/rr)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))
+(PP)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))^(gam/(gam-1))
+
+
 % error('1')
 obj.exactSolutionV = V;
+obj.exactSolutionU = U;
 obj.source = f;
 x = linspace(0,1,1000);
 rho = c1 + cx1*cos(ax1*x);

@@ -15,7 +15,7 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
     U1r = zeros(N+2,1);
     U2r = zeros(N+2,1);
     U3r = zeros(N+2,1);
-
+    sourceMMS = obj.source;
     Pl = zeros(N+2,1);
     Pr = zeros(N+2,1);
     cr = zeros(N+2,1);
@@ -31,7 +31,7 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
     bAtilde = zeros(3,3,N+2);
     FrAve = zeros(N+2,3);
     FlAve = zeros(N+2,3);
-
+    
     if(strcmp(eqn,'solution')==1)
         order = obj.pOrder; 
     elseif(strcmp(eqn,'residual')==1)
@@ -322,7 +322,7 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn )
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
     
-load('atilde.mat')
+% load('atilde.mat')
 
 %  U1L = U1l(3:6)  
 %  U1R = U1r(2:5)
@@ -533,7 +533,7 @@ load('atilde.mat')
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
 
-    load('atilde.mat')
+%     load('atilde.mat')
     fprintf('atilde')
 
 %  U1L = U1l(3:6)  
@@ -640,9 +640,9 @@ load('atilde.mat')
     phi2 = phia2-phib2;
     phi3 = phia3-phib3;
 
-    phi1 = phi1 - obj.errorSource(:,1);
-    phi2 = phi2 - obj.errorSource(:,2);
-    phi3 = phi3 - obj.errorSource(:,3);
+    phi1 = phi1 - obj.errorSource(:,1);%-sourceMMS(:,1);
+    phi2 = phi2 - obj.errorSource(:,2);%-sourceMMS(:,2);
+    phi3 = phi3 - obj.errorSource(:,3);%-sourceMMS(:,3);
 
     PP = [phia1 phia2 phia3 phib1 phib2 phib3];
 

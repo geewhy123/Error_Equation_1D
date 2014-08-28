@@ -149,34 +149,56 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     rho = obj.exactSolutionV(:,1);
     u = obj.exactSolutionV(:,2);
     P = obj.exactSolutionV(:,3);
+    u1 = obj.exactSolutionU(:,1);
+    u2 = obj.exactSolutionU(:,2);
+    u3 = obj.exactSolutionU(:,3);
+    uu = obj.convSoln;
     
 
     
-
+    
+    
+    
     entropy = log(V(:,3)./(V(:,1).^gam));
     figure
-    subplot(2,4,1)
+    subplot(4,4,1)
     plot(x,V(:,1),'*',x,rho,'o')
     xlabel('$\rho$','Interpreter','Latex')
-    subplot(2,4,2)
+    subplot(4,4,2)
     plot(x,V(:,2),'*',x,u,'o')
     xlabel('u')
-    subplot(2,4,3)
+    subplot(4,4,3)
     plot(x,V(:,3),'*',x,P,'o')
     xlabel('P')
-    subplot(2,4,4)
+    subplot(4,4,4)
     plot(x,entropy,'*')
     xlabel('entropy')
 
-    subplot(2,4,5)
+    subplot(4,4,5)
     plot(x,rho-V(:,1),'x')
-    subplot(2,4,6)
+    subplot(4,4,6)
     plot(x,u-V(:,2),'x')
-    subplot(2,4,7)
+    subplot(4,4,7)
     plot(x,P-V(:,3),'x')
-    subplot(2,4,8)
+    subplot(4,4,8)
     plot(x,V(:,3)./V(:,1).^gam,'+')
 
+    subplot(4,4,9)
+    plot(x,uu(:,1),'*',x,u1,'o')
+    xlabel('$\rho$','Interpreter','Latex')
+    subplot(4,4,10)
+    plot(x,uu(:,2),'*',x,u2,'o')
+    xlabel('$\rho u$','Interpreter','Latex')
+    subplot(4,4,11)
+    plot(x,uu(:,3),'*',x,u3,'o')
+    xlabel('$\rho E$','Interpreter','Latex')
+
+    subplot(4,4,13)
+    plot(x,u1-uu(:,1),'x')
+    subplot(4,4,14)
+    plot(x,u2-uu(:,2),'x')
+    subplot(4,4,15)
+    plot(x,u3-uu(:,3),'x')
     figure
     % plot(x,unew(:,1),x,unew(:,2),x,unew(:,3))
     plot(x,V(:,1),x,V(:,2),x,V(:,3))
@@ -205,7 +227,13 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     fprintf ('d.e.   u : %e   %e   %e\n' ,sum(abs(cverrv2))/N, sqrt(sum((cverrv2).^2)/N), max(abs(cverrv2)));
     fprintf ('d.e.   P : %e   %e   %e\n' ,sum(abs(cverrv3))/N, sqrt(sum((cverrv3).^2)/N), max(abs(cverrv3)));
         
-   
+    cverru1 = exacterr(2:N+1,1);
+    cverru2 = exacterr(2:N+1,2);
+    cverru3 = exacterr(2:N+1,3);
+    
+    fprintf ('\nd.e. rho : %e   %e   %e\n' ,sum(abs(cverru1))/N, sqrt(sum((cverru1).^2)/N), max(abs(cverru1)));
+    fprintf ('d.e.   rho u : %e   %e   %e\n' ,sum(abs(cverru2))/N, sqrt(sum((cverru2).^2)/N), max(abs(cverru2)));
+    fprintf ('d.e.   rho E : %e   %e   %e\n' ,sum(abs(cverru3))/N, sqrt(sum((cverru3).^2)/N), max(abs(cverru3)));
     te = teu;
     u=obj.convSoln;
     obj.convSolutionV = V;
@@ -265,12 +293,15 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     obj.reconplot(Z(2*p+1:3*p,:),'solution');
     save('tmp.mat','Z')
     % error('1')
+% [obj.bcLeftVal(1) obj.bcLeftVal(2) obj.bcLeftVal(3)]
 
-
-%     Ze = obj.unstructuredrecon(Ve,p,'solution');
+    Ze = obj.unstructuredrecon(Ve,p,'solution');
 % Z
 % 
-% Ze = obj.unstructuredrecon(obj.convSolutionV,p,'solution')
+Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution')
+(Ze(1,2)+Ze(2,2)*-0.1/2)-(Z(1,2)+Z(2,2)*-0.1/2)
+(Ze(3,2)+Ze(4,2)*-0.1/2)-(Z(3,2)+Z(4,2)*-0.1/2)
+% error('1')
 % % Ze = Z;
 % 0.957163318326954
 % 0.961077533223941-(Ze(1,2)+Ze(2,2)*-0.1/2)
@@ -447,33 +478,33 @@ U = obj.exactSolutionU;
         
         
         
-           delta = 1e-4*ones(size(e));
-        epd = e+delta;
-        [Z] = obj.unstructuredrecon(epd,q,'error');
-        [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
-        R(2:3:3*N-1) = phi1(2:N+1);
-        R(3:3:3*N) = phi2(2:N+1);
-        R(4:3:3*N+1) = phi3(2:N+1);
-        
-        Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
-        [Z] = obj.unstructuredrecon(e,q,'error');
-        [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
-        R0 = R;
-        R0(2:3:3*N-1) = phi1(2:N+1);
-        R0(3:3:3*N) = phi2(2:N+1);
-        R0(4:3:3*N+1) = phi3(2:N+1);
-        
-        Rdelta = R;
-   
-        Rdelta(2:3:3*N-1) = delta(2:N+1,1);
-        Rdelta(3:3:3*N) = delta(2:N+1,2);
-        Rdelta(4:3:3*N+1) = delta(2:N+1,3);
-
-        R1 = R0+Je*Rdelta;
-        [R-R1]
+%            delta = 1e-4*ones(size(e));
+%         epd = e+delta;
+%         [Z] = obj.unstructuredrecon(epd,q,'error');
+%         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
+%         R(2:3:3*N-1) = phi1(2:N+1);
+%         R(3:3:3*N) = phi2(2:N+1);
+%         R(4:3:3*N+1) = phi3(2:N+1);
+%         
+%         Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
+%         [Z] = obj.unstructuredrecon(e,q,'error');
+%         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');
+%         R0 = R;
+%         R0(2:3:3*N-1) = phi1(2:N+1);
+%         R0(3:3:3*N) = phi2(2:N+1);
+%         R0(4:3:3*N+1) = phi3(2:N+1);
+%         
+%         Rdelta = R;
+%    
+%         Rdelta(2:3:3*N-1) = delta(2:N+1,1);
+%         Rdelta(3:3:3*N) = delta(2:N+1,2);
+%         Rdelta(4:3:3*N+1) = delta(2:N+1,3);
+% 
+%         R1 = R0+Je*Rdelta;
+%         [R-R1]
 %         error('1')
         
-        
+
         
         
         

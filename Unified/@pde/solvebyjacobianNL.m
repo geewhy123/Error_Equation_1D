@@ -347,10 +347,10 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
         end
 
         if(obj.bcLeftType == 'D')
-            obj.bcLeftVal = uRL;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
+            obj.bcLeftVal = 0;uRL;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
         end
         if(obj.bcRightType == 'D')
-            obj.bcRightVal = uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
+            obj.bcRightVal = 0;uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
         end
 
 [obj.bcLeftVal obj.bcRightVal]
