@@ -19,10 +19,13 @@ classdef pdeeuler < pde
         convUright;
         convVreconp;
         convSolutionV;
+        reconexactsolutionV;
 %         higherprimalPI;
 %         higherprimalRM;
 %         hOrder=0;
-
+ebcL;
+ebcR;
+NLfluxtype=2;
     end
     
     methods

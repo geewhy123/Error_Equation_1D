@@ -76,6 +76,9 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
             end
         end
         
+        figure
+        obj.reconplot(Z(1:p,:),'solution');
+        error('1')
 
 %      c = -[1 -2 1]/h(3)^2;
         c = -[1 0 -1]/(2*h(3));

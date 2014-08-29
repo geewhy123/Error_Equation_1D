@@ -21,8 +21,9 @@ x = obj.cellCentroids;
 V = obj.initialSolution;
 
 p = obj.pOrder;
-figure
-plot(x,V(:,1),x,V(:,2),x,V(:,3))
+% figure
+% plot(x,V(:,1),x,V(:,2),x,V(:,3))
+
 %reconstruct
 obj.computeprimalpseudo();
 

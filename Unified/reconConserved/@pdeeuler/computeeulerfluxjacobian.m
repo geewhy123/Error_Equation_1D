@@ -40,7 +40,8 @@ R1 = NaN*ones(3*N+2,1);
 
 u = NaN*ones(size(v));
 
-if(strcmp(eqn,'error')==1)
+if(strcmp(eqn,'error')==1 )
+    if(obj.NLfluxtype == 1)
 Upe =zeros(N+2,3);
 Vpe = zeros(N+2,3);
 % %     for j = 2:N+1
@@ -53,8 +54,11 @@ Vpe = zeros(N+2,3);
     for j = 2:N+1
     [Upe(j,1),Upe(j,2),Upe(j,3)] = toconservedvars(Vpe(j,1),Vpe(j,2),Vpe(j,3));
     end
-    u = Upe-obj.convSoln
-v
+    u = Upe-obj.convSoln;
+
+    else
+       u=v; 
+    end
 % error('1')
 
 %     Vpe = u+V;
@@ -104,12 +108,16 @@ if(strcmp(eqn,'error')==1)
 % %     v1(j,2) = u1(j,2);
 % %     v1(j,3) = u1(j,3);
 % %     end
+    if(obj.NLfluxtype == 1)
     Upe = u1+obj.convSoln;
     for j = 2:N+1
     [Vpe(j,1),Vpe(j,2),Vpe(j,3)] = toprimitivevars(Upe(j,1),Upe(j,2),Upe(j,3));
     end
     v1 = Vpe-obj.convSolutionV;
     
+    else
+        v1 = u1;
+    end
 
 % incomplete here
 else
@@ -139,24 +147,8 @@ end
      R1(3:3:3*N) = phi2(2:N+1);
      R1(4:3:3*N+1) = phi3(2:N+1);
      
-%        R0=obj.computefluxintegral(Z,eqn);%u,x,h,N,p);
+     
 
-       
-%     if(strcmp(eqn,'error')==1)
-%     R0
-% error('1')
-%  end
-
-       
-%        if(i==4)
-%            Z1-Z
-%            U1-U
-
-           [R1 R0 R1-R0];
-% if(strcmp(eqn,'error')==1)
-%         error('1')
-% end
-%        end
    J(2:3*N+1,i) = (R1(2:3*N+1)-R0(2:3*N+1))/ep;  
 
    
@@ -166,12 +158,7 @@ for k = 2:3*N+1
   end
 end
 
-%     if( i == 2 && strcmp(eqn,'error')==1)
-%      [U U1]
-%         [R1(2:3*N+1) R0(2:3*N+1)]
-%      error('1')
-%     end
-%    end
+
 end
 
 

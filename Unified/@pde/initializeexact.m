@@ -54,6 +54,7 @@ f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
 % f(i) = (1/h(i))*(2*xr-3*xr^2-2*xl+3*xl^2);
 
 
+
 % f(i) = (1/h(i))*(-0.5)*(sech(xr/2)^2-sech(xl/2)^2);
 % f(i) = (1/h(i))*pi*(cos(pi*(xr+0.2))-cos(pi*(xl+0.2)));
 
@@ -83,7 +84,7 @@ end
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
  ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
 %  ue(i) = (1/h(i))*(xr^3/3-xr^4/4-xl^3/3+xl^4/4);
-
+ue(i) = (1/h(i))*(0.925*(xr-xl)+(0.025/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
 %  ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 % ue(i) = (1/h(i))*((1/pi))*(-cos(pi*(xr+0.2))+cos(pi*(xl+0.2)));
 

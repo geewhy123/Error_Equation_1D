@@ -2,7 +2,7 @@ function [ u1,u2,u3 ] = toconservedvars( rho,u,P )
 %TOCONSERVEDVARS Summary of this function goes here
 %   Detailed explanation goes here
 
-% error('1')
+
 
 
 u1 = rho;
@@ -19,11 +19,6 @@ end
 
 u3 = rho.*E;
 
-
-% 
-% u1 = rho;
-% u2 = u;
-% u3 = P;
 
 
 end

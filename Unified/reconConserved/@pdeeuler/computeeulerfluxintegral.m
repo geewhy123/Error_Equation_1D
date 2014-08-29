@@ -3,7 +3,15 @@ function [ phi1,phi2,phi3 ] = computeeulerfluxintegral( obj,Z,eqn )
 %   Detailed explanation goes here
 if(strcmp(eqn,'error')==1)
 %    [ phi1,phi2,phi3 ] = computeeulererrorfluxintegral( obj,Z,eqn )
-   [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn );
+    switch obj.NLfluxtype
+        case 1 
+        [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral( obj,Z,eqn );
+        
+        case 2
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn );
+        case 3
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral3( obj,Z,eqn );
+    end
     return
 end
 
@@ -11,6 +19,7 @@ end
 N=obj.nCells;
 h = obj.cellWidths;
 x = obj.cellCentroids;
+sourceMMS = obj.source;
 rhol  = zeros(N+2,1);
 rhor  = zeros(N+2,1);
 ul = zeros(N+2,1);
@@ -48,9 +57,10 @@ end
 for i = 2:N+1
 
 %%%%higher
-if((strcmp(eqn,'solution')==1 && obj.hOrder > obj.pOrder) || (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
+if(obj.hOrder > 0)%|| (strcmp(eqn,'residual')==1 && obj.hOrder > obj.rOrder) || (strcmp(eqn,'error')==1 && obj.hOrder > obj.qOrder) )
 if(i==2 || i == 3 || i == N || i == N+1)
     order = obj.hOrder;
+ 
 end
 end
 % %%%%higher
@@ -97,18 +107,10 @@ error('2')
  
 end
 for i = 2:N+1
-    U1l(i) = rhol(i);
-    U2l(i) = ul(i);
-    U3l(i) = Pl(i);
-    U1r(i) = rhor(i);
-    U2r(i) = ur(i);
-    U3r(i) = Pr(i);
-% [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
-% [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
+[U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
+[U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
 end
-U = [U1l U1r U2l U2r U3l U3r]
-Z
-error('1')
+U = [U1l U1r U2l U2r U3l U3r];
 
 
 
@@ -125,6 +127,12 @@ for i = 2:N+1
 [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
 end
 
+if(strcmp(obj.bchandle,'HC')~=1)
+[F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.P0,obj.T0);
+[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.Pb);
+end
+% [F1r(N+1) F2r(N+1) F3r(N+1)]
+% error('1')
 
 % if(strcmp(eqn,'error')==1 && obj.T0 == 0)
   [F1l F1r F2l F2r F3l F3r];
@@ -145,53 +153,12 @@ for i = 2:N
 
 % end check
 
-% l1 = (ur(i)+ul(i+1))/2;
-% l2 = (ur(i)+cr(i)+ul(i+1)+cl(i+1))/2;
-% l3 = (ur(i)-cr(i)+ul(i+1)-cl(i+1))/2;
 
-% % u = Ut2(i)/Ut1(i);
-% % c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
-
-% % l1 = u;
-% % l2 = u+c;
-% % l3 = u-c;
-% % 
-% % 
-% % 
-% % if(i==N+1)
-% %     u = Ut2(i)/Ut1(i);
-% % c = sqrt(gam*(gam-1)*(Ut3(i)/Ut1(i)-0.5*Ut2(i)^2/Ut1(i)^2));
-% % 
-% % l1 = u;
-% % l2 = u+c;
-% % l3 = u-c;
-% % % l1 = (ur(i));
-% % % l2 = (ur(i)+cr(i));
-% % % l3 = (ur(i)-cr(i));
-% % end
-
-
-% L = [l1 l2 l3];
-% error('2')
 bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
 end
 
+save('atilde.mat','bAtilde')
 
-%  U1L = U1l(3:6)  
-%  U1R = U1r(2:5)
-%   U2L = U2l(3:6) 
-%  U2R = U2r(2:5)
-%   U3L = U3l(3:6)
-%  U3R = U3r(2:5)
-%  
-%  [Ut1 Ut2 Ut3]
- 
-%  bAtilde
-%  error('1')
-
-% % % [U1l(3) U1r(2)]
-% % % bAtilde(:,:,2)
-% error('2')
 
 for i = 2:N+1
 FrAve(i,1:3) =(0.5*[(F1r(i)+F1l(i+1)); (F2r(i)+F2l(i+1)); (F3r(i)+F3l(i+1))]  -0.5*bAtilde(:,:,i)*  ([ U1l(i+1); U2l(i+1); U3l(i+1)]- [ U1r(i); U2r(i); U3r(i)]) )';
@@ -254,41 +221,12 @@ for i = 2:N+1
  
  PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
- phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i);
-phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i);
- phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i);
+ phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i) - sourceMMS(i,1);
+phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i) - sourceMMS(i,2);
+ phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i) - sourceMMS(i,3);
+ 
 end
 
-PAp;
-Z;
-% [phi1(N+1) phi2(N+1) phi3(N+1)]
-% % %  [FlAve(:,:) FrAve(:,:)]
-
-% error('1')
-
-
-% i = N+1;
-% [A(N+1) A(N) FrAve(N+1,1) FrAve(N+1,2) FrAve(N+1,3) FlAve(N+1,1) FlAve(N+1,2) FlAve(N+1,3) ] 
-% 0.5*[(F1l(i)+F1r(i-1)); (F2l(i)+F2r(i-1)); (F3l(i)+F3r(i-1))]
-% -0.5*bAtilde(:,:,i-1)*([ U1l(i); U2l(i); U3l(i)]- [ U1r(i-1); U2r(i-1); U3r(i-1)]) 
-
-
-% [Ut1(N+1) Ut2(N+1) Ut3(N+1)]
-% error('3')
-
-% El = (1/(gam-1))*Pl./rhol+0.5*ul.^2;
-% f1l = rhol.*ul;
-% f2l = rhol.*ul.^2+Pl;
-% f3l = rhol.*ul.*(El+Pl./rhol);
-% [f1l f2l f3l]
-
-% error('1')
-
-% if(strcmp(eqn,'error')==1)
-%    phi1 = phi1 - obj.errorSource(:,1);
-%    phi2 = phi2 - obj.errorSource(:,2);
-%    phi3 = phi3 - obj.errorSource(:,3);
-% end
 
 end
 

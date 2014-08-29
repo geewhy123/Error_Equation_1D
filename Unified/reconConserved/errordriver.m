@@ -1,5 +1,16 @@
 
-function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal)
+function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle)
+ebcL = 0;
+ebcR = 0;
+
+if nargin == 13
+   jump(1:3) = 0.2; 
+   bchandle = 'HC';
+elseif nargin == 14
+   bchandle = 'HC';
+end
+
+
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -53,7 +64,7 @@ end
 
 x(1) = NaN;%0-(1-x(N+1));%-x(2);
 x(N+2) = NaN;%1+x(2);%1+(1-x(N+1));
-x
+
 
 h = zeros(N+2,1);
 for i = 2:N+1
@@ -72,8 +83,13 @@ dir = NaN*ones(N+2,1);
 
 if(strcmp(physics,'EulerQ')==1)
 problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+problem.ebcL = ebcL;
+problem.ebcR = ebcR;
+problem.bchandle = bchandle;
 else
 problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+problem.jump = jump;
+problem.bchandle = bchandle;
 end
 
 
@@ -91,14 +107,23 @@ problem.computemoments();
 u=u0;
 %uu = zeros(N+2,1);
 
-problem.exactSolution
+
 
 
 
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
  if(strcmp(goal,'SS')==1 )
-    fprintf('solving by Jacobian');
-    [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
+    fprintf('Implicit solve using Jacobian \n');
+%     [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
+    if(strcmp(problem.physics,'EulerQ')~=1)   
+        [errerr2,x,cverr2,exacterr,ee,te  ]=problem.solvebyjacobianNL(); 
+    return;
+    end
+
+    if(strcmp(problem.physics,'EulerQ')==1)
+        [errerr2,x,cverr2,exacterr,ee,te  ]=solveeuler(problem); 
+        return;
+    end
     return;
 end
 
@@ -118,7 +143,7 @@ problem.computeprimalpseudo();
  
  
  
-er = problem.reconplot(Z,'solution')
+er = problem.reconplot(Z,'solution');
 
 % Z
 % error('1')
