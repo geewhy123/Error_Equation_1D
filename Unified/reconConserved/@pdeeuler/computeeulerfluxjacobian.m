@@ -64,7 +64,8 @@ Vpe = zeros(N+2,3);
 %     Vpe = u+V;
 else
 for j = 2:N+1
-    [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
+%     [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
+u = v;
 end
 end
 
@@ -122,7 +123,8 @@ if(strcmp(eqn,'error')==1)
 % incomplete here
 else
 for j = 2:N+1
-[v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
+% [v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
+v1 = u1;
 end
 end
 

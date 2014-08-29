@@ -11,6 +11,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
     V = obj.initialSolution;
     U = NaN*ones(3*N+2,1);
+%     U= V;%zeros(3*N+2,1);
+    
     obj.computeprimalpseudo();
 
 
@@ -52,6 +54,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ];
 
     teu = [tauu1 tauu2 tauu3];
+
+%     error('1')
  
     %truncation error need exact sol
 
@@ -65,7 +69,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     Rold = R;
     
     fprintf('Primal Equation\n')
+    V = Ue;
     while(max(abs(R(2:3*N+1))) > 1e-13 )
+    
         J = obj.computeeulerfluxjacobian(V,'solution');%,x,h,N,p);
     
         count = count +1;
@@ -93,11 +99,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         R(2:3:3*N-1) = phi1(2:N+1);
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
-        u = NaN*ones(N+2,3);
-        for j = 2:N+1
-            [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
-        end
-
+%         u = NaN*ones(N+2,3);
+%         for j = 2:N+1
+%             [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
+%         end
+u = V;
 
         del = K\-R(2:3*N+1);
     
@@ -107,6 +113,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         U(3:3:3*N) = u(2:N+1,2);
         U(4:3:3*N+1) = u(2:N+1,3);
 
+
         UU = U(2:3*N+1) + del;
         U = NaN*ones(3*N+2,1);
         U(2:3*N+1) = UU;
@@ -115,10 +122,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         u(2:N+1,2) = U(3:3:3*N) ;
         u(2:N+1,3) = U(4:3:3*N+1);
 
-        for j = 2:N+1
-            [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
-        end
-          
+%         for j = 2:N+1
+%             [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
+%         end
+        
+ V = u;
         total_time = total_time+dt;
           
         dtold = dt;
@@ -130,7 +138,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         fprintf('\t\t rho E Residual = %e \n' , max(abs(R(4:3:3*N-1))));
         
     end
-  
+    
+    for j = 2:N+1
+            [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
+    end
+    
     figure
     plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 

@@ -507,9 +507,7 @@ U = obj.exactSolutionU;
 %         R1 = R0+Je*Rdelta;
 %         [R-R1]
 %         error('1')
-        
 
-        
    
         
         while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
@@ -646,6 +644,8 @@ end
             
         end
 
+
+        if(obj.NLfluxtype ~=1)
         Upe = eu+obj.convSoln;
  
              for j = 2:N+1
@@ -657,7 +657,9 @@ end
              end
           
              ee = Vpe-obj.convSolutionV;
-        
+        else
+            ee = e;
+        end
         
 
         w = exacterrv-ee;
