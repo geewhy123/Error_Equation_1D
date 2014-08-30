@@ -219,7 +219,7 @@ u = V;
     for i = 2:N+1
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
-    exacterr = Ue-obj.convSoln;
+    exacterr = obj.exactSolutionU-obj.convSoln;
     cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)];
     
 
@@ -331,7 +331,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         obj.computerespseudo();
     
-        Zr = obj.unstructuredrecon(V,r,'residual');
+        Zr = obj.unstructuredrecon(uu,r,'residual');
 
         figure
         obj.reconplot(Zr(1:r,:),'residual');
@@ -357,7 +357,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         
         
-        
+        Ve = obj.exactSolutionU-uu;
         %%%error equation
         fprintf('\n\nError Equation\n')
         obj.computeerrorpseudo();
@@ -366,7 +366,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         obj.reconexactsolutionV = Zq;
         %%%%
 
-        Zu = obj.unstructuredrecon(V,obj.qOrder,'error');
+        Zu = obj.unstructuredrecon(uu,obj.qOrder,'error');
         obj.convSolnRecon = Zu;
  
         if(obj.bcLeftType == 'D')
