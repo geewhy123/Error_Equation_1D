@@ -82,7 +82,7 @@ dir = NaN*ones(N+2,1);
 
 
 if(strcmp(physics,'EulerQ')==1)
-problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,1);
+problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.ebcL = ebcL;
 problem.ebcR = ebcR;
 problem.bchandle = bchandle;

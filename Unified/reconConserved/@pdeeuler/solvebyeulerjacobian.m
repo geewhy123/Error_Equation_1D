@@ -419,8 +419,8 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 
-        obj.errorSource = f;teu;%f;%tau;
-   
+        obj.errorSource = teu;%f;%tau;
+   fprintf('teu')
         figure
         subplot(3,1,1)
         plot(x,f(:,1),'+',x,teu(:,1),'^')
@@ -467,12 +467,13 @@ U = obj.exactSolutionU;
            eu = exacterru;
            e = eu;
         end
-        
+
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 %      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
 %     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+
 
         obj.convVleft;
         obj.convVright;
