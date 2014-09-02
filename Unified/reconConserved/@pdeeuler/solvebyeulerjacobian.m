@@ -419,7 +419,7 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 
-        obj.errorSource = teu;%f;%tau;
+        obj.errorSource = f;teu;%f;%tau;
    fprintf('teu')
         figure
         subplot(3,1,1)
@@ -739,12 +739,19 @@ end
         fprintf ('d.e. e_  u : %e   %e   %e\n' ,sum(abs(errerrv2))/N, sqrt(sum((errerrv2).^2)/N), max(abs(errerrv2)));
         fprintf ('d.e. e_  P : %e   %e   %e\n' ,sum(abs(errerrv3))/N, sqrt(sum((errerrv3).^2)/N), max(abs(errerrv3)));
         
-
         
-        exacterrv-ee
-        exacterru-eu
+         errerru1 = exacterru(2:N+1,1)-eu(2:N+1,1);
+        errerru2 = exacterru(2:N+1,2)-eu(2:N+1,2);
+        errerru3 = exacterru(2:N+1,3)-eu(2:N+1,3);
+        fprintf ('\nd.e. e_ rho : %e   %e   %e\n' ,sum(abs(errerru1))/N, sqrt(sum((errerru1).^2)/N), max(abs(errerru1)));
+        fprintf ('d.e. e_  rho u : %e   %e   %e\n' ,sum(abs(errerru2))/N, sqrt(sum((errerru2).^2)/N), max(abs(errerru2)));
+        fprintf ('d.e. e_  rho E : %e   %e   %e\n' ,sum(abs(errerru3))/N, sqrt(sum((errerru3).^2)/N), max(abs(errerru3)));
         
-        errerr2 = max(errerr2);
+        
+        exacterrv-ee;
+        exacterru-eu;
+        
+        errerr2 = max(errerru2);
     else
         errerr2 = NaN;
         exacterr = NaN;
