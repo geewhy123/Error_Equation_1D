@@ -51,10 +51,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
 
-    te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ];
+    te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
 
-    teu = [tauu1 tauu2 tauu3];
-
+    teu = [tauu1 tauu2 tauu3]
+Z
 %     error('1')
  
     %truncation error need exact sol
@@ -478,7 +478,7 @@ U = obj.exactSolutionU;
         obj.convVleft;
         obj.convVright;
     
-        [phi1 phi2 phi3];
+        [phi1 phi2 phi3]
         figure
         plot(x,phi1,x,phi2,x,phi3)
 %      error('1')
@@ -711,24 +711,24 @@ end
           figure
         subplot(3,2,1)
         plot(x,ee(:,1),'*',x,exacterrv(:,1),'o')
-        xlabel('(computed)$\epsilon_\rho$','Interpreter','Latex');
+        xlabel('(translated)$\epsilon_\rho$','Interpreter','Latex');
         legend('estimate','"exact"')
         subplot(3,2,3)
         plot(x,ee(:,2),'*',x,exacterrv(:,2),'o')
-        xlabel('(computed)$\epsilon_u$','Interpreter','Latex');
+        xlabel('(translated)$\epsilon_u$','Interpreter','Latex');
         subplot(3,2,5)
         plot(x,ee(:,3),'*',x,exacterrv(:,3),'o')
-        xlabel('(computed)$\epsilon_P$','Interpreter','Latex');
+        xlabel('(translated)$\epsilon_P$','Interpreter','Latex');
         
         subplot(3,2,2)
         plot(x,eu(:,1),'*',x,exacterru(:,1),'o')
-        xlabel('(translated)$\epsilon_\rho$','Interpreter','Latex');
+        xlabel('(computed)$\epsilon_\rho$','Interpreter','Latex');
         subplot(3,2,4)
         plot(x,eu(:,2),'*',x,exacterru(:,2),'o')
-        xlabel('(translated)$\epsilon_{\rho u}$','Interpreter','Latex');
+        xlabel('(computed)$\epsilon_{\rho u}$','Interpreter','Latex');
         subplot(3,2,6)
         plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
-        xlabel('(translated)$\epsilon_{\rho E}$','Interpreter','Latex');
+        xlabel('(computed)$\epsilon_{\rho E}$','Interpreter','Latex');
         
 
         errerrv1 = exacterrv(2:N+1,1)-ee(2:N+1,1);

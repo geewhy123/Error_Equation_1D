@@ -351,7 +351,6 @@ function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
         end
 
     % AD = obj.primalPI;
-
         Y(2:p) = AD(:,:,i)*b;
 
         Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)
