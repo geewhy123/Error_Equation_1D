@@ -451,6 +451,16 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:p
             U = U+(right(k)*(-h(i+1)/2)^(k-1));
         end
+        
+        if(strcmp(obj.bchandle,'Jump')==1)
+%             uu = 0;
+%             for k = 1:p
+%                 uu = uu + right(k)*(-h(i+1)/2)^(k-1);
+%             end 
+            F = F+alphaL*(U-obj.bcLeftVal)/(h(i+1)/2);
+            
+        end
+        
         F = F-U^2/2;
      
      
@@ -479,6 +489,15 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:p
             U = U+(left(k)*(h(i)/2)^(k-1)) ;
         end
+        
+        if(strcmp(obj.bchandle,'Jump')==1)
+%             uu = 0;
+%             for k = 1:p
+%                 uu = uu + left(k)*(h(i)/2)^(k-1);
+%             end 
+            F = F-alphaR*(U-obj.bcRightVal)/(h(i)/2);
+        end
+        
         F = F-U^2/2;
     
         if(nonlinearerror && strcmp(eqn,'error')==1)
@@ -615,205 +634,205 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
 end
 
 
-function [ F ] = computeburgersviscfluxb( obj,left,right,eqn,i  )
-%COMPUTEFLUXINTEGRAL Summary of this function goes here
-%   Detailed explanation goes here
-
-    h = obj.cellWidths;
-    N = obj.nCells;
-    alpha = obj.jump(2);
-    alphaL = obj.jump(1);
-    alphaR = obj.jump(3);
-    if(strcmp(eqn,'solution')==1)
-        p = obj.pOrder;
-    elseif(strcmp(eqn,'error')==1)
-        p = obj.qOrder;
-    elseif(strcmp(eqn,'residual')==1)
-        p = obj.rOrder;
-    else
-        assert(0); 
-    end
-
-
-        pr = p;%obj.pOrder;
-        pl = p;%obj.pOrder;
-      
- 
-
-    nonlinearerror = 1;
-    utilder = 0;
-    utildel = 0;
-    if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
-        F = 0;
-        for k = 1:p-1
-            F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
-        end
-        U=0;
-        for k = 1:p
-            U = U+(right(k)*(-h(i+1)/2)^(k-1));
-        end
-        F = F-U^2/2;
-     
-     
-     
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            Zu = obj.convSolnRecon;
-            uorder = obj.qOrder;
-        end
-        
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            for k = 1:uorder
-    %         utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
-                utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
-            end
-            F = F - U * utilder;
-    %         Fl = Fl - ul * utildel;
-        end
-        return;
-        
-    elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
-        F = 0;
-        for k = 1:p-1
-            F = F + k*left(k+1)*(h(i)/2)^(k-1);
-        end
-        U=0;
-        for k = 1:p
-            U = U+(left(k)*(h(i)/2)^(k-1)) ;
-        end
-        F = F-U^2/2;
-    
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            Zu = obj.convSolnRecon;
-            uorder = obj.qOrder;
-        end
-        
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            for k = 1:uorder
-                utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
-%         utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
-            end
-%         F = F - ur * utilder;
-            F = F - U * utildel;
-        
-        end
-        return;
-        
-    elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
-        Fl = 0;
-        Fr = 0;
-        
-        ur=0;
-        for k = 1:p-1
-            Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
-        end
-        for k = 1:p
-            ur = ur+(right(k)*(-h(i+1)/2)^(k-1));
-        end
-        Fr = Fr-ur^2/2;
-    
-        ul=0;
-        for k = 1:p-1
-            Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
-        end
-        for k = 1:p
-            ul= ul+ left(k)*(h(i)/2)^(k-1);
-        end
-        Fl = Fl-ul^2/2;
-     
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            Zu = obj.convSolnRecon;
-            uorder = obj.qOrder;
-        end
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            for k = 1:uorder
-                utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
-                utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
-            end
-            Fr = Fr - ur * utilder;
-            Fl = Fl - ul * utildel;
-
-        end
-  
-        F = 0.5*(Fr+Fl);
-
-
-        if(p==2)
-            ul1 = right(1)+right(2)*(-h(i+1)/2);
-            ul2 = left(1) + left(2)*(h(i)/2);
-            jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
-            F = F+jump;
-        end
-        return;
-        
-    else
-        Fl = 0;
-        Fr = 0;
-        for k = 1:pr-1
-            Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
-        end
-        ur=0;
-        for k = 1:pr
-            ur=ur+(right(k)*(-h(i+1)/2)^(k-1)); 
-        end
-        Fr = Fr-ur^2/2;
-        for k = 1:pl-1
-            Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
-        end
-        ul=0;
-        for k = 1:pl
-            ul = ul+(left(k)*(h(i)/2)^(k-1));
-        end
-        Fl = Fl-ul^2/2;
-      
-      
-
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            Zu = obj.convSolnRecon;
-            uorder = obj.qOrder;
-        end
-        if(nonlinearerror && strcmp(eqn,'error')==1)
-            for k = 1:uorder
-                utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
-                utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
-            end
-            Fr = Fr - ur * utilder;
-            Fl = Fl - ul * utildel;
-
-        end
-
-        F = 0.5*(Fr+Fl);
-
-        if(pr==2 && pl == 2)
-%          error('1')
-%          if(i==1)
-%              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-%                 ul1 = right(1)+right(2)*(-h(i+1)/2);
-%                 ul2 = left(1)+ left(2)*(h(N+1)/2);
-%                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-%              end
-%          elseif(i==N+1)
-%                 ul1 = right(1)+right(2)*(-h(i)/2);
-%                 ul2 = left(1)+ left(2)*(h()/2);
-%                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-%              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-%                  
-%              end
-%          
-%          else
-            ul1 = right(1)+right(2)*(-h(i+1)/2);
-            ul2 = left(1) + left(2)*(h(i)/2);
-            jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
-%          end
-
-            F = F+jump;
-        end
+% function [ F ] = computeburgersviscfluxb( obj,left,right,eqn,i  )
+% %COMPUTEFLUXINTEGRAL Summary of this function goes here
+% %   Detailed explanation goes here
+% 
+%     h = obj.cellWidths;
+%     N = obj.nCells;
+%     alpha = obj.jump(2);
+%     alphaL = obj.jump(1);
+%     alphaR = obj.jump(3);
+%     if(strcmp(eqn,'solution')==1)
+%         p = obj.pOrder;
+%     elseif(strcmp(eqn,'error')==1)
+%         p = obj.qOrder;
+%     elseif(strcmp(eqn,'residual')==1)
+%         p = obj.rOrder;
+%     else
+%         assert(0); 
 %     end
-   
-        return;
-    
-    end
-   
-end
+% 
+% 
+%         pr = p;%obj.pOrder;
+%         pl = p;%obj.pOrder;
+%       
+%  
+% 
+%     nonlinearerror = 1;
+%     utilder = 0;
+%     utildel = 0;
+%     if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+%         F = 0;
+%         for k = 1:p-1
+%             F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
+%         end
+%         U=0;
+%         for k = 1:p
+%             U = U+(right(k)*(-h(i+1)/2)^(k-1));
+%         end
+%         F = F-U^2/2;
+%      
+%      
+%      
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             Zu = obj.convSolnRecon;
+%             uorder = obj.qOrder;
+%         end
+%         
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             for k = 1:uorder
+%     %         utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+%                 utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+%             end
+%             F = F - U * utilder;
+%     %         Fl = Fl - ul * utildel;
+%         end
+%         return;
+%         
+%     elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+%         F = 0;
+%         for k = 1:p-1
+%             F = F + k*left(k+1)*(h(i)/2)^(k-1);
+%         end
+%         U=0;
+%         for k = 1:p
+%             U = U+(left(k)*(h(i)/2)^(k-1)) ;
+%         end
+%         F = F-U^2/2;
+%     
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             Zu = obj.convSolnRecon;
+%             uorder = obj.qOrder;
+%         end
+%         
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             for k = 1:uorder
+%                 utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+% %         utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+%             end
+% %         F = F - ur * utilder;
+%             F = F - U * utildel;
+%         
+%         end
+%         return;
+%         
+%     elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+%         Fl = 0;
+%         Fr = 0;
+%         
+%         ur=0;
+%         for k = 1:p-1
+%             Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+%         end
+%         for k = 1:p
+%             ur = ur+(right(k)*(-h(i+1)/2)^(k-1));
+%         end
+%         Fr = Fr-ur^2/2;
+%     
+%         ul=0;
+%         for k = 1:p-1
+%             Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+%         end
+%         for k = 1:p
+%             ul= ul+ left(k)*(h(i)/2)^(k-1);
+%         end
+%         Fl = Fl-ul^2/2;
+%      
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             Zu = obj.convSolnRecon;
+%             uorder = obj.qOrder;
+%         end
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             for k = 1:uorder
+%                 utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+%                 utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+%             end
+%             Fr = Fr - ur * utilder;
+%             Fl = Fl - ul * utildel;
+% 
+%         end
+%   
+%         F = 0.5*(Fr+Fl);
+% 
+% 
+%         if(p==2)
+%             ul1 = right(1)+right(2)*(-h(i+1)/2);
+%             ul2 = left(1) + left(2)*(h(i)/2);
+%             jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+%             F = F+jump;
+%         end
+%         return;
+%         
+%     else
+%         Fl = 0;
+%         Fr = 0;
+%         for k = 1:pr-1
+%             Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+%         end
+%         ur=0;
+%         for k = 1:pr
+%             ur=ur+(right(k)*(-h(i+1)/2)^(k-1)); 
+%         end
+%         Fr = Fr-ur^2/2;
+%         for k = 1:pl-1
+%             Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+%         end
+%         ul=0;
+%         for k = 1:pl
+%             ul = ul+(left(k)*(h(i)/2)^(k-1));
+%         end
+%         Fl = Fl-ul^2/2;
+%       
+%       
+% 
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             Zu = obj.convSolnRecon;
+%             uorder = obj.qOrder;
+%         end
+%         if(nonlinearerror && strcmp(eqn,'error')==1)
+%             for k = 1:uorder
+%                 utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
+%                 utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
+%             end
+%             Fr = Fr - ur * utilder;
+%             Fl = Fl - ul * utildel;
+% 
+%         end
+% 
+%         F = 0.5*(Fr+Fl);
+% 
+%         if(pr==2 && pl == 2)
+% %          error('1')
+% %          if(i==1)
+% %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+% %                 ul1 = right(1)+right(2)*(-h(i+1)/2);
+% %                 ul2 = left(1)+ left(2)*(h(N+1)/2);
+% %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+% %              end
+% %          elseif(i==N+1)
+% %                 ul1 = right(1)+right(2)*(-h(i)/2);
+% %                 ul2 = left(1)+ left(2)*(h()/2);
+% %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+% %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+% %                  
+% %              end
+% %          
+% %          else
+%             ul1 = right(1)+right(2)*(-h(i+1)/2);
+%             ul2 = left(1) + left(2)*(h(i)/2);
+%             jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+% %          end
+% 
+%             F = F+jump;
+%         end
+% %     end
+%    
+%         return;
+%     
+%     end
+%    
+% end
 
 function s = computesu( obj,right,eqn,i  )
 x = obj.cellCentroids;
