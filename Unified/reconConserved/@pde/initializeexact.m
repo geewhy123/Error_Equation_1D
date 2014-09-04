@@ -226,8 +226,8 @@ f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 
     ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      
+% f(i) = (1/h(i))*4*((tanh(xr)-xr)-(tanh(xl)-xl));
 
-     
 %     MMS
 %     ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
 %     u0 = ue;

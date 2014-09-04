@@ -419,7 +419,7 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 
-        obj.errorSource = teu;%f;%tau;
+        obj.errorSource = f;teu;%f;%tau;
    fprintf('teu')
         figure
         subplot(3,1,1)
@@ -481,7 +481,7 @@ U = obj.exactSolutionU;
         [phi1 phi2 phi3]
         figure
         plot(x,phi1,x,phi2,x,phi3)
-     error('1')
+%      error('1')
 %
         R(2:3:3*N-1) = phi1(2:N+1);
         R(3:3:3*N) = phi2(2:N+1);
