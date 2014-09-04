@@ -255,9 +255,10 @@ for i = 2:N+1
  
  PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
  
- xl = x(i)-h(i)/2;
- xr = x(i)+h(i)/2;
- PAp(i) = (1/h(i))*(0.9*0.1*(cos(2*pi*xr)-cos(2*pi*xl)) + 0.07*0.1*0.5*((cos(2*pi*xr))^2-(cos(2*pi*xl)^2)));
+%  xl = x(i)-h(i)/2;
+%  xr = x(i)+h(i)/2;
+%  PAp(i) = (1/h(i))*(0.9*0.1*(cos(2*pi*xr)-cos(2*pi*xl)) + 0.07*0.1*0.5*((cos(2*pi*xr))^2-(cos(2*pi*xl)^2)));
+%   
 %  fprintf('using exact source cheat')
 %  PAp(i) = (1/h(i))*(((7*cos(2*pi*xr) + 90)^2/14000) - ((7*cos(2*pi*xl) + 90)^2/14000));
  
@@ -268,7 +269,7 @@ phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i) - sourceMMS(i,2);
  
 end
 % Z
-% PAp
+% PAp(2:N+1)-PApe(2:N+1)'
 
 % error('1')
 
