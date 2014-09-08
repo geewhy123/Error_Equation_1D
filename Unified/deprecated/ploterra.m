@@ -25,7 +25,7 @@ N = 40
 
 load('errorarrayplot.mat');
 
-   [err4bb(20),x,cverr4b(20),exacterr(:,20),ee(:,20)] = errordriver(N,2,6,6,1/3,100,.3,7,'Advection');
+%    [err4bb(20),x,cverr4b(20),exacterr(:,20),ee(:,20)] = errordriver(N,2,6,6,1/3,100,.3,7,'Advection');
 
 h=figure
 set(gca,'FontSize',14)
@@ -68,9 +68,10 @@ annotation(h,'textbox',...
     'Interpreter','latex',...
     'String',{'$$x$$'},...
     'FontWeight','bold',...
-    'FontSize',24,...
+    'FontSize',28,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
+
 
 
 
@@ -82,16 +83,32 @@ g=figure
 kk=1;
 for k = 1:20
 subplot(5,4,k)
-v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1});
+v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1},'LineWidth',2);
+
+
+
+ if(~((mod(k,4)==1)|| (k>=10 && mod(k,5)==0)))
+   ylim([-1e-3 1e-3]) 
+   set(gca,'YTick',[-1e-3 1e-3])
+ else
+     
+     yt = get(gca,'ytick');
+     set(gca,'YTick',[yt(1) yt(3)])
+ end
+ set(gca,'XTick',[0 1])
 
 if(k==2 || k== 5 || k==10 || k==15 || k==20)
 lin(kk) = v;
 kk = kk+1;
+
 end
-    
-    set(gca,'FontSize',14)
+   
+
+    set(gca,'FontSize',20)
  
-xlabel(B(k,:),'FontSize',14)
+% % % xlabel(B(k,:),'FontSize',14)
+
+
 % if (k==1)
 %    legend('exact error','computed error'); 
 % end
@@ -99,10 +116,14 @@ hold on
 % subplot(2,1,k)
 % plot(x,exacterr(:,k),'o',x,ee(:,2),'*');
    if(k==9)
-     ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',24) 
+     ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',30) 
    end
 
 end
+
+subplot(5,4,20)
+v= plot(x,exacterr(:,20)-ee(:,20),'Color',[153/255, 76/255, 0],'LineStyle', 'd','LineWidth',2);
+lin(kk-1) = v;
 % annotation(g,'textbox',...
 %     [0.0504791666666667 0.532837474674436 0.0322916666666667 0.0351288056206089],...
 %     'Interpreter','latex',...
@@ -117,11 +138,11 @@ annotation(g,'textbox',...
     'Interpreter','latex',...
     'String',{'$$x$$'},...
     'FontWeight','bold',...
-    'FontSize',24,...
+    'FontSize',30,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
 
-hL = legend([lin],{'$$\mathcal{O}(h^2)$$','$$\mathcal{O}(h^3)$$','$$\mathcal{O}(h^4)$$','$$\mathcal{O}(h^5)$$','$$\mathcal{O}(h^6)$$'},'Interpreter','Latex','FontSize',18);
+hL = legend([lin],{'$$\mathcal{O}(h^2)$$','$$\mathcal{O}(h^3)$$','$$\mathcal{O}(h^4)$$','$$\mathcal{O}(h^5)$$','$$\mathcal{O}(h^6)$$'},'Interpreter','Latex','FontSize',20,'Orientation','Horizontal');
 
 
 
