@@ -104,7 +104,7 @@ kk = kk+1;
 end
    
 
-    set(gca,'FontSize',20)
+    set(gca,'FontSize',24)
  
 % % % xlabel(B(k,:),'FontSize',14)
 
@@ -116,7 +116,7 @@ hold on
 % subplot(2,1,k)
 % plot(x,exacterr(:,k),'o',x,ee(:,2),'*');
    if(k==9)
-     ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',30) 
+     ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',35) 
    end
 
 end
@@ -138,11 +138,11 @@ annotation(g,'textbox',...
     'Interpreter','latex',...
     'String',{'$$x$$'},...
     'FontWeight','bold',...
-    'FontSize',30,...
+    'FontSize',35,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
 
-hL = legend([lin],{'$$\mathcal{O}(h^2)$$','$$\mathcal{O}(h^3)$$','$$\mathcal{O}(h^4)$$','$$\mathcal{O}(h^5)$$','$$\mathcal{O}(h^6)$$'},'Interpreter','Latex','FontSize',20,'Orientation','Horizontal');
+hL = legend([lin],{'$$\mathcal{O}(h^\mathbf{2})$$','$$\mathcal{O}(h^\mathbf{3})$$','$$\mathcal{O}(h^\mathbf{4})$$','$$\mathcal{O}(h^\mathbf{5})$$','$$\mathcal{O}(h^\mathbf{6})$$'},'Interpreter','Latex','FontSize',30,'Orientation','Horizontal');
 
 
 
