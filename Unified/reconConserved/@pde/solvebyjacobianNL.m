@@ -345,7 +345,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
            uRL = uRL + Z(k,2)*(-h(2)/2)^(k-1);
            uRR = uRR + Z(k,N+1)*(h(N+1)/2)^(k-1);
         end
-
+[uRL uRR]
         if(obj.bcLeftType == 'D')
             obj.bcLeftVal = 0;uRL;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
         end
