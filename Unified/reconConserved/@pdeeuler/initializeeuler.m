@@ -31,7 +31,7 @@ U = V;
 f = NaN*ones(N+2,3);
 x = obj.cellCentroids;
 h = obj.cellWidths;
-
+% syms xx
 for i = 2:N+1
     xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
@@ -40,11 +40,17 @@ V(i,1) = (1/h(i))* (c1*(xr-xl)+ (cx1/ax1)*(sin(ax1*xr)-sin(ax1*xl)));
 V(i,2) = (1/h(i))* (c2*(xr-xl)+ (cx2/ax2)*(-cos(ax2*xr)+cos(ax2*xl)));
 V(i,3) = (1/h(i))* (c3*(xr-xl)+ (cx3/ax3)*(sin(ax3*xr)-sin(ax3*xl)));
 
+  V(i,3) = (1/h(i))*quad(@(xx)(c1+cx1*cos(ax1*xx)).^gam,xl,xr,1e-10);
+
 U(i,1) = V(i,1);
 U(i,2) = (1/h(i))* ( (rho0*u0*xr - (2*rho0*u1*cos((pi*xr)/2)^2 - rho1*u1*cos((pi*xr)/2)^2 + (rho1*u1*cos((3*pi*xr)/2)^2)/3 - (rho1*u0*sin(2*pi*xr))/2)/pi) - (rho0*u0*xl - (2*rho0*u1*cos((pi*xl)/2)^2 - rho1*u1*cos((pi*xl)/2)^2 + (rho1*u1*cos((3*pi*xl)/2)^2)/3 - (rho1*u0*sin(2*pi*xl))/2)/pi) );
 U(i,3) = (1/h(i))* ( (((P1*sin(2*pi*xr))/2 + pi*P0*xr)/(pi*(gam - 1)) - ((rho0*u1^2*sin(2*pi*xr))/8 - (rho1*u0^2*sin(2*pi*xr))/4 - (rho1*u1^2*sin(2*pi*xr))/8 + (rho1*u1^2*sin(4*pi*xr))/32 + rho0*u0*u1*cos(pi*xr) - (rho1*u0*u1*cos(pi*xr))/2 + (rho1*u0*u1*cos(3*pi*xr))/6 - (pi*rho0*u0^2*xr)/2 - (pi*rho0*u1^2*xr)/4 + (pi*rho1*u1^2*xr)/8)/pi) -...
                      (((P1*sin(2*pi*xl))/2 + pi*P0*xl)/(pi*(gam - 1)) - ((rho0*u1^2*sin(2*pi*xl))/8 - (rho1*u0^2*sin(2*pi*xl))/4 - (rho1*u1^2*sin(2*pi*xl))/8 + (rho1*u1^2*sin(4*pi*xl))/32 + rho0*u0*u1*cos(pi*xl) - (rho1*u0*u1*cos(pi*xl))/2 + (rho1*u0*u1*cos(3*pi*xl))/6 - (pi*rho0*u0^2*xl)/2 - (pi*rho0*u1^2*xl)/4 + (pi*rho1*u1^2*xl)/8)/pi ));
 
+U(i,3) = (1/h(i))*quad(@(xx)(c1+cx1*cos(ax1*xx)).^(gam)/(gam-1)+0.5*(c1+cx1*cos(ax1*xx)).*(c2+cx2*sin(ax2*xx)).^2,xl,xr,1e-10);
+% a(i,3) = (1/h(i))*quad(@(xx)(c1+cx1*cos(ax1*xx)).^(gam-1)/(gam-1),xl,xr,1e-10);
+% b(i,3) = (1/h(i))*quad(@(xx)0.5*(c2+cx2*sin(ax2*xx)).^2,xl,xr,1e-10);
+% U(i,3) = a(i,3)+b(i,3);
 
 ar = obj.getArea(xr);
 al = obj.getArea(xl);
@@ -54,13 +60,34 @@ ur = (c2+cx2*sin(ax2*xr));
 ul = (c2+cx2*sin(ax2*xl));
 Pr = (c3+cx3*cos(ax3*xr));
 Pl = (c3+cx3*cos(ax3*xl));
+
+Pr = rhor^gam;
+Pl = rhol^gam;
+% M(i) = ur/sqrt(gam*Pr/rhor);
+
 Er = (1/(gam-1))*Pr/rhor + 0.5*ur^2;
 El = (1/(gam-1))*Pl/rhol + 0.5*ul^2;
 
 f(i,1) = (1/h(i))*( rhor*ur*ar - rhol*ul*al ) ;
-f(i,2) = (1/h(i))*( (rhor*ur^2+Pr)*ar - (rhol*ul^2+Pl)*al ) - (1/h(i))*( (a1*cos(2*pi*xr)*(2*c3 + cx3*cos(2*pi*xr)))/2 - (a1*cos(2*pi*xl)*(2*c3 + cx3*cos(2*pi*xl)))/2);
+% f(i,2) = (1/h(i))*( (rhor*ur^2+Pr)*ar - (rhol*ul^2+Pl)*al ) - (1/h(i))*( (a1*cos(2*pi*xr)*(2*c3 + cx3*cos(2*pi*xr)))/2 - (a1*cos(2*pi*xl)*(2*c3 + cx3*cos(2*pi*xl)))/2);
+f(i,2) = (1/h(i))*( (rhor*ur^2+Pr)*ar - (rhol*ul^2+Pl)*al ) - (1/h(i))*quad(@(xx)(c1+cx1*cos(ax1*xx)).^gam .* (-2*pi*a1*sin(2*pi*xx) ), xl,xr,1e-10);
 f(i,3) = (1/h(i))*( (rhor*ur*(Er+Pr/rhor))*ar -(rhol*ul*(El+Pl/rhol))*al );
 end
+% plot(x,U(:,3),x,(1/.4)*(V(:,1).^(.4)+.5*V(:,2).^2),'x')
+
+
+% plot(x(1:N+1),a(:,3),x,(c1+cx1*cos(ax1*x)).^(gam-1)/(gam-1),'o',x(1:N+1),b(:,3),x,.5*V(:,2).^2,'x')
+% plot(x,U(:,3),x,(c1+cx1*cos(ax1*x)).^(gam-1)/(gam-1)+.5*V(:,2).^2,'*')
+
+%  P = (gam-1)*(U(:,3)-(0.5*U(:,2).^2)./U(:,1))
+% plot(x,P,x,V(:,3))
+% plot(x,V(:,1)-U(:,1),x,V(:,1).*V(:,2)-U(:,2))
+% plot(x,U)
+% plot(x,(.4)*(U(:,3)-0.5*(U(:,2).^2./U(:,1))),x,V(:,3))
+
+% plot(x,((.4)*(U(:,3)-0.5*(U(:,2).^2./U(:,1))))./(U(:,1).^gam))
+% error('1')
+
 assert(obj.areatype == 2);
 %     f
 %     g = pi*cx2*cos(pi*x).*(c1+cx1*cos(2*pi*x))-2*pi*cx1*sin(2*pi*x).*(c2+cx2*sin(pi*x))
@@ -78,13 +105,18 @@ assert(obj.areatype == 2);
 %     error('1')
 
 
+%calculate BCs
 rr = c1+cx1;
 uu = c2;
 PP = c3+cx3;
 
-(PP/rr)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))
-(PP)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))^(gam/(gam-1))
+PP = (c1+cx1)^gam;
 
+
+
+bcLeftP0 = (PP)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))^(gam/(gam-1))
+bcLeftT0 = (PP/rr)*(1+((gam-1)/2)*uu^2/(gam*PP/rr))
+bcRightPb = PP 
 
 % error('1')
 obj.exactSolutionV = V;

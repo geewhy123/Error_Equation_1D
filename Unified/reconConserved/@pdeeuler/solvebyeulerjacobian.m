@@ -54,7 +54,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
 
     teu = [tauu1 tauu2 tauu3]
-Z
+% Z
 %     error('1')
  
     %truncation error need exact sol
@@ -142,6 +142,10 @@ u = V;
     for j = 2:N+1
             [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
     end
+%     
+%     u
+%     V
+%     error('1')
     
     figure
     plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')

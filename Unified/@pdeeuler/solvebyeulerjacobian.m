@@ -136,6 +136,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         
     end
   
+      u
+    V
+    error('1')
+    
+    
     figure
     plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 
