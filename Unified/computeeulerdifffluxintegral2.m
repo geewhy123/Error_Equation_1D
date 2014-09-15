@@ -275,7 +275,15 @@ U3r = Pr;
         [F1l(i),F2l(i),F3l(i)]=conservedtoflux(U1l(i),U2l(i),U3l(i));
         [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
     end
-
+ if(strcmp(obj.bchandle,'HC')~=1)
+        obj.primalP0;
+        obj.primalT0;
+        obj.primalPb;
+        
+%     [U1l U1r U2l U2r U3l U3r]    
+[F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.primalP0,obj.primalT0);
+[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.primalPb);
+  end
 
 % if(strcmp(eqn,'error')==1 && obj.T0 == 0)
 %  [F1l F1r F2l F2r F3l F3r]
@@ -524,7 +532,13 @@ UU = [U1l U2l U3l U1r U2r U3r]
         [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
     end
 
-
+ if(strcmp(obj.bchandle,'HC')~=1)
+        obj.P0;
+        obj.T0;
+        obj.Pb;
+[F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.primalP0,obj.primalT0);
+[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.primalPb);
+end
     if(strcmp(eqn,'error')==1 )%&& obj.T0 == 0)
         [F1l F1r F2l F2r F3l F3r];
 %  U

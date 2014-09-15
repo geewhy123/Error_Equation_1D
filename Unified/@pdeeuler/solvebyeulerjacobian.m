@@ -35,6 +35,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     teu = zeros(N+2,3);
     % tev = zeros(N+2,3);
     Ve = obj.exactSolutionV;
+    Ue = obj.exactSolutionU;     
+    if(obj.NLfluxtype==4)
+           Ve = Ue;
+    end
 
     % % % % higher
     [Z] = obj.unstructuredrecon(Ve,p,'solution');%ue,x,h,N,NaN,NaN,p);
@@ -64,6 +68,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     c2 = 10;
     dtold = 0.01;
     Rold = R;
+    
+    if(obj.NLfluxtype==4)
+       V = Ue; 
+    end
     
     fprintf('Primal Equation\n')
     while(max(abs(R(2:3*N+1))) > 1e-13 )
@@ -103,6 +111,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
         end
 
+        if(obj.NLfluxtype==4)
+           u=V; 
+        end
 
         del = K\-R(2:3*N+1);
     
@@ -123,7 +134,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         for j = 2:N+1
             [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
         end
-          
+        
+        if(obj.NLfluxtype==4)
+           V = u; 
+        end
+        
         total_time = total_time+dt;
           
         dtold = dt;
@@ -136,9 +151,14 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         
     end
   
+    if(obj.NLfluxtype==4)
+    for j = 2:N+1
+             [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
+     end
+    end
       u
     V
-    error('1')
+%     error('1')
     
     
     figure
