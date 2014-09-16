@@ -101,8 +101,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % %%%%
 
         Rold = R;
+        
         [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
- 
+
+% error('1')
         R(2:3:3*N-1) = phi1(2:N+1);
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
@@ -237,6 +239,11 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     for i = 2:N+1
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
+    
+    if(obj.NLfluxtype ==4)
+        Ue = obj.exactSolutionU;
+    end
+    
     exacterr = Ue-obj.convSoln;
     cverru2 = [sqrt(sum((exacterr(2:N+1,1)).^2)/N) sqrt(sum((exacterr(2:N+1,2)).^2)/N) sqrt(sum((exacterr(2:N+1,3)).^2)/N)];
     
@@ -349,6 +356,9 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         obj.computerespseudo();
     
+        if(obj.NLfluxtype ==4)
+           V = uu; 
+        end
         Zr = obj.unstructuredrecon(V,r,'residual');
 
         figure
@@ -373,7 +383,10 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 %         norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
 %         error('1')
 
-        
+        if(obj.NLfluxtype == 4)
+                   Ve = obj.exactSolutionU-uu; 
+                   V= uu;
+        end
         
         
         %%%error equation
@@ -546,7 +559,8 @@ U = obj.exactSolutionU;
 % % % % end
 
             Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
-
+% Je
+% error('1')
 % % % % % if(obj.bcLeftType == 'D')
 % % % % %    obj.T0 = 1; 
 % % % % %    obj.P0 = 1;
@@ -722,7 +736,8 @@ end
 
 
 % exacterr = exacterrv;
-
+exacterrv
+error('1')
 
 % ee = exacterr - w;
         errerr2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ];
@@ -758,7 +773,14 @@ end
         fprintf ('d.e. e_  u : %e   %e   %e\n' ,sum(abs(errerrv2))/N, sqrt(sum((errerrv2).^2)/N), max(abs(errerrv2)));
         fprintf ('d.e. e_  P : %e   %e   %e\n' ,sum(abs(errerrv3))/N, sqrt(sum((errerrv3).^2)/N), max(abs(errerrv3)));
         
-
+        errerru1 = exacterru(2:N+1,1)-eu(2:N+1,1);
+        errerru2 = exacterru(2:N+1,2)-eu(2:N+1,2);
+        errerru3 = exacterru(2:N+1,3)-eu(2:N+1,3);
+        fprintf ('\nd.e. e_ rho : %e   %e   %e\n' ,sum(abs(errerru1))/N, sqrt(sum((errerru1).^2)/N), max(abs(errerru1)));
+        fprintf ('d.e. e_  rho u : %e   %e   %e\n' ,sum(abs(errerru2))/N, sqrt(sum((errerru2).^2)/N), max(abs(errerru2)));
+        fprintf ('d.e. e_  rho E : %e   %e   %e\n' ,sum(abs(errerru3))/N, sqrt(sum((errerru3).^2)/N), max(abs(errerru3)));
+        
+        
         
         exacterrv-ee
         exacterru-eu

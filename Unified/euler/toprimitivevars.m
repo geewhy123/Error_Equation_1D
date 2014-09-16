@@ -2,6 +2,7 @@ function [ rho,u,P ] = toprimitivevars( U1,U2,U3)
 %TOPRIMITIVEVARS Summary of this function goes here
 %   Detailed explanation goes here
 
+
 gam = 1.4;
 rho = U1;
 u = U2/U1;

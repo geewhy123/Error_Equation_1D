@@ -64,8 +64,15 @@ Vpe = zeros(N+2,3);
 %     Vpe = u+V;
 else
 for j = 2:N+1
+    
     [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
+    
 end
+if(obj.NLfluxtype ==4)
+    u = v;
+end
+
+
 end
 
 U = NaN*ones(3*N+2,1);
@@ -124,6 +131,11 @@ else
 for j = 2:N+1
 [v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
 end
+
+if(obj.NLfluxtype ==4)
+    v1 =u1;
+end
+
 end
 
        Z1 = obj.unstructuredrecon(v1,order,eqn);

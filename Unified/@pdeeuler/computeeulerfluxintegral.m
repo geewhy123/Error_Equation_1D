@@ -11,7 +11,12 @@ if(strcmp(eqn,'error')==1)
             [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn );
         case 3
             [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral3( obj,Z,eqn );
+        case 4
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral4( obj,Z,eqn );
+            
+%             error('1')
     end
+    
     return
 end
 
@@ -112,7 +117,12 @@ for i = 2:N+1
 end
 U = [U1l U1r U2l U2r U3l U3r];
 
-
+U1l = rhol;
+U1r = rhor;
+U2l = ul;
+U2r = ur;
+U3l = Pl;
+U3r = Pr;
 
 
 F1l = zeros(N+2,1);
@@ -211,6 +221,61 @@ for i = 2:N+1
  P2 = 0;
  P3 = 0;
  P4 = 0;
+ 
+ if(obj.NLfluxtype==4)
+      r1 = 0;
+        r2 = 0;
+        r3 = 0;
+        r4 = 0;
+        ru1 = 0;
+        ru2 = 0;
+        ru3 = 0;
+        ru4 = 0;
+        rE1 = 0;
+        rE2 = 0;
+        rE3 = 0;
+        rE4 = 0;
+      
+        for k = 1:order
+            r1 = r1 + Z(k,i)*(xx1-x(i))^(k-1); 
+            r2 = r2 + Z(k,i)*(xx2-x(i))^(k-1) ;
+            r3 = r3 + Z(k,i)*(xx3-x(i))^(k-1) ;
+            r4 = r4 + Z(k,i)*(xx4-x(i))^(k-1) ;
+            ru1 = ru1 + Z(k+order,i)*(xx1-x(i))^(k-1); 
+            ru2 = ru2 + Z(k+order,i)*(xx2-x(i))^(k-1) ;
+            ru3 = ru3 + Z(k+order,i)*(xx3-x(i))^(k-1) ;
+            ru4 = ru4 + Z(k+order,i)*(xx4-x(i))^(k-1) ;
+            rE1 = rE1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
+            rE2 = rE2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
+            rE3 = rE3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
+            rE4 = rE4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
+        end
+        P1 = (gam-1)*(rE1-0.5*ru1^2/r1);
+        P2 = (gam-1)*(rE2-0.5*ru2^2/r2);
+        P3 = (gam-1)*(rE3-0.5*ru3^2/r3);
+        P4 = (gam-1)*(rE4-0.5*ru4^2/r4);
+        
+        
+ 
+ PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2; 
+     
+     
+     
+     
+     
+ else
+     
+     
+     
+     
+     
+     
+     
+     
+ 
+ 
+ 
+ 
     for k = 1:order
        P1 = P1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
        P2 = P2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
@@ -221,6 +286,8 @@ for i = 2:N+1
  
  PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
+ 
+ end
  phi1(i) =(A(i)*FrAve(i,1)-A(i-1)*FlAve(i,1))/h(i) - sourceMMS(i,1);
 phi2(i) = (A(i)*FrAve(i,2)-A(i-1)*FlAve(i,2))/h(i)- PAp(i) - sourceMMS(i,2);
  phi3(i) =(A(i)*FrAve(i,3)-A(i-1)*FlAve(i,3))/h(i) - sourceMMS(i,3);

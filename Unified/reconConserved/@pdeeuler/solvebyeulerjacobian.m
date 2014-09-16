@@ -94,8 +94,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % %%%%
 
         Rold = R;
+        
         [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
  
+%         error('1')
         R(2:3:3*N-1) = phi1(2:N+1);
         R(3:3:3*N) = phi2(2:N+1);
         R(4:3:3*N+1) = phi3(2:N+1);
@@ -535,7 +537,8 @@ U = obj.exactSolutionU;
 % % % % end
 
             Je = obj.computeeulerfluxjacobian(e,'error');%,x,h,N,p);
-
+% Je
+% error('1')
 % % % % % if(obj.bcLeftType == 'D')
 % % % % %    obj.T0 = 1; 
 % % % % %    obj.P0 = 1;
@@ -707,7 +710,8 @@ end
 
 
 % exacterr = exacterrv;
-
+exacterrv
+error('1')
 
 % ee = exacterr - w;
         errerrv2 = [sqrt(sum((exacterrv(2:N+1,1)-ee(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ee(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ee(2:N+1,3)).^2)/N) ];
