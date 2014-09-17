@@ -505,7 +505,10 @@ U = obj.exactSolutionU;
         
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
+        
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+%         phi2
+%         error('1')
 %      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
 %     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 
@@ -550,7 +553,6 @@ U = obj.exactSolutionU;
 %         [R-R1]
 %         error('1')
 
-   
         
         while(max(abs(R(2:3*N+1))) > 1e-13  || total_time ==0)
      

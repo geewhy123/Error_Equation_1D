@@ -28,8 +28,8 @@ Z = obj.unstructuredrecon(v,order,eqn);
 % 
 % %%%%%%
 
-
   [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,eqn);
+%   error('1')
 
 
 R0 = NaN*ones(3*N+2,1);

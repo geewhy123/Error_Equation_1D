@@ -117,13 +117,14 @@ for i = 2:N+1
 end
 U = [U1l U1r U2l U2r U3l U3r];
 
+if(obj.NLfluxtype == 4)
 U1l = rhol;
 U1r = rhor;
 U2l = ul;
 U2r = ur;
 U3l = Pl;
 U3r = Pr;
-
+end
 
 F1l = zeros(N+2,1);
 F2l = zeros(N+2,1);

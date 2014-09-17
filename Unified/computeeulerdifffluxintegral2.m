@@ -103,6 +103,8 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn )
 % Z
 %
 [rhol ul Pl rhor ur Pr]
+% obj.convUleft
+
 %  error('1')
 % error('1')
 
@@ -114,7 +116,7 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn )
     Pr = Pr + obj.convUright(:,3);
 
 [rhol ul Pl rhor ur Pr]
-%  error('1')
+% error('1')
 
 % %  if(strcmp(eqn,'error')==1)
 % %  Vpe = [rhol rhor ul ur Pl Pr];
