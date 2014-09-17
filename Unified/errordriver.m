@@ -1,5 +1,5 @@
 
-function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle)
+function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle,NLflux)
 ebcL = 0;
 ebcR = 0;
 
@@ -86,6 +86,7 @@ problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goa
 problem.ebcL = ebcL;
 problem.ebcR = ebcR;
 problem.bchandle = bchandle;
+problem.NLfluxtype = NLflux;
 else
 problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.jump = jump;
