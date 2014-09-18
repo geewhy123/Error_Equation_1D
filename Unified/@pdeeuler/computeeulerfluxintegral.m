@@ -25,6 +25,7 @@ N=obj.nCells;
 h = obj.cellWidths;
 x = obj.cellCentroids;
 sourceMMS = obj.source;
+
 rhol  = zeros(N+2,1);
 rhor  = zeros(N+2,1);
 ul = zeros(N+2,1);
