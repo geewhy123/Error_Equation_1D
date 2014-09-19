@@ -354,6 +354,10 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
     if(q> 0 && r>0)
 
+%         if(obj.NLfluxtype == 2)
+%            obj.NLfluxtype = 4; 
+%         end
+        
         obj.computerespseudo();
     
         if(obj.NLfluxtype ==4)
@@ -378,6 +382,12 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
  
         [R1 R2 R3];
+
+        
+        
+                if(obj.NLfluxtype == 2)
+           obj.NLfluxtype = 4; 
+        end
 
 
 %         norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
