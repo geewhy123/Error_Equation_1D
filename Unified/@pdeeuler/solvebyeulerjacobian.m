@@ -800,6 +800,7 @@ end
         
         errerru2 = [sqrt(sum((exacterru(2:N+1,1)-eu(2:N+1,1)).^2)/N) sqrt(sum((exacterru(2:N+1,2)-eu(2:N+1,2)).^2)/N)  sqrt(sum((exacterru(2:N+1,3)-eu(2:N+1,3)).^2)/N) ];
         errerr2 = max(abs(errerru2));
+        save('euler244.mat','x','exacterru','eu')
     else
         errerr2 = NaN;
         exacterr = NaN;

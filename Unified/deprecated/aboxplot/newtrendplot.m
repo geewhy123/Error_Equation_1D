@@ -1,5 +1,5 @@
 close all
-
+load('Uunif500.mat')
 x1 = E(:,1);
 x2 = E(:,5);
 x3 = E(:,9);
