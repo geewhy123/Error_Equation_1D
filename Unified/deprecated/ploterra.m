@@ -146,6 +146,49 @@ hL = legend([lin],{'$$\mathcal{O}(h^\mathbf{2})$$','$$\mathcal{O}(h^\mathbf{3})$
 
 
 
+%zoom in 
+fig = figure
+
+F = 21;
+g = 3;
+
+       f(1)= subplot(2,2,1);
+linn(1)=plot(x,exacterr(:,5)-ee(:,5),'^','Color','Black','LineWidth',g);
+         xlabel('(2,3,3)','FontSize',F+2);
+                set(f(1), 'fontsize', F);
+    set(findobj(f(1),'Type','text'),'FontSize',  F);
+                 
+       f(2)= subplot(2,2,2);
+linn(2)=plot(x,exacterr(:,10)-ee(:,10),'v','Color','Red','LineWidth',g);
+         xlabel('(2,4,4)','FontSize',F+2);
+                set(f(2), 'fontsize', F);
+    set(findobj(f(2),'Type','text'),'FontSize',  F);
+                 
+           f(3)= subplot(2,2,3);
+           
+           
+           
+linn(3)=plot(x,exacterr(:,15)-ee(:,15),'s','Color','Magenta','LineWidth',g);
+         xlabel('(2,5,5)','FontSize',F+2);
+                set(f(3), 'fontsize', F);
+    set(findobj(f(3),'Type','text'),'FontSize',  F);
+%              ylabel('\hspace*{2.5cm}$$\mathbf{\epsilon_p-{\epsilon}_{pq}}$$','Interpreter','Latex','FontSize',30)       
+           f(4)= subplot(2,2,4);
+linn(4)=plot(x,exacterr(:,20)-ee(:,20),'d','Color',[153/255, 76/255, 0],'LineWidth',g);
+         xlabel('(2,6,6)','FontSize',F+2);
+                set(f(4), 'fontsize', F);
+    set(findobj(f(4),'Type','text'),'FontSize',  F);
+                 
+gL = legend([linn],{'$$\mathcal{O}(h^\mathbf{3})$$','$$\mathcal{O}(h^\mathbf{4})$$','$$\mathcal{O}(h^\mathbf{5})$$','$$\mathcal{O}(h^\mathbf{6})$$'},'Interpreter','Latex','FontSize',22,'Orientation','Horizontal');
+
+annotation(fig,'textbox',...
+    [0.506208333333333 0.0348869634744324 0.0296875 0.0304449648711944],...
+    'Interpreter','latex',...
+    'String',{'$$x$$'},...
+    'FontWeight','bold',...
+    'FontSize',25,...
+    'FontName','AlArabiya',...
+    'EdgeColor',[1 1 1]);
 
 
 

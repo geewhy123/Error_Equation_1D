@@ -9,38 +9,54 @@ close all
 load('euler244.mat')
 
 % figure
+g = 3
+figure(1)
+set(gca,'FontSize',20)
+F = 20;
+       f(1)= subplot(3,7,[1:3])
+        plot(x,exacterru(:,1),'o',x,eu(:,1),'*','LineWidth',g)
+%         xlabel('$\epsilon_\rho$','Interpreter','Latex','FontSize',F+2);
+         xlabel('Error in density','FontSize',F+2);
+%         title('Exact and Computed Error','Interpreter','Latex','FontSize',F,'FontWeight','bold')
+                 
+                  set(f(1), 'fontsize', F);
+    set(findobj(f(1),'Type','text'),'FontSize',  F);
+                 
+                 
+        f(3)=subplot(3,7,[8:10])
+        plot(x,exacterru(:,2),'o',x,eu(:,2),'*','LineWidth',g)
+%         xlabel('$\epsilon_{\rho u}$','Interpreter','Latex','FontSize',F+2);
+xlabel('Error in momentum','FontSize',F+2);
+        ylabel('$\epsilon_{p}, \epsilon_{pq}$','Interpreter','Latex','FontSize',F+16)          
+        f(5)=subplot(3,7,[15:17])
+        plot(x,exacterru(:,3),'o',x,eu(:,3),'*','LineWidth',g)
+%         xlabel('$\epsilon_{\rho E}$','Interpreter','Latex','FontSize',F+2);
+                         xlabel('Error in Energy','FontSize',F+1);
+l=legend('Exact error','Error estimate','Orientation','Horizontal');
 
-h=figure
-set(gca,'FontSize',18)
-F = 18;
-        subplot(3,2,1)
-        plot(x,eu(:,1),'*',x,exacterru(:,1),'o')
-        xlabel('$\epsilon_\rho$','Interpreter','Latex','FontSize',F);
-        title('Exact and Computed Error','Interpreter','Latex','FontSize',F,'FontWeight','bold')
-                l=legend('Error estimate','Exact error')
-                set(l,'FontSize',F)
+
+                set(l,'FontSize',F-3)
                 
-        subplot(3,2,3)
-        plot(x,eu(:,2),'*',x,exacterru(:,2),'o')
-        xlabel('$\epsilon_{\rho u}$','Interpreter','Latex');
-        subplot(3,2,5)
-        plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
-        xlabel('$\epsilon_{\rho E}$','Interpreter','Latex');
-       
 
-
-        subplot(3,2,2)
-        plot(x,exacterru(:,1)-eu(:,1),'x')
-        xlabel('$\epsilon_\rho$','Interpreter','Latex');
-
-        subplot(3,2,4)
-        plot(x,exacterru(:,2)-eu(:,2),'x')
-        xlabel('(computed)$\epsilon_u$','Interpreter','Latex');
-        subplot(3,2,6)
-        plot(x,exacterru(:,3)-eu(:,3),'x')
-        xlabel('(computed)$\epsilon_P$','Interpreter','Latex');
+        f(2)=subplot(3,7,[5:7])
+        plot(x,exacterru(:,1)-eu(:,1),'x','LineWidth',g)
+%        xlabel('$(\epsilon_p-\epsilon_{pq})_\rho$','Interpreter','Latex','FontSize',F+2);
+xlabel('Error difference in density','FontSize',F+2);
+        f(4) = subplot(3,7,[12:14])
+        plot(x,exacterru(:,2)-eu(:,2),'x','LineWidth',g)
+%         xlabel('$(\epsilon_p-\epsilon_{pq})_{\rho u}$','Interpreter','Latex','FontSize',F+2);
+xlabel('Error difference in momentum','FontSize',F+2);
+        ylabel('$\epsilon_{p} - \epsilon_{pq}$','Interpreter','Latex','FontSize',F+16)          
+         f(6)=  subplot(3,7,[19:21])
         
-
+         plot(x,exacterru(:,3)-eu(:,3),'x','LineWidth',g)
+%         xlabel('$(\epsilon_p-\epsilon_{pq})_{\rho E}$','Interpreter','Latex','FontSize',F+2); 
+         xlabel('Error difference in energy','FontSize',F+2);
+for i = 1:6
+    set(f(i), 'fontsize', F);
+    set(findobj(f(i),'Type','text'),'FontSize',  F); 
+end
+        
 
 error('1')
 
