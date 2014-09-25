@@ -58,7 +58,7 @@ for i = 1:6
 end
         
 
-error('1')
+% error('1')
 
 %trend
 
@@ -121,7 +121,7 @@ legend('predicted order')
 % set(gca,'XTickLabel','')
 
 
-error('1')
+% error('1')
 
 % A(1,1) = errordriver(10,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1)
 % A(1,2) = errordriver(20,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1)
@@ -139,14 +139,15 @@ error('1')
 % A(5,2) = errordriver(20,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
 % A(5,3) = errordriver(40,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
 close all
-%  load('euler.mat')
+  load('euler2.mat')
 x = [1/10 1/20 1/40];
 xmin = 1e-2;
 xmax = 2e-1;
 y = linspace(xmin,xmax,100);
-c = 1e-5;
-b4 = c*y.^4;
-b2 = c*y.^2;
+c1 = 1e1;
+c2 = 1e-0;
+b4 = c1*y.^4;
+b2 = c2*y.^2;
 figure
 set(gca,'FontSize',14)
 loglog(x,A,'*-',y,b2,y,b4,'LineWidth',1.5)
