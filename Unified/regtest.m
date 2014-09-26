@@ -1,3 +1,5 @@
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
+assert(max(abs(errerr2-0.004858216643234)/norm(errerr2))< .001)
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1);
 assert(max(abs(errerr2-3e-2)/norm(errerr2))< .001)
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',2)

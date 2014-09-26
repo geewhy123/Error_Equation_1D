@@ -385,7 +385,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         
         
-                if(obj.NLfluxtype == 2)
+                if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
            obj.NLfluxtype = 4; 
         end
 

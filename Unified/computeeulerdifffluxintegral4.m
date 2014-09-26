@@ -508,10 +508,7 @@ Z;
         xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
         xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
         xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
-        P1 = 0;
-        P2 = 0;
-        P3 = 0;
-        P4 = 0;
+      
         r1 = 0;
         r2 = 0;
         r3 = 0;
@@ -629,12 +626,12 @@ UU = [U1l U2l U3l U1r U2r U3r];
 [F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.primalPb);
 end
 
-    if(strcmp(eqn,'error')==1 )%&& obj.T0 == 0)
-        [F1l F1r F2l F2r F3l F3r];
+%     if(strcmp(eqn,'error')==1 )%&& obj.T0 == 0)
+%         [F1l F1r F2l F2r F3l F3r];
 %  U
 %  [rhol rhor ul ur Pl Pr]
 %    error('1')
-    end
+%     end
  
  
  %faces
@@ -765,10 +762,7 @@ end
         xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
         xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
         xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
-        P1 = 0;
-        P2 = 0;
-        P3 = 0;
-        P4 = 0;
+  
         r1 = 0;
         r2 = 0;
         r3 = 0;
@@ -825,8 +819,8 @@ end
 %     FPAp = F(:,2)./h+PAp
 % PAp-obj.errorSource(:,2)
 % (FrAve-FlAve)/h(2)
-    PP = [phia1 phia2 phia3 phib1 phib2 phib3];
-[phia2 phib2 phia2-phib2 phi2];
+%     PP = [phia1 phia2 phia3 phib1 phib2 phib3];
+% [phia2 phib2 phia2-phib2 phi2];
 %  error('1')
 
 % [phi1(N+1) phi2(N+1) phi3(N+1)]
