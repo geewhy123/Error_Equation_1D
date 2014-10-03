@@ -15,6 +15,8 @@ elseif(strcmp(obj.physics,'BurgersVisc')==1)
     burgersviscinitialize(obj);
 elseif(strcmp(obj.physics,'EulerQ')==1)
     eulerinitialize(obj);
+elseif(strcmp(obj.physics,'LinearSystem')==1)
+    linearsysteminitialize(obj);
 else
     fprintf('No exact solution provided')
 %     error('1')
@@ -449,5 +451,59 @@ f(i,1:3) = 0;
 obj.initialSolution = U;
 
 
+end
+
+function  linearsysteminitialize(obj)
+%BURGERSINITIALIZE Summary of this function goes here
+%   Detailed explanation goes here
+tlim = obj.endTime;
+x = obj.cellCentroids;
+N = obj.nCells;
+h = obj.cellWidths;
+
+u0 = zeros(N+2,2);
+ue = zeros(N+2,2);
+f = zeros(N+2,1);
+  for i = 2:N+1
+           xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+ 
+    
+    if(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+        ue(i,1) = (1/h(i))*( (-(10^(1/2)*pi^(1/2)*(erf(10^(1/2)*(10*tlim - 10*xr + 5)) - erf(10^(1/2)*(10*tlim + 10*xr - 5))))/400) - ...
+                           (-(10^(1/2)*pi^(1/2)*(erf(10^(1/2)*(10*tlim - 10*xl + 5)) - erf(10^(1/2)*(10*tlim + 10*xl - 5))))/400) );
+                       
+                       ue(i,2)=(1/h(i))*( (  ( exp(-1000*(xr-tlim-0.5).^2) + exp(-1000*(xr+tlim-0.5).^2))/2) - ...
+                                          (  ( exp(-1000*(xl-tlim-0.5).^2) + exp(-1000*(xl+tlim-0.5).^2))/2) );
+                       
+                       
+                       u0(i,1) = (1/h(i))*( (-(10^(1/2)*pi^(1/2)*(erf(10^(1/2)*( - 10*xr + 5)) - erf(10^(1/2)*( + 10*xr - 5))))/400) - ...
+                           (-(10^(1/2)*pi^(1/2)*(erf(10^(1/2)*( - 10*xl + 5)) - erf(10^(1/2)*( + 10*xl - 5))))/400) );
+        
+                        u0(i,2)=(1/h(i))*( (  ( exp(-1000*(xr-0.5).^2) + exp(-1000*(xr-0.5).^2))/2) - ...
+                                          (  ( exp(-1000*(xl-0.5).^2) + exp(-1000*(xl-0.5).^2))/2) );
+                       
+        
+    elseif(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
+u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
+    ue(i) = (1/h(i))*(xr-xl);%(1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));%(1/h(i))*(xr-xl);
+    u0(i) = 0;%(1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl))+xr-xl);
+else
+    assert(0)
+end
+
+f(i) = 0;
+    end
+f(1) = NaN;
+f(N+2) = NaN;
+ ue(1) = NaN;
+ ue(N+2) = NaN;
+ u0(1) = NaN;
+ u0(N+2)= NaN;
+ obj.exactSolution = ue;
+ obj.initialSolution = u0;
+ obj.source = f;
 end
 

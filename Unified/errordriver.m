@@ -81,7 +81,14 @@ global dir
 dir = NaN*ones(N+2,1);
 
 
-if(strcmp(physics,'EulerQ')==1)
+
+
+if(strcmp(physics,'LinearSystem')==1)
+problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+problem.ebcL = ebcL;
+problem.ebcR = ebcR;
+problem.bchandle = bchandle;
+elseif(strcmp(physics,'EulerQ')==1)
 problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
 problem.ebcL = ebcL;
 problem.ebcR = ebcR;
@@ -100,8 +107,10 @@ problem.initializeexact();
  
 u0 = problem.initialSolution;
 ue = problem.exactSolution;
-% plot(x,u0,x,ue)
-% assert(0)
+length(x)
+length(ue)
+ plot(x,u0,x,ue)
+%  assert(0)
 problem.computemoments();
 
 %u = ue;
