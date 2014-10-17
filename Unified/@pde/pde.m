@@ -43,6 +43,7 @@ higherprimalPI;
         stencilSize =5;
         jump;
         bchandle ;
+        nUnk;
     end
     
     methods
@@ -84,6 +85,7 @@ higherprimalPI;
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobian(obj);
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj);
         computehigherpseudo(obj);
+        postprocesscn(obj,n);
     end
     
     methods(Access=private)

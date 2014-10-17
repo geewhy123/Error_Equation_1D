@@ -110,6 +110,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 % end
 if(strcmp(eqn,'solution')==1)
 phi(:,steps) = obj.computefluxintegral(Z,eqn);
+
 %  phi(:,steps)
 %  error('1')
 
@@ -126,7 +127,9 @@ end
 %     Z
 %     phi
 %     error('1')
-    unew = u+phi*A(steps,:)'*k;
+
+% error('1')
+unew = u+phi*A(steps,:)'*k;
 %     (phi)
 %     (A(steps,:)')
 %     phi*A(steps,:)'*k

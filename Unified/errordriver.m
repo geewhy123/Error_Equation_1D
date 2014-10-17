@@ -9,7 +9,8 @@ if nargin == 13
 elseif nargin == 14
    bchandle = 'HC';
 end
-
+% bchandle
+% assert(0);
 
 %DRIVER Summary of this function goes here
 %   Detailed explanation goes here
@@ -20,7 +21,7 @@ if(p>0)
 
     
     
-    rng(1234);
+%     rng(1234);
 
 %  g = randi(1000000);
 %  977219
@@ -109,7 +110,10 @@ u0 = problem.initialSolution;
 ue = problem.exactSolution;
 length(x)
 length(ue)
- plot(x,u0,x,ue)
+figure
+ plot(x,u0)
+ figure
+%  plot(x,ue)
 %  assert(0)
 problem.computemoments();
 
@@ -152,24 +156,27 @@ problem.computeprimalpseudo();
  
  
  
- 
-er = problem.reconplot(Z,'solution');
-
+% figure
+if(strcmp(problem.physics,'LinearSystem')==1)
+er = problem.reconplot(Z(1:2,:),'solution');
+figure
+er = problem.reconplot(Z(3:4,:),'solution');
+end
 % Z
 % error('1')
 
-hold on
-plot(x,u0)
+% hold on
+% plot(x,u0)
 f = problem.source;
 % figure
 % plot(x,ue)
 % error('1')
 
-
+Z
 % % % % [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
 [tau]=problem.computefluxintegral(Z,'solution')%reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
 
-
+% error('1')
 % tau
 
 % error('1')
@@ -231,14 +238,22 @@ f = problem.source;
 % % %  plot(x,u0-ue,x(2:N+1),v)
 % % %  figure
 %   error('1')
-
+if(strcmp(problem.physics,'LinearSystem')==1)
+    problem.nUnk = 2;
+elseif(strcmp(problem.physics,'Advection')==1) 
+    
+    problem.nUnk = 1;
+end
  
 
 d=1;
-
+u
+% U = 
 T = 1;
 for j = 1:100000
-        U(:,j) = u;
+%     for m = 1:nUnk 
+
+        U(:,j,1:problem.nUnk) = u;
 tt = k*(j-1);
     
 
@@ -281,6 +296,7 @@ if(mod(j,100)==0)
     max(d)
 end
 
+%     end
 end
 
 u

@@ -32,7 +32,11 @@ uR = obj.bcRightVal;
            [uu,d] = rk5(u,x,f,k,h,N,p,t,phys);
            
        case 7
+           if(strcmp(obj.physics,'LinearSystem')~=1)
            [uu,d] = rk7('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+           else
+           [uu,d] = rk7LinearSystem('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+           end
        otherwise
    end
       

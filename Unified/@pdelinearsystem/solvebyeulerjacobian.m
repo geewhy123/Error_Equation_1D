@@ -349,7 +349,6 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 % error('1')
     
     
-    
     %%%%residual
 
     if(q> 0 && r>0)

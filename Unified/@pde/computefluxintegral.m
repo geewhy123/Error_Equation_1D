@@ -1,5 +1,5 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
-    if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1)    
+    if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1)    
         h = obj.cellWidths;
         N = obj.nCells;
         F = zeros(N+2,1);
@@ -18,6 +18,13 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
                 F(i) = computeadvectionflux(obj,Z(:,i),Z(:,i+1),eqn,i);
             elseif(strcmp(obj.physics,'BurgersVisc')==1)
                 F(i) = computeburgersviscflux(obj,Z(:,i),Z(:,i+1),eqn,i);
+            elseif(strcmp(obj.physics,'LinearSystem')==1)
+%                Z
+%                error('1')
+               
+               [ff] = computelinearsystemflux(obj,Z(:,i),Z(:,i+1),eqn,i);
+               F1(i) = ff(1);
+               F2(i) = ff(2);
             end
             
             if(i==1)
@@ -28,6 +35,11 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
                         F(i) = computeadvectionflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
                     elseif(strcmp(obj.physics,'BurgersVisc')==1)
                         F(i) = computeburgersviscflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+                    elseif(strcmp(obj.physics,'LinearSystem')==1)
+%                         F(i) = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+        [ff] = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+               F1(i) = ff(1);
+               F2(i) = ff(2);
                     end
                 end
             elseif(i==N+1)
@@ -38,6 +50,12 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         
             if(i>1)
                 FI(i) = (F(i)-F(i-1))/h(i)-f(i);
+                if(strcmp(obj.physics,'LinearSystem')==1)
+                    FI1(i)=(F1(i)-F1(i-1))/h(i)-f(i);
+                    FI2(i)=(F2(i)-F2(i-1))/h(i)-f(i);
+                    FI(i,1) = FI1(i) ;
+                    FI(i,2) = FI2(i) ;
+                end
             end
         end
     
@@ -47,11 +65,12 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
       
     elseif(strcmp(obj.physics,'BurgersMod')==1)
         FI=computeburgersmodfluxintegral(obj,Z,eqn);
-    
+ 
     else
         assert(0)
     end
-
+% F1
+% F2
 end
 
 function [ F ] = computepoissonflux( obj,left,right,eqn,i )
@@ -1002,5 +1021,142 @@ end
 % % error('1')
 %  
 % end
+
+function [ F ] = computelinearsystemflux( obj,left,right,eqn,i  )
+%COMPUTEFLUXINTEGRAL Summary of this function goes here
+%   Detailed explanation goes here
+
+    h = obj.cellWidths;
+    N = obj.nCells;
+
+    if(strcmp(eqn,'solution')==1)
+        p = obj.pOrder;
+    elseif(strcmp(eqn,'error')==1)
+        p = obj.qOrder;
+    elseif(strcmp(eqn,'residual')==1)
+        p = obj.rOrder;
+    else
+        assert(0); 
+    end
+
+
+    if(~isempty(obj.refinecells))
+        if(i==1)
+            p = obj.hOrder;
+        elseif(i==N+1)
+            p = obj.hOrder;
+        else
+            n = length(obj.refinecells);
+            if(i < obj.refinecells(n/2)) 
+                pl = obj.hOrder;
+                pr = obj.hOrder;
+            elseif(i==obj.refinecells(n/2))
+                pl = obj.hOrder;
+                pr = obj.pOrder;
+            elseif(i== obj.refinecells(n/2+1)-1)
+                pl = obj.pOrder;
+                pr = obj.hOrder;
+            elseif(i> obj.refinecells(n/2+1)-1)
+                pl = obj.hOrder;
+                pr = obj.hOrder;
+            else
+                pl = obj.pOrder;
+                pr = obj.pOrder;
+            end
+            
+        end
+    else
+    %     if(strcmp(eqn,'solution')==1)
+    %     p = obj.pOrder;
+        pr = p;%obj.pOrder;
+        pl = p;%obj.pOrder;
+    %     elseif(strcmp(eqn,'residual')==1)
+    %     elseif(strcmp(eqn,'error')==1)
+    %     end
+    end       
+ 
+
+    if(i==1 && obj.bcLeftType == 'F')% && obj.bcRightType == 'D')
+        F(1) = 0;
+        F(2) = 0;
+        for k = 1:p
+            F(1) = F(1) + right(k)*(-h(i+1)/2)^(k-1);
+            F(2) = F(2) + right(k+p)*(-h(i+1)/2)^(k-1);
+        end
+        return;
+        
+    elseif(i==N+1 && obj.bcRightType == 'D')% && obj.bcRightType == 'D')
+        F(1) = obj.bcRightVal(1);
+        F(2) = obj.bcRightVal(2);
+        return;
+        
+    elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+        Fl = 0;
+        Fr = 0;
+    
+        for k = 1:p
+            Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+        end
+        for k = 1:p
+            Fl = Fl + left(k)*(h(i)/2)^(k-1);
+        end
+        F = Fr;%0.5*(Fr+Fl);
+     
+        if(p==2)
+            ul1 = right(1)+right(2)*(-h(i+1)/2);
+            ul2 = left(1) + left(2)*(h(i)/2);
+            jump = (.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+            F = F+jump;
+        end
+        return;
+
+    else
+       
+        Fl(1) = 0;
+        Fl(2) = 0;
+        Fr(1) = 0;
+        Fr(2) = 0;
+        
+        for k = 1:pr
+            Fr(2) = Fr(1) + right(k)*(-h(i+1)/2)^(k-1);
+            Fr(1) = Fr(2) + right(k+p)*(-h(i+1)/2)^(k-1);
+        end
+        for k = 1:pl
+            Fl(2) = Fl(1) + left(k)*(h(i)/2)^(k-1);
+            Fl(1) = Fl(2) + left(k+p)*(h(i)/2)^(k-1);
+        end
+        F =Fr;% 0.5*(Fr+Fl);
+     
+%         if(pr==2 && pl == 2)
+% %          if(i==1)
+% %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+% %                 ul1 = right(1)+right(2)*(-h(i+1)/2);
+% %                 ul2 = left(1)+ left(2)*(h(N+1)/2);
+% %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+% %              end
+% %          elseif(i==N+1)
+% %                 ul1 = right(1)+right(2)*(-h(i)/2);
+% %                 ul2 = left(1)+ left(2)*(h()/2);
+% %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
+% %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+% %                  
+% %              end
+% %          
+% %          else
+%             ul1 = right(1)+right(2)*(-h(i+1)/2);
+%             ul2 = left(1) + left(2)*(h(i)/2);
+%             jump = (.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+% %          end
+% 
+%             F = F+jump;
+%         end
+%     end
+    
+        return;
+    
+    end
+    
+ 
+end
 
 

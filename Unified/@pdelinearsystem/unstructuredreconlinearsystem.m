@@ -1,4 +1,4 @@
-function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
+function [ Z ] = unstructuredreconlinearsystem(obj,u,p,eqn,iUnk)
 %UNSTRUCTUREDRECONEULER Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -64,35 +64,38 @@ function [ Z ] = unstructuredreconeuler(obj,u,p,eqn,iUnk)
 
     if(iUnk ~=  3 )
         gam = 1.4;
-        Pa = obj.bcLeftVal(3);
+%         Pa = obj.bcLeftVal(3);
 
 
 % error('1')
-        T0=obj.T0;
-        P0=obj.P0;
-        Ta = T0*(Pa/P0)^((gam-1)/gam);
-        rhoa = Pa/Ta;%*gam
-        ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
+%         T0=obj.T0;
+%         P0=obj.P0;
+%         Ta = T0*(Pa/P0)^((gam-1)/gam);
+%         rhoa = Pa/Ta;%*gam
+%         ua = sqrt((2/(gam-1))*(T0/Ta-1)) *sqrt(gam*Pa/rhoa);%???
 % % %     fprintf('check quant definitions, and consistent')
 
-        if(strcmp(eqn,'error')==1 && T0 ==0 && P0 == 0)
-% [P0 T0 rhoa ua Ta Pa]
-            rhoa = 0;
-            ua = 0;
-            Ta = 0;
-            Pa = 0;
-            % [P0 T0 rhoa ua Ta Pa]
-            %      error('1')
-        end
+%         if(strcmp(eqn,'error')==1 && T0 ==0 && P0 == 0)
+% % [P0 T0 rhoa ua Ta Pa]
+%             rhoa = 0;
+%             ua = 0;
+%             Ta = 0;
+%             Pa = 0;
+%             % [P0 T0 rhoa ua Ta Pa]
+%             %      error('1')
+%         end
 
         if(iUnk==1)
-            obj.bcLeftVal(1) = rhoa;
-            uL = rhoa;
+%             obj.bcLeftVal(1) = rhoa;
+%             uL = rhoa;
+uL = obj.bcLeftVal(1);
         elseif(iUnk==2)
-            obj.bcLeftVal(2) = ua;
-            uL = ua;
+%             obj.bcLeftVal(2) = ua;
+%             uL = ua;
 %     else
 %         uL = 0.95;
+uL = obj.bcLeftVal(1);
+
         end
 
         A = AA(:,:,i);

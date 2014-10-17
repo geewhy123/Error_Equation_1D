@@ -53,6 +53,7 @@ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 %      f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
 elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
+% f(i) = (1/h(i))*2*pi*(cos(2*pi*xr)-cos(2*pi*xl));
 % f(i) = (1/h(i))*(2*xr-3*xr^2-2*xl+3*xl^2);
 
 
@@ -85,8 +86,10 @@ end
 %  ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
  ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
+%  ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+ 
 %  ue(i) = (1/h(i))*(xr^3/3-xr^4/4-xl^3/3+xl^4/4);
-ue(i) = (1/h(i))*(0.925*(xr-xl)+(0.025/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+% ue(i) = (1/h(i))*(0.925*(xr-xl)+(0.025/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
 %  ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 % ue(i) = (1/h(i))*((1/pi))*(-cos(pi*(xr+0.2))+cos(pi*(xl+0.2)));
 
@@ -483,7 +486,20 @@ f = zeros(N+2,1);
                         u0(i,2)=(1/h(i))*( (  ( exp(-1000*(xr-0.5).^2) + exp(-1000*(xr-0.5).^2))/2) - ...
                                           (  ( exp(-1000*(xl-0.5).^2) + exp(-1000*(xl-0.5).^2))/2) );
                        
-        
+% if((xr+xl)/2 > 0.375 && (xr+xl)/2 < 0.625)
+% u0(i,1) = (1/h(i))*((1/(8*pi))*(sin(8*pi*(xr-0.5))-sin(8*pi*(xl-0.5))) + xr-xl);
+% u0(i,2) = (1/h(i))*(cos(8*pi*(xr-0.5))-cos(8*pi*(xl-0.5)) + xr-xl);
+% else 
+%     u0(i,1) = 0;
+%     u0(i,2) = 0;
+% end
+% 
+% if((xr+xl)/2 > 0.375-tlim && (xr+xl)/2 < 0.625+tlim)
+% ue(i,1) = ((1/h(i))*((1/(8*pi))*(sin(8*pi*(xr+tlim-0.5))-sin(8*pi*(xl+tlim-0.5))) + xr+tlim-(xl+tlim)) + ...
+%            (1/h(i))*((1/(8*pi))*(sin(8*pi*(xr-tlim-0.5))-sin(8*pi*(xl-tlim-0.5))) + xr-tlim-(xl-tlim)))/2;
+% end
+% ue
+
     elseif(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
 u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));

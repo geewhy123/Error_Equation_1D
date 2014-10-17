@@ -1,28 +1,18 @@
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
-assert(max(abs(errerr2-0.004858216643234)/norm(errerr2))< .001)
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1);
-assert(max(abs(errerr2-3e-2)/norm(errerr2))< .001)
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',2)
-assert(max(abs(errerr2-2.24e-2)/norm(errerr2))< .001)
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',3)
-assert(max(abs(errerr2-2.1255e-2)/norm(errerr2))< .001)
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
-assert(max(abs(errerr2-3.257e-3)/norm(errerr2))< .001)
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
+% assert(max(abs(errerr2-0.004858216643234)/norm(errerr2))< .001)
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1);
+% assert(max(abs(errerr2-3e-2)/norm(errerr2))< .001)
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',2)
+% assert(max(abs(errerr2-2.24e-2)/norm(errerr2))< .001)
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',3)
+% assert(max(abs(errerr2-2.1255e-2)/norm(errerr2))< .001)
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+% assert(max(abs(errerr2-3.257e-3)/norm(errerr2))< .001)
 
 
 
 tic
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
-assert(max(abs(cverr2-[0.0069    0.0222    0.0098])/norm(cverr2)) < 0.001)
 
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.95 0],10,7,'EulerQ','SS');
-assert(max(abs(cverr2-[0.0    0.0    0.0])) < 0.001)
-
-[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,4,0,0,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
-assert(max(abs(cverr2-1.0e-03 *[  0.3109    0.6598    0.4991])) < 0.001)
-
-% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(5,2,2,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
-% assert(max(abs(errerr2-[0.027616666942943   0.039095218342091   0.087619043539303])) < 0.001)
 
 
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,2,4,0,'P',0,'P',0,10,7,'Poisson','SS');
@@ -72,6 +62,18 @@ assert(abs( errerr2- 6.993251444499368e-04)/errerr2 < 0.001)
 % assert(abs(errerr2-0.001964073234010)/errerr2 < 0.001)
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'F',0,'D',1,0.5,7,'Advection','TimeAccurate');
 assert(abs(cverr2-0.662135389183426)/cverr2 <0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
+assert(max(abs(cverr2-[0.0069    0.0222    0.0098])/norm(cverr2)) < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.95 0],10,7,'EulerQ','SS');
+assert(max(abs(cverr2-[0.0    0.0    0.0])) < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,4,0,0,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
+assert(max(abs(cverr2-1.0e-03 *[  0.3109    0.6598    0.4991])) < 0.001)
+
+% [errerr2,x,cverr2,exacterr,ee,te]=errordriver(5,2,2,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
+% assert(max(abs(errerr2-[0.027616666942943   0.039095218342091   0.087619043539303])) < 0.001)
 
 fprintf('Passed no 6th order')
 
