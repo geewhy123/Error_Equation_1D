@@ -22,6 +22,12 @@ function [ Z] = unstructuredrecon(obj,u,p,eqn)
             [Z2] = unstructuredreconeuler (obj,u(:,2),p,eqn,2);
             Z = [Z1; Z2;Z3];
             return;
+        elseif(p==6)
+            [Z3] = unstructuredreconeulerlong (obj,u(:,3),p,eqn,3);                          
+            [Z1] = unstructuredreconeulerlong (obj,u(:,1),p,eqn,1); 
+            [Z2] = unstructuredreconeulerlong (obj,u(:,2),p,eqn,2);
+            Z = [Z1; Z2;Z3];
+            return;
         else
 %                 [Z3] = unstructuredreconeulerlong (obj,u(:,3),p,eqn,3);                          
 %                [Z1] = unstructuredreconeulerlong (obj,u(:,1),p,eqn,1); 

@@ -59,6 +59,7 @@ NLfluxtype=2;
        [phi1,phi2,phi3]=computeeulerfluxintegral(obj,Z,eqn);
        J = computeeulerfluxjacobian(obj,v,eqn);
         computeprimalleftright(obj);
+        Z  = unstructuredreconeulerlong(obj,u,p,eqn,iUnk)
 %         computehigherpseudo(obj);
         
 
