@@ -123,6 +123,30 @@ legend('predicted order')
 
 % error('1')
 
+
+A(1,1) = errordriver(20,2,3,3,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(1,2) = errordriver(40,2,3,3,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(2,1) = errordriver(20,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(2,2) = errordriver(40,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(3,1) = errordriver(20,2,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(3,2) = errordriver(40,2,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(4,1) = errordriver(20,2,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(4,2) = errordriver(40,2,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(5,1) = errordriver(20,3,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(5,2) = errordriver(40,3,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(6,1) = errordriver(20,3,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(6,2) = errordriver(40,3,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(7,1) = errordriver(20,3,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(7,2) = errordriver(40,3,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(8,1) = errordriver(20,4,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(8,2) = errordriver(40,4,5,5,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(9,1) = errordriver(20,4,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(9,2) = errordriver(40,4,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(10,1) = errordriver(20,5,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+A(10,2) = errordriver(40,5,6,6,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+%  set(gca, 'XTick',1:10, 'XTickLabel',{'233','244','255','266','344','355','366','455','466','566'})
+% %  ylabel('error convergence order')
+ 
 % A(1,1) = errordriver(10,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1)
 % A(1,2) = errordriver(20,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1)
 % A(1,3) = errordriver(40,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'HC',1)
@@ -139,7 +163,8 @@ legend('predicted order')
 % A(5,2) = errordriver(20,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
 % A(5,3) = errordriver(40,2,4,4,1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
 close all
-  load('euler2.mat')
+%   load('euler2.mat')
+save('eulerunif.mat',A)
 x = [1/10 1/20 1/40];
 xmin = 1e-2;
 xmax = 2e-1;

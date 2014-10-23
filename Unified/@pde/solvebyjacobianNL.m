@@ -304,7 +304,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
  
 
 
-    obj.postprocesscn(0.5);
+%     obj.postprocesscn(0.5);
 
 %%%%residual
 

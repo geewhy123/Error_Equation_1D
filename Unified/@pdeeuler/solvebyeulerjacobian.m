@@ -381,7 +381,8 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 %     Rend= (right-left)./h-f;
         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
  
-        [R1 R2 R3];
+        [R1 R2 R3]
+        error('1')
 
         
         
