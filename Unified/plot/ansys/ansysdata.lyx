@@ -1,0 +1,1965 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass nih
+\begin_preamble
+\date{}
+%\usepackage{prettyref}
+%\newrefformat{tab}{Table\,\ref{#1}}
+%\newrefformat{fig}{Figure\,\ref{#1}}
+%\newrefformat{eq}{Eq.\,\textup{(\ref{#1})}}
+\AtBeginDocument{\renewcommand{\ref}[1]{\mbox{\autoref{#1}}}}
+\usepackage{overcite}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\def\@fnsymbol#1{\ensuremath{\ifcase#1\or \dagger\or \ddagger\or% \ddagger\or
+  \mathsection\or \mathparagraph\or \|\or **\or \dagger\dagger
+   \or \ddagger\ddagger \else\@ctrerr\fi}}
+
+
+
+%\usepackage{natbib}
+
+% Hyperlink Options
+\usepackage{ifpdf} % part of the hyperref bundle
+\ifpdf % if pdflatex is used
+
+ % Use True Type Fonts Instead of Older LaTeX Fonts
+ \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+
+\fi % end if pdflatex is used
+
+% for correct jump positions whe clicking on a link to a float
+\usepackage[figure]{hypcap}
+
+\usepackage{indentfirst}
+% preamble stuff
+\newcommand{\nih@PIname}{}%Oakes, Robert Stilman}
+\newcommand{\piname}[1]{\renewcommand{\nih@PIname}{#1}}
+\makeatletter
+
+% constants
+\newcommand{\nih@sillysize}{\scriptsize}
+
+% set the page style
+\pagestyle{fancy}
+\chead{\fancyplain{}{%
+        \ifthenelse{\boolean{nih@blank}}%
+            {}% fi
+            {%
+                {{\sf\scriptsize - }}%Principal Investigator/Program Director%
+%                    (Last, First, Middle):}}%
+            }% esle
+    }
+}
+\rhead{\fancyplain{}{%
+        \ifthenelse{\boolean{nih@blank}}%
+            {\ \ \ {\nih@PIname}\ \ \ \ \ }% fi
+            {%
+               % \underline{\ \ \ {\nih@PIname}\ \ \ \ \ }%
+            }% esle
+    }
+}
+\lhead{\fancyplain{}{\nih@kk}}
+\lfoot{\fancyplain{}{%
+        \ifthenelse{\boolean{nih@blank}}%
+            {}% fi
+            {\sf\footnotesize -\\}%PHS 398/2590 (Rev.~09/04)\\}% esle
+    }
+}
+\cfoot{\ifthenelse{\boolean{nih@blank}}%
+        {\thepage}% fi
+        {\sf\footnotesize{Page}}% esle
+    \ %\underline
+{\ \ \ {\sf\thepage}\ \ \ }%
+}
+\rfoot{\fancyplain{}%
+    {\sf\footnotesize{\textbf{-}}}%
+}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.75pt}
+
+\usepackage{amsfonts}
+\usepackage{denselists}
+
+% Two Column Control
+\newif\ifdotwocol
+\dotwocoltrue
+\long\def\twocol#1#2{\ifdotwocol{#1}\else{#2}\fi}
+%%%
+
+\def\mybeforeequation{\footnotesize}
+\def\myafterequation{\renewcommand\baselinestretch{1.1}}
+%%%
+
+\def\citeusmark{$^{\textstyle \star}$}
+\def\citeus#1#2{\cite{#1}}
+
+\def\crow#1#2{#2}
+
+%\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{boxedminipage}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{url}
+
+\def\Paper{grant application}
+\def\paper{application}
+\def\refappendix{Sec.}
+
+\def\poster{(Poster)}
+
+\long\def\todo#1{{\bf{To do:}} #1}
+
+\def\ICRA{IEEE International Conference on Robotics and Automation (ICRA)}
+\long\def\squeezable#1{#1}
+\def\a5{5}
+
+\def\mycaptionsize{\footnotesize}
+\def\mycodesize{\footnotesize}
+\def\myeqnsize{\small}
+
+\def\sheading#1{{\bf #1:}\ }
+\def\sheading#1{\subsubsection{#1}}
+
+\def\ssheading#1{\noindent {\bf #1.}\ } 
+
+\newtheorem{hypothesis}{Hypothesis}
+\long\def\hyp#1{\begin{hypothesis} #1 \end{hypothesis}}
+
+\def\cbk#1{[{\em #1}]}
+
+\def\R{\mathbb{R}}
+\def\midv{\mathop{\,|\,}}
+\def\Fscr{\mathcal{F}}
+\def\Gscr{\mathcal{G}}
+\def\Sscr{\mathcal{S}}
+\def\set#1{{\{#1\}}}
+\def\edge{\!\rightarrow\!}
+\def\dedge{\!\leftrightarrow\!}
+\newcommand{\EOP}{\nolinebreak[1]~~~\hspace*{\fill} $\Box$\vspace*{\parskip}\vspace*{1ex}}
+
+\newcommand{\mybibitem}[1]{\bibitem{#1} 
+\label{mybiblabel:#1}}
+\newcommand{\BC}{[}
+\newcommand{\EC}{]}
+\newcommand{\mycite}[1]{\ref{mybiblabel:#1}\nocite{#1}}
+\newcommand{\starcite}[1]{\ref{mybiblabel:#1}\citeusmark\nocite{#1}}
+
+
+\def\degree{$^\circ$}
+\def\R{\mathbb{R}}
+\def\Fscr{\mathcal{F}}
+\def\set#1{{\{#1\}}}
+\def\edge{\!\rightarrow\!}
+\def\dedge{\!\leftrightarrow\!}
+
+\long\def\gobble#1{}
+\def\Jigsaw{{\sc Jigsaw}}
+\def\ahelix{\ensuremath{\alpha}-helix}
+\def\ahelices{\ensuremath{\alpha}-helices}
+\def\ahelical{$\alpha$-helical}
+\def\bstrand{\ensuremath{\beta}-strand}
+\def\bstrands{\ensuremath{\beta}-strands}
+\def\bsheet{\ensuremath{\beta}-sheet}
+\def\bsheets{\ensuremath{\beta}-sheets}
+\def\hone{{\ensuremath{^1}\rm{H}}}
+\def\htwo{{$^{2}$H}}
+\def\cthir{{\ensuremath{^{13}}\rm{C}}}
+\def\nfif{{\ensuremath{^{15}}\rm{N}}}
+\def\hn{{\rm{H}\ensuremath{^\mathrm{N}}}}
+\def\hnone{{\textup{H}\ensuremath{^1_\mathrm{N}}}}
+\def\ca{{\rm{C}\ensuremath{^\alpha}}}
+\def\catwel{{\ensuremath{^{12}}\rm{C}\ensuremath{^\alpha}}}
+\def\ha{{\rm{H}\ensuremath{^\alpha}}}
+\def\cb{{\rm{C}\ensuremath{^\beta}}}
+\def\hb{{\rm{H}\ensuremath{^\beta}}}
+\def\hg{{\rm{H}\ensuremath{^\gamma}}}
+\def\dnn{{\ensuremath{d_{\mathrm{NN}}}}}
+\def\dan{{\ensuremath{d_{\alpha \mathrm{N}}}}}
+\def\jconst{{\ensuremath{^{3}\mathrm{J}_{\mathrm{H}^{\mathrm{N}}\mathrm{H}^{\alpha}}}} }
+\def\cbfb{{CBF-$\beta$}}
+
+\newtheorem{defn}{Definition}
+\newtheorem{claim}{Claim}
+
+    \gobble{
+    \psfrag{CO}[][]{\colorbox{white}{C}}
+    \psfrag{OO}[][]{\colorbox{white}{O}}
+    \psfrag{CA}[][]{\colorbox{white}{\ca}}
+    \psfrag{HA}[][]{\colorbox{white}{\ha}}
+    \psfrag{CB}[][]{\colorbox{white}{\cb}}
+    \psfrag{HB}[][]{\colorbox{white}{\hb}}
+    \psfrag{HN}[][]{\colorbox{white}{\hn}}
+    \psfrag{N15}[][]{\colorbox{white}{\nfif}}
+    \psfrag{dnn}[][]{\dnn}
+    \psfrag{dan}[][]{\dan}
+    \psfrag{phi}[][]{$\phi$}
+    }
+
+\newenvironment{closeenumerate}{\begin{list}{\arabic{enumi}.}{\topsep=0in\itemsep=0in\parsep=0in\usecounter{enumi}}}{\end{list}}
+\def\CR{\hspace{0pt}}           % ``invisible'' space for line break
+
+\newif\ifdbspacing
+
+\dbspacingfalse  % For normal spacing
+
+\ifdbspacing
+ \doublespacing
+ \newcommand{\capspacing}{\doublespace\mycaptionsize}
+\else
+ \newcommand{\capspacing}{\mycaptionsize}
+\fi
+
+\def\rulefigure{\smallskip\hrule}
+
+\def\codesize{\small}
+
+% Can use macros \be, \ee, \en as shortcuts
+%  for \begin{enumerate}, \end{enumerate}, \item
+%  respectively.
+
+\def\be{\begin{enumerate}}   % Begin Enumerate
+\def\ee{\end{enumerate}}     % End Enumerate
+\def\en{\item}               % ENtry (item)
+\def\bi{\begin{itemize}}     % Begin Itemize
+\def\ei{\end{itemize}}       % End Itemize
+\def\bv{\begin{verbatim}}    % Begin Verbatim
+\def\ev{\end{verbatim}}      % End Verbatim
+
+\def\matlab{{\sc matlab} }
+\def\amber{{\sc amber} }
+\def\KS{{$K^*$}}
+\def\KSM{{K^*}} % K-Star Math
+\def\KSTM{{\tilde{K}^*}}  % K-Star Tilde Math (appx K*)
+\def\KOP{{$K^{\dagger}_{o}$}}  % K-Star Optimal partial
+\def\KOPM{{K^{\dagger}_{o}}}  % K-Star Optimal partial Math
+\def\KP{{$K^{\dagger}$}}  % K-Star partial
+\def\KPM{{K^{\dagger}}}  % K-Star partial Math
+\def\KTPM{{\tilde{K}^{\dagger}}}  % K-Star Tilde partial Math
+\def\KD{{$K_{_D}$}}
+\def\KA{{$K_{_A}$}}
+\def\qpM{{q_{_P}}}
+\def\qlM{{q_{_L}}}
+\def\qplM{{q_{_{PL}}}}
+\def\qSplM{{q^*_{_{PL}}}}
+\def\KSO{{$K^*_{o}$}} % K-Star Optimal
+\def\KSOM{{K^*_{o}}}  % K-Star Optimal Math
+\def\CBFB{{CBF-$\beta$}}   % Core binding factor beta
+\def\argmin{\mathop{\mathrm{argmin}}}
+\def\rhl#1{{\em \underline{RYAN}: *\{{#1}\}*}}
+\def\set#1{{\left\{ #1 \right\}}}
+\def\Escr{{\mathcal{E}}}
+\def\Jscr{{\mathcal{J}}}
+\def\Kscr{{\mathcal{K}}}
+\def\th{{$^{{\mathrm{th}}}$}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize 11
+\spacing onehalf
+\use_hyperref true
+\pdf_author "Rob Oakes"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=black, citecolor=black, urlcolor=blue, filecolor=blue"
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+thesection}{
+\backslash
+arabic{section}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Linear Advection in 1D
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+u_{t}-u_{x}=0,\,\,\text{on}\,\,\Omega=\{x\in[0,1]\},
+\]
+
+\end_inset
+
+with periodic boundary conditions, and exact solution 
+\begin_inset Formula 
+\[
+u(x,t)=\sin(2\pi(x+t)).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/errorarray2.png
+	scale 39
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Error estimate difference for 
+\begin_inset Formula $(2,q,r)$
+\end_inset
+
+ schemes.
+ Plots are colored by different asymptotic behaviors.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Box and whiskers plots for Advection:
+\end_layout
+
+\begin_layout Standard
+(included original representation, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:4-metric-2-1"
+
+\end_inset
+
+, and revised grouped by 
+\begin_inset Formula $p$
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:4-metric-2"
+
+\end_inset
+
+.)
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/trend.png-old
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang american
+Box and whiskers plot of predicted model versus results.
+ The 
+\begin_inset Formula $25^{th}$
+\end_inset
+
+ and 
+\begin_inset Formula $75^{th}$
+\end_inset
+
+ percentiles, outliers, and range of the data are shown.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/trend.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang american
+Box and whiskers plot of predicted model versus results.
+ The 
+\begin_inset Formula $25^{th}$
+\end_inset
+
+ and 
+\begin_inset Formula $75^{th}$
+\end_inset
+
+ percentiles, outliers, and range of the data are shown.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Quasi-1D Euler Equations 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\left(\begin{array}{c}
+\rho A\\
+\rho uA\\
+\rho EA
+\end{array}\right)_{t}+\left(\begin{array}{c}
+\rho uA\\
+(\rho u^{2}+P)A\\
+\rho u(E+\frac{P}{\rho})A
+\end{array}\right)_{x}=\left(\begin{array}{c}
+0\\
+PA_{x}\\
+0
+\end{array}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\partial_{t}\mathbf{u}+\partial_{x}\mathbf{f}(\mathbf{u})=\mathbf{s}(\mathbf{u})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\partial_{t}\varepsilon+\partial_{x}(\mathbf{f}(\varepsilon+\mathbf{\tilde{u}})-\mathbf{f}(\mathbf{\tilde{u}}))+\mathbf{s}(\varepsilon+\tilde{\mathbf{u}})-\mathbf{s}(\mathbf{\tilde{u}})=-\mathcal{R}(\tilde{\mathbf{u}})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\partial_{t}\varepsilon+\partial_{x}(f(\varepsilon+\tilde{u})-f(\tilde{u})) & = & s(\varepsilon+\tilde{u})-s(\tilde{u})-\mathcal{R}(\tilde{u})\\
+ & = & s(\varepsilon+\tilde{u})-s(\tilde{u})-(\partial_{t}\tilde{u}+\partial_{x}f(\tilde{u})-s(\tilde{u}))
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The exact solution is purely subsonic with a throat.
+\end_layout
+
+\begin_layout Standard
+The four methods attempted can be summarized as follows.
+ Method 4 is solving primal and error equation purely on conserved variables,
+ hence no translations whatsoever.
+\end_layout
+
+\begin_layout Standard
+Methods 1, 2, and 3 all involve solving the primal problem via reconstruction
+ in the primitive variables.
+ The difference is in how the error equation is handled.
+ In method 1, the errors in primitive and conserved variables are translated
+ back and forth by adding and subtracting the converged quantities.
+ Method 2 handles the error equation in essentially the same way as method
+ 4: by only considering error in the conserved variables and computing flux
+ as 
+\begin_inset Formula $f(\epsilon_{U}+U_{p})-f(U_{p})$
+\end_inset
+
+.
+ Method 3 takes the error in the conserved variables as a passive scalar
+ and adds it to the primitive converged solution for reconstruction and
+ computing fluxes
+\end_layout
+
+\begin_layout Standard
+Method 2 and method 4 gave similar and better results than the other two.
+ Boundary conditions are taken to be zero and weakly enforced.
+ 
+\end_layout
+
+\begin_layout Subsection
+Method 1
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Conversion between primitive and conserved 
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+,
+\begin_inset Formula $\epsilon_{V}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+while 
+\begin_inset Formula $||R||>\delta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\frac{\partial\mathbf{R}}{\partial\epsilon}$
+\end_inset
+
+=ComputeJacobian(
+\begin_inset Formula $\epsilon_{V}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $R$
+\end_inset
+
+ = ComputeErrorFluxIntegral(
+\begin_inset Formula $\mathcal{I}_{h}^{q}\epsilon_{V})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+= TranslateToConserved(
+\begin_inset Formula $V_{p}+\epsilon_{V})-U_{p}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\Delta\epsilon_{U}$
+\end_inset
+
+=
+\begin_inset Formula $\left(\frac{\mathbf{1}}{\Delta t}+\frac{\partial\mathbf{R}}{\partial\epsilon}\right)^{-1}R$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}'=\epsilon_{U}+\Delta\epsilon_{U}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{V}'$
+\end_inset
+
+=TranslateToPrimitive(
+\begin_inset Formula $U_{p}+\epsilon_{U}')-U_{p}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{V}=\epsilon_{V}'$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Method 2
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Use only 
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+ and 
+\begin_inset Formula $U_{p}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+while 
+\begin_inset Formula $||R||>\delta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\frac{\partial\mathbf{R}}{\partial\epsilon}$
+\end_inset
+
+=ComputeJacobian2(
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $R$
+\end_inset
+
+ = ComputeErrorFluxIntegral2(
+\begin_inset Formula $\epsilon_{U})$
+\end_inset
+
+=
+\begin_inset Formula $\int f(\epsilon_{U}+U_{p})-f(U_{p})$
+\end_inset
+
+
+\begin_inset Formula $d\mathbf{x}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\Delta\epsilon_{U}$
+\end_inset
+
+=
+\begin_inset Formula $\left(\frac{\mathbf{1}}{\Delta t}+\frac{\partial\mathbf{R}}{\partial\epsilon}\right)^{-1}R$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}'=\epsilon_{U}+\Delta\epsilon_{U}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}=\epsilon_{U}'$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Method 3
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Treat
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+ passive scalar, error flux as 
+\begin_inset Formula $f(\epsilon_{U}+V_{p})-f(V_{p}$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+while 
+\begin_inset Formula $||R||>\delta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\frac{\partial\mathbf{R}}{\partial\epsilon}$
+\end_inset
+
+=ComputeJacobian2(
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $R$
+\end_inset
+
+ = ComputeErrorFluxIntegral3(
+\begin_inset Formula $\epsilon_{U})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\Delta\epsilon_{U}$
+\end_inset
+
+=
+\begin_inset Formula $\left(\frac{\mathbf{1}}{\Delta t}+\frac{\partial\mathbf{R}}{\partial\epsilon}\right)^{-1}R$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}'=\epsilon_{U}+\Delta\epsilon_{U}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}=\epsilon_{U}'$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Method 4
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Everything done in conserved variables
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+SolvePrimalReconConserved
+\end_layout
+
+\begin_layout Plain Layout
+while 
+\begin_inset Formula $||R||>\delta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\frac{\partial\mathbf{R}}{\partial\epsilon}$
+\end_inset
+
+=ComputeJacobian2(
+\begin_inset Formula $\epsilon_{U}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $R$
+\end_inset
+
+ = ComputeErrorFluxIntegral4(
+\begin_inset Formula $\epsilon_{U})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\Delta\epsilon_{U}$
+\end_inset
+
+=
+\begin_inset Formula $\left(\frac{\mathbf{1}}{\Delta t}+\frac{\partial\mathbf{R}}{\partial\epsilon}\right)^{-1}R$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}'=\epsilon_{U}+\Delta\epsilon_{U}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Formula $\epsilon_{U}=\epsilon_{U}'$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Random Mesh results to compare methods:
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/eulercomp20.eps
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang american
+Comparison of four methods in 
+\begin_inset Formula $(2,4,4)$
+\end_inset
+
+ scheme.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang american
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/eulerbw10.eps
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang american
+Box and whiskers plot of method 4 for quasi-1D Euler.
+ 
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-1-1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Linear Advection in 2D
+\end_layout
+
+\begin_layout Standard
+Consider the steady problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\mathbf{a}\cdot\nabla u & = & 0,\,\,\text{on}\,\,\Omega=\{(x,y)\in[0,3]\times[0,1]\},\mathbf{a=}\left[\begin{array}{cc}
+1 & 0\end{array}\right]^{T}.\\
+u(x,0) & = & 0\\
+u(x,1) & = & 0\\
+u(0,y) & = & 4\log(1+y(1-y))
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/ansys4a.eps
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Error estimate, exact error, and difference for 
+\begin_inset Formula $(2,4,4)$
+\end_inset
+
+ scheme for Advection.
+ Convergence of error is close to 
+\begin_inset Formula $\mathcal{O}(h^{q}).$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3-1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/ansys4b.eps
+	scale 22
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3-1-1-1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/ansys4c.eps
+	scale 26
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Close up of bad arrangement.
+ Heuristically the configuration is a subset of a large angle incident to
+ the wave direction.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3-1-1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Remedied this by generating meshes with uniform degree (6) so this configuration
+ is heuristically not present.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/ansys4d.eps
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+Good Configuration
+\begin_inset Quotes erd
+\end_inset
+
+: Error estimate, exact error, and difference for 
+\begin_inset Formula $(2,4,4)$
+\end_inset
+
+ scheme for Advection.
+ Convergence of error is close to 
+\begin_inset Formula $\mathcal{O}(h^{q}).$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3-1-1-2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Burgers' Equation in 2D
+\end_layout
+
+\begin_layout Standard
+Consider the steady problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+uu_{x}+u_{y} & = & 0,\,\,\text{on}\,\,\Omega=\{(x,y)\in[0,\pi]\times[0,0.5]\}\\
+u(x,0) & = & -\sin x\\
+u(0,y) & = & 0\\
+u(\pi,y) & = & 0
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The boundary conditions are compatible with the characteristics along the
+ boundary 
+\begin_inset Formula $\frac{dx}{dy}(0,y)=\frac{dx}{dy}(\pi,y)=0$
+\end_inset
+
+.
+ The exact solution is:
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula 
+\[
+u(x,y)=-2\sum_{n=1}^{\infty}\frac{J_{n}(ny)}{ny}\sin nx,
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $J_{n}$
+\end_inset
+
+ is the Bessel function of the first kind of order 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figs/ansys5.eps
+	scale 39
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Error estimate, exact error, and difference for 
+\begin_inset Formula $(2,4,4)$
+\end_inset
+
+ scheme for Burgers' Equation.
+ Convergence of error is close to 
+\begin_inset Formula $\mathcal{O}(h^{q}).$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang american
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:4-metric-2-3-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

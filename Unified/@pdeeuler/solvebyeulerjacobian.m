@@ -382,7 +382,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
  
         [R1 R2 R3]
-        error('1')
+%         error('1')
 
         
         
@@ -801,6 +801,14 @@ end
         
         errerru2 = [sqrt(sum((exacterru(2:N+1,1)-eu(2:N+1,1)).^2)/N) sqrt(sum((exacterru(2:N+1,2)-eu(2:N+1,2)).^2)/N)  sqrt(sum((exacterru(2:N+1,3)-eu(2:N+1,3)).^2)/N) ];
         errerr2 = max(abs(errerru2));
+        
+        if(obj.NLfluxtype ==1)
+             exacterr = exacterrv;
+        else
+        ee = eu;
+        exacterr = exacterru;
+        end
+        
         save('euler244.mat','x','exacterru','eu')
     else
         errerr2 = NaN;
