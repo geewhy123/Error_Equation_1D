@@ -383,6 +383,19 @@ end
 
 obj.exactSolutionU = uav;
 obj.source = zeros(N+2,3);
-end
+ end
+ figure
+ set(gca,'FontSize',16);
+ subplot(3,1,1)
+ plot(x,A)
+ subplot(3,1,2)
+ v= plot(x,rho,x,u,x,P,'LineWidth',2)
+ w=legend('\rho','u','P')
+
+ set(w,'FontSize',15)
+ subplot(3,1,3)
+ plot(x,rho,x,rho.*u,x,rho.*E);
+ saveas(gca,'test.eps')
+error('1')
 end
 

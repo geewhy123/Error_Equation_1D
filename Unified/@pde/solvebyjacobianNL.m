@@ -147,7 +147,29 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     %  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
     %   tau
-
+% %gradient accuracy
+%      Z
+%         for j = 1:N
+%             FR(j) = 0;
+%             FL(j) = 0;
+%             for k = 1:p-1
+%            FR(j) = FR(j) + k*Z(k+1,j+1)*(h(j+1)/2)^(k-1);%Z(1,j+1)+Z(2,j+1)*(h(j+1)/2); 
+%            FL(j) = FL(j) + k*Z(k+1,j+1)*(-h(j+1)/2)^(k-1);%Z(1,j+1)+Z(2,j+1)*(-h(j+1)/2); 
+%             end
+%         end
+%         for j = 2:N
+%            F(j) = (FL(j)+FR(j-1))/2; 
+%            Fe(j) = pi*cos(pi*(x(j)+h(j)/2));
+%         end
+%         F(1) = FL(1);
+%         F(N+1) = FR(N);
+%         Fe(1) = pi*cos(pi*0);
+%         Fe(N+1) = pi*cos(pi*1);
+%         FL
+%         FR
+%         F
+%         Fe
+%         mean(abs(Fe-F))
 
     te = tau;
 
@@ -175,9 +197,17 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     dtold = 1;
     while(max(abs(R)) > 1e-11 )
         J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
-     
+%      q = eig(J);
+%      req = real(q);
+%      max(abs(req))
+%      q
+%      figure
+%      plot(real(q),imag(q),'o')
+%      error('1')
         count = count +1;
-         
+        if(count > 100)
+            break;
+        end
         Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2); 
         dt = dtold*c2*Rratio;
 
@@ -188,6 +218,8 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 
         [Z] = obj.unstructuredrecon(u,p,'solution');%u,x,h,N,NaN,NaN,p);
 
+       
+%         error('1')
 %  [er]=reconplot(x,h,N,p,Z);
         Rold = R;
         [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
@@ -218,7 +250,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
   
     plot(x,u,'*',x,ue,'o')
     
-    
+    error('1')
 %     cverr2 = te2;
 %     errerr2 = te2;
 %     exacterr = te2;
