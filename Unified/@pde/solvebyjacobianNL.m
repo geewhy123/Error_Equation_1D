@@ -250,7 +250,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
   
     plot(x,u,'*',x,ue,'o')
     
-    error('1')
+%     error('1')
 %     cverr2 = te2;
 %     errerr2 = te2;
 %     exacterr = te2;

@@ -384,18 +384,43 @@ end
 obj.exactSolutionU = uav;
 obj.source = zeros(N+2,3);
  end
+ set(gca,'DefaultTextFontSize',18)
  figure
  set(gca,'FontSize',16);
- subplot(3,1,1)
- plot(x,A)
- subplot(3,1,2)
- v= plot(x,rho,x,u,x,P,'LineWidth',2)
- w=legend('\rho','u','P')
-
+ s1 = subplot(3,1,1)
+ ww=plot(x,A,'LineWidth',2)
+w=legend('$A$','location','southeastoutside')
+set(w,'Interpreter','Latex')
  set(w,'FontSize',15)
- subplot(3,1,3)
- plot(x,rho,x,rho.*u,x,rho.*E);
- saveas(gca,'test.eps')
-error('1')
+ 
+
+ 
+ s2 = subplot(3,1,2)
+ v= plot(x,rho,x,u,x,P,'LineWidth',2)
+ w=legend('$\rho$','$u$','$P$','location','southeastoutside')
+set(w,'Interpreter','Latex')
+ set(w,'FontSize',15)
+ 
+ 
+ 
+ s3 = subplot(3,1,3)
+ plot(x,rho,x,rho.*u,x,rho.*E,'LineWidth',2);
+ w=legend('$\rho$','$\rho u$','$E$','location','southeastoutside')
+  set(w,'FontSize',15)
+  set(w,'Interpreter','Latex')
+ xlabel('x')
+ 
+ pos3 = get(s3,'Position');
+ pos2 = get(s2,'Position');
+pos1 = get(s1,'Position');
+
+%# set width of second axes equal to first
+pos2(3) = pos1(3);
+pos3(3) = pos1(3);
+set(s2,'Position',pos2)
+set(s3,'Position',pos3)
+ 
+%  saveas(gca,'test2.eps','epsc')
+% error('1')
 end
 
