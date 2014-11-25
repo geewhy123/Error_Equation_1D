@@ -28,16 +28,25 @@ load('errorarrayplot.mat');
 %    [err4bb(20),x,cverr4b(20),exacterr(:,20),ee(:,20)] = errordriver(N,2,6,6,1/3,100,.3,7,'Advection');
 
 h=figure
-set(gca,'FontSize',14)
+set(gca,'FontSize',24)
 for k = 1:20
 subplot(5,4,k)
-plot(x,exacterr(:,k),'o',x,ee(:,k),'*');
+plot(x,exacterr(:,k),'o',x,ee(:,k),'*','LineWidth',2);
 ylim([-1e-2 1e-2])
-xlabel(B(k,:),'FontSize',14)
+
+
+if(k==1)
+    set(gca,'XTick',[0 1],'FontSize',24)
+  set(gca,'YTick',[-0.01 0.01],'FontSize',24)
+else
+      set(gca,'XTick',[]);
+  set(gca,'YTick',[]);
+end
+% % % xlabel(B(k,:),'FontSize',14)
 % ylabel('solution error')
-   set(gca,'FontSize',14)
+%    set(gca,'FontSize',24)
 if (k==1)
-   legend('exact error','computed error'); 
+   legend('exact error','computed error','FontSize',30,'Orientation','Horizontal'); 
 
    
    
@@ -49,7 +58,7 @@ hold on
 
 
    if(k==9)
-     ylabel('$$\mathbf{\mathcal{I}^h\epsilon},\bf{\epsilon}_h$$','Interpreter','Latex','FontSize',24) 
+%      ylabel('$$\mathbf{\mathcal{I}^h\epsilon},\bf{\epsilon}_h$$','Interpreter','Latex','FontSize',24) 
    end
 
 
@@ -68,7 +77,7 @@ annotation(h,'textbox',...
     'Interpreter','latex',...
     'String',{'$$x$$'},...
     'FontWeight','bold',...
-    'FontSize',28,...
+    'FontSize',35,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
 

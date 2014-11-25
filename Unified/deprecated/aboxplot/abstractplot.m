@@ -67,7 +67,7 @@ legend('predicted order')
 
 
 
-error('1')
+% error('1')
 
 
 
@@ -77,39 +77,56 @@ error('1')
 w=figure
 
 
-for j = 1:50
+for j = 1:20%50
     X(j) = chi2gof(E(:,j));
 %    if(chi2gof(E(:,j))==1)
 %       error('1') 
 %    end
 
 
-subplot(10,5,j)
+% subplot(10,5,j)
+subplot(5,4,j)
 % hist(E(:,j))
 if(X(j)==1)
 set(get(gca,'child'),'FaceColor','r');
 end
-
- xlabel(B(j,:),'FontSize',12);%num2str(Q(j,:)))
+set(gca,'YTick',[0 100],'FontSize',24)
+% % %  xlabel(B(j,:),'FontSize',12);%num2str(Q(j,:)))
 % if (k==1)
 %    legend('exact error','computed error'); 
 % end
 hold on
-
+    
 l=histfit(E(:,j))
-
+barcolor = [119/255 136/255 153/255];
+if(mod(j,4) == 1)
+      xlim([2.8 3.2])
+set(l(1),'facecolor',barcolor); set(l(2),'color','k')
+elseif(j==10)
+          xlim([3.8 4.2])
+    set(l(1),'facecolor',barcolor); set(l(2),'color','r')
+elseif(j==15)
+          xlim([4.8 5.2])
+    set(l(1),'facecolor',barcolor); set(l(2),'color','m')
+elseif(j==20)
+          xlim([5.7 6.3])
+    set(l(1),'facecolor',barcolor); set(l(2),'color',[153/255, 76/255, 0])
+else
+          xlim([0.7 3.3])
+    set(l(1),'facecolor',barcolor); set(l(2),'color','b')
+end
 % t(j)=ttest(E(:,j),fit(j));
 x = [fit(j),fit(j)];
 y = [0,100];
-l2=plot(x,y,'*b-')
+l2=plot(x,y,'--','Color',barcolor)
 
 
 e = E(:,j);
 e = (e-mean(e))/sqrt(var(e));
 [h(j),p(j)]=kstest(e);
 
-if(j==26)
-   ylabel('Frequency','FontSize',18) 
+if(j==9)
+   ylabel('Frequency','FontSize',24) 
 end
 
 
@@ -127,9 +144,10 @@ L = [l(2) l2];
 annotation(w,'textbox',...
     [0.506208333333333 0.0548869634744324 0.0296875 0.0304449648711944],...
     'Interpreter','latex',...
-    'String',{'$$||\mathbf{\epsilon}-\tilde{\bf{\epsilon}}||$$ order'},...
+    'String',{'$$||\mathbf{\epsilon_p}-\bf{\epsilon_{pqr}}||\hspace*{0.1cm}$$\bf{order}'},...
     'FontWeight','bold',...
-    'FontSize',18,...
+    'FontSize',24,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
-legend(L,'normal distribution','theoretical order')
+% legend(L,'normal distribution','theoretical order','FontSize',30,'Orientation','Horizontal');
+legend(L(2),'theoretical','FontSize',30,'Orientation','Horizontal');

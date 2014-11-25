@@ -63,6 +63,8 @@ assert(abs( errerr2- 6.993251444499368e-04)/errerr2 < 0.001)
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'F',0,'D',1,0.5,7,'Advection','TimeAccurate');
 assert(abs(cverr2-0.662135389183426)/cverr2 <0.001)
 
+fprintf('passed scalar')
+
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,0,0,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS');
 assert(max(abs(cverr2-[0.0069    0.0222    0.0098])/norm(cverr2)) < 0.001)
 

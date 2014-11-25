@@ -203,6 +203,8 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %      q
 %      figure
 %      plot(real(q),imag(q),'o')
+% eig(J)
+% error('1')
 %      error('1')
         count = count +1;
         if(count > 100)
@@ -223,8 +225,8 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %  [er]=reconplot(x,h,N,p,Z);
         Rold = R;
         [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
+%         del = (K'*K)\(K'*-R(2:N+1));%pinv(K)*-R(2:N+1);%K\-R(2:N+1);
         del = K\-R(2:N+1);
-    
 %     if(mod(count,100)==0)
     
 %     end
@@ -453,10 +455,11 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
             Rold = R;
             [R]=obj.computefluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
  
-            [K\-R(2:N+1) pinv(K)*-R(2:N+1) (K'*K)\(K'*-R(2:N+1)) R(2:N+1)];
+%             [K\-R(2:N+1) pinv(K)*-R(2:N+1) (K'*K)\(K'*-R(2:N+1)) R(2:N+1)];
 
             del = (K'*K)\(K'*-R(2:N+1));%pinv(K)*-R(2:N+1);%K\-R(2:N+1);
-    
+%             del = pinv(K)*-R(2:N+1);
+            
             max(abs(R(2:N+1)));
     
             ee(2:N+1) = e(2:N+1) + del;%*dt;
