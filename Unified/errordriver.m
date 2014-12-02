@@ -110,9 +110,9 @@ u0 = problem.initialSolution;
 ue = problem.exactSolution;
 length(x)
 length(ue)
-figure
- plot(x,u0)
- figure
+% figure
+%  plot(x,u0)
+
 %  plot(x,ue)
 %  assert(0)
 problem.computemoments();

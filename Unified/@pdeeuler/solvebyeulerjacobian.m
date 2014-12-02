@@ -14,7 +14,6 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     obj.computeprimalpseudo();
 
 
-
     %%%%% higher order near bdy
     % [Z] = obj.unstructuredrecon(V,p,'solution');
     % 
@@ -163,8 +162,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 %     error('1')
     
     
-    figure
-    plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
+%     figure
+%     plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 
     obj.convSoln = u;
 
@@ -318,10 +317,12 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
  
     %%%%
     figure
+%     subplot(3,1,1)
     obj.reconplot(Z(1:p,:),'solution');
-    figure
+    hold on
+%     subplot(3,1,2)
     obj.reconplot(Z(p+1:2*p,:),'solution');
-    figure
+%     subplot(3,1,3)
     obj.reconplot(Z(2*p+1:3*p,:),'solution');
     save('tmp.mat','Z')
     % error('1')
@@ -331,8 +332,9 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % Z
 % 
 Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
-(Ze(1,2)+Ze(2,2)*-0.1/2)-(Z(1,2)+Z(2,2)*-0.1/2)
-(Ze(3,2)+Ze(4,2)*-0.1/2)-(Z(3,2)+Z(4,2)*-0.1/2)
+% % (Ze(1,2)+Ze(2,2)*-0.1/2)-(Z(1,2)+Z(2,2)*-0.1/2)
+% % (Ze(3,2)+Ze(4,2)*-0.1/2)-(Z(3,2)+Z(4,2)*-0.1/2)
+
 % error('1')
 % % Ze = Z;
 % 0.957163318326954
@@ -348,8 +350,10 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
 % error('1')
     
-    
-    
+   
+    exacterrv
+    exacterr
+    teu
     %%%%residual
 
     if(q> 0 && r>0)
@@ -367,9 +371,10 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         figure
         obj.reconplot(Zr(1:r,:),'residual');
-        figure
+        hold on
+%         figure
         obj.reconplot(Zr(r+1:2*r,:),'residual');
-        figure
+%         figure
         obj.reconplot(Zr(2*r+1:3*r,:),'residual');
 
 % [Zr] = obj.unstructuredrecon(u,r,'residual');
@@ -381,13 +386,17 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 %     Rend= (right-left)./h-f;
         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
  
-        [R1 R2 R3]
+%         [R1 R2 R3]
 %         error('1')
 
         
         
                 if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
            obj.NLfluxtype = 4; 
+           
+          
+         
+           
         end
 
 
@@ -461,11 +470,12 @@ U = obj.exactSolutionU;
 
 
 
-% load('tau4.mat')
+%  load('tau4.mat')
+%  load('tautest.mat')
 
         f = -[R1 R2 R3];
 
-        obj.errorSource = f;teu;%f;%tau;
+        obj.errorSource = teu;%f;%tau;
    
         figure
         subplot(3,1,1)
@@ -526,7 +536,8 @@ U = obj.exactSolutionU;
         obj.convVleft;
         obj.convVright;
     
-        [phi1 phi2 phi3];
+        [phi1 phi2 phi3]
+        error('1')
         figure
         plot(x,phi1,x,phi2,x,phi3)
 %      error('1')

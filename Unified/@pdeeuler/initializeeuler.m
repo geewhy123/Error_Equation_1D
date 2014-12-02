@@ -2,6 +2,7 @@ function [x, rho,u,P ] = initializeeuler(obj )
 %INITIALIZEEULER Summary of this function goes here
 %   Detailed explanation goes here
 %  
+
  if(obj.areatype == 2)
 % % new MMS stuff
 % a0 = 0.3;
@@ -350,17 +351,17 @@ end
 obj.exactSolutionV = vav;
 
 fnval(rspi,xx(end)+h(end)/2);
-figure
-subplot(3,1,1)
-fnplt(rsp)
+% % figure
+% % subplot(3,1,1)
+% % fnplt(rsp)
 % hold on
 % plot(xx,c1+cx1*cos(ax1*xx))
-subplot(3,1,2)
-fnplt(usp)
+% % subplot(3,1,2)
+% % fnplt(usp)
 % hold on
 % plot(xx,c2+cx2*sin(ax2*xx))
-subplot(3,1,3)
-fnplt(Psp)
+% % subplot(3,1,3)
+% % fnplt(Psp)
 % hold on
 % plot(xx,c3+cx3*cos(ax3*xx))
 % error('2')

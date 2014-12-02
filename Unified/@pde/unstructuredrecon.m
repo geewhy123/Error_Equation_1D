@@ -329,14 +329,14 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         Z(:,i) = y;
 
         if(strcmp(obj.bchandle,'HC')==1)
-           start = 3;
+           begin = 3;
            fin = N;
         elseif(strcmp(obj.bchandle,'Jump')==1)
-           start = 2;
+           begin = 2;
            fin = N+1;
         end
                
-        for i = start:fin    
+        for i = begin:fin    
             switch i
             case 2
                 cv1 = i+1;
