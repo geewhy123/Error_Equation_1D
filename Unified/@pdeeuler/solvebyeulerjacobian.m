@@ -28,14 +28,13 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     % 
     % % error('1')
 
-
-
      %truncation error need exact sol
-    teu = zeros(N+2,3);
+
+    
     % tev = zeros(N+2,3);
     Ve = obj.exactSolutionV;
     Ue = obj.exactSolutionU;     
-    if(obj.NLfluxtype==4)
+    if(obj.NLfluxtype==4 )
            Ve = Ue;
     end
 
@@ -52,14 +51,13 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
     [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
-    [tauu1 tauu2 tauu3];
     te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
 
     teu = [tauu1 tauu2 tauu3];
  
     %truncation error need exact sol
 
-  
+    
     R = ones(3*N+2,1);
     total_time=0;
     u = ue;
@@ -80,10 +78,6 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
          
         Rratio =norm(Rold(2:3*N+1),2)/norm(R(2:3*N+1),2); 
         dt = dtold*c2*Rratio;
-
-%  spy(J)
-%  J
-%   error('1')
 
 
         K = J(2:3*N+1,2:3*N+1)+eye(3*N)/dt;
@@ -157,13 +151,6 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
              [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
      end
     end
-%       u
-%     V
-%     error('1')
-    
-    
-%     figure
-%     plot(x,V(:,1),'o',x,V(:,2),'v',x,V(:,3),'+')
 
     obj.convSoln = u;
 
@@ -179,10 +166,6 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     u2 = obj.exactSolutionU(:,2);
     u3 = obj.exactSolutionU(:,3);
     uu = obj.convSoln;
-    
-
-    
-    
     
     
     entropy = log(V(:,3)./(V(:,1).^gam));
@@ -239,7 +222,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
     
-    if(obj.NLfluxtype ==4)
+    if(obj.NLfluxtype ==4 )
         Ue = obj.exactSolutionU;
     end
     
@@ -277,78 +260,59 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
 
     %%%%%try to get BCs for error equation
-    Pinf = 1;
-    Tinf = 1;
-    T0 = obj.T0;
-    P0 = obj.P0;
-    rhoinf = Pinf/Tinf;
-    cinf = sqrt(gam*Pinf/rhoinf);
-    uinf = cinf*sqrt((2/(gam-1))*(T0/Tinf-1));
-
-    rhoi = 0;
-    ui = 0;
-    Pi = 0;
-
-    h = obj.cellWidths;
-    for k = 1:p
-        rhoi = rhoi+ Z(k,2)*(-h(2)/2)^(k-1);
-        ui   = ui+ Z(k+p,2)*(-h(2)/2)^(k-1);
-        Pi   = Pi+ Z(k+2*p,2)*(-h(2)/2)^(k-1);
-    end
-
-    Vi= [rhoi ui Pi]';
-    ci = sqrt(gam*Pi/rhoi);
-
-    A = [cinf^2 0 -1; 0 -rhoinf*cinf -1; 0 rhoi*ci -1];
-    b = [rhoinf-Pinf; -rhoinf*cinf*uinf-Pinf; rhoi*ci*ui-Pi];
-
-    A\b;
-
-    A\b-Vi;
+%     Pinf = 1;
+%     Tinf = 1;
+%     T0 = obj.T0;
+%     P0 = obj.P0;
+%     rhoinf = Pinf/Tinf;
+%     cinf = sqrt(gam*Pinf/rhoinf);
+%     uinf = cinf*sqrt((2/(gam-1))*(T0/Tinf-1));
+% 
+%     rhoi = 0;
+%     ui = 0;
+%     Pi = 0;
+% 
+%     h = obj.cellWidths;
+%     for k = 1:p
+%         rhoi = rhoi+ Z(k,2)*(-h(2)/2)^(k-1);
+%         ui   = ui+ Z(k+p,2)*(-h(2)/2)^(k-1);
+%         Pi   = Pi+ Z(k+2*p,2)*(-h(2)/2)^(k-1);
+%     end
+% 
+%     Vi= [rhoi ui Pi]';
+%     ci = sqrt(gam*Pi/rhoi);
+% 
+%     A = [cinf^2 0 -1; 0 -rhoinf*cinf -1; 0 rhoi*ci -1];
+%     b = [rhoinf-Pinf; -rhoinf*cinf*uinf-Pinf; rhoi*ci*ui-Pi];
+% 
+%     A\b;
+% 
+%     A\b-Vi;
 
     %%%%
     
     VV = obj.exactSolutionV;
     [Z] = obj.unstructuredrecon(VV,p,'solution');
  
-    [Z(1,2)+Z(2,2)*-h(2)/2 Z(3,2)+Z(4,2)*-h(2)/2];
+%     [Z(1,2)+Z(2,2)*-h(2)/2 Z(3,2)+Z(4,2)*-h(2)/2];
 % error('1') 
 
  
     %%%%
     figure
-%     subplot(3,1,1)
     obj.reconplot(Z(1:p,:),'solution');
     hold on
-%     subplot(3,1,2)
     obj.reconplot(Z(p+1:2*p,:),'solution');
-%     subplot(3,1,3)
     obj.reconplot(Z(2*p+1:3*p,:),'solution');
     save('tmp.mat','Z')
-    % error('1')
-% [obj.bcLeftVal(1) obj.bcLeftVal(2) obj.bcLeftVal(3)]
 
     Ze = obj.unstructuredrecon(Ve,p,'solution');
-% Z
-% 
+
 Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 % % (Ze(1,2)+Ze(2,2)*-0.1/2)-(Z(1,2)+Z(2,2)*-0.1/2)
 % % (Ze(3,2)+Ze(4,2)*-0.1/2)-(Z(3,2)+Z(4,2)*-0.1/2)
 
-% error('1')
-% % Ze = Z;
-% 0.957163318326954
-% 0.961077533223941-(Ze(1,2)+Ze(2,2)*-0.1/2)
-% 0.348597647123456
-% 0.332088205777479-(Ze(3,2)+Ze(4,2)*-0.1/2)
-% 0.97-(Ze(5,N+1)+Ze(6,N+1)*0.1/2)
-% 
 
-% 0.961077533223941-(Ze(1,2)+Ze(2,2)*-0.1/2+Ze(3,2)*(-0.1/2)^2+Ze(4,2)*(-0.1/2)^3)
-
-% 0.332088205777479-(Ze(5,2)+Ze(6,2)*-0.1/2+Ze(7,2)*(-0.1/2)^2+Ze(8,2)*(-0.1/2)^3)
-
-% error('1')
     
    
     exacterrv
@@ -430,6 +394,11 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         exacterrv = obj.exactSolutionV-V;
         exacterru = obj.exactSolutionU-u;
+        
+ 
+%         exacterru = exacterr;
+        
+        
         if(obj.NLfluxtype == 4)
             exacterrv = obj.exactSolutionV-obj.convSolutionV;
            
@@ -441,33 +410,11 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
             [UU(z,1),UU(z,2),UU(z,3)] = toconservedvars(obj.exactSolutionV(z,1),obj.exactSolutionV(z,2),obj.exactSolutionV(z,3)); 
         end
         
-        UU;
-        obj.exactSolutionU;
-% % error('1')
 
-% obj.exactSolutionU
-% error('1')
-
-% figure
-% plot(x,exacterr,'x')
-%  error('1')
-
-% % % need exact stuff
-% % % %  obj.computeerrorpseudo();
-% % % [Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
-% % % 
-% % % % Z
-% % % % figure
-% % % % obj.reconplot(Z,'error')
-% % % % hold on
-% % % % plot(x,exacterr)
-% % % % error('1')
 
 
 V = obj.exactSolutionV;
 U = obj.exactSolutionU;
-
-
 
 
 %  load('tau4.mat')
@@ -487,7 +434,7 @@ U = obj.exactSolutionU;
         legend('residual source','te source')
         [f teu];
         [ mean(abs(f(2:N+1,1))) mean(abs(f(2:N+1,2))) mean(abs(f(2:N+1,3)))];
-%    error('1')
+
  
 % % %  Je = obj.computefluxjacobian(exacterr,'error');
 % % % % obj.errorRM
@@ -505,6 +452,7 @@ U = obj.exactSolutionU;
         total_time=0;
  
         e = exacterrv;
+%         load('test.mat')
         
         ee = ones(3*N+2,1);
         ee(1)=NaN;
@@ -524,8 +472,14 @@ U = obj.exactSolutionU;
            e = eu;
         end
         
+% e
+% error('1')
+        
+%         e = exacterr
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
+        
+%         load('test.mat')
         
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 %         phi2
