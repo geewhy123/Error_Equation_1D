@@ -1,7 +1,7 @@
 function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral4( obj,Z,eqn )
 %COMPUTEEULERFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
-% error('1')
+% error('2')
     N=obj.nCells;
     h = obj.cellWidths;
     x = obj.cellCentroids;

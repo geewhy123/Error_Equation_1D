@@ -27,17 +27,30 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     %                Zm = [Z1; Z2;Z3];
     % 
     % % error('1')
-
+% ft = obj.NLfluxtype;
+% if(ft == 2)
+%    obj.NLfluxtype = 4; 
+% end
      %truncation error need exact sol
-
     
     % tev = zeros(N+2,3);
     Ve = obj.exactSolutionV;
     Ue = obj.exactSolutionU;     
-    if(obj.NLfluxtype==4 )
+    
+    
+%            for j = 2:N+1
+%             [Ue(j,1),Ue(j,2),Ue(j,3)] = toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
+%         end
+
+    
+    
+    if(obj.NLfluxtype==4)
            Ve = Ue;
     end
 
+    
+    
+    
     % % % % higher
     [Z] = obj.unstructuredrecon(Ve,p,'solution');%ue,x,h,N,NaN,NaN,p);
     % % % % %  [Z3] = higherunstructuredreconeuler (obj,V(:,3),m,'solution',3);                          
@@ -49,6 +62,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 
     %truncation error
 
+
     [tauu1 tauu2 tauu3]=obj.computeeulerfluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 
     te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
@@ -56,8 +70,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     teu = [tauu1 tauu2 tauu3];
  
     %truncation error need exact sol
-
+% obj.NLfluxtype = ft;
     
+    
+  
     R = ones(3*N+2,1);
     total_time=0;
     u = ue;
@@ -222,7 +238,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
     
-    if(obj.NLfluxtype ==4 )
+    if(obj.NLfluxtype ==4 || obj.NLfluxtype ==2 )
         Ue = obj.exactSolutionU;
     end
     
@@ -318,6 +334,12 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
     exacterrv
     exacterr
     teu
+    
+    
+    
+   
+    
+    
     %%%%residual
 
     if(q> 0 && r>0)
@@ -357,12 +379,16 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         
                 if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
            obj.NLfluxtype = 4; 
-           
-          
-         
-           
-        end
+        
+                end
 
+        
+                
+                
+                
+                
+                
+                
 
 %         norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
 %         error('1')
@@ -394,11 +420,6 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         exacterrv = obj.exactSolutionV-V;
         exacterru = obj.exactSolutionU-u;
-        
- 
-%         exacterru = exacterr;
-        
-        
         if(obj.NLfluxtype == 4)
             exacterrv = obj.exactSolutionV-obj.convSolutionV;
            
@@ -410,11 +431,20 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
             [UU(z,1),UU(z,2),UU(z,3)] = toconservedvars(obj.exactSolutionV(z,1),obj.exactSolutionV(z,2),obj.exactSolutionV(z,3)); 
         end
         
+        UU;
+        obj.exactSolutionU;
 
 
 
 V = obj.exactSolutionV;
 U = obj.exactSolutionU;
+
+
+
+
+
+
+
 
 
 %  load('tau4.mat')
@@ -471,11 +501,8 @@ U = obj.exactSolutionU;
            eu = exacterru;
            e = eu;
         end
-        
-% e
-% error('1')
-        
-%         e = exacterr
+        e
+        obj.errorSource
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         
@@ -774,6 +801,8 @@ end
         exacterr = exacterru;
         end
         
+        exacterru
+        eu
         save('euler244.mat','x','exacterru','eu')
     else
         errerr2 = NaN;
