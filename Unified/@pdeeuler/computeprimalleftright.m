@@ -16,6 +16,11 @@ U2r = zeros(N+2,1);
 U2l = zeros(N+2,1);
 U3r = zeros(N+2,1);
 U3l = zeros(N+2,1);
+
+p = obj.pOrder;
+obj.pOrder = obj.qOrder;
+obj.computeprimalpseudo();
+
 order  = obj.pOrder;
  Z = obj.unstructuredrecon(U,order,'solution');
 for i = 2:N+1
@@ -32,6 +37,10 @@ obj.convUleft = [U1l U2l U3l];
 obj.convUright = [U1r U2r U3r];
  
     
+
+obj.pOrder = p;
+obj.computeprimalpseudo();
+
    return; 
 end
 
@@ -66,6 +75,8 @@ obj.convUright = zeros(N+2,3);
 for i = 2:N+1
 [obj.convUright(i,1),obj.convUright(i,2),obj.convUright(i,3)] = toconservedvars(primrhor(i),primur(i),primPr(i));
 end
+
+
 
 
 end

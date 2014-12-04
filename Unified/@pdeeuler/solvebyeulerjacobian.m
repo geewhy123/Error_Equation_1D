@@ -410,13 +410,13 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         Zu = obj.unstructuredrecon(V,obj.qOrder,'error');
         obj.convSolnRecon = Zu;
  
-        if(obj.bcLeftType == 'D')
-            obj.T0 = 0; 
-            obj.P0 = 0;
-        end
-        if(obj.bcRightType == 'D')
-            obj.Pb = 0;
-        end
+%         if(obj.bcLeftType == 'D')
+%             obj.T0 = 0; 
+%             obj.P0 = 0;
+%         end
+%         if(obj.bcRightType == 'D')
+%             obj.Pb = 0;
+%         end
 
         exacterrv = obj.exactSolutionV-V;
         exacterru = obj.exactSolutionU-u;
@@ -452,7 +452,7 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 
-        obj.errorSource = teu;%f;%tau;
+        obj.errorSource = f;%teu;%f;%tau;
    
         figure
         subplot(3,1,1)
@@ -518,7 +518,7 @@ U = obj.exactSolutionU;
         obj.convVright;
     
         [phi1 phi2 phi3]
-        error('1')
+%         error('1')
         figure
         plot(x,phi1,x,phi2,x,phi3)
 %      error('1')
@@ -773,12 +773,52 @@ end
         plot(x,eu(:,3),'*',x,exacterru(:,3),'o')
         xlabel('(translated)$\epsilon_{\rho E}$','Interpreter','Latex');
         
+        
+        
+         [Z] = obj.unstructuredrecon(exacterru,q,'error');%ue,x,h,N,NaN,NaN,p);
+    [tauE1 tauE2 tauE3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
+[tauE1 tauE2 tauE3]
 
+% Z = obj.unstructuredrecon(Ue,p,'solution');
+%   [t14a t14b t14c]=obj.computeeulerfluxintegral(Z,'solution');
+%   t14=[t14a t14b t14c];
+% s = obj.source;
+% obj.source = obj.source*0;
+% 
+% obj.pOrder = q;
+%  obj.computeprimalpseudo();
+% Z = obj.unstructuredrecon(obj.convSoln,q,'solution');
+%   [t2a t2b t2c]=obj.computeeulerfluxintegral(Z,'solution');
+% t2 = [t2a t2b t2c];
+% 
+% obj.pOrder = r;
+%  obj.computeprimalpseudo();
+% Z = obj.unstructuredrecon(obj.convSoln,r,'solution');
+%   [t3a t3b t3c]=obj.computeeulerfluxintegral(Z,'solution');
+% t3 = [t3a t3b t3c];
+% 
+% t14-t2+t3;
+% 
+% 
+% obj.pOrder = p;
+%  obj.computeprimalpseudo();
+%  obj.errorSource = obj.errorSource*0;
+% Z = obj.unstructuredrecon(exacterru,q,'error');
+%    [tsa tsb tsc]=obj.computeeulerfluxintegral(Z,'error');
+%  ts = [tsa tsb tsc]
+%  
+%  t12 = t14-t2+s
+
+% teu
+        fprintf ('t.e. e_ rho : %e   %e   %e\n' ,sum(abs(tauE1))/N, sqrt(sum((tauE1).^2)/N), max(abs(tauE1)));
+        fprintf ('t.e. e_ rho u : %e   %e   %e\n' ,sum(abs(tauE2))/N, sqrt(sum((tauE2).^2)/N), max(abs(tauE2)));
+        fprintf ('t.e. e_ rho E : %e   %e   %e\n' ,sum(abs(tauE3))/N, sqrt(sum((tauE3).^2)/N), max(abs(tauE3)));
+%         error('1')
         errerrv1 = exacterrv(2:N+1,1)-ee(2:N+1,1);
         errerrv2 = exacterrv(2:N+1,2)-ee(2:N+1,2);
         errerrv3 = exacterrv(2:N+1,3)-ee(2:N+1,3);
     
-        fprintf ('d.e. e_ rho : %e   %e   %e\n' ,sum(abs(errerrv1))/N, sqrt(sum((errerrv1).^2)/N), max(abs(errerrv1)));
+        fprintf ('\nd.e. e_ rho : %e   %e   %e\n' ,sum(abs(errerrv1))/N, sqrt(sum((errerrv1).^2)/N), max(abs(errerrv1)));
         fprintf ('d.e. e_  u : %e   %e   %e\n' ,sum(abs(errerrv2))/N, sqrt(sum((errerrv2).^2)/N), max(abs(errerrv2)));
         fprintf ('d.e. e_  P : %e   %e   %e\n' ,sum(abs(errerrv3))/N, sqrt(sum((errerrv3).^2)/N), max(abs(errerrv3)));
         

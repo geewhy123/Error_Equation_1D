@@ -522,7 +522,9 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     
     end
 
+tauE
 
+tau
 % J(2:N+1,2:N+1)*exacterr(2:N+1)
 % tau(2:N+1)
 %  J(2:N+1,2:N+1)*ue(2:N+1)
