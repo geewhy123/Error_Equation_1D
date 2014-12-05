@@ -29,7 +29,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     % % error('1')
 % ft = obj.NLfluxtype;
 % if(ft == 2)
-%    obj.NLfluxtype = 4; 
+%     obj.NLfluxtype = 4; 
 % end
      %truncation error need exact sol
     
@@ -38,9 +38,10 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     Ue = obj.exactSolutionU;     
     
     
-%            for j = 2:N+1
-%             [Ue(j,1),Ue(j,2),Ue(j,3)] = toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
-%         end
+%          for j = 2:N+1
+%              [Ue(j,1),Ue(j,2),Ue(j,3)] = toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
+%          end
+
 
     
     
@@ -59,7 +60,6 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     % % % % %                Z = [Z1; Z2;Z3];
     % % % % % % % % % % 
 
-
     %truncation error
 
 
@@ -70,8 +70,8 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     teu = [tauu1 tauu2 tauu3];
  
     %truncation error need exact sol
+
 % obj.NLfluxtype = ft;
-    
     
   
     R = ones(3*N+2,1);
@@ -108,6 +108,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
 % % 
 % % 
 % % %%%%
+
 
         Rold = R;
         
@@ -238,7 +239,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
         [Ue(i,1),Ue(i,2),Ue(i,3)] = toconservedvars(Ve(i,1),Ve(i,2),Ve(i,3));
     end
     
-    if(obj.NLfluxtype ==4 || obj.NLfluxtype ==2 )
+    if(obj.NLfluxtype ==4  )
         Ue = obj.exactSolutionU;
     end
     
@@ -270,7 +271,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     [Z] = obj.unstructuredrecon(V,p,'solution');
     obj.convVreconp = Z;
 
-    obj.computeprimalleftright();
+%     obj.computeprimalleftright();
 
     [phi1,phi2,phi3]=obj.computeeulerfluxintegral(Z,'solution');
 
@@ -376,12 +377,24 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 %         error('1')
 
         
-        
+                    ft = obj.NLfluxtype;
+                    
                 if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
+      
            obj.NLfluxtype = 4; 
-        
-                end
+%             obj.computeprimalleftright();
+            
+obj.computeprimalpseudo();
+         [Z] = obj.unstructuredrecon(obj.exactSolutionU,p,'solution');
+          [a1 a2 a3]=obj.computeeulerfluxintegral(Z,'solution');
 
+             [Z] = obj.unstructuredrecon(obj.convSoln,p,'solution');
+          [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
+          teu = [a1 a2 a3]-[b1 b2 b3];
+%           error('1')
+          
+                end
+   obj.computeprimalleftright();
         
                 
                 
@@ -394,6 +407,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 %         error('1')
 
         if(obj.NLfluxtype == 4)
+            
                    Ve = obj.exactSolutionU-uu; 
                    V= uu;
         end
@@ -420,6 +434,15 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
 
         exacterrv = obj.exactSolutionV-V;
         exacterru = obj.exactSolutionU-u;
+        
+%         if(ft == 2)
+%            for j = 2:N+1
+%                 [Ue(j,1),Ue(j,2),Ue(j,3)] =  toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
+%            end
+%             exacterru = Ue-u;
+%         end
+
+
         if(obj.NLfluxtype == 4)
             exacterrv = obj.exactSolutionV-obj.convSolutionV;
            
@@ -451,7 +474,7 @@ U = obj.exactSolutionU;
 %  load('tautest.mat')
 
         f = -[R1 R2 R3];
-
+% load('tmp2.mat')
         obj.errorSource = f;%teu;%f;%tau;
    
         figure
@@ -778,38 +801,86 @@ end
          [Z] = obj.unstructuredrecon(exacterru,q,'error');%ue,x,h,N,NaN,NaN,p);
     [tauE1 tauE2 tauE3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 [tauE1 tauE2 tauE3]
+Z = obj.unstructuredrecon(Ue,p,'solution');
+  [t14a t14b t14c]=obj.computeeulerfluxintegral(Z,'solution');
+  t14=[t14a t14b t14c];
+s = obj.source;
+obj.source = obj.source*0;
 
-% Z = obj.unstructuredrecon(Ue,p,'solution');
-%   [t14a t14b t14c]=obj.computeeulerfluxintegral(Z,'solution');
-%   t14=[t14a t14b t14c];
-% s = obj.source;
-% obj.source = obj.source*0;
-% 
-% obj.pOrder = q;
-%  obj.computeprimalpseudo();
-% Z = obj.unstructuredrecon(obj.convSoln,q,'solution');
-%   [t2a t2b t2c]=obj.computeeulerfluxintegral(Z,'solution');
-% t2 = [t2a t2b t2c];
-% 
-% obj.pOrder = r;
-%  obj.computeprimalpseudo();
-% Z = obj.unstructuredrecon(obj.convSoln,r,'solution');
-%   [t3a t3b t3c]=obj.computeeulerfluxintegral(Z,'solution');
-% t3 = [t3a t3b t3c];
-% 
-% t14-t2+t3;
-% 
-% 
-% obj.pOrder = p;
-%  obj.computeprimalpseudo();
-%  obj.errorSource = obj.errorSource*0;
-% Z = obj.unstructuredrecon(exacterru,q,'error');
-%    [tsa tsb tsc]=obj.computeeulerfluxintegral(Z,'error');
-%  ts = [tsa tsb tsc]
-%  
-%  t12 = t14-t2+s
+obj.pOrder = q;
+ obj.computeprimalpseudo();
+Z = obj.unstructuredrecon(obj.convSoln,q,'solution');
+  [t2a t2b t2c]=obj.computeeulerfluxintegral(Z,'solution');
+t2 = [t2a t2b t2c];
 
-% teu
+obj.pOrder = r;
+ obj.computeprimalpseudo();
+Z = obj.unstructuredrecon(obj.convSoln,r,'solution');
+  [t3a t3b t3c]=obj.computeeulerfluxintegral(Z,'solution');
+t3 = [t3a t3b t3c];
+
+t14-t2+t3;
+
+obj.pOrder = p;
+ obj.computeprimalpseudo();
+ obj.errorSource = obj.errorSource*0;
+Z = obj.unstructuredrecon(exacterru,q,'error');
+   [tsa tsb tsc]=obj.computeeulerfluxintegral(Z,'error');
+ ts = [tsa tsb tsc]
+ 
+ t12 = t14-t2+s
+
+teu
+error('1')
+% load('tmp2.mat')
+
+%     obj.errorSource = 0*obj.errorSource;
+%          [Z] = obj.unstructuredrecon(exacterru,q,'error');
+%           [tauE1 tauE2 tauE3]=obj.computeeulerfluxintegral(Z,'error');
+%           tauE = [tauE1 tauE2 tauE3]
+%           
+%           
+%           
+% %             for j = 2:N+1
+% %                 [obj.convSoln(j,1),obj.convSoln(j,2),obj.convSoln(j,3)] = toconservedvars(obj.convSolutionV(j,1),obj.convSolutionV(j,2),obj.convSolutionV(j,3));
+% %             end
+%           obj.computeprimalpseudo();
+%           s = obj.source;
+%           obj.source = 0*obj.source;
+%           [Z] = obj.unstructuredrecon(obj.convSoln+exacterru,p,'solution');
+%           [a1 a2 a3]=obj.computeeulerfluxintegral(Z,'solution');
+%           
+% 
+%           [Z] = obj.unstructuredrecon(obj.convSoln,p,'solution');
+%           [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
+% 
+%           [a1-b1 a2-b2 a3-b3]
+% 
+% 
+%           [Z] = obj.unstructuredrecon(obj.exactSolutionU,p,'solution');
+%           
+%           [d1 d2 d3]=obj.computeeulerfluxintegral(Z,'solution');
+%           [d1 d2 d3]-[b1 b2 b3]
+% %  teu
+% % save('tmp2.mat','tauE')
+% 
+% 
+% 
+% % 
+% %  obj.NLfluxtype = 4;
+% %    [Z] = obj.unstructuredrecon(obj.exactSolutionU,p,'solution');
+% %            [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
+% %  [b1 b2 b3]
+% % 
+% % error('1')
+%            if(ft == 2)
+%            for j = 2:N+1
+%                 [Ue(j,1),Ue(j,2),Ue(j,3)] =toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
+%            end
+%             exacterru = Ue-u;
+%         end
+
+
         fprintf ('t.e. e_ rho : %e   %e   %e\n' ,sum(abs(tauE1))/N, sqrt(sum((tauE1).^2)/N), max(abs(tauE1)));
         fprintf ('t.e. e_ rho u : %e   %e   %e\n' ,sum(abs(tauE2))/N, sqrt(sum((tauE2).^2)/N), max(abs(tauE2)));
         fprintf ('t.e. e_ rho E : %e   %e   %e\n' ,sum(abs(tauE3))/N, sqrt(sum((tauE3).^2)/N), max(abs(tauE3)));
@@ -829,7 +900,7 @@ end
         fprintf ('d.e. e_  rho u : %e   %e   %e\n' ,sum(abs(errerru2))/N, sqrt(sum((errerru2).^2)/N), max(abs(errerru2)));
         fprintf ('d.e. e_  rho E : %e   %e   %e\n' ,sum(abs(errerru3))/N, sqrt(sum((errerru3).^2)/N), max(abs(errerru3)));
         
-        
+    
         
         errerru2 = [sqrt(sum((exacterru(2:N+1,1)-eu(2:N+1,1)).^2)/N) sqrt(sum((exacterru(2:N+1,2)-eu(2:N+1,2)).^2)/N)  sqrt(sum((exacterru(2:N+1,3)-eu(2:N+1,3)).^2)/N) ];
         errerr2 = max(abs(errerru2));
@@ -844,6 +915,8 @@ end
         exacterru
         eu
         save('euler244.mat','x','exacterru','eu')
+        
+       
     else
         errerr2 = NaN;
         exacterr = NaN;

@@ -45,6 +45,12 @@ obj.computeprimalpseudo();
 end
 
 
+% error('1')
+p = obj.pOrder;
+obj.pOrder = obj.qOrder;
+obj.computeprimalpseudo();
+%
+
 primrhor = zeros(N+2,1);
 primrhol = zeros(N+2,1);
 primur = zeros(N+2,1);
@@ -52,6 +58,7 @@ primul = zeros(N+2,1);
 primPr = zeros(N+2,1);
 primPl = zeros(N+2,1);
 order  = obj.pOrder;
+Z = obj.unstructuredrecon(obj.convSolutionV,order,'solution');
 for i = 2:N+1
     for k = 1:order
     primrhor(i) = primrhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
@@ -76,6 +83,9 @@ for i = 2:N+1
 [obj.convUright(i,1),obj.convUright(i,2),obj.convUright(i,3)] = toconservedvars(primrhor(i),primur(i),primPr(i));
 end
 
+%
+obj.pOrder = p;
+obj.computeprimalpseudo();
 
 
 
