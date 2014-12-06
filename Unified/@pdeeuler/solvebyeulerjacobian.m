@@ -391,6 +391,19 @@ obj.computeprimalpseudo();
              [Z] = obj.unstructuredrecon(obj.convSoln,p,'solution');
           [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
           teu = [a1 a2 a3]-[b1 b2 b3];
+          
+              
+           %
+%           obj.NLfluxtype = 2;
+%                    [Z] = obj.unstructuredrecon(obj.exactSolutionV,p,'solution');
+%           [a1 a2 a3]=obj.computeeulerfluxintegral(Z,'solution');
+% 
+%              [Z] = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
+%           [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
+%           teu = [a1 a2 a3]-[b1 b2 b3];
+%           
+%           obj.NLfluxtype = 4;
+
 %           error('1')
           
                 end
@@ -440,6 +453,7 @@ obj.computeprimalpseudo();
 %                 [Ue(j,1),Ue(j,2),Ue(j,3)] =  toconservedvars(obj.exactSolutionV(j,1),obj.exactSolutionV(j,2),obj.exactSolutionV(j,3));
 %            end
 %             exacterru = Ue-u;
+%             exacterr = exacterru;
 %         end
 
 
@@ -831,7 +845,7 @@ Z = obj.unstructuredrecon(exacterru,q,'error');
  t12 = t14-t2+s
 
 teu
-error('1')
+% error('1')
 % load('tmp2.mat')
 
 %     obj.errorSource = 0*obj.errorSource;

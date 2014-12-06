@@ -335,8 +335,9 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % % % % p = pp;
 % % % % obj.source = s;
 % % % % 
- 
-
+%   J = obj.computefluxjacobian(0.5*(ue+u),'solution');%,x,h,N,p);
+% J(2:N+1,2:N+1)*vv(2:N+1)
+% tau
 
 %     obj.postprocesscn(0.5);
 
@@ -522,9 +523,10 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     
     end
 
-tauE
+% tauE
 
 tau
+
 % J(2:N+1,2:N+1)*exacterr(2:N+1)
 % tau(2:N+1)
 %  J(2:N+1,2:N+1)*ue(2:N+1)
