@@ -489,7 +489,7 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 % load('tmp2.mat')
-        obj.errorSource = f;%teu;%f;%tau;
+        obj.errorSource = teu;%f;%tau;
    
         figure
         subplot(3,1,1)
