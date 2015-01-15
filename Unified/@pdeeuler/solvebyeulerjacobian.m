@@ -392,6 +392,27 @@ obj.computeprimalpseudo();
           [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
           teu = [a1 a2 a3]-[b1 b2 b3];
           
+%           [a1 a2 a3]-[b1 b2 b3]
+          %
+%           for z = 2:N+1
+%                  [obj.exactSolutionU(z,1),obj.exactSolutionU(z,2),obj.exactSolutionU(z,3)] = toconservedvars(obj.exactSolutionV(z,1),obj.exactSolutionV(z,2),obj.exactSolutionV(z,3)); 
+%           end
+%           obj.exactSolutionU = obj.exactSolutionU*0.1;
+%           [Z] = obj.unstructuredrecon(obj.exactSolutionU,p,'solution');
+%           [a1 a2 a3]=obj.computeeulerfluxintegral(Z,'solution');
+%           
+%      teu=[a1 a2 a3]-[b1 b2 b3]
+%     
+          %
+%           obj.NLfluxtype = 2;
+%           convSolnV = obj.convSoln;
+%             for z = 2:N+1
+%                  [convSolnV(z,1),convSolnV(z,2),convSolnV(z,3)] = toprimitivevars(obj.convSoln(z,1),obj.convSoln(z,2),obj.convSoln(z,3)); 
+%           end
+%                        [Z] = obj.unstructuredrecon(convSolnV,p,'solution');
+%           [b1 b2 b3]=obj.computeeulerfluxintegral(Z,'solution');
+%           teu = [a1 a2 a3]-[b1 b2 b3];
+%           obj.NLfluxtype = 4;
               
            %
 %           obj.NLfluxtype = 2;
@@ -489,7 +510,7 @@ U = obj.exactSolutionU;
 
         f = -[R1 R2 R3];
 % load('tmp2.mat')
-        obj.errorSource = teu;%f;%tau;
+        obj.errorSource = f;%teu;%f;%tau;
    
         figure
         subplot(3,1,1)

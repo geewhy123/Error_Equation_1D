@@ -173,9 +173,9 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 
     te = tau;
 
-    % tau6 = tau;
-    % save('tauB.mat','tau6','-append')
-    % error('1')
+%       tau2 = tau;
+%       save('tauB.mat','tau2')%,'-append')
+%       error('1')
 
     % errerr2= NaN;
     % cverr2 = NaN;
@@ -370,8 +370,8 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
         obj.convSolnRecon = Zu;
  
 % test using TE for p~=q 
-% load('tauB.mat')
-% [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
+%   load('tauB.mat')
+%  [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
 % Rq = obj.computefluxintegral(Zq,'residual');
 
 % [tau4 tau4-Rq -Rend]
@@ -406,8 +406,24 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % plot(x,exacterr)
 % error('1')
 
+
         f = -Rend;
-        obj.errorSource = f;%tau6-Rq;%f;%tau;
+        ff = tau+randn(N+2,1)/N^2;
+        obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
+        
+%        [tau2-Rend 2*f]
+%        [ tau2 Rend]
+%         error('1')
+%         z=[tau-ff];
+%         [tau ff z]
+% 
+%         z1 = sum(abs(z(2:N+1)))/N;
+%         z2 =sqrt(sum((z(2:N+1)).^2)/N);
+%         zinf = max(abs(z(2:N+1)));
+%         [z1 z2 zinf]
+%         plot(x,tau,x,f)
+% 
+%         error('1')
  
 %    [f -FIr+s]
 %    error('1')
