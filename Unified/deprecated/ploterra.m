@@ -92,26 +92,51 @@ g=figure
 kk=1;
 for k = 1:20
 subplot(5,4,k)
-v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1},'LineWidth',2);
+v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1},'LineWidth',3);
 
-
+if(mod(k,4)==1)
+   yvals = [-5e-3 5e-3] ;
+elseif(k==10)
+        yvals = [-5e-5 5e-5];
+elseif(k==15)
+        yvals = [-5e-6 5e-6];
+elseif(k==20)
+        yvals = [-5e-7 5e-7];
+else
+   yvals = [-1e-3 1e-3] ;
+end
 
  if(~((mod(k,4)==1)|| (k>=10 && mod(k,5)==0)))
    ylim([-1e-3 1e-3]) 
-   set(gca,'YTick',[-1e-3 1e-3])
+%    yvals = [-1e-3 1e-3];
+   set(gca,'YTick',yvals)
+   
+%    set(gca,'YTickLabel',sprintf('%2.0e|',yvals));
+   
+   
+   
  else
      
      yt = get(gca,'ytick');
      set(gca,'YTick',[yt(1) yt(3)])
  end
+ if(k==1)
  set(gca,'XTick',[0 1])
+ else
+    set(gca,'XTick',[])
+ end
 
 if(k==2 || k== 5 || k==10 || k==15 || k==20)
 lin(kk) = v;
 kk = kk+1;
 
 end
-   
+
+if(k==1 || k==2 | k==10 || k==15 || k==20)
+   set(gca,'YTickLabel',sprintf('%2.0e|',yvals));
+else
+    set(gca,'YTickLabel',[]);
+end
 
     set(gca,'FontSize',24)
  
@@ -125,13 +150,13 @@ hold on
 % subplot(2,1,k)
 % plot(x,exacterr(:,k),'o',x,ee(:,2),'*');
    if(k==9)
-     ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',35) 
+%      ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',35) 
    end
 
 end
 
 subplot(5,4,20)
-v= plot(x,exacterr(:,20)-ee(:,20),'Color',[153/255, 76/255, 0],'LineStyle', 'd','LineWidth',2);
+v= plot(x,exacterr(:,20)-ee(:,20),'Color',[153/255, 76/255, 0],'LineStyle', 'd','LineWidth',3);
 lin(kk-1) = v;
 % annotation(g,'textbox',...
 %     [0.0504791666666667 0.532837474674436 0.0322916666666667 0.0351288056206089],...
@@ -151,10 +176,14 @@ annotation(g,'textbox',...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
 
-hL = legend([lin],{'$$\mathcal{O}(h^\mathbf{2})$$','$$\mathcal{O}(h^\mathbf{3})$$','$$\mathcal{O}(h^\mathbf{4})$$','$$\mathcal{O}(h^\mathbf{5})$$','$$\mathcal{O}(h^\mathbf{6})$$'},'Interpreter','Latex','FontSize',30,'Orientation','Horizontal');
+hL= legend([lin],{'$$\mathcal{O}(h^\mathbf{2})$$','$$\mathcal{O}(h^\mathbf{3})$$','$$\mathcal{O}(h^\mathbf{4})$$','$$\mathcal{O}(h^\mathbf{5})$$','$$\mathcal{O}(h^\mathbf{6})$$'},'Interpreter','Latex','FontSize',30,'Orientation','Horizontal');
 
+% a=get(hL,'children');
+% set(a(1),'markersize',50); % This line changes the legend marker size
+% set(hL,'FontSize',14)   
 
-
+M = findobj(hL,'type','patch') % Find objects of type 'patch'
+set(M,'MarkerSize', 50)
 %zoom in 
 fig = figure
 
