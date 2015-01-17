@@ -68,7 +68,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
     te1 = [ sum(abs(tauu1(2:N+1)))/N  sum(abs(tauu2(2:N+1)))/N sum(abs(tauu3(2:N+1)))/N ]
 
     teu = [tauu1 tauu2 tauu3];
- 
+ tev = teu;
     %truncation error need exact sol
 
 % obj.NLfluxtype = ft;
@@ -512,7 +512,7 @@ U = obj.exactSolutionU;
         
        
 % load('tmp2.mat')
-        obj.errorSource = f;%teu;%f;%tau;
+        obj.errorSource = tev;%f;%teu;%f;%tau;
    
         figure
         subplot(3,1,1)
