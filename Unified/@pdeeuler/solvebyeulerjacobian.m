@@ -380,7 +380,7 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
                     ft = obj.NLfluxtype;
                     
                 if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
-      
+   
            obj.NLfluxtype = 4; 
 %             obj.computeprimalleftright();
             
@@ -512,7 +512,7 @@ U = obj.exactSolutionU;
         
        
 % load('tmp2.mat')
-        obj.errorSource = tev;%f;%teu;%f;%tau;
+        obj.errorSource = f;%tev;%f;%teu;%f;%tau;
    
         figure
         subplot(3,1,1)
@@ -945,8 +945,14 @@ teu
         if(obj.NLfluxtype ==1)
              exacterr = exacterrv;
         else
+            ev = ee;
         ee = eu;
         exacterr = exacterru;
+        end
+        
+        if(ft ==2 )
+            errerrv2 = [sqrt(sum((exacterrv(2:N+1,1)-ev(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ev(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ev(2:N+1,3)).^2)/N) ];
+            errerr2 = max(abs(errerrv2));
         end
         
         exacterru

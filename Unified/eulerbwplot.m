@@ -68,7 +68,7 @@ N = 20;
 p = Q(:,1);
 q = Q(:,2);
 r = Q(:,3);
-load('EulerBW3.mat')
+  load('EulerBW4.mat')
 F = E;
 for i = 1:0
    for j = 1:50
@@ -81,7 +81,7 @@ for i = 1:0
    end
     
 end
-% save('EulerBW3.mat','E')
+%  save('EulerBW4.mat','E')
 %  fit = min(p+q,min(r,p-1))+1+max((r-p).*(q==r),(p==r-1));
 %  fit =  p+(r-p).*(q==r);
 figure
@@ -100,7 +100,7 @@ te = cell(size(B,1),1)
 % % xlabel(text)
  set(gca,'XTick',1:1:size(B,1),'XTickLabels',te)
  set(gca,'FontSize',20)
-ylabel('Order of accuracy of error estimate over 40 runs')
+ylabel('Order of accuracy of error estimate over 10 runs')
 
 
 
