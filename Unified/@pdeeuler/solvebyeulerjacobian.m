@@ -515,7 +515,7 @@ U = obj.exactSolutionU;
         
        
 % load('tmp2.mat')
-        obj.errorSource = f;%teu;%f;%tau;
+        obj.errorSource = f;%tev;%f;%teu;%f;%tau;
 
         figure
         subplot(3,1,1)
@@ -567,13 +567,17 @@ U = obj.exactSolutionU;
         e
         obj.errorSource
         
+        e+obj.convSolutionV
+        obj.exactSolutionV
+%         error('2')
+        
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         
 %         load('test.mat')
         
         [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Z,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
-%         phi2
+%         [phi1 phi2 phi3]
 %         error('1')
 %      [Zvpe] = obj.unstructuredrecon(e+obj.convSolutionV,q,'error');%u,x,h,N,NaN,NaN,p);
 %     [phi1 phi2 phi3]=obj.computeeulerfluxintegral(Zvpe,'error');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)

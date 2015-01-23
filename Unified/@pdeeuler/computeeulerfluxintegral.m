@@ -22,6 +22,7 @@ if(strcmp(eqn,'error')==1)
 end
 
 
+
 N=obj.nCells;
 h = obj.cellWidths;
 x = obj.cellCentroids;
@@ -275,7 +276,6 @@ for i = 2:N+1
      
      
      
- 
  
  
  
