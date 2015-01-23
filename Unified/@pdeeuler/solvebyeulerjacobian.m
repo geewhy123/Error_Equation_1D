@@ -123,7 +123,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             [u(j,1),u(j,2),u(j,3)] = toconservedvars(V(j,1),V(j,2),V(j,3));
         end
 
-        if(obj.NLfluxtype==4)
+        if(obj.NLfluxtype==4 || obj.NLfluxtype == 5)
            u=V; 
         end
 
@@ -147,7 +147,7 @@ function  [errerr2,x,cverr2,exacterr,ee,te  ]  = solvebyeulerjacobian( obj)
             [V(j,1),V(j,2),V(j,3)] = toprimitivevars(u(j,1),u(j,2),u(j,3));
         end
         
-        if(obj.NLfluxtype==4)
+        if(obj.NLfluxtype==4 || obj.NLfluxtype == 5)
            V = u; 
         end
         
@@ -374,12 +374,13 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
  
 %         [R1 R2 R3]
+%         tev
 %         error('1')
 
         
                     ft = obj.NLfluxtype;
                     
-                if(obj.NLfluxtype == 2 && strcmp(obj.bchandle,'HC')~= 1)
+                if((obj.NLfluxtype == 2 )&& strcmp(obj.bchandle,'HC')~= 1)
    
            obj.NLfluxtype = 4; 
 %             obj.computeprimalleftright();
@@ -428,6 +429,8 @@ obj.computeprimalpseudo();
 %           error('1')
           
                 end
+          
+                
    obj.computeprimalleftright();
         
                 
@@ -440,7 +443,7 @@ obj.computeprimalpseudo();
 %         norm1R  = [sum(abs(R1(2:N+1)))/N sum(abs(R2(2:N+1)))/N sum(abs(R3(2:N+1)))/N]
 %         error('1')
 
-        if(obj.NLfluxtype == 4)
+        if(obj.NLfluxtype == 4 )
             
                    Ve = obj.exactSolutionU-uu; 
                    V= uu;
@@ -512,8 +515,8 @@ U = obj.exactSolutionU;
         
        
 % load('tmp2.mat')
-        obj.errorSource = f;%tev;%f;%teu;%f;%tau;
-   
+        obj.errorSource = f;%teu;%f;%tau;
+
         figure
         subplot(3,1,1)
         plot(x,f(:,1),'+',x,teu(:,1),'^')
@@ -557,12 +560,13 @@ U = obj.exactSolutionU;
         Vpe = zeros(N+2,3);
         
         
-        if(obj.NLfluxtype ~= 1)
+        if(obj.NLfluxtype ~= 1 && obj.NLfluxtype ~= 5)
            eu = exacterru;
            e = eu;
         end
         e
         obj.errorSource
+        
 %
         [Z] = obj.unstructuredrecon(e,q,'error');%u,x,h,N,NaN,NaN,p);
         
@@ -752,8 +756,9 @@ end
             
         end
 
+        
 
-        if(obj.NLfluxtype ~=1)
+        if(obj.NLfluxtype ~=1 && obj.NLfluxtype ~= 5)
         Upe = eu+obj.convSoln;
  
              for j = 2:N+1

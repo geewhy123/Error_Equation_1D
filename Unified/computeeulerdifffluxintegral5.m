@@ -1,4 +1,4 @@
-function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn )
+function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral5( obj,Z,eqn )
 %COMPUTEEULERFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -44,35 +44,6 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn )
 
 
 
-% error('1')
-% U = obj.convSoln;
-% 
-% for i = 2:N+1
-% % [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
-% % [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
-% [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
-% V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
-% V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
-% V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
-% 
-% end
-% fprintf('hack avg');
-% % V
-% % error('1')
-%  Z = obj.unstructuredrecon(V,order,eqn);
-% 
-% 
-% 
-% U1l = U1l + obj.convUleft(:,1);
-% U2l = U2l + obj.convUleft(:,2);
-% U3l = U3l + obj.convUleft(:,3);
-% U1r = U1r + obj.convUright(:,1);
-% U2r = U2r + obj.convUright(:,2);
-% U3r = U3r + obj.convUright(:,3);
-% 
-
-
-
     for i = 2:N+1
     
         for k = 1:order
@@ -88,183 +59,24 @@ function [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral2( obj,Z,eqn )
             Pb(i) = Pb(i) + (Z(k+2*order,i))*obj.moments(i,k);
         end
 
-% % %         cl(i) = sqrt(gam*Pl(i)/rhol(i));
-% % %         cr(i) = sqrt(gam*Pr(i)/rhor(i));
+
     end
+[rhol rhor ul ur Pl Pr];
+Z;
+%     error('1')
+    rhol = rhol + obj.convVleft(:,1);
+    ul = ul + obj.convVleft(:,2);
+    Pl = Pl + obj.convVleft(:,3);
+    rhor = rhor + obj.convVright(:,1);
+    ur = ur + obj.convVright(:,2);
+    Pr = Pr + obj.convVright(:,3);
 
-%    figure
-% obj.reconplot(Z(1:order,:),'solution')
-% 
-% obj.reconplot(Z(order+1:2*order,:),'solution')
-% 
-% obj.reconplot(Z(2*order+1:3*order,:),'solution')
-% % error('1')
-
-% Z
-%
-[rhol ul Pl rhor ur Pr]
-% obj.convUleft
-
-%  error('1')
-% error('1')
-
-    rhol = rhol + obj.convUleft(:,1);
-    ul = ul + obj.convUleft(:,2);
-    Pl = Pl + obj.convUleft(:,3);
-    rhor = rhor + obj.convUright(:,1);
-    ur = ur + obj.convUright(:,2);
-    Pr = Pr + obj.convUright(:,3);
-
-[rhol ul Pl rhor ur Pr]
-% error('1')
-
-% %  if(strcmp(eqn,'error')==1)
-% %  Vpe = [rhol rhor ul ur Pl Pr];
-% %  V = [obj.convVleft(:,1) obj.convVright(:,1) obj.convVleft(:,2) obj.convVright(:,2) obj.convVleft(:,3) obj.convVright(:,3)];
-% % for i = 2:N+1
-% %  [U(i,1),U(i,2),U(i,3)] = toconservedvars(V(i,1),V(i,3),V(i,5));
-% % end
-% % U;
-% % % error('1')
-% %  end
-
-
-% % % % if(obj.bcLeftType == 'D')
-% % % %    obj.T0 = obj.primalT0; 
-% % % %    obj.P0 = obj.primalP0;
-% % % % end
-% % % % if(obj.bcRightType == 'D')
-% % % %     obj.Pb = obj.primalPb;
-% % % % end
-
-% % %     U = obj.convSoln;
-% % %     V = zeros(N+2,3);
-% % %     for i = 2:N+1
-% % %     [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
-% % %     end
-% % %     V(:,1) = V(:,1) + rhob;
-% % %     V(:,2) = V(:,2) + ub;
-% % %     V(:,3) = V(:,3) + Pb;
-% V
-% error('1')
-
-% % %     Z = obj.unstructuredrecon(V,order,eqn);
-% % % % if(obj.bcLeftType == 'D')
-% % % %    obj.T0 = 0; 
-% % % %    obj.P0 = 0;
-% % % % end
-% % % % if(obj.bcRightType == 'D')
-% % % %     obj.Pb = 0;
-% % % % end
-
-
-
-% rhor(N+1) = obj.bcRightVal(1);
-% ur(N+1) = obj.bcRightVal(2);
-% Pr(N+1) = obj.Pb;
-
-%%%
-
-% Z
-% error('1')
-
-% % %     if(strcmp(eqn,'solution') && (min(rhol)<0 || min(rhor)<0 || min(Pl)<0 || min(Pr)<0))
-% % %         figure
-% % %         obj.reconplot(Z(1:order,:),'solution')
-% % %         obj.reconplot(Z(order+1:2*order,:),'solution')
-% % %         obj.reconplot(Z(2*order+1:3*order,:),'solution')
-% % % 
-% % % % error('2')
-% % %  
-% % %     end
-
-    %
-%   Z = obj.reconexactsolutionV;  
-
-% % %     Z;
-% % %     obj.reconexactsolutionV;
-
-% error('1')
-% Z(2,2) = obj.reconexactsolutionV(2,2);
-% Z(4,2) = obj.reconexactsolutionV(4,2);
-% Z(6,N+1) = obj.reconexactsolutionV(6,N+1);
-% % %     z = Z;
-%  Z = obj.reconexactsolutionV;
-% %  Z(6,N+1) = z(6,N+1);
-% % Z-z
-% %  error('1')
-% 
-% rhol = rhol*0;
-% rhor = rhor*0;
-% ul = ul*0;
-% ur = ur*0;
-% Pl = Pl*0;
-% Pr = Pr*0;
-% for i = 2:N+1
-%     
-%     for k = 1:order
-%     rhor(i) = rhor(i)+ Z(k,i)*(h(i)/2)^(k-1);
-%     rhol(i) = rhol(i)+ Z(k,i)*(-h(i)/2)^(k-1);
-%     ur(i)   = ur(i)+ Z(k+order,i)*(h(i)/2)^(k-1);
-%     ul(i)   = ul(i)+ Z(k+order,i)*(-h(i)/2)^(k-1);
-%     Pr(i)   = Pr(i)+ Z(k+2*order,i)*(h(i)/2)^(k-1);
-%     Pl(i)   = Pl(i)+ Z(k+2*order,i)*(-h(i)/2)^(k-1);
-% 
-% 
-%     rhob(i) = rhob(i) + (Z(k,i))*obj.moments(i,k);
-%     ub(i) = ub(i) + (Z(k+order,i))*obj.moments(i,k);
-%     Pb(i) = Pb(i) + (Z(k+2*order,i))*obj.moments(i,k);
-%     end
-% 
-%     cl(i) = sqrt(gam*Pl(i)/rhol(i));
-%     cr(i) = sqrt(gam*Pr(i)/rhor(i));
-% end
-%  Z(2*order+1:3*order,N+1) = z(2*order+1:3*order,N+1);
-% 
-% rhol(2)-obj.convVleft(2,1)
-% ul(2)-obj.convVleft(2,2)
-% error('1')
-
-U1l = rhol;
-U2l = ul;
-U3l = Pl;
-U1r = rhor;
-U2r = ur;
-U3r = Pr;
-% % %     for i = 2:N+1
-% % %         [U1l(i),U2l(i),U3l(i)]=toconservedvars(rhol(i),ul(i),Pl(i));
-% % %         [U1r(i),U2r(i),U3r(i)]=toconservedvars(rhor(i),ur(i),Pr(i));
-% % %     end
-% U = [U1l U1r U2l U2r U3l U3r]
-
-
-%%%
-% error('1')
-% U = obj.convSoln;
-% 
-% for i = 2:N+1
-% % [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
-% % [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
-% [V(i,1),V(i,2),V(i,3)]=toprimitivevars(U(i,1),U(i,2),U(i,3));
-% V(i,1) = V(i,1) + 0.5*(U1l(i)+U1r(i));
-% V(i,2) = V(i,2) + 0.5*(U2l(i)+U2r(i));
-% V(i,3) = V(i,3) + 0.5*(U3l(i)+U3r(i));
-% 
-% end
-% fprintf('hack avg');
-% % V
-% % error('1')
-% Z = obj.unstructuredrecon(V,order,eqn);
-% 
-% 
-% 
-% U1l = U1l + obj.convUleft(:,1);
-% U2l = U2l + obj.convUleft(:,2);
-% U3l = U3l + obj.convUleft(:,3);
-% U1r = U1r + obj.convUright(:,1);
-% U2r = U2r + obj.convUright(:,2);
-% U3r = U3r + obj.convUright(:,3);
-
+     for i = 2:N+1
+        [U1l(i),U2l(i),U3l(i)] = toconservedvars(rhol(i),ul(i),Pl(i));
+        [U1r(i),U2r(i),U3r(i)] = toconservedvars(rhor(i),ur(i),Pr(i));
+    end
+%     [U1l U2l U3l]
+%     error('1')
 %%%
     F1l = zeros(N+2,1);
     F2l = zeros(N+2,1);
@@ -277,6 +89,10 @@ U3r = Pr;
         [F1l(i),F2l(i),F3l(i)]=conservedtoflux(U1l(i),U2l(i),U3l(i));
         [F1r(i),F2r(i),F3r(i)]=conservedtoflux(U1r(i),U2r(i),U3r(i));
     end
+%     [F1r F2r F3r F1l F2l F3l]
+% [U1l U1r U2l U2r U3l U3r]    
+% [rhol rhor ul ur Pl Pr]
+%     error('1')
  if(strcmp(obj.bchandle,'HC')~=1)
         obj.primalP0;
         obj.primalT0;
@@ -337,7 +153,7 @@ U3r = Pr;
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
     
-load('atilde.mat')
+% load('atilde.mat')
 
 %  U1L = U1l(3:6)  
 %  U1R = U1r(2:5)
@@ -365,8 +181,7 @@ load('atilde.mat')
 % FlAve(1:3,N+1)= [ 0;0;0];
     FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
-    F = [FlAve FrAve]
-    error('2')
+    F = [FlAve FrAve];
 
 
 
@@ -411,8 +226,16 @@ load('atilde.mat')
 % Z
 % error('1')
 
-Z = obj.convSolnRecon;
-Z = obj.reconexactsolutionV;
+ev = [Z(1,:) ; Z(order+1,:) ;Z(2*order+1,:)]';
+epv = ev+obj.convSolutionV;
+Z = obj.unstructuredrecon(epv,order,'error');
+% [F1r F2r F3r F1l F2l F3l]
+% error('1')
+
+
+% Z = obj.convSolnRecon;
+% Z = obj.reconexactsolutionV
+%  error('1')
 % error('1')
 
 % A
@@ -433,33 +256,29 @@ Z = obj.reconexactsolutionV;
         r2 = 0;
         r3 = 0;
         r4 = 0;
-        ru1 = 0;
-        ru2 = 0;
-        ru3 = 0;
-        ru4 = 0;
-        rE1 = 0;
-        rE2 = 0;
-        rE3 = 0;
-        rE4 = 0;
+   u1 = 0;
+   u2 = 0;
+   u3 = 0;
+   u4 = 0;
       
         for k = 1:order
             r1 = r1 + Z(k,i)*(xx1-x(i))^(k-1); 
             r2 = r2 + Z(k,i)*(xx2-x(i))^(k-1) ;
             r3 = r3 + Z(k,i)*(xx3-x(i))^(k-1) ;
             r4 = r4 + Z(k,i)*(xx4-x(i))^(k-1) ;
-            ru1 = ru1 + Z(k+order,i)*(xx1-x(i))^(k-1); 
-            ru2 = ru2 + Z(k+order,i)*(xx2-x(i))^(k-1) ;
-            ru3 = ru3 + Z(k+order,i)*(xx3-x(i))^(k-1) ;
-            ru4 = ru4 + Z(k+order,i)*(xx4-x(i))^(k-1) ;
-            rE1 = rE1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
-            rE2 = rE2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
-            rE3 = rE3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
-            rE4 = rE4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
+            u1 = u1 + Z(k+order,i)*(xx1-x(i))^(k-1); 
+            u2 = u2 + Z(k+order,i)*(xx2-x(i))^(k-1) ;
+            u3 = u3 + Z(k+order,i)*(xx3-x(i))^(k-1) ;
+            u4 = u4 + Z(k+order,i)*(xx4-x(i))^(k-1) ;
+            P1 = P1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
+            P2 = P2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
+            P3 = P3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
+            P4 = P4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
         end
-        P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
-        P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
-        P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
-        P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
+%         P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
+%         P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
+%         P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
+%         P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
   
         PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
@@ -469,10 +288,11 @@ Z = obj.reconexactsolutionV;
     end
 
 
-% [phia1 phia2 phia3]
+ [phia1 phia2 phia3];
+%  error('2')
 % FPAp = F(:,2)./h+PAp
 % (FrAve-FlAve)/h(2)
-PAp
+PAp;
 % if(i==N+1)
 % PAp
 % error('1')
@@ -481,13 +301,18 @@ PAp
 
 
 
-    U1l = obj.convUleft(:,1);
-    U2l = obj.convUleft(:,2);
-    U3l = obj.convUleft(:,3);
-    U1r = obj.convUright(:,1);
-    U2r = obj.convUright(:,2);
-    U3r = obj.convUright(:,3);
-    U = obj.convSoln;
+    V1l = obj.convVleft(:,1);
+    V2l = obj.convVleft(:,2);
+    V3l = obj.convVleft(:,3);
+    V1r = obj.convVright(:,1);
+    V2r = obj.convVright(:,2);
+    V3r = obj.convVright(:,3);
+    
+    for i = 2:N+1
+        [U1l(i),U2l(i),U3l(i)] = toconservedvars(V1l(i),V2l(i),V3l(i));
+        [U1r(i),U2r(i),U3r(i)] = toconservedvars(V1r(i),V2r(i),V3r(i));
+    end
+%     U = obj.convSoln;
 %     for i = 2:N+1
 %         [V1l(i),V2l(i),V3l(i)]=toprimitivevars(U1l(i),U2l(i),U3l(i));
 %         [V1r(i),V2r(i),V3r(i)]=toprimitivevars(U1r(i),U2r(i),U3r(i));
@@ -519,7 +344,7 @@ PAp
 
 
 % VV = [V1l' V1r' V2l' V2r' V3l' V3r']
-UU = [U1l U2l U3l U1r U2r U3r]
+UU = [U1l U2l U3l U1r U2r U3r];
 % error('1')
 
 
@@ -592,8 +417,8 @@ end
         bAtilde(:,:,i) = computeAtilde(Ut1(i),Ut2(i),Ut3(i));
     end
 
-    load('atilde.mat')
-    fprintf('atilde')
+%     load('atilde.mat')
+%     fprintf('atilde');
 
 %  U1L = U1l(3:6)  
 %  U1R = U1r(2:5)
@@ -622,7 +447,7 @@ end
     FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
     F = [FlAve FrAve];
-% error('2')
+%  error('2')
 
 
 
@@ -666,6 +491,7 @@ end
 
 
 % A
+        Z = obj.convSolnRecon;
 % error('1')
     for i = 2:N+1
         xl = x(i)-h(i)/2;
@@ -683,34 +509,30 @@ end
         r2 = 0;
         r3 = 0;
         r4 = 0;
-        ru1 = 0;
-        ru2 = 0;
-        ru3 = 0;
-        ru4 = 0;
-        rE1 = 0;
-        rE2 = 0;
-        rE3 = 0;
-        rE4 = 0;
-        Z = obj.convSolnRecon;
+u1 = 0;
+u2 = 0;
+u3 = 0;
+u4 = 0;
+%         Z = obj.convSolnRecon
         for k = 1:order
             r1 = r1 + Z(k,i)*(xx1-x(i))^(k-1); 
             r2 = r2 + Z(k,i)*(xx2-x(i))^(k-1) ;
             r3 = r3 + Z(k,i)*(xx3-x(i))^(k-1) ;
             r4 = r4 + Z(k,i)*(xx4-x(i))^(k-1) ;
-            ru1 = ru1 + Z(k+order,i)*(xx1-x(i))^(k-1); 
-            ru2 = ru2 + Z(k+order,i)*(xx2-x(i))^(k-1) ;
-            ru3 = ru3 + Z(k+order,i)*(xx3-x(i))^(k-1) ;
-            ru4 = ru4 + Z(k+order,i)*(xx4-x(i))^(k-1) ;
-            rE1 = rE1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
-            rE2 = rE2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
-            rE3 = rE3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
-            rE4 = rE4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
+            u1 = u1 + Z(k+order,i)*(xx1-x(i))^(k-1); 
+            u2 = u2 + Z(k+order,i)*(xx2-x(i))^(k-1) ;
+            u3 = u3 + Z(k+order,i)*(xx3-x(i))^(k-1) ;
+            u4 = u4 + Z(k+order,i)*(xx4-x(i))^(k-1) ;
+            P1 = P1 + Z(k+2*order,i)*(xx1-x(i))^(k-1); 
+            P2 = P2 + Z(k+2*order,i)*(xx2-x(i))^(k-1) ;
+            P3 = P3 + Z(k+2*order,i)*(xx3-x(i))^(k-1) ;
+            P4 = P4 + Z(k+2*order,i)*(xx4-x(i))^(k-1) ;
         end
-        P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
-        P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
-        P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
-        P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
- 
+%         P1 = r1;(gam-1)*(rE1-0.5*ru1^2/r1);
+%         P2 = r2;(gam-1)*(rE2-0.5*ru2^2/r2);
+%         P3 = r3;(gam-1)*(rE3-0.5*ru3^2/r3);
+%         P4 = r4;(gam-1)*(rE4-0.5*ru4^2/r4);
+%  
  
         PAp(i) = (1/h(i))*(c1*P1*obj.getAp(xx1)+c2*P2*obj.getAp(xx2)+c3*P3*obj.getAp(xx3)+c4*P4*obj.getAp(xx4))*(xr-xl)/2;
    
@@ -729,11 +551,11 @@ end
     phi3 = phi3 - obj.errorSource(:,3);
 
 %     FPAp = F(:,2)./h+PAp
-PAp
+PAp;
 % (FrAve-FlAve)/h(2)
-    PP = [phia1 phia2 phia3 phib1 phib2 phib3]
+    PP = [phia1 phia2 phia3 phib1 phib2 phib3];
 
-%  error('1')
+%   error('1')
 
 % [phi1(N+1) phi2(N+1) phi3(N+1)]
 % % %  [FlAve(:,:) FrAve(:,:)]
@@ -763,6 +585,6 @@ PAp
 %     phi2 = phi2 - obj.errorSource(:,2);
 %     phi3 = phi3 - obj.errorSource(:,3);
 % end
-
+% error('1')
 end
 

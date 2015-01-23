@@ -406,6 +406,7 @@ U = [U1l U1r U2l U2r U3l U3r];
     FrAve(N+1,1:3) = [F1r(N+1);F2r(N+1);F3r(N+1)]';
 
     F = [FlAve FrAve];
+%     error('2')
 
 
 
@@ -552,7 +553,8 @@ Z;
     end
 
 
-% [phia1 phia2 phia3]
+%  [phia1 phia2 phia3]
+%  error('2')
 % FPAp = F(:,2)./h+PAp
 % (FrAve-FlAve)/h(2)
 PAp;
@@ -560,6 +562,9 @@ PAp;
 % PAp
 % error('1')
 % end
+
+
+
 
 
 
@@ -819,7 +824,7 @@ end
 %     FPAp = F(:,2)./h+PAp
 % PAp-obj.errorSource(:,2)
 % (FrAve-FlAve)/h(2)
-%     PP = [phia1 phia2 phia3 phib1 phib2 phib3];
+    PP = [phia1 phia2 phia3 phib1 phib2 phib3];
 % [phia2 phib2 phia2-phib2 phi2];
 %  error('1')
 

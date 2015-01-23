@@ -68,7 +68,7 @@ for j = 2:N+1
     [u(j,1),u(j,2),u(j,3)] = toconservedvars(v(j,1),v(j,2),v(j,3));
     
 end
-if(obj.NLfluxtype ==4)
+if(obj.NLfluxtype ==4|| obj.NLfluxtype == 5)
     u = v;
 end
 
@@ -132,7 +132,7 @@ for j = 2:N+1
 [v1(j,1),v1(j,2),v1(j,3)] = toprimitivevars(u1(j,1),u1(j,2),u1(j,3));
 end
 
-if(obj.NLfluxtype ==4)
+if(obj.NLfluxtype ==4|| obj.NLfluxtype == 5)
     v1 =u1;
 end
 

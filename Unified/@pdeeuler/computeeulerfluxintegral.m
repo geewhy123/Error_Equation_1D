@@ -13,7 +13,8 @@ if(strcmp(eqn,'error')==1)
             [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral3( obj,Z,eqn );
         case 4
             [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral4( obj,Z,eqn );
-            
+        case 5
+            [ phi1,phi2,phi3 ] = computeeulerdifffluxintegral5( obj,Z,eqn );
 %             error('1')
     end
     

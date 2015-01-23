@@ -40,7 +40,7 @@ E = P/(rho*(gam-1))+0.5*u^2;
 F1 = rho*u;
 F2 = rho*u^2+P;
 F3 = rho*u*(E+P/rho);
-
+% [F1 F2 F3]
 
 end
 
