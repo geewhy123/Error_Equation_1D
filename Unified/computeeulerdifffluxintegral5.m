@@ -240,7 +240,7 @@ epv = ev+obj.convSolutionV;
 Z = obj.unstructuredrecon(epv,order,'error');
 % Z
 % order
-% error('1')
+%     error('1')
 % [F1r F2r F3r F1l F2l F3l]
 % error('1')
 
@@ -549,10 +549,10 @@ u4 = 0;
 %     FPAp = F(:,2)./h+PAp
 PAp;
 % (FrAve-FlAve)/h(2)
-%     PP = [phia1 phia2 phia3 phib1 phib2 phib3]
+%      PP = [phia1 phia2 phia3 phib1 phib2 phib3]
 % [phi1 phi2 phi3]
 % obj.errorSource
-%    error('1')
+%     error('1')
 
 % [phi1(N+1) phi2(N+1) phi3(N+1)]
 % % %  [FlAve(:,:) FrAve(:,:)]

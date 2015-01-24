@@ -309,7 +309,10 @@ function [ Z ] = unstructuredreconerroreulerlong(obj,u,p,eqn,iUnk)
 
     start = 3;
 fin = N;
-if(obj.NLfluxtype == 4)
+% if(obj.NLfluxtype == 4 || obj.NLfluxtype == 5)
+% if(obj.NLfluxtype ~= 1)
+ if(strcmp(obj.bchandle,'HC')~=1)
+
    start = 2;
    fin = N+1;
 end

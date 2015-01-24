@@ -427,7 +427,10 @@ obj.computeprimalpseudo();
 %           obj.NLfluxtype = 4;
 
 %           error('1')
-          
+
+%         V = uu;
+%         Zr = obj.unstructuredrecon(V,r,'residual');
+%         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
                 end
           
                 
@@ -515,7 +518,7 @@ U = obj.exactSolutionU;
         
        
 % load('tmp2.mat')
-        obj.errorSource = f;%tev;%f;%teu;%f;%tau;
+        obj.errorSource = f;%teu;%f;%tau;
 
         figure
         subplot(3,1,1)

@@ -68,20 +68,20 @@ N = 20;
 p = Q(:,1);
 q = Q(:,2);
 r = Q(:,3);
-  load('EulerBW4.mat')
-F = E;
-for i = 1:0
+%   load('EulerBW4.mat')
+% F = E;
+for i = 1:10
    for j = 1:50
 %      tic
-     err(i,1) = errordriver(N,p(j),q(j),r(j),1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
-     err(i,2) = errordriver(2*N,p(j),q(j),r(j),1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+     err(i,1) = errordriver(N,p(j),q(j),r(j),1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
+     err(i,2) = errordriver(2*N,p(j),q(j),r(j),1/3,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
      E(i,j) = log(err(i,1)/err(i,2))/log(2);
 %      toc
      [i j]
    end
     
 end
-%  save('EulerBW4.mat','E')
+ save('EulerBWM2V.mat','E')
 %  fit = min(p+q,min(r,p-1))+1+max((r-p).*(q==r),(p==r-1));
 %  fit =  p+(r-p).*(q==r);
 figure
