@@ -146,7 +146,7 @@ else
 end
 
 f(i) = 0;
-if(strcmp(obj.goal,'SS')==1)
+if(strcmp(obj.goal,'SS')==1|| obj.endTime > 8)
    ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
    u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
    f(i) = (1/h(i))*(sin(2*pi*xr)-sin(2*pi*xl)); 
@@ -241,6 +241,9 @@ f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 
     ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      
+     if(strcmp(obj.goal,'TimeAccurate')==1)
+%         u0(i) = u0(i)+ 
+     end
 
      
 %     MMS

@@ -368,7 +368,6 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 
         Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
         obj.convSolnRecon = Zu;
- 
 % test using TE for p~=q 
 %   load('tauB.mat')
 %  [Zq] = obj.unstructuredrecon(u,q,'error');%ue,x,h,N,NaN,NaN,p);
@@ -532,7 +531,14 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
         trunc_disc_error = [tauE1 tauE2 tauEinf]
         disc_disc_error = [errerr1 errerr2 errerrinf]
 
+%         ecor = exacterr- (u + ee);
+ecor = ue-(u+ee);
+% u+ee
+%         sqrt(sum((ecor(2:N+1)).^2)/N) 
+        
+        
     else
+%         u
         errerr2 = NaN;
         exacterr = NaN;
         ee = NaN;
@@ -541,7 +547,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 
 % tauE
 
-tau
+% tau
 
 % J(2:N+1,2:N+1)*exacterr(2:N+1)
 % tau(2:N+1)

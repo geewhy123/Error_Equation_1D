@@ -69,6 +69,7 @@ p = Q(:,1);
 q = Q(:,2);
 r = Q(:,3);
 %   load('EulerBW4.mat')
+%     load('EulerBWM2V.mat')
 % F = E;
 for i = 1:10
    for j = 1:50
@@ -81,7 +82,7 @@ for i = 1:10
    end
     
 end
- save('EulerBWM2V.mat','E')
+ save('EulerBWM2U-.mat','E')
 %  fit = min(p+q,min(r,p-1))+1+max((r-p).*(q==r),(p==r-1));
 %  fit =  p+(r-p).*(q==r);
 figure

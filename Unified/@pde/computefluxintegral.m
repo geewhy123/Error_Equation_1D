@@ -60,7 +60,14 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         end
     
         if(strcmp(eqn,'error')==1)
-    %     error('1')
+%              FI
+%              if(isnan(FI(2)))
+%                  Z
+%                 error('1') 
+%              end
+%             Z
+%             error('1')
+%          error('1')
         end
       
     elseif(strcmp(obj.physics,'BurgersMod')==1)
@@ -461,8 +468,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             U = U+(right(k)*(-h(i+1)/2)^(k-1));
         end
         F = F-U^2/2;
-     
-     
+   
      
         if(nonlinearerror && strcmp(eqn,'error')==1)
             Zu = obj.convSolnRecon;
@@ -476,6 +482,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             end
             F = F - U * utilder;
     %         Fl = Fl - ul * utildel;
+    
         end
         return;
         
@@ -489,7 +496,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             U = U+(left(k)*(h(i)/2)^(k-1)) ;
         end
         F = F-U^2/2;
-    
+   
         if(nonlinearerror && strcmp(eqn,'error')==1)
             Zu = obj.convSolnRecon;
             uorder = obj.qOrder;
@@ -502,7 +509,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             end
 %         F = F - ur * utilder;
             F = F - U * utildel;
-        
+   
         end
         return;
         

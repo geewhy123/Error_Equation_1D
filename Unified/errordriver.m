@@ -33,7 +33,7 @@ h0 = 1/N;
 CFL = 0.2;
 k = CFL*h0;
 
-if(strcmp(physics,'Poisson')==1)
+if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
     k = k*h0;
 %     if (N>10)
 %     k=4*k;
@@ -240,7 +240,7 @@ Z
 %   error('1')
 if(strcmp(problem.physics,'LinearSystem')==1)
     problem.nUnk = 2;
-elseif(strcmp(problem.physics,'Advection')==1) 
+elseif(strcmp(problem.physics,'Advection')==1 ||strcmp(problem.physics,'Poisson')==1 || strcmp(problem.physics,'BurgersVisc')==1) 
     
     problem.nUnk = 1;
 end
@@ -252,6 +252,7 @@ u
 T = 1;
 for j = 1:100000
 %     for m = 1:nUnk 
+
 
         U(:,j,1:problem.nUnk) = u;
 tt = k*(j-1);
@@ -271,7 +272,7 @@ u = uu;
     break
 end
 
-d=0;
+% d=0;
 
 
 % problem.curTime = j*k;
@@ -330,7 +331,7 @@ T(end)
 %     return
 % end
 
-assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
+% % % % % assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
 
 tlim = T(end);
 
@@ -386,7 +387,7 @@ nSteps
 % end
 
 % dir
-
+ problem.convSoln = u;
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau
@@ -450,7 +451,7 @@ end
 
 
 problem.residual = R;
-
+% problem.errorSource = R;
 % [-R(:,end) tau]
 % max(abs(-R(:,end)-tau))
 % plot(x,-R(:,end),x,tau)
@@ -535,8 +536,10 @@ M = nSteps;
 % % %  AD = computepseudo(N,x,h,q);
 problem.computeerrorpseudo();
 
-
-
+Zu = problem.unstructuredrecon(problem.convSoln,problem.qOrder,'error');
+        problem.convSolnRecon = Zu;
+% Zu
+% error('1')
 %new
 % % % Je = problem.computefluxjacobian(ue,'error');
 % % % % problem.errorRM
@@ -561,8 +564,10 @@ problem.computeerrorpseudo();
 
 
 
-
-
+if( problem.bcLeftType == 'D' && problem.bcRightType == 'D')
+problem.bcLeftVal = 0;
+problem.bcRightVal = 0;
+end
 
 % size(U)
 % size(R)
@@ -584,7 +589,8 @@ E(:,j) = e;
     
 
 
-
+% problem.errorSource
+% error('1')
 % if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
 if( ((TT>=tlim)) || (j >= nSteps+1))
 %     TT

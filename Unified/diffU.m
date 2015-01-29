@@ -41,6 +41,7 @@ for j = 1:n
     if(j > 4 && j < n-3)
     dUdt(:,j)= U(:,j-4:j+4)*cc/k;
     elseif(j<=4)
+        [j n]
         dUdt(:,j) = U(:,j:j+8)*cl/k;
     elseif(j>=(n-3))
        

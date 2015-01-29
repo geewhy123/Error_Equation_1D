@@ -428,9 +428,9 @@ obj.computeprimalpseudo();
 
 %           error('1')
 
-%         V = uu;
-%         Zr = obj.unstructuredrecon(V,r,'residual');
-%         [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
+        V = uu;
+        Zr = obj.unstructuredrecon(V,r,'residual');
+        [R1, R2, R3] = obj.computeeulerfluxintegral(Zr,'residual');
                 end
           
                 
@@ -964,7 +964,7 @@ teu
         
         if(ft ==2 )
             errerrv2 = [sqrt(sum((exacterrv(2:N+1,1)-ev(2:N+1,1)).^2)/N) sqrt(sum((exacterrv(2:N+1,2)-ev(2:N+1,2)).^2)/N)  sqrt(sum((exacterrv(2:N+1,3)-ev(2:N+1,3)).^2)/N) ];
-            errerr2 = max(abs(errerrv2));
+%             errerr2 = max(abs(errerrv2));
         end
         
         exacterru

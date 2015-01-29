@@ -29,10 +29,13 @@ val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
 end
 %val
 
+
 end
+
 
 %nonlinear error
   if (strcmp(phys,'Burgers')==1)
+      
 % if((nargin < 12) || (isnan(time))|| isnan(j))%primal and error step
      if(~isnan(time))
          Ubar = zeros(N+2,9);
@@ -55,6 +58,7 @@ end
          end
         
      end
+
 %   end
   end
 
@@ -118,6 +122,7 @@ phi(:,steps) = obj.computefluxintegral(Z,eqn);
 
 elseif(strcmp(eqn,'error')==1)
         obj.errorSource = -1*val(:,steps);
+        
          phi(:,steps) = obj.computefluxintegral(Z,'error');
          
 %       phi(:,steps) = timestep(eqn,Z,f,k,h,N,p,phys,time+c(steps)*k,Rsp,Zu(:,:,steps),val(:,steps),obj);
