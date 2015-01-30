@@ -241,8 +241,12 @@ f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 
     ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
      
+
      if(strcmp(obj.goal,'TimeAccurate')==1)
-%         u0(i) = u0(i)+ 
+        b = 10;
+        u0(i) = u0(i)+ (1/h(i))*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2));
+        ue(i) = ue(i) + (1/h(i))*exp(-b*obj.endTime)*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2));
+%         f(i) = (1/h(i))*(-b*exp(-b*obj.endTime)*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2)) + exp(-2*b*obj.endTime)*((xr^4/2-xr^3+xr^2/2)-(xl^4/2-xl^3+xl^2/2)) );
      end
 
      

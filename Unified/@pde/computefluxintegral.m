@@ -7,6 +7,10 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         
         if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
             f = obj.source;
+            if(strcmp(obj.goal,'TimeAccurate')==1)
+                
+                f = obj.computeTimeDepSource();
+            end
         elseif(strcmp(eqn,'error')==1)
             f = obj.errorSource;
         end

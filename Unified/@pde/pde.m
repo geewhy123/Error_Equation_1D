@@ -86,6 +86,7 @@ higherprimalPI;
         [errerr2,x,cverr2,exacterr,ee,te  ]=solvebyjacobianNL(obj);
         computehigherpseudo(obj);
         postprocesscn(obj,n);
+        f = computeTimeDepSource(obj);
     end
     
     methods(Access=private)
