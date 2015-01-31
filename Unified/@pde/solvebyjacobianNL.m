@@ -342,7 +342,16 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %     obj.postprocesscn(0.5);
 
 %%%%residual
-
+% J(2:N+1,2:N+1)%*u(2:N+1) - obj.source(2:N+1)
+% obj.computeerrorpseudo();
+% obj.errorSource = zeros(N+2,1);
+% K = obj.computefluxjacobian(u,'error');
+% J-K
+% error('1')
+% ue-u
+figure
+    plot(x,tau,'*')
+%      save('tmp.mat','x','tau')
     if(q> 0 && r>0)
 
         fprintf('\n\n\nError Equation:\n')
@@ -536,7 +545,8 @@ ecor = ue-(u+ee);
 % u+ee
 %         sqrt(sum((ecor(2:N+1)).^2)/N) 
         
-        
+%         Je(2:N+1,2:N+1)
+ee
     else
 %         u
         errerr2 = NaN;

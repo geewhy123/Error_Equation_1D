@@ -336,9 +336,9 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
     exacterr
     teu
     
-    
-    
-   
+    plot(x,tau,'*')
+%     save('tmp.mat','u')
+%        save('tmp4.mat','u')
     
     
     %%%%residual
