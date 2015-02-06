@@ -7,10 +7,10 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         
         if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
             f = obj.source;
-            if(strcmp(obj.goal,'TimeAccurate')==1)
-                
-                f = obj.computeTimeDepSource();
-            end
+%             if(strcmp(obj.goal,'TimeAccurate')==1)
+%                 
+%                 f = obj.computeTimeDepSource();
+%             end
         elseif(strcmp(eqn,'error')==1)
             f = obj.errorSource;
         end
@@ -477,6 +477,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         if(nonlinearerror && strcmp(eqn,'error')==1)
             Zu = obj.convSolnRecon;
             uorder = obj.qOrder;
+%             error('1')
         end
         
         if(nonlinearerror && strcmp(eqn,'error')==1)
@@ -486,7 +487,14 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             end
             F = F - U * utilder;
     %         Fl = Fl - ul * utildel;
+           
     
+    %
+%         if(strcmp(eqn,'error')==1)
+%         fprintf('warning - linearized flux')
+%         F = F + U^2/2;
+%         end
+        %
         end
         return;
         
@@ -513,7 +521,12 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             end
 %         F = F - ur * utilder;
             F = F - U * utildel;
-   
+   %
+%         if(strcmp(eqn,'error')==1)
+%         fprintf('warning - linearized flux')
+%         F = F + U^2/2;
+%         end
+        %
         end
         return;
         
@@ -553,6 +566,15 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
 
         end
   
+        
+        %
+%         if(strcmp(eqn,'error')==1)
+%         fprintf('warning - linearized flux')
+%         Fr = Fr + ur^2/2;
+%         Fl = Fl + ul^2/2;
+
+%         end
+        %
         F = 0.5*(Fr+Fl);
 
 
@@ -599,7 +621,14 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
             Fl = Fl - ul * utildel;
 
         end
-
+       %
+%         if(strcmp(eqn,'error')==1)
+%         fprintf('warning - linearized flux')
+%         Fr = Fr + ur^2/2;
+%         Fl = Fl + ul^2/2;
+% 
+%         end
+        %
         F = 0.5*(Fr+Fl);
 
         if(pr==2 && pl == 2)

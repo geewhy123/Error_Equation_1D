@@ -132,7 +132,13 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 
     figure
     plot(x,tau,'o')
-    % error('1')
+%     hold on
+%     a = tau;
+%     b = a.*abs(a)/max(abs(a));
+% plot(x,b)
+%     
+% mean(abs(tau-b))    
+%     error('1')
     figure
     % obj.pOrder = obj.hOrder;
     obj.reconplot(Znew,'solution');
@@ -349,9 +355,18 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % J-K
 % error('1')
 % ue-u
-figure
-    plot(x,tau,'*')
+% figure
+%     plot(x,tau,'*')
 %      save('tmp.mat','x','tau')
+
+% v=J(2:N+1,2:N+1)*(ue(2:N+1)-u(2:N+1))
+% 
+% K = obj.computefluxjacobian(ue,'solution');
+% w=K(2:N+1,2:N+1)*(ue(2:N+1)-u(2:N+1))
+% (v+w)/2
+% tau
+% error('1')
+% error('1')
     if(q> 0 && r>0)
 
         fprintf('\n\n\nError Equation:\n')
@@ -416,7 +431,12 @@ figure
 
 
         f = -Rend;
-        ff = tau+randn(N+2,1)/N^2;
+        ff = tau+randn(N+2,1)/N^6;
+        ep = rand(N+2,1)/N^6;
+         mean(abs(f(2:N+1)-tau(2:N+1)))
+%          figure
+%          plot(x,f-tau,'o')
+%          error('1')
         obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
         
 %        [tau2-Rend 2*f]
@@ -546,7 +566,9 @@ ecor = ue-(u+ee);
 %         sqrt(sum((ecor(2:N+1)).^2)/N) 
         
 %         Je(2:N+1,2:N+1)
-ee
+% ee
+J
+Je
     else
 %         u
         errerr2 = NaN;

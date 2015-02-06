@@ -21,7 +21,7 @@ if(p>0)
 
     
     
-     rng(1234);
+%      rng(1234);
 
 %  g = randi(1000000);
 %  977219
@@ -381,6 +381,7 @@ gsp = NaN;
 
 
 nSteps
+u
 % 
 % if(nSteps < 20)
 %    error('1') 
@@ -655,7 +656,7 @@ ylabel('\epsilon - \epsilon_h')
 
 save('t','exacterr','ee','x')
 
-
+ee
 else 
     errerr2 = NaN;
     ee = NaN;

@@ -235,7 +235,7 @@ f = zeros(N+2,1);
      u0(i) = ue(i);
 %     f(i) = -(2/h(i))*((2*pi+sin(pi*xr)^2)*(sin(pi*xr)^2-1) - (2*pi+sin(pi*xl)^2)*(sin(pi*xl)^2-1));
 % f(i) = -(1/h(i))*( (2*(2*pi + sin(pi*xr)^2)*(sin(pi*xr)^2 - 1)) - (2*(2*pi + sin(pi*xl)^2)*(sin(pi*xl)^2 - 1)) )
-f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 - 1)*(2*pi - sin(pi*xl)^2)))
+f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 - 1)*(2*pi - sin(pi*xl)^2)));
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     
     ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
