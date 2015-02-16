@@ -151,7 +151,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     %   error('1')
     f = obj.source;
     %  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
- save('tau.mat','x','tau')
+%  save('tau.mat','x','tau')
 %  error('1')
 
     %   tau
@@ -234,7 +234,11 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
         Rold = R;
         [R]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,t,obj)
 %         del = (K'*K)\(K'*-R(2:N+1));%pinv(K)*-R(2:N+1);%K\-R(2:N+1);
-        del = K\-R(2:N+1);
+
+
+%         del = K\-R(2:N+1);
+del = pinv(K)*-R(2:N+1);
+        
 %     if(mod(count,100)==0)
     
 %     end
@@ -439,9 +443,14 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 %          figure
 %          plot(x,f-tau,'o')
 %           error('1')
-
-load('tefilt.mat')
-% f = taunew;
+F = f;
+% save('tau.mat','x','tau','F') 
+% mean((tau))
+% mean(f)
+% error('1')
+taunew = tefft(x,tau,F);
+% load('tefilt.mat')
+f = taunew;
         obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
         
 %        [tau2-Rend 2*f]
@@ -509,9 +518,10 @@ load('tefilt.mat')
 
 %             del = (K'*K)\(K'*-R(2:N+1));%pinv(K)*-R(2:N+1);%K\-R(2:N+1);
 % cond(K)
-eig(K)
-            del = K\-R(2:N+1);
-%             del = pinv(K)*-R(2:N+1);
+% eig(K)
+% R(2:N+1)
+%             del = K\-R(2:N+1);
+            del = pinv(K)*-R(2:N+1);
             
             max(abs(R(2:N+1)));
     
