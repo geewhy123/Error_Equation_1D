@@ -168,7 +168,9 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         if(strcmp(eqn,'solution')==1)
             AA = obj.primalRM;
             AD = obj.primalPI;
-            if(obj.hOrder > 0)
+       
+            if(obj.hOrder > 0 && 0)
+
                 AA = obj.higherprimalRM;
                 AD = obj.higherprimalPI;
             end

@@ -203,7 +203,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
  
     Rold = R;
     dtold = 1;
-    while(max(abs(R)) > 1e-11 )
+    while(max(abs(R)) > 2e-11 )
         J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
 %      q = eig(J);
 %      req = real(q);
@@ -442,15 +442,52 @@ del = pinv(K)*-R(2:N+1);
          mean(abs(f(2:N+1)-tau(2:N+1)))
 %          figure
 %          plot(x,f-tau,'o')
+
+
+%
+p = obj.pOrder;
+obj.pOrder = obj.qOrder;
+obj.computeprimalpseudo();
+obj.computehigherpseudo();
+[ZZ] = obj.unstructuredrecon(obj.exactSolution,obj.pOrder,'solution');
+tauq = obj.computefluxintegral(ZZ,'solution')
+obj.pOrder = p;
+    obj.computeprimalpseudo();
+    obj.computehigherpseudo();
+tau
+
+r = obj.rOrder;
+obj.rOrder = obj.qOrder;
+obj.computerespseudo();
+[ZZZ] = obj.unstructuredrecon(u,obj.rOrder,'residual');
+Nr = obj.computefluxintegral(ZZZ,'residual');
+obj.rOrder = r;
+obj.computerespseudo();
+
+fexact = tauq-Nr;
+% error('1')
+mean(abs(f(2:N+1)-fexact(2:N+1)))
+mean(abs(f(2:N+1)))
+mean(abs(fexact(2:N+1)))
+error('1')
+
+%
+
+
+
+%
 %           error('1')
 F = f;
 % save('tau.mat','x','tau','F') 
 % mean((tau))
 % mean(f)
 % error('1')
-taunew = tefft(x,tau,F);
+% % % % % % % % taunew = tefft(x,tau,F);
 % load('tefilt.mat')
-f = taunew;
+% % % % % % % % f = taunew;
+
+
+
         obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
         
 %        [tau2-Rend 2*f]
@@ -470,7 +507,7 @@ f = taunew;
 %    [f -FIr+s]
 %    error('1')
  
-       
+ 
 % obj.errorRM
 % error('1')
 
