@@ -153,6 +153,9 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
     %  [tau]=obj.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,obj)
 %  save('tau.mat','x','tau')
 %  error('1')
+f = sourcefft(x,obj.source);
+obj.source = f;
+figure
 
     %   tau
 % %gradient accuracy
@@ -372,7 +375,21 @@ del = pinv(K)*-R(2:N+1);
 % (v+w)/2
 % tau
 % error('1')
+% % % x = x(2:end-1);
+% % % u = u(2:end-1);
+% % % L = length(x);
+% % % NFFT = 2^nextpow2(L);
+% % % Fs = 1*(length(x));
+% % % Y = fft(u,NFFT)/L;
+% % % f = Fs/2*linspace(0,1,NFFT/2+1);
+% % % figure
+% % % subplot(224)
+% % % stem(f,2*abs(Y(1:NFFT/2+1)).*f'.^2*N) 
+% % % Y
 % error('1')
+
+
+
     if(q> 0 && r>0)
 
         fprintf('\n\n\nError Equation:\n')
@@ -444,32 +461,32 @@ del = pinv(K)*-R(2:N+1);
 %          plot(x,f-tau,'o')
 
 
-%
-p = obj.pOrder;
-obj.pOrder = obj.qOrder;
-obj.computeprimalpseudo();
-obj.computehigherpseudo();
-[ZZ] = obj.unstructuredrecon(obj.exactSolution,obj.pOrder,'solution');
-tauq = obj.computefluxintegral(ZZ,'solution')
-obj.pOrder = p;
-    obj.computeprimalpseudo();
-    obj.computehigherpseudo();
-tau
-
-r = obj.rOrder;
-obj.rOrder = obj.qOrder;
-obj.computerespseudo();
-[ZZZ] = obj.unstructuredrecon(u,obj.rOrder,'residual');
-Nr = obj.computefluxintegral(ZZZ,'residual');
-obj.rOrder = r;
-obj.computerespseudo();
-
-fexact = tauq-Nr;
-% error('1')
-mean(abs(f(2:N+1)-fexact(2:N+1)))
-mean(abs(f(2:N+1)))
-mean(abs(fexact(2:N+1)))
-error('1')
+% % f-fexact test
+% p = obj.pOrder;
+% obj.pOrder = obj.qOrder;
+% obj.computeprimalpseudo();
+% obj.computehigherpseudo();
+% [ZZ] = obj.unstructuredrecon(obj.exactSolution,obj.pOrder,'solution');
+% tauq = obj.computefluxintegral(ZZ,'solution')
+% obj.pOrder = p;
+%     obj.computeprimalpseudo();
+%     obj.computehigherpseudo();
+% tau;
+% 
+% r = obj.rOrder;
+% obj.rOrder = obj.qOrder;
+% obj.computerespseudo();
+% [ZZZ] = obj.unstructuredrecon(u,obj.rOrder,'residual');
+% Nr = obj.computefluxintegral(ZZZ,'residual');
+% obj.rOrder = r;
+% obj.computerespseudo();
+% 
+% fexact = tauq-Nr;
+% % error('1')
+% % % % mean(abs(f(2:N+1)-fexact(2:N+1)))
+% % % % mean(abs(f(2:N+1)))
+% % % % mean(abs(fexact(2:N+1)))
+% % % % error('1')
 
 %
 
@@ -482,9 +499,9 @@ F = f;
 % mean((tau))
 % mean(f)
 % error('1')
-% % % % % % % % taunew = tefft(x,tau,F);
+taunew = tefft(x,tau,F);
 % load('tefilt.mat')
-% % % % % % % % f = taunew;
+f = taunew;
 
 
 
@@ -643,5 +660,19 @@ ecor = ue-(u+ee);
 % Je(2:N+1,2:N+1)*w(2:N+1)
 % tauE(2:N+1)
 % error('1')
+
+x = x(2:end-1);
+u = ee(2:end-1);
+L = length(x);
+NFFT = 2^nextpow2(L);
+Fs = 1*(length(x));
+Y = fft(u,NFFT)/L;
+f = Fs/2*linspace(0,1,NFFT/2+1);
+figure
+subplot(224)
+size(f)
+size(Y(1:NFFT/2+1))
+stem(f,2*abs(Y(1:NFFT/2+1)).*f'.^2*N) 
+Y
 end
 

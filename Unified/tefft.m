@@ -114,21 +114,22 @@ L = length(Y);
 % s3_f_fft(end/10:end) = 0;
 f = Fs/2*linspace(0,1,NFFT/2+1)%
 % f = Fs*linspace(0,1,L)
-cutoff = 10;
+cutoff = 50;
 NY = Y;
 % NY(f>cutoff & f<(Fs-cutoff))=0;
 % NY(f>cutoff & f<Fs/4)=0;
 % NY(f<(Fs/2-cutoff) & f>Fs/4)=0;
 
-% % NY(cutoff+1:end-cutoff-1) = 0;
+ NY(cutoff+1:end-cutoff-1) = 0;
 
 % % NY(1:cutoff+1)=0;
 % % NY(end-cutoff-1:end) = 0;
 
-cutoffL = 20;
-cutoffR = 58;
-NY(cutoffL+1:cutoffR) = 0;
-NY(end-cutoffR-1:end-cutoffL) = 0;
+% % band-stop
+% cutoffL = 20;
+% cutoffR = 58;
+% NY(cutoffL+1:cutoffR) = 0;
+% NY(end-cutoffR-1:end-cutoffL) = 0;
 
 
 % f> cutoff
