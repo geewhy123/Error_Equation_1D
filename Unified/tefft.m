@@ -1,5 +1,8 @@
 function taunew = tefft(x,tau,F)
 
+taunew = F;
+return;
+
 % close all
 % clear all
 Fs = 1*(length(x)-2)%1000;                    % Sampling frequency
@@ -114,14 +117,20 @@ L = length(Y);
 % s3_f_fft(end/10:end) = 0;
 f = Fs/2*linspace(0,1,NFFT/2+1)%
 % f = Fs*linspace(0,1,L)
-cutoff = 50;
+cutoff = 20;
 NY = Y;
 % NY(f>cutoff & f<(Fs-cutoff))=0;
 % NY(f>cutoff & f<Fs/4)=0;
 % NY(f<(Fs/2-cutoff) & f>Fs/4)=0;
 
- NY(cutoff+1:end-cutoff-1) = 0;
+ NY(cutoff+1:end-cutoff+1) = 0;
+%  phi = 0.1;
+%  NY(2) = NY(2)*exp(j*phi);
+%  NY(end)=NY(end)*exp(-j*phi);
+% NY(1) = 0;
 
+% NY
+% error('1')
 % % NY(1:cutoff+1)=0;
 % % NY(end-cutoff-1:end) = 0;
 
@@ -139,7 +148,9 @@ NY = Y;
 
 % NY(f>cutoff )=0;
 % NY(f<(Fs-cutoff))=0;
+% NY
 Ny = real(ifft(NY));
+% error('1')
 % taunew = ifft(s3_f_fft);
 % taunew = real(taunew);
 % figure
@@ -155,6 +166,10 @@ ylim([0 MM])
 subplot(2,2,3)
 plot(x,Ny,'*-')%(2:end-1))
 taunew = [NaN;Ny;NaN];
+
+% mean(Ny)
+% error('1')
+% taunew = taunew+0.002;
 % error('1')
 
 %subtract mean

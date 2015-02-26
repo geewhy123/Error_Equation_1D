@@ -52,6 +52,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % % % % % % % % plot(x,tau,'o')
 % % % % % % % % te=  sum(abs(tau(2:N+1)))/N;
 
+obj.NLError = 'NLError';
 
 
 
@@ -375,17 +376,30 @@ del = pinv(K)*-R(2:N+1);
 % (v+w)/2
 % tau
 % error('1')
+
+% % % figure
+% % % plot(x,obj.source,'*',x,-4*pi^2*u,'+')
+% % % mean(obj.source(2:end-1))
+% % % mean(u(2:end-1))
+% % % % error('1')
 % % % x = x(2:end-1);
 % % % u = u(2:end-1);
 % % % L = length(x);
 % % % NFFT = 2^nextpow2(L);
 % % % Fs = 1*(length(x));
-% % % Y = fft(u,NFFT)/L;
 % % % f = Fs/2*linspace(0,1,NFFT/2+1);
+% % % Y = fft(u,NFFT);
 % % % figure
+% % % subplot(223)
+% % % stem(f,(2/L)*abs(Y(1:NFFT/2+1)));
+% % % xlabel('fft of conv. soln')
 % % % subplot(224)
-% % % stem(f,2*abs(Y(1:NFFT/2+1)).*f'.^2*N) 
-% % % Y
+% % % stem(f,abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2) 
+% % % xlabel('fft of conv. soln * (2\pi f^2)')
+% % % length(f')
+% % % length(Y(1:NFFT/2+1))
+% % % ylim([0 max(abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2)])
+% % % (2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
 % error('1')
 
 
@@ -669,10 +683,16 @@ Fs = 1*(length(x));
 Y = fft(u,NFFT)/L;
 f = Fs/2*linspace(0,1,NFFT/2+1);
 figure
+subplot(223)
+f = reshape(f,size(Y(1:NFFT/2+1)));
+stem(f,2*abs(Y(1:NFFT/2+1))) 
+
 subplot(224)
 size(f)
 size(Y(1:NFFT/2+1))
-stem(f,2*abs(Y(1:NFFT/2+1)).*f'.^2*N) 
+f = reshape(f,size(Y(1:NFFT/2+1)));
+stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
+
 Y
 end
 

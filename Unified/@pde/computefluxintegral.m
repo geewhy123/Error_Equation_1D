@@ -459,7 +459,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
     end       
  
 
-    nonlinearerror = 1;
+    nonlinearerror = ~strcmp(obj.NLError,'PrimalError');
     utilder = 0;
     utildel = 0;
     if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
@@ -471,8 +471,16 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:p
             U = U+(right(k)*(-h(i+1)/2)^(k-1));
         end
+        
+        %
+        if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
+           F = F+U^2/2; 
+        end
+        %
+        
         F = F-U^2/2;
    
+        
      
         if(nonlinearerror && strcmp(eqn,'error')==1)
             Zu = obj.convSolnRecon;
@@ -507,6 +515,16 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:p
             U = U+(left(k)*(h(i)/2)^(k-1)) ;
         end
+        
+        
+        %
+         
+        if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
+           F = F+U^2/2; 
+        end
+        
+        %
+        
         F = F-U^2/2;
    
         if(nonlinearerror && strcmp(eqn,'error')==1)
@@ -596,6 +614,13 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:pr
             ur=ur+(right(k)*(-h(i+1)/2)^(k-1)); 
         end
+        
+                %
+        if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
+           Fr = Fr+ur^2/2; 
+        end
+        %
+        
         Fr = Fr-ur^2/2;
         for k = 1:pl-1
             Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
@@ -604,6 +629,14 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
         for k = 1:pl
             ul = ul+(left(k)*(h(i)/2)^(k-1));
         end
+        
+        
+                %
+        if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
+           Fl = Fl+ul^2/2; 
+        end
+        %
+        
         Fl = Fl-ul^2/2;
       
       

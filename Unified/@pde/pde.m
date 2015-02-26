@@ -44,6 +44,7 @@ higherprimalPI;
         jump;
         bchandle ;
         nUnk;
+        NLError;
     end
     
     methods

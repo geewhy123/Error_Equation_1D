@@ -1,5 +1,10 @@
 function fnew = sourcefft(x,f)
 
+
+fnew = f;
+return 
+
+
 % close all
 % clear all
 Fs = 1*(length(x)-2)%1000;                    % Sampling frequency
@@ -39,12 +44,12 @@ figure
 subplot(2,2,1)
 plot(x,y,'*-');
 xlabel('x')
-ylabel('residual source(2,q,4)')
+ylabel('source(2,0,0)')
 % figure
 subplot(2,2,2)
 stem(f,2*abs(Y(1:NFFT/2+1))) 
 MM = 2*max(abs(Y));
-ylim([0 MM])
+ylim([0 MM+0.1])
 % plot(f,abs(Y(2:end/2)));
 title('Single-Sided Amplitude Spectrum of y(t)')
 xlabel('Frequency (Hz)')
@@ -115,13 +120,15 @@ L = length(Y);
 % s3_f_fft(end/10:end) = 0;
 f = Fs/2*linspace(0,1,NFFT/2+1)%
 % f = Fs*linspace(0,1,L)
-cutoff = 50;
+cutoff = 2;
 NY = Y;
 % NY(f>cutoff & f<(Fs-cutoff))=0;
 % NY(f>cutoff & f<Fs/4)=0;
 % NY(f<(Fs/2-cutoff) & f>Fs/4)=0;
 
- NY(cutoff+1:end-cutoff-1) = 0;
+ NY(cutoff+1:end-cutoff+1) = 0;
+%  NY
+%  error('1')
 
 % % NY(1:cutoff+1)=0;
 % % NY(end-cutoff-1:end) = 0;
@@ -147,14 +154,17 @@ Ny = real(ifft(NY));
 % plot(f,s3_f_fft(1:length(f)));
 length(f)
 length(NY(1:NFFT/2+1))
-2*abs(NY(1:NFFT/2+1))
+L
+2*abs(NY(1:NFFT/2+1))/L
 subplot(2,2,4)
 stem(f,2*abs(NY(1:NFFT/2+1))/L)%abs(NY))
 ylim([0 MM])
 % figure
 % error('1')
 subplot(2,2,3)
+str = sprintf('filtered at f=%i',cutoff);
 plot(x,Ny,'*-')%(2:end-1))
+ylabel(str)
 fnew = [NaN;Ny;NaN];
 % error('1')
 

@@ -37,6 +37,7 @@ h = obj.cellWidths;
 u0 = zeros(N+2,1);
 ue = zeros(N+2,1);
 f = zeros(N+2,1);
+ran = rand(N+2,1);
   for i = 2:N+1
          xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;   
@@ -61,8 +62,13 @@ f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
 % f(i) = (1/h(i))*(-0.5)*(sech(xr/2)^2-sech(xl/2)^2);
 % f(i) = (1/h(i))*pi*(cos(pi*(xr+0.2))-cos(pi*(xl+0.2)));
 f(i) = (1/h(i))*2*pi*(cos(2*pi*xr)-cos(2*pi*xl));
-m = 0*randn();
-f(i) = f(i) + 1e-2*(1/h(i))*m*pi*(cos(2*pi*m*xr)-cos(2*pi*m*xl));
+m = [9 13];%rand();%randn();
+
+for j = 1:length(m)*0
+f(i) = f(i) + 1e-2*(1/h(i))*2*m(j)*pi*(cos(2*pi*m(j)*xr)-cos(2*pi*m(j)*xl));
+end
+
+f(i) = f(i) + randn()*1e1*0;
 else
    assert(0) 
 end
