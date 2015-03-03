@@ -1,4 +1,4 @@
-clearvars -except errerr10 errerr20 errerr40 errerr10b errerr20b errerr40b berrerr2 berrerr4 berrerr8 berrerr berrerr4 berrerr8 berrerrnon2 berrerrnon4 berrerrlin2 berrerrlin4 err2b cverr2b err4b x exacterr ee
+clearvars -except errerr10 errerr20 errerr40 errerr10b errerr20b errerr40b berrerr2 berrerr4 berrerr8 berrerr berrerr4 berrerr8 berrerrnon2 berrerrnon4 berrerrlin2 berrerrlin4 err2b cverr2b err4b x exacterr ee Pos
 close all
 A = [2 2 4;2 2 6;2 4 4;2 4 6; 2 6 4; 2 6 6; 4 2 6; 4 4 6; 4 6 6];
 B = ['2 2 4';'2 2 6';'2 4 4';'2 4 6'; '2 6 4'; '2 6 6'; '4 2 6'; '4 4 6'; '4 6 6'];
@@ -28,20 +28,55 @@ load('errorarrayplot.mat');
 %    [err4bb(20),x,cverr4b(20),exacterr(:,20),ee(:,20)] = errordriver(N,2,6,6,1/3,100,.3,7,'Advection');
 
 h=figure
-set(gca,'FontSize',24)
+set(gca,'FontSize',26)
 for k = 1:20
 subplot(5,4,k)
-plot(x,exacterr(:,k),'o',x,ee(:,k),'*','LineWidth',2);
+% set(gca,'position',Pos(k,:))
+% subplot('Position',Pos(k,:))
+subplot('Position',[Pos(k,1:2) 0.94*Pos(k,3) 0.82*Pos(k,4)])
+plot(x,exacterr(:,k),'o',x,ee(:,k),'*','LineWidth',4);
+% v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1},'LineWidth',3);
 ylim([-1e-2 1e-2])
 
+if(mod(k,4)==1)
+   yvals = [-1e-2 1e-2] ;
+elseif(k==10)
+        yvals = [-5e-5 5e-5];
+elseif(k==15)
+        yvals = [-5e-6 5e-6];
+elseif(k==20)
+        yvals = [-5e-7 5e-7];
+else
+%    yvals = [-1e-3 1e-3] ;
+end
+ if(~((mod(k,4)==1)|| (k>=10 && mod(k,5)==0)))
+%    ylim([-1e-3 1e-3]) 
+%    yvals = [-1e-3 1e-3];
+   set(gca,'YTickLabel',sprintf('%2.0e|',yvals))
+set(gca,'YTick',yvals)
+   
 
+ else
+     
+%      yt = get(gca,'ytick');
+%      set(gca,'YTick',[yt(1) yt(3)])
+ end
+ if(k==1)
+ set(gca,'XTick',[0 1])
+ else
+    set(gca,'XTick',[])
+ end
+ 
+ 
 if(k==1)
     set(gca,'XTick',[0 1],'FontSize',24)
-  set(gca,'YTick',[-0.01 0.01],'FontSize',24)
+  set(gca,'YTick',[-1e-2 1e-2],'FontSize',24)
 else
       set(gca,'XTick',[]);
   set(gca,'YTick',[]);
 end
+
+
 % % % xlabel(B(k,:),'FontSize',14)
 % ylabel('solution error')
 %    set(gca,'FontSize',24)
@@ -60,6 +95,8 @@ hold on
    if(k==9)
 %      ylabel('$$\mathbf{\mathcal{I}^h\epsilon},\bf{\epsilon}_h$$','Interpreter','Latex','FontSize',24) 
    end
+
+% set(gca,'position',Pos(k,:))
 
 
 end
@@ -89,10 +126,15 @@ annotation(h,'textbox',...
 type = {'xb', '^k','vr','sm','dg'}
 tab = [ 3 2 2 2 3 2 2 2 3 4 2 2 3 2 5 2 3 2 2 6 ]';
 g=figure
+
 kk=1;
 for k = 1:20
 subplot(5,4,k)
+
+
+axis equal
 v = plot(x,exacterr(:,k)-ee(:,k),type{tab(k)-1},'LineWidth',3);
+
 
 if(mod(k,4)==1)
    yvals = [-5e-3 5e-3] ;
@@ -152,7 +194,8 @@ hold on
    if(k==9)
 %      ylabel('$$\mathbf{\mathcal{I}^h\epsilon-{\epsilon}_h}$$','Interpreter','Latex','FontSize',35) 
    end
-
+   
+Pos(k,:) = get(gca,'position');
 end
 
 subplot(5,4,20)
@@ -184,6 +227,9 @@ hL= legend([lin],{'$$\mathcal{O}(h^\mathbf{2})$$','$$\mathcal{O}(h^\mathbf{3})$$
 
 M = findobj(hL,'type','patch') % Find objects of type 'patch'
 set(M,'MarkerSize', 50)
+
+
+error('1')
 %zoom in 
 fig = figure
 

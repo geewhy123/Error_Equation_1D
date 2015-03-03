@@ -228,6 +228,7 @@ for j = 1:d
 %         [i j]
 %         [(i-1)*d+j fitt((i-1)*d+j)]
     end
-end
+    end
+    
 
 end

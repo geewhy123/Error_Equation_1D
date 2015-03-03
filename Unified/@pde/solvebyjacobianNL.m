@@ -377,30 +377,34 @@ del = pinv(K)*-R(2:N+1);
 % tau
 % error('1')
 
-% % % figure
-% % % plot(x,obj.source,'*',x,-4*pi^2*u,'+')
-% % % mean(obj.source(2:end-1))
-% % % mean(u(2:end-1))
-% % % % error('1')
-% % % x = x(2:end-1);
-% % % u = u(2:end-1);
-% % % L = length(x);
-% % % NFFT = 2^nextpow2(L);
-% % % Fs = 1*(length(x));
-% % % f = Fs/2*linspace(0,1,NFFT/2+1);
-% % % Y = fft(u,NFFT);
-% % % figure
-% % % subplot(223)
-% % % stem(f,(2/L)*abs(Y(1:NFFT/2+1)));
-% % % xlabel('fft of conv. soln')
-% % % subplot(224)
-% % % stem(f,abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2) 
-% % % xlabel('fft of conv. soln * (2\pi f^2)')
-% % % length(f')
-% % % length(Y(1:NFFT/2+1))
-% % % ylim([0 max(abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2)])
-% % % (2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
+% u = u-mean(u(2:end-1));
+% % % 
+figure
+plot(x,obj.source,'*',x,-4*pi^2*u,'+')
+mean(obj.source(2:end-1))
+mean(u(2:end-1))
 % error('1')
+x = x(2:end-1);
+u = u(2:end-1);
+L = length(x);
+NFFT = 2^nextpow2(L);
+Fs = 1*(length(x));
+f = Fs/2*linspace(0,1,NFFT/2+1);
+Y = fft(u,NFFT);
+figure
+subplot(223)
+stem(f,(2/L)*abs(Y(1:NFFT/2+1)));
+xlabel('fft of conv. soln')
+subplot(224)
+stem(f,abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2) 
+xlabel('fft of conv. soln * (2\pi f)^2')
+length(f')
+length(Y(1:NFFT/2+1))
+ylim([0 max(abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2)])
+(2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
+
+
+error('1')
 
 
 
@@ -675,6 +679,10 @@ ecor = ue-(u+ee);
 % tauE(2:N+1)
 % error('1')
 
+
+% ee = ee- mean(ee(2:N+1))
+
+
 x = x(2:end-1);
 u = ee(2:end-1);
 L = length(x);
@@ -686,13 +694,14 @@ figure
 subplot(223)
 f = reshape(f,size(Y(1:NFFT/2+1)));
 stem(f,2*abs(Y(1:NFFT/2+1))) 
-
+xlabel('fft of ee ')
 subplot(224)
 size(f)
 size(Y(1:NFFT/2+1))
 f = reshape(f,size(Y(1:NFFT/2+1)));
 stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
-
+xlabel('fft of ee * (2\pi f)^2')
+% mean(ee(2:N+1))
 Y
 end
 

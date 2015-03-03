@@ -75,7 +75,7 @@ legend('predicted order')
 %histogram
 
 w=figure
-
+% ylabel('abc')
 
 for j = 1:20%50
     X(j) = chi2gof(E(:,j));
@@ -90,7 +90,7 @@ subplot(5,4,j)
 if(X(j)==1)
 set(get(gca,'child'),'FaceColor','r');
 end
-set(gca,'YTick',[0 100],'FontSize',24)
+set(gca,'YTick',[0 100],'FontSize',22)
 % % %  xlabel(B(j,:),'FontSize',12);%num2str(Q(j,:)))
 % if (k==1)
 %    legend('exact error','computed error'); 
@@ -118,7 +118,7 @@ end
 % t(j)=ttest(E(:,j),fit(j));
 x = [fit(j),fit(j)];
 y = [0,100];
-l2=plot(x,y,'--','Color',barcolor)
+% % l2=plot(x,y,'--','Color',barcolor)
 
 
 e = E(:,j);
@@ -126,12 +126,19 @@ e = (e-mean(e))/sqrt(var(e));
 [h(j),p(j)]=kstest(e);
 
 if(j==9)
-   ylabel('Frequency','FontSize',24) 
+    
+   y = ylabel('Frequency','FontSize',22) 
+   set(y, 'Units', 'Normalized', 'Position', [-0.2, 0.5, 0]);
 end
 
-
+if (j~= 1)
+    set(gca,'YTick',[])
+else
+%     set(gca,'YTick',[0 100])
 end
-L = [l(2) l2];
+ylim([-1 100])
+end
+% L = [l(2) l2];
 % annotation(w,'textbox',...
 %     [0.0504791666666667 0.532837474674436 0.0322916666666667 0.0351288056206089],...
 %     'Interpreter','latex',...
@@ -142,12 +149,12 @@ L = [l(2) l2];
 %     'EdgeColor',[1 1 1]);
 
 annotation(w,'textbox',...
-    [0.506208333333333 0.0548869634744324 0.0296875 0.0304449648711944],...
+    [0.506208333333333 0.02548869634744324 0.0296875 0.0304449648711944],...
     'Interpreter','latex',...
     'String',{'$$||\mathbf{\epsilon_p}-\bf{\epsilon_{pqr}}||\hspace*{0.1cm}$$\bf{order}'},...
     'FontWeight','bold',...
-    'FontSize',24,...
+    'FontSize',22,...
     'FontName','AlArabiya',...
     'EdgeColor',[1 1 1]);
 % legend(L,'normal distribution','theoretical order','FontSize',30,'Orientation','Horizontal');
-legend(L(2),'theoretical','FontSize',30,'Orientation','Horizontal');
+% % % legend(L(2),'theoretical','FontSize',30,'Orientation','Horizontal');

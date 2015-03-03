@@ -42,6 +42,13 @@ r = Q(:,3);
 
 fitt = min(p+q,min(r,p-1))+1+max((r-p).*(q==r),(p==r-1));
 colors = [ 0.6000    0.8000    1.0000;  0.4000    0.6000    0.8667;  0.2000    0.4000    0.7333;   0    0.2000    0.6000];
+% colors = [ 0.6000    0.8000    1.0000;  0.4000    0.6000    0.8;  0.2000    0.4000    0.6;   0    0.2000    0.4];
+% colors = [
+%      0 0 0;
+%     1 0 0;
+%     1 0 1;
+% 153/255, 76/255, 0
+% ];
 
 aboxplot(h,'labels',[2,3,4,5,6],'fitt',fitt,'Colormap',   colors)%,'Colormap',[0 0 0;1 0 0;1 0 1;153/255 76/255 0]); % Advanced box plot
 % hold on
@@ -49,7 +56,8 @@ aboxplot(h,'labels',[2,3,4,5,6],'fitt',fitt,'Colormap',   colors)%,'Colormap',[0
 
 
 
-h = legend('$r=3$','$r=4$','$r=5$','$r=6$','Predicted Order','Orientation','Horizontal'); % Add a legend
+% h = legend('$r=3$','$r=4$','$r=5$','$r=6$','Predicted Order','Orientation','Horizontal'); % Add a legend
+h = legend('$r=3$','$r=4$','$r=5$','$r=6$','Orientation','Horizontal'); % Add a legend
 set(h,'Interpreter','Latex','FontSize',24)
 
 

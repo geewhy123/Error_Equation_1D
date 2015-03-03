@@ -1,8 +1,8 @@
 function fnew = sourcefft(x,f)
 
 
-fnew = f;
-return 
+% fnew = f;
+% return 
 
 
 % close all
@@ -127,6 +127,8 @@ NY = Y;
 % NY(f<(Fs/2-cutoff) & f>Fs/4)=0;
 
  NY(cutoff+1:end-cutoff+1) = 0;
+% % %  NY(1) =0;
+ 
 %  NY
 %  error('1')
 

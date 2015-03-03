@@ -17,6 +17,7 @@
 %
 
 function c = colorgrad(varargin)
+error('1')
 
 n = 16;
 t = 'blue_down';
@@ -28,6 +29,9 @@ switch length(varargin)
         n = varargin{1};
         t = varargin{2};
 end
+
+
+
 
 switch lower(t)
     case 'blue_up'

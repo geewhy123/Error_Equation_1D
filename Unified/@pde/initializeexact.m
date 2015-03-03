@@ -68,7 +68,17 @@ for j = 1:length(m)*0
 f(i) = f(i) + 1e-2*(1/h(i))*2*m(j)*pi*(cos(2*pi*m(j)*xr)-cos(2*pi*m(j)*xl));
 end
 
-f(i) = f(i) + randn()*1e1*0;
+z(i) = randn();
+
+f(i) = f(i) + z(i)*1e1;
+
+% if(i == N+1)
+%    f(i) = f(i) - z(i)*1e1 ;
+%    z(N+1) = -sum(z(2:N));
+%    f(i) = f(i) + z(i)*1e1;
+% end
+
+
 else
    assert(0) 
 end
@@ -119,7 +129,7 @@ f(N+2) = NaN;
  u0(1) = NaN;
  u0(N+2)= NaN;
  
- 
+
  obj.exactSolution = ue;
  obj.initialSolution = u0;
  obj.source = f;
