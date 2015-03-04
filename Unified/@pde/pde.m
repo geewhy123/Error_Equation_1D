@@ -45,6 +45,7 @@ higherprimalPI;
         bchandle ;
         nUnk;
         NLError;
+        exactNoisySolution;
     end
     
     methods

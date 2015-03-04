@@ -36,8 +36,12 @@ h = obj.cellWidths;
 
 u0 = zeros(N+2,1);
 ue = zeros(N+2,1);
+une = zeros(N+2,1);
+ne = zeros(N+2,1);
 f = zeros(N+2,1);
-ran = rand(N+2,1);
+z = rand(N+2,1);
+% z = [0; randn(N,1); 0];
+sum= 0;
   for i = 2:N+1
          xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;   
@@ -70,13 +74,20 @@ end
 
 z(i) = randn();
 
-f(i) = f(i) + z(i)*1e1;
+f(i) = f(i) + (1/h(i))*z(i)*1e1*(xr-xl)*0;
 
 % if(i == N+1)
 %    f(i) = f(i) - z(i)*1e1 ;
 %    z(N+1) = -sum(z(2:N));
 %    f(i) = f(i) + z(i)*1e1;
 % end
+
+sum = sum+f(i);
+% if(i==N+1)
+% f = f-sum/N;    
+% % z = z-sum/N;
+% end
+
 
 
 else
@@ -111,6 +122,12 @@ end
 %  ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 % ue(i) = (1/h(i))*((1/pi))*(-cos(pi*(xr+0.2))+cos(pi*(xl+0.2)));
 ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+
+ne(i) =  (1/h(i))*z(i)*1e1*(xr^3/6-xl^3/6);
+
+if(i==N+1)
+   une = ue+ ne-sum/N;  
+end
  else
     assert(0) 
  end
@@ -133,6 +150,7 @@ f(N+2) = NaN;
  obj.exactSolution = ue;
  obj.initialSolution = u0;
  obj.source = f;
+ obj.exactNoisySolution = une;
  
 
 end

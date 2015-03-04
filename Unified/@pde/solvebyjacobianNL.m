@@ -133,6 +133,12 @@ obj.NLError = 'NLError';
 
     figure
     plot(x,tau,'o')
+    errerr2 =mean(tau(2:N+1))
+    cverr2 = 0;
+    exacterr = 0;
+    ee = 0;
+    te = 0;
+    return;
 %     hold on
 %     a = tau;
 %     b = a.*abs(a)/max(abs(a));
@@ -379,33 +385,36 @@ del = pinv(K)*-R(2:N+1);
 
 % u = u-mean(u(2:end-1));
 % % % 
-figure
-plot(x,obj.source,'*',x,-4*pi^2*u,'+')
-mean(obj.source(2:end-1))
-mean(u(2:end-1))
+
+% hold on
+% plot(x,obj.exactNoisySolution,'^')
+% figure
+% plot(x,obj.source,'*',x,-4*pi^2*u,'+')
+% mean(obj.source(2:end-1))
+% mean(u(2:end-1))
+% % error('1')
+% x = x(2:end-1);
+% u = u(2:end-1);
+% L = length(x);
+% NFFT = 2^nextpow2(L);
+% Fs = 1*(length(x));
+% f = Fs/2*linspace(0,1,NFFT/2+1);
+% Y = fft(u,NFFT);
+% figure
+% subplot(223)
+% stem(f,(2/L)*abs(Y(1:NFFT/2+1)));
+% xlabel('fft of conv. soln')
+% subplot(224)
+% stem(f,abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2) 
+% xlabel('fft of conv. soln * (2\pi f)^2')
+% length(f')
+% length(Y(1:NFFT/2+1))
+% ylim([0 max(abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2)])
+% (2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
+% 
+% 
 % error('1')
-x = x(2:end-1);
-u = u(2:end-1);
-L = length(x);
-NFFT = 2^nextpow2(L);
-Fs = 1*(length(x));
-f = Fs/2*linspace(0,1,NFFT/2+1);
-Y = fft(u,NFFT);
-figure
-subplot(223)
-stem(f,(2/L)*abs(Y(1:NFFT/2+1)));
-xlabel('fft of conv. soln')
-subplot(224)
-stem(f,abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2) 
-xlabel('fft of conv. soln * (2\pi f)^2')
-length(f')
-length(Y(1:NFFT/2+1))
-ylim([0 max(abs(Y(1:NFFT/2+1)).*(2/L).*(2*pi*f').^2)])
-(2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
-
-
-error('1')
-
+% 
 
 
     if(q> 0 && r>0)

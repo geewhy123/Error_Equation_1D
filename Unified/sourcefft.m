@@ -1,8 +1,8 @@
 function fnew = sourcefft(x,f)
 
 
-% fnew = f;
-% return 
+fnew = f;
+return 
 
 
 % close all
