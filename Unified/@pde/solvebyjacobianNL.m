@@ -133,12 +133,16 @@ obj.NLError = 'NLError';
 
     figure
     plot(x,tau,'o')
-    errerr2 =mean(tau(2:N+1))
-    cverr2 = 0;
-    exacterr = 0;
-    ee = 0;
-    te = 0;
-    return;
+% %     error('1')
+%     errerr2 =max(abs(tau(2:N+1)))
+%     cverr2 = 0;
+%     exacterr = 0;
+%     ee = 0;
+%     te = 0;
+%     obj.jump
+%     return;
+
+
 %     hold on
 %     a = tau;
 %     b = a.*abs(a)/max(abs(a));
@@ -162,6 +166,7 @@ obj.NLError = 'NLError';
 %  error('1')
 f = sourcefft(x,obj.source);
 obj.source = f;
+
 figure
 
     %   tau
@@ -272,6 +277,7 @@ del = pinv(K)*-R(2:N+1);
     trunc_err = [te1 te2 teinf]
     disc_err = [cverr1 cverr2 cverrinf]
   
+    subplot(211)
     plot(x,u,'*',x,ue,'o')
     
 %     error('1')
@@ -383,15 +389,28 @@ del = pinv(K)*-R(2:N+1);
 % tau
 % error('1')
 
-% u = u-mean(u(2:end-1));
+%  u = u-mean(u(2:end-1));
+%  hold on 
+%  plot(x,u,'v')
 % % % 
+
+
 
 % hold on
 % plot(x,obj.exactNoisySolution,'^')
+% subplot(212)
+% plot(x,ue-u,'x')
+% ylabel('u_singleexact-u_smoothed')
+% saveas(gca,'smootherror64b.eps','epsc')
+% % error('1')
 % figure
 % plot(x,obj.source,'*',x,-4*pi^2*u,'+')
 % mean(obj.source(2:end-1))
+% 
+% 
 % mean(u(2:end-1))
+% 
+% 
 % % error('1')
 % x = x(2:end-1);
 % u = u(2:end-1);
@@ -413,8 +432,14 @@ del = pinv(K)*-R(2:N+1);
 % (2)*abs(Y(1:NFFT/2+1)).*(2*pi*f').^2;
 % 
 % 
-% error('1')
-% 
+tau32=tau;
+x32 = x;
+h32 = h;
+save('tauNU.mat','x32','tau32','h32','-append')
+tau
+error('1')
+
+
 
 
     if(q> 0 && r>0)
@@ -703,14 +728,30 @@ figure
 subplot(223)
 f = reshape(f,size(Y(1:NFFT/2+1)));
 stem(f,2*abs(Y(1:NFFT/2+1))) 
+M = max(abs(2*abs(Y(1:NFFT/2+1))));
+ylim([0 M])
 xlabel('fft of ee ')
 subplot(224)
 size(f)
 size(Y(1:NFFT/2+1))
 f = reshape(f,size(Y(1:NFFT/2+1)));
 stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
+MM = max(2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2);
+ylim([0 3*MM])
 xlabel('fft of ee * (2\pi f)^2')
+
+
+
+Y = fft(exacterr(2:end-1),NFFT)/L;
+subplot(221)
+stem(f,2*abs(Y(1:NFFT/2+1)))
+ylim([0 M])
+
+subplot(222)
+stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2)
+ylim([0 3*MM])
 % mean(ee(2:N+1))
 Y
+
 end
 

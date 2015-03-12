@@ -41,7 +41,9 @@ ne = zeros(N+2,1);
 f = zeros(N+2,1);
 z = rand(N+2,1);
 % z = [0; randn(N,1); 0];
-sum= 0;
+rr  = randn(N+2,1);
+rr = rr - sum(rr(2:N+1)/N);
+s= 0;
   for i = 2:N+1
          xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;   
@@ -67,10 +69,13 @@ f(i) = (1/h(i))*pi*(cos(pi*xr)-cos(pi*xl));
 % f(i) = (1/h(i))*pi*(cos(pi*(xr+0.2))-cos(pi*(xl+0.2)));
 f(i) = (1/h(i))*2*pi*(cos(2*pi*xr)-cos(2*pi*xl));
 m = [9 13];%rand();%randn();
-
+% m = [2:20];
+m = 5;
 for j = 1:length(m)*0
-f(i) = f(i) + 1e-2*(1/h(i))*2*m(j)*pi*(cos(2*pi*m(j)*xr)-cos(2*pi*m(j)*xl));
+f(i) = f(i) + rr(i)*1e-2*(1/h(i))*2*m(j)*pi*(cos(2*pi*m(j)*xr)-cos(2*pi*m(j)*xl));
 end
+
+% % % f(i) = f(i) + 1e-2*(1/h(i))*2*3*pi*(cos(30*pi*(xr+0.312))-cos(pi*30*(xl+0.312))) - 1e-2*(1/h(i))*2*5*pi*(cos(2*pi*5*(xr-0.5))-cos(2*pi*5*(xl-0.5)));
 
 z(i) = randn();
 
@@ -82,9 +87,10 @@ f(i) = f(i) + (1/h(i))*z(i)*1e1*(xr-xl)*0;
 %    f(i) = f(i) + z(i)*1e1;
 % end
 
-sum = sum+f(i);
+s = s+f(i);
+
 % if(i==N+1)
-% f = f-sum/N;    
+% f = f-s/N;    
 % % z = z-sum/N;
 % end
 
@@ -126,7 +132,7 @@ ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
 ne(i) =  (1/h(i))*z(i)*1e1*(xr^3/6-xl^3/6);
 
 if(i==N+1)
-   une = ue+ ne-sum/N;  
+   une = ue+ ne-s/N;  
 end
  else
     assert(0) 
@@ -150,7 +156,7 @@ f(N+2) = NaN;
  obj.exactSolution = ue;
  obj.initialSolution = u0;
  obj.source = f;
- obj.exactNoisySolution = une;
+ obj.exactNoisySolution = une*0;
  
 
 end

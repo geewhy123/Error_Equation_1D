@@ -90,7 +90,7 @@ ylabel('|Y(f)|')
 % %gaussian
 % fn = y;
 % m = 101;
-% mu = 6;
+% mu = 6*1;
 % n = L;
 % h = build_gaussian_filter(m,mu/(4*n),n);
 % fnh = perform_convolution(fn,h);
@@ -98,7 +98,7 @@ ylabel('|Y(f)|')
 % YY = fft(fnh,NFFT)/L;
 % subplot(224);stem(f,2*abs(YY(1:NFFT/2+1))) ;
 % ylim([0 MM])
-% taunew = [NaN;fnh;NaN];
+% fnew = [NaN;fnh;NaN];
 % return;
 
 
@@ -127,7 +127,12 @@ NY = Y;
 % NY(f<(Fs/2-cutoff) & f>Fs/4)=0;
 
  NY(cutoff+1:end-cutoff+1) = 0;
-% % %  NY(1) =0;
+ 
+%  NY(2) = 4*pi^2*N/2;
+%  NY(end) = NY(2)
+% NY = NY*(4*pi^2*N/2) /abs(NY(2));
+
+%  NY(1) =10*N/2;
  
 %  NY
 %  error('1')
@@ -145,8 +150,8 @@ NY = Y;
 % f> cutoff
 % f > 3*Fs/4
 % f< (Fs/2-cutoff)
-% NY
-
+NY
+% error('1')
 % NY(f>cutoff )=0;
 % NY(f<(Fs-cutoff))=0;
 Ny = real(ifft(NY));
@@ -167,8 +172,13 @@ subplot(2,2,3)
 str = sprintf('filtered at f=%i',cutoff);
 plot(x,Ny,'*-')%(2:end-1))
 ylabel(str)
+hold on
+plot(x,-4*pi^2*sin(2*pi*x),'o')
 fnew = [NaN;Ny;NaN];
-% error('1')
+% % error('1')
+
+
+
 
 %subtract mean
 % taunew = tau-mean(tau);

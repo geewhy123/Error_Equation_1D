@@ -1,7 +1,7 @@
 function taunew = tefft(x,tau,F)
 
-taunew = F;
-return;
+% taunew = F;
+% return;
 
 % close all
 % clear all

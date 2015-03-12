@@ -148,7 +148,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
         end
           
-        if(strcmp(obj.bchandle,'Jump')==1)
+        if(strcmp(obj.bchandle,'Jump')==1 )
             uu = 0;
             for k = 1:p
                 uu = uu + right(k)*(-h(i+1)/2)^(k-1);
@@ -169,12 +169,14 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             F = F + k*left(k+1)*(h(i)/2)^(k-1);
         end
         
-        if(strcmp(obj.bchandle,'Jump')==1)
+        if(strcmp(obj.bchandle,'Jump')==1 )
             uu = 0;
             for k = 1:p
                 uu = uu + left(k)*(h(i)/2)^(k-1);
             end 
             F = F-alphaR*(uu-obj.bcRightVal)/(h(i)/2);
+            
+%             error('1')
         end
         %boundary jump
         
@@ -207,7 +209,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
         elseif(p==4)
             ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-            jump = (0*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+            jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
             F = F+jump;
          
         end
@@ -260,7 +262,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
         elseif(pr==4 && pl==4)
             ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
-            jump = (0*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+            jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
             F = F+jump;
     
         end
