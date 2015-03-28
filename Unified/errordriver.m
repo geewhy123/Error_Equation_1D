@@ -21,7 +21,7 @@ if(p>0)
 
     
     
-%      rng(1234);
+     rng(1234);
 
 %  g = randi(1000000);
 %  977219
@@ -47,20 +47,33 @@ if( tlim > 2)
 end
 end
 
-
+% load('tauN.mat')
 
 X = zeros(N+1,1);
-for i = 1:N+1
+for i = 1:N+1%1:N+1
    X(i) = (i-1)*h0; 
    if(i>1 && i < N+1)
 %    X(i) = X(i) + 0.1*randn*h0;
    X(i) = X(i) + unif*(-1+rand*(2))*h0/3;%0.001*sin(2*pi*X(i));%
+   
+   
    end
 end
+
+% X(2) = (2-1)*h0; 
+% X(N) = (N-1)*h0; 
+% X(N/2+1) = X(N/2+1)+(-1+rand*(2))*h0/3;
 
 x = zeros(N+2,1);
 for i = 2:N+1
     x(i) = (X(i-1)+X(i))/2;
+    
+%     j = floor(i/2)+1;
+%     jj = mod(i,2);
+%     x(i) = x32(j)-h32(j)/4;
+%     if(jj == 1)
+%         x(i) = x(i) +h32(j)/2;
+%     end
 end
 
 x(1) = NaN;%0-(1-x(N+1));%-x(2);
@@ -70,11 +83,18 @@ x(N+2) = NaN;%1+x(2);%1+(1-x(N+1));
 h = zeros(N+2,1);
 for i = 2:N+1
    h(i) = X(i)-X(i-1); 
+   
+%    j = floor(i/2)+1;
+%    h(i) = h32(j)/2;
 end
 
 h(1) = h(N+1);
 h(N+2) = h(2);
 
+% [x32 h32]
+% [x h]
+% plot(x,1,'*')
+% error('1')
 
 % global xx 
 % xx = X;

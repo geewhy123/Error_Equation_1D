@@ -175,6 +175,8 @@ ylabel(str)
 hold on
 plot(x,-4*pi^2*sin(2*pi*x),'o')
 fnew = [NaN;Ny;NaN];
+
+
 % % error('1')
 
 

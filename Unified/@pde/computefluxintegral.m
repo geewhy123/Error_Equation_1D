@@ -18,6 +18,8 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         for i = 1:N+1
             if(strcmp(obj.physics,'Poisson')==1)
                 F(i) = computepoissonflux(obj,Z(:,i),Z(:,i+1),eqn,i);
+%                 F
+%                 error('1')
             elseif(strcmp(obj.physics,'Advection')==1)
                 F(i) = computeadvectionflux(obj,Z(:,i),Z(:,i+1),eqn,i);
             elseif(strcmp(obj.physics,'BurgersVisc')==1)
@@ -264,6 +266,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
             jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
             F = F+jump;
+
     
         end
 %     end

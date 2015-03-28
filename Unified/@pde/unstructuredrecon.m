@@ -337,7 +337,7 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
            begin = 2;
            fin = N+1;
         end
-               
+
         for i = begin:fin    
             switch i
             case 2
