@@ -617,7 +617,9 @@ stem(f,2*abs(Y(1:N/2+1))/N)
 % subplot(223)
 % plot(x(2:N+1),uu,'*-')
 % ylabel('exact D.E. *(2*pi*f)^2 in frequecy domain')
-% error('1')
+
+
+error('1')
 
 
 

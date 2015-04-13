@@ -1,7 +1,24 @@
 function taunew = tefft(x,tau,F)
 
-% taunew = F;
-% return;
+figure
+subplot(221)
+plot(x,F,'-*')
+ylabel('residual source')
+subplot(222)
+N = length(x)-2;
+f = N/2*linspace(0,1,N/2+1);
+Y = fft(F,N)/N;
+stem(f,2*abs(Y(1:N/2+1))) 
+F(2:end-1) = noisefilt(x(2:end-1),F(2:end-1),0.000);
+subplot(223)
+plot(x,F,'-*')
+ylabel('denoised with \beta = 0.000')
+subplot(224)
+f = N/2*linspace(0,1,N/2+1);
+Y = fft(F,N)/N;
+stem(f,2*abs(Y(1:N/2+1))) 
+taunew = F;
+return;
 
 % close all
 % clear all
