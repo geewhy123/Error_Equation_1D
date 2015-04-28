@@ -552,6 +552,17 @@ YY = [Y ifft(Y)]
 f = (N)/2*linspace(0,1,N/2+1);
 
 stem(f,2*abs(Y(1:N/2+1))/N) 
+
+figure
+load('u4.mat')
+tau2 = tau;
+[Z] = obj.unstructuredrecon(u420,p,'solution')
+ [tau]=obj.computefluxintegral(Z,'solution');
+ plot(x,tau2,'+',x,tau,'*')
+ legend('\tau_2','2nd order flux integral of u_4 ')
+ mean(abs(tau-tau2))
+ error('1')
+
 % error('1')
 % upptilde
   errerr2= NaN;
@@ -618,8 +629,9 @@ stem(f,2*abs(Y(1:N/2+1))/N)
 % plot(x(2:N+1),uu,'*-')
 % ylabel('exact D.E. *(2*pi*f)^2 in frequecy domain')
 
-
-error('1')
+% u420=u;
+% save('u4.mat','-append','u420')
+% error('1')
 
 
 
