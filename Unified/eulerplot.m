@@ -58,7 +58,7 @@ for i = 1:6
 end
         
 
-% error('1')
+ error('1')
 
 %trend
 
