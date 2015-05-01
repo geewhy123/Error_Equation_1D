@@ -557,7 +557,7 @@ Z;
 %  error('2')
 % FPAp = F(:,2)./h+PAp
 % (FrAve-FlAve)/h(2)
-PAp;
+PApp = PAp;
 % if(i==N+1)
 % PAp
 % error('1')
@@ -856,6 +856,8 @@ end
 %     phi2 = phi2 - obj.errorSource(:,2);
 %     phi3 = phi3 - obj.errorSource(:,3);
 % end
-
+% PApp-PAp
+% [phi1 phi2 phi3]
+% error('1')
 end
 
