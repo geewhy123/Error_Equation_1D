@@ -31,7 +31,7 @@ xlabel('Error in momentum','FontSize',F+2);
         f(5)=subplot(3,7,[15:17])
         plot(x,exacterru(:,3),'o',x,eu(:,3),'*','LineWidth',g)
 %         xlabel('$\epsilon_{\rho E}$','Interpreter','Latex','FontSize',F+2);
-                         xlabel('Error in Energy','FontSize',F+1);
+                         xlabel('Error in energy','FontSize',F+1);
 l=legend('Exact error','Error estimate','Orientation','Horizontal');
 
 

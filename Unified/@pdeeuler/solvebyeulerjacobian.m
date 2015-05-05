@@ -335,7 +335,20 @@ Z = obj.unstructuredrecon(obj.convSolutionV,p,'solution');
     exacterrv
     exacterr
     teu
-    
+
+    % translation by jacobian
+%     for i = 2:N+1;
+%         rho = V(i,1);
+%         u = V(i,2);
+% dVdU = [1 0 0;
+%     -u/rho 1/rho 0;
+%     ((gam-1)/2)*u^2 -(gam-1)*u gam-1];
+% 
+%     EV(i,:) = dVdU*exacterr(i,:)';
+%     end
+%     max(abs(EV(2:N+1,:)-exacterrv(2:N+1,:)))
+
+
 
 %     save('tmp.mat','u')
 %        save('tmp4.mat','u')

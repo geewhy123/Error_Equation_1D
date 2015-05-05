@@ -120,17 +120,18 @@ Qr = zeros(3,3);
         obj.P0;
         obj.T0;
         obj.Pb;
-[F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2)+rhol(2),U2l(2)+ul(2),U3l(2)+Pl(2),obj.primalP0,obj.primalT0);
-[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1)+rhor(N+1),U2r(N+1)+ur(N+1),U3r(N+1)+Pr(N+1),obj.primalPb);
-[F1lu(2),F2lu(2),F3lu(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.primalP0,obj.primalT0);
-[F1ru(N+1),F2ru(N+1),F3ru(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.primalPb);
-F1l(2) = F1l(2) - F1lu(2);
-F2l(2) = F2l(2) - F2lu(2);
-F3l(2) = F3l(2) - F3lu(2);
-F1r(N+1) = F1r(N+1) - F1ru(N+1);
-F2r(N+1) = F2r(N+1) - F2ru(N+1);
-F3r(N+1) = F3r(N+1) - F3ru(N+1);
-
+% [F1l(2),F2l(2),F3l(2)]=inboundaryflux(U1l(2)+rhol(2),U2l(2)+ul(2),U3l(2)+Pl(2),obj.primalP0,obj.primalT0);
+% [F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryflux(U1r(N+1)+rhor(N+1),U2r(N+1)+ur(N+1),U3r(N+1)+Pr(N+1),obj.primalPb);
+% [F1lu(2),F2lu(2),F3lu(2)]=inboundaryflux(U1l(2),U2l(2),U3l(2),obj.primalP0,obj.primalT0);
+% [F1ru(N+1),F2ru(N+1),F3ru(N+1)]=outboundaryflux(U1r(N+1),U2r(N+1),U3r(N+1),obj.primalPb);
+% F1l(2) = F1l(2) - F1lu(2);
+% F2l(2) = F2l(2) - F2lu(2);
+% F3l(2) = F3l(2) - F3lu(2);
+% F1r(N+1) = F1r(N+1) - F1ru(N+1);
+% F2r(N+1) = F2r(N+1) - F2ru(N+1);
+% F3r(N+1) = F3r(N+1) - F3ru(N+1);
+[F1l(2),F2l(2),F3l(2)]=inboundaryfluxNewton(U1l(2),U2l(2),U3l(2),rhol(2),ul(2),Pl(2),obj.primalP0,obj.primalT0);
+[F1r(N+1),F2r(N+1),F3r(N+1)]=outboundaryfluxNewton(U1r(N+1),U2r(N+1),U3r(N+1),rhor(N+1),ur(N+1),Pr(N+1),obj.primalPb);
 
 
 end
