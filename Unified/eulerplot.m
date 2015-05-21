@@ -27,7 +27,7 @@ F = 20;
         plot(x,exacterru(:,2),'o',x,eu(:,2),'*','LineWidth',g)
 %         xlabel('$\epsilon_{\rho u}$','Interpreter','Latex','FontSize',F+2);
 xlabel('Error in momentum','FontSize',F+2);
-        ylabel('$\epsilon_{p}, \epsilon_{pq}$','Interpreter','Latex','FontSize',F+16)          
+        ylabel('$\epsilon_{p}, \epsilon_{pqr}$','Interpreter','Latex','FontSize',F+16)          
         f(5)=subplot(3,7,[15:17])
         plot(x,exacterru(:,3),'o',x,eu(:,3),'*','LineWidth',g)
 %         xlabel('$\epsilon_{\rho E}$','Interpreter','Latex','FontSize',F+2);
@@ -46,7 +46,7 @@ xlabel('Error difference in density','FontSize',F+2);
         plot(x,exacterru(:,2)-eu(:,2),'x','LineWidth',g)
 %         xlabel('$(\epsilon_p-\epsilon_{pq})_{\rho u}$','Interpreter','Latex','FontSize',F+2);
 xlabel('Error difference in momentum','FontSize',F+2);
-        ylabel('$\epsilon_{p} - \epsilon_{pq}$','Interpreter','Latex','FontSize',F+16)          
+        ylabel('$\epsilon_{p} - \epsilon_{pqr}$','Interpreter','Latex','FontSize',F+16)          
          f(6)=  subplot(3,7,[19:21])
         
          plot(x,exacterru(:,3)-eu(:,3),'x','LineWidth',g)
