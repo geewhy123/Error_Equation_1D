@@ -82,6 +82,7 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
     else
         assert(0)
     end
+
 % F1
 % F2
 end
@@ -360,6 +361,7 @@ function [ F ] = computeadvectionflux( obj,left,right,eqn,i  )
             jump = (.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
             F = F+jump;
         end
+        
         return;
 
     else
@@ -398,7 +400,7 @@ function [ F ] = computeadvectionflux( obj,left,right,eqn,i  )
             F = F+jump;
         end
 %     end
-    
+   
         return;
     
     end

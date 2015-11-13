@@ -190,7 +190,7 @@ else
 end
 
 f(i) = 0;
-if(strcmp(obj.goal,'SS')==1|| obj.endTime > 8)
+if(strcmp(obj.goal,'SS')==1)%|| obj.endTime > 8)
    ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
    u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
    f(i) = (1/h(i))*(sin(2*pi*xr)-sin(2*pi*xl)); 

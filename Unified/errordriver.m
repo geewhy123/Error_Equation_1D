@@ -194,6 +194,7 @@ grid on
 % hold on
 % plot(x,u0)
 f = problem.source;
+
 % figure
 % plot(x,ue)
 % error('1')
@@ -284,17 +285,29 @@ for j = 1:100000
     tt = k*(j-1);
     
     
+%     if(tt+k >= tlim)
+%         k = tlim-tt;
+%         obj.tStep = k;
+%         [uu,d] = problem.updatesolution(u);
+%         problem.curTime = problem.curTime + k;
+%         u = uu;
+%         nSteps = j-1;
+%         break
+%     end
+    
     
     if((max(d)*k<1e-15)  ||(tt>=tlim) )
+%     if((max(d)*k<1e-15))
         
-        %  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
+%         [uu,d] = problem.updatesolution(u);
+         
         u = uu;
         max(d);
         tt;
         T = (1:1:j-1)*k;
         %  U(:,j+1) = u;
         nSteps = j-1;
-        
+         
         break
     end
     
@@ -328,10 +341,9 @@ for j = 1:100000
     
     %     end
 end
-k
-h0
+fprintf('CFL = %e\n',k/h0)
 
-pause
+% pause
 u;
 
 cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;

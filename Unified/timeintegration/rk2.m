@@ -41,7 +41,10 @@ for steps = 1:length(c)
 Z = obj.unstructuredrecon(unew,p,eqn);
     if(strcmp(eqn,'solution')==1)
             obj.curTime = obj.curTime + (steps-1)*k/length(c);
+            
         phi(:,steps) = obj.computefluxintegral(Z,eqn);
+     
+
     elseif(strcmp(eqn,'error')==1)
         error('1')
         %     obj.errorSource = -1*val(:,steps);
