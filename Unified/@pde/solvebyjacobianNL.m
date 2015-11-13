@@ -55,6 +55,7 @@ function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
 % % % % % % % % plot(x,tau,'o')
 % % % % % % % % te=  sum(abs(tau(2:N+1)))/N;
 
+
 obj.NLError = 'NLError';
 
 
@@ -136,12 +137,13 @@ obj.NLError = 'NLError';
 
     figure
     plot(x,tau,'o')
-    tau
-%     tau2040b = tau;
-%     save('te.mat','tau2040b','-append')
-dot(tau(2:N+1),h(2:N+1))
-dot(tau(N/2:N/2+3),h(N/2:N/2+3))
-tau(N/2+2)+tau(N/2+1)
+%     tau;
+% %     tau2040b = tau;
+% %     save('te.mat','tau2040b','-append')
+% dot(tau(2:N+1),h(2:N+1))
+% dot(tau(N/2:N/2+3),h(N/2:N/2+3))
+% tau(N/2+2)+tau(N/2+1)
+
 %  x
 %     error('1')
 
@@ -460,7 +462,7 @@ uppexact = zeros(N+2,1);
 upptilde = zeros(N+2,1);
 ph = zeros(N+2,1);
 xijhat = zeros(N+2,1);
-obj.moments
+obj.moments;
 for i = 2:N+1
    for k = 0:6
    if(mod(k,2) == 0) 
@@ -517,7 +519,7 @@ end
 %      upptilde(i) = J(i,2:N+1)*ph(2:N+1);
 % end
 
-ph
+ph;
 % obj.moments
 upptilde = 0*upptilde;
 ph = 0*ph;
@@ -535,10 +537,10 @@ end
 for j = 2:N+2
    pp(j) = (1/h(j))*(-1/(2*pi))*(cos(2*pi*(x(j)+h(j)/2))-cos(2*pi*(x(j)-h(j)/2))); 
 end
-[pp' ue]
+[pp' ue];
 % max(abs(upptilde-uppexact-tau))
 % error('1')
-J
+J;
 
 figure
 plot(x,uppexact,'*',x,f,'o',x,upptilde,'x')
@@ -548,20 +550,20 @@ plot(x,-(uppexact-upptilde),'^',x,tau,'-*')
 ylabel('exact T.E.')
 subplot(224)
 Y = fft(tau,N)/N;
-YY = [Y ifft(Y)]
+YY = [Y ifft(Y)];
 f = (N)/2*linspace(0,1,N/2+1);
 
 stem(f,2*abs(Y(1:N/2+1))/N) 
 
-figure
-load('u4.mat')
-tau2 = tau;
-[Z] = obj.unstructuredrecon(u420,p,'solution')
- [tau]=obj.computefluxintegral(Z,'solution');
- plot(x,tau2,'+',x,tau,'*')
- legend('\tau_2','2nd order flux integral of u_4 ')
- mean(abs(tau-tau2))
- error('1')
+% figure
+% load('u4.mat')
+% tau2 = tau;
+% [Z] = obj.unstructuredrecon(u420,p,'solution')
+%  [tau]=obj.computefluxintegral(Z,'solution');
+%  plot(x,tau2,'+',x,tau,'*')
+%  legend('\tau_2','2nd order flux integral of u_4 ')
+%  mean(abs(tau-tau2))
+%  error('1')
 
 % error('1')
 % upptilde
@@ -586,8 +588,8 @@ tau2 = tau;
 %     
 % errerr2 = nnz(J);
 % return 
- s = sum(J,2)
- t = sum(J',2)
+% %  s = sum(J,2)
+% %  t = sum(J',2)
 %  for j = 3:N-3:N
 %         for k = 1:N+2
 %           if(abs(J(j,k)) > 1e-4)
@@ -633,7 +635,7 @@ tau2 = tau;
 % save('u4.mat','-append','u420')
 % error('1')
 
-
+% save('test.mat','tau')
 
     if(q> 0 && r>0)
 
@@ -736,22 +738,23 @@ tau2 = tau;
 %
 
 
-
-%
-%           error('1')
-F = f;
-% save('tau.mat','x','tau','F') 
-% mean((tau))
-% mean(f)
-% error('1')
-taunew = tefft(x,tau,F);
-% load('tefilt.mat')
-f = taunew;
-
-% load('tauN.mat')
-% f = tau3264;
-
-
+% 
+% %
+% %           error('1')
+% F = f;
+% % save('tau.mat','x','tau','F') 
+% % mean((tau))
+% % mean(f)
+% % error('1')
+% taunew = tefft(x,tau,F);
+% % load('tefilt.mat')
+% f = taunew;
+% 
+% % load('tauN.mat')
+% % f = tau3264;
+% 
+% % % load('test.mat')
+% % % f = tau;
         obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
         
 %        [tau2-Rend 2*f]
@@ -837,6 +840,10 @@ f = taunew;
         end
 
         w = exacterr-ee;
+
+%         [x exacterr ee]
+max(abs(ue-(u+ee)))
+    
 
 % % % %  Je
 % % % %  error('1')
@@ -946,32 +953,35 @@ subplot(222)
 stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2)
 ylim([0 3*MM])
 % mean(ee(2:N+1))
-Y
 
 
-figure
-subplot(221);
-plot(x,exacterr(2:N+1),'*')
-u = exacterr(2:end-1);
-Y = fft(u,NFFT)/L;
-f = Fs/2*linspace(0,1,NFFT/2+1);
-size(f)
-ylabel('exact D.E.')
-subplot(222);
-stem(f,2*abs(Y(1:NFFT/2+1))/N) 
-Y;
-subplot(224)
-Y(1:NFFT/2+1) = Y(1:NFFT/2+1).*-(2*pi*f').^2;
-size(Y(NFFT/2+1:end))
-size(f(end:-1:2))
 
-Y(NFFT/2+2:end) = Y(NFFT/2+2:end).*-(2*pi*f(end-1:-1:2)').^2;
-f(end:-1:2)
-stem(f,2*abs(Y(1:NFFT/2+1))/N) 
-YY = [ifft(Y) Y]
-uu = real(ifft(Y))*N;
-subplot(223)
-plot(x,uu,'*-')
-ylabel('exact D.E. *(2*pi*f)^2 in frequecy domain')
+% Y
+
+
+% figure
+% subplot(221);
+% plot(x,exacterr(2:N+1),'*')
+% u = exacterr(2:end-1);
+% Y = fft(u,NFFT)/L;
+% f = Fs/2*linspace(0,1,NFFT/2+1);
+% size(f)
+% ylabel('exact D.E.')
+% subplot(222);
+% stem(f,2*abs(Y(1:NFFT/2+1))/N) 
+% Y;
+% subplot(224)
+% Y(1:NFFT/2+1) = Y(1:NFFT/2+1).*-(2*pi*f').^2;
+% size(Y(NFFT/2+1:end))
+% size(f(end:-1:2))
+% 
+% Y(NFFT/2+2:end) = Y(NFFT/2+2:end).*-(2*pi*f(end-1:-1:2)').^2;
+% f(end:-1:2)
+% stem(f,2*abs(Y(1:NFFT/2+1))/N) 
+% YY = [ifft(Y) Y]
+% uu = real(ifft(Y))*N;
+% subplot(223)
+% plot(x,uu,'*-')
+% ylabel('exact D.E. *(2*pi*f)^2 in frequecy domain')
 end
 
