@@ -128,8 +128,8 @@ problem.initializeexact();
  
 u0 = problem.initialSolution;
 ue = problem.exactSolution;
-length(x)
-length(ue)
+length(x);
+length(ue);
 % figure
 %  plot(x,u0)
 

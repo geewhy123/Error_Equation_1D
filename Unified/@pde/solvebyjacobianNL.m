@@ -290,8 +290,8 @@ del = pinv(K)*-R(2:N+1);
     cverr1 = sum(abs(vv(2:N+1)))/N;
     cverr2 =sqrt(sum((vv(2:N+1)).^2)/N);
     cverrinf = max(abs(vv(2:N+1)));
-    trunc_err = [te1 te2 teinf]
-    disc_err = [cverr1 cverr2 cverrinf]
+    fprintf('\nT.E.: [%e\t %e\t %e]\n',te1, te2, teinf);
+    fprintf('D.E.: [%e\t %e\t %e]\n',cverr1, cverr2, cverrinf);
   
     subplot(211)
     plot(x,u,'*',x,ue,'o')
@@ -685,7 +685,7 @@ stem(f,2*abs(Y(1:N/2+1))/N)
             obj.bcRightVal = 0;uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
         end
 
-[obj.bcLeftVal obj.bcRightVal]
+[obj.bcLeftVal obj.bcRightVal];
 
         exacterr = ue-u;
 
@@ -703,7 +703,7 @@ stem(f,2*abs(Y(1:N/2+1))/N)
         f = -Rend;
         ff = tau+randn(N+2,1)/N^6;
         ep = rand(N+2,1)/N^6;
-         mean(abs(f(2:N+1)-tau(2:N+1)))
+         mean(abs(f(2:N+1)-tau(2:N+1)));
 %          figure
 %          plot(x,f-tau,'o')
 
@@ -842,7 +842,7 @@ stem(f,2*abs(Y(1:N/2+1))/N)
         w = exacterr-ee;
 
 %         [x exacterr ee]
-max(abs(ue-(u+ee)))
+max(abs(ue-(u+ee)));
     
 
 % % % %  Je
@@ -883,9 +883,9 @@ max(abs(ue-(u+ee)))
         figure
         plot(x,ee,'*',x,exacterr,'o')
 
-        trunc_disc_error = [tauE1 tauE2 tauEinf]
-        disc_disc_error = [errerr1 errerr2 errerrinf]
-
+        fprintf('\nError T.E.: [%e\t %e\t %e]\n',tauE1, tauE2, tauEinf);
+        fprintf('Error D.E.: [%e\t %e\t %e]\n',errerr1, errerr2, errerrinf);
+  
 %         ecor = exacterr- (u + ee);
 ecor = ue-(u+ee);
 % u+ee
@@ -934,8 +934,8 @@ M = max(abs(2*abs(Y(1:NFFT/2+1))));
 ylim([0 M])
 xlabel('fft of ee ')
 subplot(224)
-size(f)
-size(Y(1:NFFT/2+1))
+size(f);
+size(Y(1:NFFT/2+1));
 f = reshape(f,size(Y(1:NFFT/2+1)));
 stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
 MM = max(2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2);
