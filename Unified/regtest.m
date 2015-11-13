@@ -1,4 +1,27 @@
+
 %clean
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'P',0,'P',0,10,7,'Poisson','SS');
+assert(abs(errerr2-0.002502354702354)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',0,'D',0,10,7,'Poisson','SS');
+assert(abs(errerr2-0.001964073234010)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,6,1/3,'D',0,'D',0,10,7,'Poisson','SS');
+assert(abs(errerr2-0.064614874341152)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'P',0,'P',0,0.3,7,'Advection','TimeAccurate');
+assert(abs(errerr2-0.006105285299128)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'D',tanh(0),'D',-2*tanh(1),10,7,'BurgersVisc','SS');
+assert(abs( errerr2-1.636222437037368e-04)/errerr2 < 0.001)
+
+[errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',4)
+assert(max(abs(errerr2-3.257e-3)/norm(errerr2))< .001)
+
+
+error('1')
+
+
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',[1 1],'D',[0.97 1],10,7,'EulerQ','SS',0,'!HC',2)
 assert(max(abs(errerr2-0.004858216643234)/norm(errerr2))< .001)
 
