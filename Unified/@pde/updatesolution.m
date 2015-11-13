@@ -19,11 +19,11 @@ BCRight = obj.bcRightType;
 uR = obj.bcRightVal;
    switch t
        case 1
-      [uu,d] = rk1(u,x,f,k,h,N,p,t,phys);
-
+           %       [uu,d] = rk1(u,x,f,k,h,N,p,t,phys);
+           [uu,d]= rk1('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
        case 2
-           [uu,d] = rk2(u,x,f,k,h,N,p,t,phys);
-           
+           %            [uu,d] = rk2(u,x,f,k,h,N,p,t,phys);
+           [uu,d] = rk2('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
        case 4
           
            [uu,d] = rk4(u,x,f,k,h,N,p,t,phys);

@@ -30,7 +30,7 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.2;
+CFL = 0.1;
 k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
@@ -182,6 +182,12 @@ er = problem.reconplot(Z(1:2,:),'solution');
 figure
 er = problem.reconplot(Z(3:4,:),'solution');
 end
+
+figure(1);clf;
+plt = plot(x,u0,'*');
+hold on
+grid on
+
 % Z
 % error('1')
 
@@ -192,9 +198,9 @@ f = problem.source;
 % plot(x,ue)
 % error('1')
 
-Z
+Z;
 % % % % [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
-[tau]=problem.computefluxintegral(Z,'solution')%reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
+[tau]=problem.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
 
 % error('1')
 % tau
@@ -267,70 +273,77 @@ end
  
 
 d=1;
-u
+u;
 % U = 
 T = 1;
 for j = 1:100000
-%     for m = 1:nUnk 
-
-
-        U(:,j,1:problem.nUnk) = u;
-tt = k*(j-1);
+    %     for m = 1:nUnk
     
-
-
-if((max(d)*k<1e-15)  ||(tt>=tlim) )
-     
-%  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
-u = uu;
-    max(d)
-    tt
-    T = (1:1:j-1)*k;
-%  U(:,j+1) = u;
- nSteps = j-1;
- 
-    break
-end
-
-% d=0;
-
-
-% problem.curTime = j*k;
-[uu,d] = problem.updatesolution(u);
-problem.curTime = j*k;
-
-
-% [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
-
-% if(j==20)
-%     uu
-% error('1')
-% end
-% [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
-
-
-u = uu;
-
-% T = (1:1:j)*k;
-
-if(mod(j,100)==0)
-    max(d)
-end
-
+    
+    U(:,j,1:problem.nUnk) = u;
+    tt = k*(j-1);
+    
+    
+    
+    if((max(d)*k<1e-15)  ||(tt>=tlim) )
+        
+        %  [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
+        u = uu;
+        max(d);
+        tt;
+        T = (1:1:j-1)*k;
+        %  U(:,j+1) = u;
+        nSteps = j-1;
+        
+        break
+    end
+    
+    % d=0;
+    
+    
+    % problem.curTime = j*k;
+    [uu,d] = problem.updatesolution(u);
+    problem.curTime = j*k;
+    
+    
+    % [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
+    
+    % if(j==20)
+    %     uu
+    % error('1')
+    % end
+    % [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);
+    
+    
+    u = uu;
+    
+    % T = (1:1:j)*k;
+    
+%     if(mod(j,100)==0)
+%         max(d)
 %     end
+    
+     set(plt,'ydata',u)
+     drawnow
+    
+    %     end
 end
+k
+h0
 
-u
+pause
+u;
 
-cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N
-cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N)
-cverrinf=max(abs(ue-u))
-size(U)
+cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;
+cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
+cverrinf=max(abs(ue-u));
+fprintf('D.E.: [%e\t %e\t %e]\n\n',cverr1,cverr2,cverrinf);
+size(U);
 
 
 u(1) = NaN;
 u(N+2) = NaN;
-plot(x,u,'*',x,ue,'o')
+plot(x,ue,'o')
 ylabel('u')
 figure
 plot(x,ue-u,'x')
@@ -339,8 +352,8 @@ ylabel('ue-u')
 
 end
 
-T(end)
-% 
+T(end);
+%
 % if( T(end) > 0.997)%0.9166)
 % g
 % error('1')
@@ -351,12 +364,12 @@ T(end)
 %     return
 % end
 
-% % % % % assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) ) 
+% % % % % assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) )
 
 tlim = T(end);
 
 
-
+% error('1')
 
 global dUdt
 dUdt = diffU(U,k);
@@ -400,8 +413,8 @@ gsp = NaN;
 % error('1')
 
 
-nSteps
-u
+nSteps;
+u;
 % 
 % if(nSteps < 20)
 %    error('1') 
@@ -484,11 +497,11 @@ problem.residual = R;
 
 
 
-Rm=max(abs(R(:,end)))
+Rm=max(abs(R(:,end)));
 
 
 
- sqrt(sum((R(2:N+1,end)).^2)/N)
+ sqrt(sum((R(2:N+1,end)).^2)/N);
 %  error('1');
 % 
 %     cverr2 = Rm;
@@ -499,7 +512,7 @@ Rm=max(abs(R(:,end)))
 
 
 plot(x,R(:,end))
-max(abs(R(:,end)))
+max(abs(R(:,end)));
 %  error('2')
 
 % clear R
@@ -553,6 +566,7 @@ problem.Rsp =Rsp;
 global M
 M = nSteps;
 
+fprintf('Error Equation\n')
 
 % % %  AD = computepseudo(N,x,h,q);
 problem.computeerrorpseudo();
@@ -622,11 +636,11 @@ if( ((TT>=tlim)) || (j >= nSteps+1))
 
 
 e = ee;
-   max(s)
-    TT
+   max(s);
+    TT;
     T = (1:1:j-1)*k;
-j
-nSteps
+j;
+nSteps;
 % R(:,end-2:end)
     break
 end
@@ -663,11 +677,10 @@ ee = ee(2:N+1);
 ue=ue(2:N+1);
 
 
-errerr1 = sum(abs(exacterr-ee))/N
-errerr2 = sqrt(sum((exacterr-ee).^2)/N)
-
-errerrinf=max(abs(exacterr-ee))
-
+errerr1 = sum(abs(exacterr-ee))/N;
+errerr2 = sqrt(sum((exacterr-ee).^2)/N);
+errerrinf=max(abs(exacterr-ee));
+  fprintf('Error D.E.: [%e\t %e\t %e]\n',errerr1, errerr2, errerrinf);
 
 figure
 plot(x,exacterr-ee,'*-')
@@ -676,7 +689,7 @@ ylabel('\epsilon - \epsilon_h')
 
 save('t','exacterr','ee','x')
 
-ee
+ee;
 else 
     errerr2 = NaN;
     ee = NaN;
@@ -684,7 +697,7 @@ else
 end
 
 
-exacterr-ee
+exacterr-ee;
 te = NaN;
 
 clear global
