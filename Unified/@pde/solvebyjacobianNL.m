@@ -704,9 +704,18 @@ stem(f,2*abs(Y(1:N/2+1))/N)
         ff = tau+randn(N+2,1)/N^6;
         ep = rand(N+2,1)/N^6;
          mean(abs(f(2:N+1)-tau(2:N+1)));
-%          figure
-%          plot(x,f-tau,'o')
 
+         figure
+         subplot(1,2,1)
+          plot(x,f,'*',x,tau,'o')
+          subplot(1,2,2)
+          plot(x,tau-f,'x')
+          
+          f24 = f;
+%           xu = x;
+%           tauu = tau;
+          save('unstructuredteperiodic.mat','x','tau','f24','-append') 
+error('1')
 
 % % f-fexact test
 % p = obj.pOrder;
