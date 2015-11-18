@@ -35,7 +35,7 @@ uR = obj.bcRightVal;
            
        case 7
            
-%                       [uu,d] = rk7('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+%          [uu,d] = rk7('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
            [uu,d] = rk7('error',u,x,f,k,h,N,p,phys,time,Rsp,'D',1,'D',1,obj);
        otherwise
    end

@@ -30,7 +30,7 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.6;
+CFL = 0.1;
 k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
@@ -277,6 +277,8 @@ d=1;
 u;
 % U = 
 T = 1;
+
+
 for j = 1:100000
     %     for m = 1:nUnk
     
@@ -287,7 +289,15 @@ for j = 1:100000
     
     if(tt+k > tlim)
         klast = tlim-tt;
+        if(klast < 1e-10)
+            nSteps = j-1;
+             T = (1:1:j-1)*k;
+        T(end+1) = T(end)+klast;
+        U(:,nSteps+1,1:problem.nUnk) = u;
+           break 
+        end
         tt = tt +klast;
+        
         problem.tStep = klast;
         problem.curTime = problem.curTime + klast;
        [uu,d] = problem.updatesolution(u);
@@ -298,9 +308,6 @@ for j = 1:100000
         U(:,nSteps+1,1:problem.nUnk) = u;
         break
     end
-    
-    
-
 % if((max(d)*k<1e-15)  ||(tt>=tlim) )
     if((max(d)*k<1e-15))
         
@@ -335,12 +342,7 @@ for j = 1:100000
     
     u = uu;
     
-    % T = (1:1:j)*k;
-    
-%     if(mod(j,100)==0)
-%         max(d)
-%     end
-    
+  
      set(plt,'ydata',u)
      drawnow
     
@@ -369,33 +371,13 @@ figure
 plot(x,ue-u,'x')
 ylabel('ue-u')
 
-
 end
 
-T(end);
-%
-% if( T(end) > 0.997)%0.9166)
-% g
-% error('1')
-% else
-% errerr2=NaN;
-% ee = NaN;
-% exacterr = NaN;
-%     return
-% end
-
-% % % % % assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) )
-
 tlim = T(end)
-
-
-% error('1')
 
 global dUdt
 dUdt = diffU(U,k);
 
-%  U
-%  error('1')
 gsp = NaN;
 
 % if not using FD, then use this to spline
@@ -410,35 +392,6 @@ gsp = NaN;
 % % % end
 
 
-
-
-% 
-% t = (0:1:nSteps)*k;
-% Utexact = zeros(size(dUdt));
-% Utexact(1,:) = NaN;
-% Utexact(N+2,:) = NaN;
-% Uexact = Utexact;
-% for i = 2:N+1
-%     for j = 1:nSteps+1
-%           xl = x(i)-h(i)/2;
-%     xr = x(i)+h(i)/2;
-%         Uexact(i,j) = -(1/(2*pi))*(1/h(i))*(cos(2*pi*(xr+t(j)))-cos(2*pi*(xl+t(j))));
-%         Utexact(i,j) =           (1/h(i))*(sin(2*pi*(xr+t(j)))-sin(2*pi*(xl+t(j))));
-%     end
-% end
-% 
-% dUdt = diffU(Uexact,k);
-% 
-% max(max(abs(dUdt-Utexact)))
-% error('1')
-
-
-% 
-% if(nSteps < 20)
-%    error('1') 
-% end
-
-% dir
  problem.convSoln = u;
 if(q>0 && r > 0)
     
@@ -455,7 +408,7 @@ global xx
 xx = x;
 global TEND
 TEND = tlim;
-
+tlim
 global UU
 UU = U;
 
@@ -480,6 +433,7 @@ UU = U;
 R = zeros(N+2,nSteps+1);
  tt=0;
 
+ 
 for j = 1:nSteps+1
     
 
@@ -511,36 +465,8 @@ problem.residual = R;
 % error('1')
 
 
-
-
-
-
-Rm=max(abs(R(:,end)));
-
-
-
- sqrt(sum((R(2:N+1,end)).^2)/N);
-%  error('1');
-% 
-%     cverr2 = Rm;
-%     errerr2 = Rm;
-%     ee = NaN;
-%     exacterr = NaN;
-%     return
-
-
 plot(x,R(:,end))
 max(abs(R(:,end)));
-%  error('2')
-
-% clear R
-%  Ro = R;
-% R
-% error('1')
-%     load('RA.mat')
-%  Ro(:,1) = R(:,1);
-%  R = Ro;
-
 
 % dUdt 
 % 
@@ -583,7 +509,6 @@ problem.Rsp =Rsp;
 
 global M
 M = nSteps;
-
 fprintf('Error Equation\n')
 
 % % %  AD = computepseudo(N,x,h,q);
@@ -622,15 +547,18 @@ problem.bcLeftVal = 0;
 problem.bcRightVal = 0;
 end
 
-% size(U)
-% size(R)
 
-%  
 T = 1;
 s=1;
 
 %  nSteps = nSteps-1;
 % tlim = tlim-k;
+
+figure(2);clf;
+plt2 = plot(x,u0,'*');
+hold on
+grid on
+axis([0 1 -max(abs(ue-u)) max(abs(ue-u))])
 
 k
 nSteps
@@ -697,6 +625,12 @@ e = ee;
 if(mod(j,100)==0)
 max(s)
 end
+
+
+    
+     set(plt2,'ydata',e)
+     drawnow
+    
 end
 
 % E(:,end-2:end)
