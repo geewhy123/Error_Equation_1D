@@ -30,7 +30,7 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.1;
+CFL = 0.6;
 k = CFL*h0;
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
@@ -285,8 +285,7 @@ for j = 1:100000
     tt = k*(j-1);
     
     
-    if(tt+k >= tlim)
-        j
+    if(tt+k > tlim)
         klast = tlim-tt;
         tt = tt +klast;
         problem.tStep = klast;
@@ -666,7 +665,7 @@ E(:,j) = e;
 % end
 
 % % 
-  if(TT+k >= tlim)
+  if(TT+k > tlim)
 %       TT=TT-k;
         k = tlim-TT;
         problem.tStep = k;
