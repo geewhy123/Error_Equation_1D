@@ -714,8 +714,8 @@ stem(f,2*abs(Y(1:N/2+1))/N)
           f24 = f;
 %           xu = x;
 %           tauu = tau;
-          save('unstructuredteperiodic.mat','x','tau','f24','-append') 
-error('1')
+%           save('unstructuredteperiodic.mat','x','tau','f24','-append') 
+% error('1')
 
 % % f-fexact test
 % p = obj.pOrder;

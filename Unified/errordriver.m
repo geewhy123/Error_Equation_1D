@@ -285,19 +285,25 @@ for j = 1:100000
     tt = k*(j-1);
     
     
-%     if(tt+k >= tlim)
-%         k = tlim-tt;
-%         obj.tStep = k;
-%         [uu,d] = problem.updatesolution(u);
-%         problem.curTime = problem.curTime + k;
-%         u = uu;
-%         nSteps = j-1;
-%         break
-%     end
+    if(tt+k >= tlim)
+        j
+        klast = tlim-tt;
+        tt = tt +klast;
+        problem.tStep = klast;
+        problem.curTime = problem.curTime + klast;
+       [uu,d] = problem.updatesolution(u);
+        u = uu;
+        nSteps = j;
+        T = (1:1:j-1)*k;
+        T(end+1) = T(end)+klast;
+        U(:,nSteps+1,1:problem.nUnk) = u;
+        break
+    end
     
     
-    if((max(d)*k<1e-15)  ||(tt>=tlim) )
-%     if((max(d)*k<1e-15))
+
+% if((max(d)*k<1e-15)  ||(tt>=tlim) )
+    if((max(d)*k<1e-15))
         
 %         [uu,d] = problem.updatesolution(u);
          
@@ -341,8 +347,11 @@ for j = 1:100000
     
     %     end
 end
-fprintf('CFL = %e\n',k/h0)
-
+fprintf('CFL = %e\n',CFL)
+% fprintf('k = %e\n',k)
+fprintf('T_end = %e\n',tt)
+% nSteps
+% U(:,end-2:end)
 % pause
 u;
 
@@ -350,7 +359,7 @@ cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;
 cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 cverrinf=max(abs(ue-u));
 fprintf('D.E.: [%e\t %e\t %e]\n\n',cverr1,cverr2,cverrinf);
-size(U);
+size(U)
 
 
 u(1) = NaN;
@@ -378,7 +387,7 @@ T(end);
 
 % % % % % assert((abs(T(end)-tlim)/tlim < 1e-4) || (strcmp(physics,'Poisson')==1 && tlim/T(end) > 2 ) )
 
-tlim = T(end);
+tlim = T(end)
 
 
 % error('1')
@@ -425,8 +434,6 @@ gsp = NaN;
 % error('1')
 
 
-nSteps;
-u;
 % 
 % if(nSteps < 20)
 %    error('1') 
@@ -626,7 +633,9 @@ s=1;
 %  nSteps = nSteps-1;
 % tlim = tlim-k;
 
-
+k
+nSteps
+tlim
 for j = 1:nSteps+1
 
 
@@ -636,31 +645,48 @@ E(:,j) = e;
     
 
 
-% problem.errorSource
-% error('1')
-% if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
-if( ((TT>=tlim)) || (j >= nSteps+1))
-%     TT
-%     tlim
- 
-%  [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+% % % problem.errorSource
+% % % error('1')
+% % if( ((max(s)*k*inf<1e-15)||(TT>=tlim)) || (j >= nSteps))
+% if( ((TT>=tlim)) || (j >= nSteps+1))
+% %     TT
+% %     tlim
+%  
+% %  [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
+% 
+% 
+% e = ee;
+%    max(s);
+%     TT;
+%     T = (1:1:j-1)*k;
+% j;
+% nSteps;
+% % R(:,end-2:end)
+%     break
+% end
+
+% % 
+  if(TT+k >= tlim)
+%       TT=TT-k;
+        k = tlim-TT;
+        problem.tStep = k;
+        problem.curTime = problem.curTime + k;
+%             TT = TT +k;
+       [ee,s] = problem.updateerror(e,TT,j);
+           
+        e = ee;
+        nSteps = j;
+        E(:,nSteps+1) = e;
+        break
+    end
+    
 
 
-
-e = ee;
-   max(s);
-    TT;
-    T = (1:1:j-1)*k;
-j;
-nSteps;
-% R(:,end-2:end)
-    break
-end
 
 s=0;
 
 % % % [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
-
+% [e;TT]
 [ee,s] = problem.updateerror(e,TT,j);
 
 
@@ -674,6 +700,11 @@ max(s)
 end
 end
 
+% E(:,end-2:end)
+% size(E)
+% R(:,end-2:end)
+% size(R)
+% TT
 
 exacterr = ue-u;
 
