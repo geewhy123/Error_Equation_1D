@@ -36,9 +36,10 @@ Z = obj.unstructuredrecon(u,r,eqn);
 % % % %   [left,right] = computeflux(Z,h,N,r,phys,'residual',obj);
   
  R= obj.computefluxintegral(Z,'residual');  
- 
- 
-
+%  
+%  if(time > 1.3)
+%      R
+%  end
 
 
 
@@ -58,6 +59,8 @@ global KK
 
 ut = dUdt(i,round(time/KK)+1);
 
+Ut(i) = ut;
+
 % if (time ==0)
 % round(time/KK)+1
 % end
@@ -73,6 +76,10 @@ end
 
  end
  
+ if(time > 1.3)
+    Ut'
+     error('1')
+ end
  
 %   dUdt
 %   error('1')

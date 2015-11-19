@@ -1,10 +1,13 @@
-    function [ dUdt] = diffU( U ,k)
+    function [ dUdt] = diffU( U ,k,klast)
 %DIFFU Summary of this function goes here
 %   Detailed explanation goes here
 
 [m,n] = size(U);
 
-
+% k
+% size(U)
+% U(:,end-2:end)
+% error('1')
 
 % 6th order
 %A = [1 1 1 1 1 1 1 1 1 ; -4 -3 -2 -1 0 1 2 3 4; 

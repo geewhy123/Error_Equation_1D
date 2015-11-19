@@ -30,8 +30,15 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.1;
+CFL = 0.5;
 k = CFL*h0;
+Q = tlim/(h0*CFL);
+if(abs(round(Q)-Q) > 1e-10)
+   fprintf('not an integer number of steps, need to fix residual evaluation\n')
+end
+    
+    
+
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
     k = k*h0;
@@ -277,7 +284,7 @@ d=1;
 u;
 % U = 
 T = 1;
-
+klast = k;
 
 for j = 1:100000
     %     for m = 1:nUnk
@@ -376,8 +383,11 @@ end
 tlim = T(end)
 
 global dUdt
-dUdt = diffU(U,k);
-
+% if(klast > 1e-10 && klast < k)
+    dUdt = diffU(U,k,klast);
+% else
+% dUdt = diffU(U,k);
+% end
 gsp = NaN;
 
 % if not using FD, then use this to spline
@@ -408,7 +418,6 @@ global xx
 xx = x;
 global TEND
 TEND = tlim;
-tlim
 global UU
 UU = U;
 
@@ -560,9 +569,13 @@ hold on
 grid on
 axis([0 1 -max(abs(ue-u)) max(abs(ue-u))])
 
-k
-nSteps
-tlim
+% size(R)
+% R(:,end-2:end)
+% 
+% error('1')
+% k
+% nSteps
+% tlim
 for j = 1:nSteps+1
 
 
