@@ -274,7 +274,7 @@ Z;
 %   error('1')
 if(strcmp(problem.physics,'LinearSystem')==1)
     problem.nUnk = 2;
-elseif(strcmp(problem.physics,'Advection')==1 ||strcmp(problem.physics,'Poisson')==1 || strcmp(problem.physics,'BurgersVisc')==1) 
+elseif(strcmp(problem.physics,'Advection')==1 ||strcmp(problem.physics,'Poisson')==1 || strcmp(problem.physics,'BurgersVisc')==1||strcmp(problem.physics,'Burgers')==1) 
     
     problem.nUnk = 1;
 end
@@ -285,10 +285,9 @@ u;
 % U = 
 T = 1;
 klast = k;
-
+tlim
 for j = 1:100000
     %     for m = 1:nUnk
-    
     
     U(:,j,1:problem.nUnk) = u;
     tt = k*(j-1);
@@ -317,7 +316,7 @@ for j = 1:100000
     end
 % if((max(d)*k<1e-15)  ||(tt>=tlim) )
     if((max(d)*k<1e-15))
-        
+       
 %         [uu,d] = problem.updatesolution(u);
          
         u = uu;
@@ -367,7 +366,7 @@ cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;
 cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 cverrinf=max(abs(ue-u));
 fprintf('D.E.: [%e\t %e\t %e]\n\n',cverr1,cverr2,cverrinf);
-size(U)
+% size(U)
 
 
 u(1) = NaN;

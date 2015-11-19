@@ -1,5 +1,5 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
-    if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1)    
+    if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1||strcmp(obj.physics,'Burgers')==1 )    
         h = obj.cellWidths;
         N = obj.nCells;
         F = zeros(N+2,1);
@@ -25,12 +25,16 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
             elseif(strcmp(obj.physics,'BurgersVisc')==1)
                 F(i) = computeburgersviscflux(obj,Z(:,i),Z(:,i+1),eqn,i);
             elseif(strcmp(obj.physics,'LinearSystem')==1)
+              
+               
 %                Z
 %                error('1')
                
                [ff] = computelinearsystemflux(obj,Z(:,i),Z(:,i+1),eqn,i);
                F1(i) = ff(1);
                F2(i) = ff(2);
+            elseif(strcmp(obj.physics,'Burgers')==1)
+                 F(i) = computeburgersflux(obj,Z(:,i),Z(:,i+1),eqn,i);
             end
             
             if(i==1)
@@ -408,6 +412,55 @@ function [ F ] = computeadvectionflux( obj,left,right,eqn,i  )
  
 end
 
+function [ F ] = computeburgersflux( obj,left,right,eqn,i  )
+%COMPUTEFLUXINTEGRAL Summary of this function goes here
+%   Detailed explanation goes here
+
+    h = obj.cellWidths;
+    N = obj.nCells;
+    if(strcmp(eqn,'solution')==1)
+        p = obj.pOrder;
+    elseif(strcmp(eqn,'error')==1)
+        p = obj.qOrder;
+    elseif(strcmp(eqn,'residual')==1)
+        p = obj.rOrder;
+    else
+        assert(0); 
+    end
+        
+    if(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+        Ul = 0;
+        Ur = 0;
+        for k = 1:p
+            Ur = Ur + right(k)*(-h(i+1)/2)^(k-1);
+        end
+        for k = 1:p
+            Ul = Ul + left(k)*(h(i)/2)^(k-1);
+        end
+        Fr = -Ur^2/2;
+        Fl = -Ul^2/2;
+        F = Fl;%0.5*(Fr+Fl)
+        
+        return;
+
+    else
+        Fl = 0;
+        Fr = 0;
+        
+        for k = 1:pr
+            Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+        end
+        for k = 1:pl
+            Fl = Fl + left(k)*(h(i)/2)^(k-1);
+        end
+        F =0.5*(Fr+Fl);%+abs(ddot)*(Ul-Ur);
+     
+        return;
+    
+    end
+    
+ 
+end
 
 
 function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )

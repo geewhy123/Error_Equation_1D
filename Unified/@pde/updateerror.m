@@ -25,6 +25,9 @@ uR = obj.bcRightVal;
        case 2
 %            [uu,d] = rk2(u,x,f,k,h,N,p,t,phys);
            [uu,d] = rk2('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+       case 3
+         [uu,d] = rk3('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+%              [uu,d] = rk4('error',u,x,f,k,h,N,p,phys,time,Rsp,'D',1,'D',1,obj);
        case 4
           
 %            [uu,d] = rk4(u,x,f,k,h,N,p,t,phys);
