@@ -44,6 +44,8 @@ hold on
 ye = 1-tanh(xx/2);
 
 ye = sin(pi*xx);
+
+ye = (1/(2*pi*2))*sin(pi*xx);
 %  ye = (xx-0.5).^4;
 err = max(err,max(abs(yy-ye)));
 % plot(xx,ye)

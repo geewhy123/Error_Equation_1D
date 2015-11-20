@@ -319,7 +319,7 @@ end
 function  burgersinitialize(obj )
 %BURGERSINITIALIZE Summary of this function goes here
 %   Detailed explanation goes here
-a = 0.5;
+a = 0.0;
 % for k = 1:30
 % tlim = tlim+0.01;
     
@@ -336,35 +336,70 @@ f = zeros(N+2,1);
   for i = 2:N+1
            xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
-   c1 = 0.3478548451;
-c2 = 0.6521451549;
-c3 = 0.6521451549;
-c4 = 0.3478548451;
-x1= 0.8611363116;
-x2 = 0.339981436;
-x3 = -0.339981436;
-x4= -0.8611363116;
-
- xx1 = ((xr-xl)/2)*x1+(xr+xl)/2;
- xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
- xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
- xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
-
-
-F = @(s) s+tlim*(sin(2*pi*s)/(2*pi)+a)-xx1;
-xxx1=fzero(F,0);
-F = @(s) s+tlim*(sin(2*pi*s)/(2*pi)+a)-xx2;
-xxx2=fzero(F,0);
-F = @(s) s+tlim*(sin(2*pi*s)/(2*pi)+a)-xx3;
-xxx3=fzero(F,0);
-F = @(s) s+tlim*(sin(2*pi*s)/(2*pi)+a)-xx4;
-xxx4=fzero(F,0);
+%    c1 = 0.3478548451;
+% c2 = 0.6521451549;
+% c3 = 0.6521451549;
+% c4 = 0.3478548451;
+% x1= 0.8611363116;
+% x2 = 0.339981436;
+% x3 = -0.339981436;
+% x4= -0.8611363116;
+% 
+%  xx1 = ((xr-xl)/2)*x1+(xr+xl)/2;
+%  xx2 = ((xr-xl)/2)*x2+(xr+xl)/2;
+%  xx3 = ((xr-xl)/2)*x3+(xr+xl)/2;
+%  xx4 = ((xr-xl)/2)*x4+(xr+xl)/2;
 
 
-ue(i) = a+ (1/(2*pi))* (1/h(i))*((xr-xl)/2)*(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
+%  cc = [0.3478548451;
+%  0.6521451549;
+%  0.6521451549;
+%  0.3478548451];
+% yy = [ 0.8611363116;
+%  0.339981436;
+%  -0.339981436;
+%  -0.8611363116];
+cc = [0.1713244924
+    0.3607615730
+    0.4679139346
+    0.4679139346
+    0.3607615730
+    0.1713244924
+    ];
+yy = [0.9324695142
+    0.6612093865
+    0.2386191861
+    -0.2386191861
+    -0.6612093865
+    -0.9324695142
+    ];
+
+xx = ((xr-xl)/2)*yy+(xr+xl)/2;
+
+
+
+ts = 4;%/(2*pi);
+A = (1/(2*pi*ts));
+
+for j = 1:length(xx);
+% F = @(s) s+tlim*(sin(2*pi*s)*A)-xx1;
+% xxx1=fzero(F,0);
+% F = @(s) s+tlim*(sin(2*pi*s)*A)-xx2;
+% xxx2=fzero(F,0);
+% F = @(s) s+tlim*(sin(2*pi*s)*A)-xx3;
+% xxx3=fzero(F,0);
+% F = @(s) s+tlim*(sin(2*pi*s)*A)-xx4;
+% xxx4=fzero(F,0);
+F = @(s) s+tlim*(sin(2*pi*s)*A)-xx(j);
+xxx(j)=fzero(F,0);
+end
+
+% ue(i) = a+ (1/(2*pi))* (1/h(i))*((xr-xl)/2)*(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
+ue(i) = A* (1/h(i))*((xr-xl)/2)*dot(cc,sin(2*pi*xxx));%(c1*sin(2*pi*xxx1)+c2*sin(2*pi*xxx2)+c3*sin(2*pi*xxx3)+c4*sin(2*pi*xxx4));
 % ue(i) = (1/(2*pi))* (1/h(i))*((xr-xl)/2)*(c1*(sin(2*pi*xxx1)+4*pi*h(i))+c2*(sin(2*pi*xxx2)+4*pi*h(i))+c3*(sin(2*pi*xxx3)+4*pi*h(i))+c4*(sin(2*pi*xxx4)+4*pi*h(i)));
 
-u0(i) = a+(1/(2*pi))* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+% u0(i) = a+(1/(2*pi))* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+u0(i) = A* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 
 f(i) = 0;

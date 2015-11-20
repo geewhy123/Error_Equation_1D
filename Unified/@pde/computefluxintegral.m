@@ -4,7 +4,10 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
         N = obj.nCells;
         F = zeros(N+2,1);
         FI = zeros(N+2,1);
-        
+%        [err]= obj.reconplot(Z,'solution');
+%         obj.curTime
+% err
+%         error('1')
         if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
             f = obj.source;
 %             if(strcmp(obj.goal,'TimeAccurate')==1)
@@ -46,10 +49,12 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
                     elseif(strcmp(obj.physics,'BurgersVisc')==1)
                         F(i) = computeburgersviscflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
                     elseif(strcmp(obj.physics,'LinearSystem')==1)
-%                         F(i) = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
-        [ff] = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
-               F1(i) = ff(1);
-               F2(i) = ff(2);
+                        %                         F(i) = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+                        [ff] = computelinearsystemflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
+                        F1(i) = ff(1);
+                        F2(i) = ff(2);
+                    elseif(strcmp(obj.physics,'Burgers')==1)
+                        F(i) = computeburgersflux(obj,Z(:,N+1),Z(:,i+1),eqn,i);
                     end
                 end
             elseif(i==N+1)
@@ -68,7 +73,8 @@ function [ FI ] = computefluxintegral( obj,Z,eqn )
                 end
             end
         end
-    
+%     F
+%     error('1')
         if(strcmp(eqn,'error')==1)
 %              FI
 %              if(isnan(FI(2)))
@@ -365,7 +371,13 @@ function [ F ] = computeadvectionflux( obj,left,right,eqn,i  )
             jump = (.0/((h(i+1)+h(i))/2))*(ul1-ul2) ;
             F = F+jump;
         end
-        
+%           if(i==5)
+%             [left right]
+%         [i Ul Ur]
+%         error('1')
+%         end
+% [i Fl Fr]
+% error('1')
         return;
 
     else
@@ -439,8 +451,13 @@ function [ F ] = computeburgersflux( obj,left,right,eqn,i  )
         end
         Fr = -Ur^2/2;
         Fl = -Ul^2/2;
-        F = Fl;%0.5*(Fr+Fl)
-        
+        dDot = (Ul+Ur)/2;
+        F = 0.5*(Fr+Fl)-0.5*abs(dDot)*(Ul-Ur);
+%         if(i==5)
+%             [left right]
+%         [i Ul Ur]
+%         error('1')
+%         end
         return;
 
     else
@@ -453,7 +470,7 @@ function [ F ] = computeburgersflux( obj,left,right,eqn,i  )
         for k = 1:pl
             Fl = Fl + left(k)*(h(i)/2)^(k-1);
         end
-        F =0.5*(Fr+Fl);%+abs(ddot)*(Ul-Ur);
+        F =Fl;%0.5*(Fr+Fl);%+abs(ddot)*(Ul-Ur);
      
         return;
     
