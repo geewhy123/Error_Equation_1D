@@ -679,7 +679,7 @@ save('t','exacterr','ee','x')
 
 ee;
 else 
-    errerr2 = NaN;
+    errerr2 = cverr2;
     ee = NaN;
     exacterr = NaN;
 end
