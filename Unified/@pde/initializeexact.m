@@ -119,8 +119,14 @@ end
 
  %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
  if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-%  ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl))+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+if(strcmp(obj.goal,'TimeAccurate')==1)
+ ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl)));%+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));    
+ f(i) = 0;
+end
+
+
  elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
  ue(i) = (1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl)));
 %  ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
@@ -144,9 +150,15 @@ end
  %initial
 % % %  u0(i) = (1/h(i))*((-1/(2*pi))*(100*(cos(2*pi*xr)-cos(2*pi*xl))) +(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
  u0(i)=0;
+ 
+ if(strcmp(obj.goal,'TimeAccurate')==1)
+ u0(i)=  (1/h(i))*(-100/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+end
 % u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
     
-    end
+  end
+%     plot(x,u0,x,ue)
+%     error('1')
 f(1) = NaN;
 f(N+2) = NaN;
  ue(1) = NaN;
@@ -399,7 +411,7 @@ ue(i) = A* (1/h(i))*((xr-xl)/2)*dot(cc,sin(2*pi*xxx));%(c1*sin(2*pi*xxx1)+c2*sin
 % ue(i) = (1/(2*pi))* (1/h(i))*((xr-xl)/2)*(c1*(sin(2*pi*xxx1)+4*pi*h(i))+c2*(sin(2*pi*xxx2)+4*pi*h(i))+c3*(sin(2*pi*xxx3)+4*pi*h(i))+c4*(sin(2*pi*xxx4)+4*pi*h(i)));
 
 % u0(i) = a+(1/(2*pi))* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
-u0(i) = A* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+u0(i) = -A* (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 
 
 f(i) = 0;
@@ -446,7 +458,51 @@ f(i) = 0;
 
 %new
 
+ur = 0;
+ul = 0;
+
+  if(tlim < 1e-12)
+     ur  = cos(2*pi*xr);
+     ul = cos(2*pi*xl);
+     ue(i) = (1/h(i))*(1/(2*pi))*(ur-ul);
+  else
+  for n = 1:100
+     ur = ur +besselj(n,n*tlim)*-cos(n*2*pi*xr)/(n*tlim*n);
+     ul = ul +besselj(n,n*tlim)*-cos(n*2*pi*xl)/(n*tlim*n);
   end
+  
+  ue(i) = (-2/(2*pi))*(1/h(i))*(1/(2*pi))*(ur-ul);
+  end
+  
+u0(i) = (1/(2*pi))*(1/h(i))*(1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+
+
+
+  end
+
+% ue
+% 
+% %   
+%     x = linspace(0,1,N+2)';
+% 
+%   u = 0*x;
+% 
+%   if(tlim < 1e-12)
+%      u  = -sin(x);
+%   else
+%   for n = 1:100
+%      u = u+besselj(n,n*tlim)*sin(n*2*pi*x)/(n*tlim);
+%   end
+%   u = -2*u/(2*pi);
+%   end
+  
+%   
+
+%   ue =u ;
+%   u0 = -sin(2*pi*x)/(2*pi);
+% u
+% error('1')
+  
   
 %   
 % plot(x,u0,'*-',x,ue,'+-')

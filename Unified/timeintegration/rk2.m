@@ -31,6 +31,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
             obj.curTime = obj.curTime + (steps-1)*k/length(c);
             
         phi(:,steps) = obj.computefluxintegral(Z,eqn);
+      
      
 
     elseif(strcmp(eqn,'error')==1)
@@ -47,7 +48,8 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 end
 % phi
 % error('1')
-
+% unew
+% error('2')
     uu = unew;
 uu(N+2) = NaN;
 

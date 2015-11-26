@@ -23,7 +23,7 @@ uR = obj.bcRightVal;
            [uu,d]= rk1('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
        case 2
            %            [uu,d] = rk2(u,x,f,k,h,N,p,t,phys);
-           [uu,d] = rk2('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+           [uu,d] = irk2('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
         
        case 3
            [uu,d] = rk3('solution',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);

@@ -453,11 +453,7 @@ function [ F ] = computeburgersflux( obj,left,right,eqn,i  )
         Fl = -Ul^2/2;
         dDot = (Ul+Ur)/2;
         F = 0.5*(Fr+Fl)-0.5*abs(dDot)*(Ul-Ur);
-%         if(i==5)
-%             [left right]
-%         [i Ul Ur]
-%         error('1')
-%         end
+
         return;
 
     else

@@ -41,14 +41,18 @@ end
 
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
-    k = k*h0;
+%     k = k*h0;
+k = k/4;
+    
 %     if (N>10)
 %     k=4*k;
 %     elseif (N>20)
 %     k = 8*k;
 %     end
 % if(strcmp(goal,'SS')==1)
-    k = 2*k;
+
+%     k = 2*k;
+
 if( tlim > 2)
      k = 1.5*k;
 end
@@ -355,13 +359,13 @@ for j = 1:100000
     %     end
 end
 fprintf('CFL = %e\n',CFL)
-% fprintf('k = %e\n',k)
+fprintf('k = %e\n',k)
 fprintf('T_end = %e\n',tt)
 % nSteps
 % U(:,end-2:end)
 % pause
 u;
-
+[size(ue) size(u)]
 cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;
 cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
 cverrinf=max(abs(ue-u));
@@ -566,8 +570,8 @@ figure(2);clf;
 plt2 = plot(x,u0,'*');
 hold on
 grid on
-axis([0 1 -max(abs(ue-u)) max(abs(ue-u))])
-
+% axis([0 1 -max(abs(ue-u)) max(abs(ue-u))])
+axis([0 1 -1 1])
 % size(R)
 % R(:,end-2:end)
 % 
