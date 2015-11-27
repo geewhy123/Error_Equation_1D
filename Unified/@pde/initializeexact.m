@@ -55,7 +55,8 @@ s= 0;
     %%%%%f(i) = (1/h(i))*(-2*pi)*(sin(2*pi*xr)-sin(2*pi*xl));
     %f(i) =     (1/h(i))*((-4*pi^2-)/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
 
-if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+if(obj.bcLeftType == 'P' && obj.bcRightType == 'P' || strcmp(obj.goal,'SS')~=1)
+   
 %      f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
      f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
 %      z(i) = randn();
@@ -118,7 +119,7 @@ end
 
 
  %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
- if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
+ if(obj.bcLeftType == 'P' && obj.bcRightType == 'P'|| strcmp(obj.goal,'SS')~=1)
 
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 if(strcmp(obj.goal,'TimeAccurate')==1)

@@ -41,8 +41,12 @@ end
 
 
 if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
-%     k = k*h0;
-k = k/4;
+    
+    if(strncmp(tord,'i',1)==1)
+    k = k/4;
+    else
+        k = k*h0;
+    end
     
 %     if (N>10)
 %     k=4*k;
@@ -299,6 +303,7 @@ for j = 1:100000
     
     if(tt+k > tlim)
         klast = tlim-tt;
+        [tt k klast]
         if(klast < 1e-10)
             nSteps = j-1;
              T = (1:1:j-1)*k;
@@ -611,7 +616,9 @@ E(:,j) = e;
 % % 
   if(TT+k > tlim)
 %       TT=TT-k;
+[TT k tlim-TT]
         k = tlim-TT;
+        
         problem.tStep = k;
         problem.curTime = problem.curTime + k;
 %             TT = TT +k;
@@ -681,6 +688,7 @@ ylabel('\epsilon - \epsilon_h')
 
 save('t','exacterr','ee','x')
 
+j
 ee;
 else 
     errerr2 = cverr2;

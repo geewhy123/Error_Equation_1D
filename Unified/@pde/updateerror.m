@@ -20,27 +20,37 @@ uL = obj.bcLeftVal;
 BCRight = obj.bcRightType;
 uR = obj.bcRightVal;
    switch t
-       case 1
+       case 'rk1'
        [uu,d] = rk1('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
-       case 2
+       case 'rk2'
 %            [uu,d] = rk2(u,x,f,k,h,N,p,t,phys);
            [uu,d] = rk2('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
-       case 3
+       case 'rk3'
          [uu,d] = rk3('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
 %              [uu,d] = rk4('error',u,x,f,k,h,N,p,phys,time,Rsp,'D',1,'D',1,obj);
-       case 4
+       case 'rk4'
           
 %            [uu,d] = rk4(u,x,f,k,h,N,p,t,phys);
  [uu,d] = rk4('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
 %              [uu,d] = rk4('error',u,x,f,k,h,N,p,phys,time,Rsp,'D',1,'D',1,obj);
-       case 5
+       case 'rk5'
            [uu,d] = rk5(u,x,f,k,h,N,p,t,phys);
            
-       case 7
+       case 'rk7'
            
 %          [uu,d] = rk7('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
            [uu,d] = rk7('error',u,x,f,k,h,N,p,phys,time,Rsp,'D',1,'D',1,obj);
+          
+                      case 'irk1'
+           [uu,d] = irk1('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+           
+           case 'irk2'
+           [uu,d] = irk2('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+             case 'irk4'
+           [uu,d] = irk4('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+           
        otherwise
+           error('1')
    end
       
 
