@@ -206,6 +206,13 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         ubi = u(i);
         uL = obj.bcLeftVal;
 
+        
+        if(isstr(obj.bcLeftVal))
+        t = obj.curTime;
+        uL = eval(obj.bcLeftVal)
+        end
+
+        
         A = AA(:,:,i);
         xbi = obj.moments(i,2);
 
@@ -288,6 +295,13 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         ub4 = u(cv4);
         ubi = u(i);
         uL = obj.bcRightVal;
+
+        if(isstr(obj.bcRightVal))
+        t = obj.curTime;
+        uL = eval(obj.bcRightVal)
+        end
+
+        
         if(p>2)
             b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
             b = (b-[(A(1,1)/(xbi-(h(i)/2)))*(u(i)-uL) ; 
@@ -507,9 +521,14 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         ub4 = u(cv4);
         ubi = u(i);
 
-        obj.curTime;
+%         obj.curTime;
         uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
-        obj.bcRightVal = uL;
+          if(isstr(obj.bcRightVal))
+        t = obj.curTime;
+        uL = eval(obj.bcRightVal)
+        end
+        
+%         obj.bcRightVal = uL;
 
         if(p>2)
             b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi) ];
@@ -745,6 +764,12 @@ function [Z] = unstructuredreconlong(obj,u ,p,eqn)
         ubi = u(i);
         uL = obj.bcLeftVal;
 
+        if(isstr(obj.bcLeftVal))
+        t = obj.curTime;
+        uL = eval(obj.bcLeftVal)
+        end
+
+        
         A = AA(:,:,i);
         xbi = obj.moments(i,2);
 
@@ -807,6 +832,12 @@ function [Z] = unstructuredreconlong(obj,u ,p,eqn)
         ubi = u(i);
         uL = obj.bcRightVal;
 
+        if(isstr(obj.bcRightVal))
+        t = obj.curTime;
+        uL = eval(obj.bcRightVal)
+        end
+
+        
         if(p>2)
             b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi);wi5*(ub5-ubi);wi6*(ub6-ubi) ];
             b = (b-[(A(1,1)/(xbi-(h(i)/2)))*(u(i)-uL) ; 
@@ -961,8 +992,8 @@ function [Z] = unstructuredreconlong(obj,u ,p,eqn)
         ub6 = u(cv6);
         ubi = u(i);
 
-        uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
-        obj.bcRightVal = uL;
+%         uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
+%         obj.bcRightVal = uL;
 
         if(p>2)
             b = [wi1*(ub1-ubi); wi2*(ub2-ubi); wi3*(ub3-ubi); wi4*(ub4-ubi);wi5*(ub5-ubi);wi6*(ub6-ubi) ];

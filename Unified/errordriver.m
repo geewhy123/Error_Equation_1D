@@ -159,7 +159,6 @@ u=u0;
 
 
 
-
 %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
  if(strcmp(goal,'SS')==1 )
     fprintf('Implicit solve using Jacobian \n');

@@ -52,7 +52,7 @@ f = zeros(2*N+2,1);
 f(2) = 1;
 y = f;
 J = zeros(2*N+2,2*N+2);
-while(max(abs(f)) > 1e-9)
+while(max(abs(f)) > 3e-9)
 %     max(abs(f))
 
 

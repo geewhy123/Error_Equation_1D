@@ -16,6 +16,12 @@ assert(abs(errerr2-2.472279e-02)/errerr2 < 0.001)
 er = errordriver(20,2,4,4,1/3,'P',0,'P',0,1,'rk7','Advection','TimeAccurate')/errordriver(40,2,4,4,1/3,'P',0,'P',0,1,'rk7','Advection','TimeAccurate');
 assert(log(er)/log(2) > 3.7)
 
+er = errordriver(20,2,4,4,0,'P',0,'P',0,0.1,'irk4','Poisson','TimeAccurate');
+assert(abs(er-0.004014597588612)<1e-3)
+
+er = errordriver(20,2,4,4,0,'D',0,'D',0,0.1,'irk4','Poisson','TimeAccurate');
+assert(abs(er-6.812438e-03)<1e-3)
+
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'D',tanh(0),'D',-2*tanh(1),10,'rk7','BurgersVisc','SS');
 assert(abs( errerr2-1.636222437037368e-04)/errerr2 < 0.001)
 
