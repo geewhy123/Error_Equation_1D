@@ -43,7 +43,6 @@ while(max(abs(f)) > 1e-11)
     u(2:N+1) = u(2:N+1)-J(2:N+1,2:N+1)\f(2:N+1);
 end
 
-
 uu = u;
 uu(N+2) = NaN;
 

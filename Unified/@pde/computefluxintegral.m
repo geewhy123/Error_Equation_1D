@@ -119,32 +119,32 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
 % Z=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 
 
-    if(~isempty(obj.refinecells))
-        if(i==1)
-            p = obj.hOrder;
-        elseif(i==N+1)
-            p = obj.hOrder;
-        else
-            n = length(obj.refinecells);
-            if(i < obj.refinecells(n/2)) 
-                pl = obj.hOrder;
-                pr = obj.hOrder;
-            elseif(i==obj.refinecells(n/2))
-                pl = obj.hOrder;
-                pr = obj.pOrder;
-            elseif(i== obj.refinecells(n/2+1)-1)
-                pl = obj.pOrder;
-                pr = obj.hOrder;
-            elseif(i> obj.refinecells(n/2+1)-1)
-                pl = obj.hOrder;
-                pr = obj.hOrder;
-            else
-                pl = obj.pOrder;
-                pr = obj.pOrder;
-            end
-            
-        end
-    else
+% %     if(~isempty(obj.refinecells))
+% %         if(i==1)
+% %             p = obj.hOrder;
+% %         elseif(i==N+1)
+% %             p = obj.hOrder;
+% %         else
+% %             n = length(obj.refinecells);
+% %             if(i < obj.refinecells(n/2)) 
+% %                 pl = obj.hOrder;
+% %                 pr = obj.hOrder;
+% %             elseif(i==obj.refinecells(n/2))
+% %                 pl = obj.hOrder;
+% %                 pr = obj.pOrder;
+% %             elseif(i== obj.refinecells(n/2+1)-1)
+% %                 pl = obj.pOrder;
+% %                 pr = obj.hOrder;
+% %             elseif(i> obj.refinecells(n/2+1)-1)
+% %                 pl = obj.hOrder;
+% %                 pr = obj.hOrder;
+% %             else
+% %                 pl = obj.pOrder;
+% %                 pr = obj.pOrder;
+% %             end
+% %             
+% %         end
+% %     else
     %     if(strcmp(eqn,'solution')==1)
     %     p = obj.pOrder;
         pr = p;%obj.pOrder;
@@ -152,7 +152,7 @@ function [ F ] = computepoissonflux( obj,left,right,eqn,i )
     %     elseif(strcmp(eqn,'residual')==1)
     %     elseif(strcmp(eqn,'error')==1)
     %     end
-    end       
+% %     end       
  
 
     if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')

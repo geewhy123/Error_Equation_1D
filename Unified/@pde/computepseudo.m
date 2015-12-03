@@ -6,7 +6,8 @@ function  [AD,AA] = computepseudo(obj,p)
     wt = obj.weight;
 
     if(p < 6)
-        m = obj.stencilSize;
+%         m = obj.stencilSize;
+ m = min(obj.stencilSize,5);
     % p = obj.pOrder;
         AD = zeros(p-1,m-1,N+2);
         AA = zeros(m-1,p-1,N+2);

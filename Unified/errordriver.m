@@ -17,6 +17,7 @@ end
 
 close all
 
+
 if(p>0)
 
     
@@ -138,6 +139,10 @@ end
 
 
 
+
+
+
+
 problem.initializeexact();
 
  
@@ -156,6 +161,32 @@ problem.computemoments();
 u=u0;
 %uu = zeros(N+2,1);
 
+
+
+
+
+%%%%
+% error('2')
+switch physics
+    case {'Poisson', 'Advection'}
+        problem.linearPhysics = true;
+    case {'Burgers','BurgersVisc','EulerQ'}
+        problem.linearPhysics = false;
+    otherwise
+        error('1')
+        
+end
+
+if(problem.linearPhysics)
+      problem.computeprimalpseudo();
+%       problem.jacobian = zeros(N+2,N+2);
+  problem.primalJacobian = problem.computefluxjacobian(ue,'solution');
+end
+
+
+
+
+%%%%
 
 
 
@@ -512,7 +543,7 @@ max(abs(R(:,end)));
 T=(0:1:nSteps)*k;
 
 for j = 2:N+1
-sp = spapi(6,T,R(j,:));
+sp = spapi(2,T,R(j,:));
 Rsp(j) = sp;
 end
 
@@ -532,6 +563,11 @@ problem.computeerrorpseudo();
 
 Zu = problem.unstructuredrecon(problem.convSoln,problem.qOrder,'error');
         problem.convSolnRecon = Zu;
+        
+        
+   
+        
+        
 % Zu
 % error('1')
 %new
@@ -562,6 +598,19 @@ if( problem.bcLeftType == 'D' && problem.bcRightType == 'D')
 problem.bcLeftVal = 0;
 problem.bcRightVal = 0;
 end
+
+
+     %
+        
+     if(problem.linearPhysics)
+         timesbet = 0;
+         for kk = 2:N+1
+             val(kk,1:length(timesbet)) = fnval(timesbet,problem.Rsp(kk));
+         end
+         problem.errorSource = -1*val(:,1);
+         problem.errorJacobian = problem.computefluxjacobian(e,'error');
+     end
+        %
 
 
 T = 1;
@@ -616,10 +665,21 @@ E(:,j) = e;
   if(TT+k > tlim)
 %       TT=TT-k;
 [TT k tlim-TT]
-        k = tlim-TT;
+tlim-TT
+        klast = tlim-TT;
         
-        problem.tStep = k;
-        problem.curTime = problem.curTime + k;
+        if(klast < 1e-10)
+            
+            nSteps = j-1;
+             T = (1:1:j-1)*k;
+        T(end+1) = T(end)+klast;
+
+        E(:,nSteps+1,1:problem.nUnk) = e;
+           break 
+         end
+        
+        problem.tStep = klast;
+        problem.curTime = problem.curTime + klast;
 %             TT = TT +k;
        [ee,s] = problem.updateerror(e,TT,j);
            

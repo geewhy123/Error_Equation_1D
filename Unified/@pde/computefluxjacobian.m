@@ -2,6 +2,26 @@ function [ J ] = computefluxjacobian( obj,u,eqn)
 %COMPUTEFLUXJACOBIAN Summary of this function goes here
 %   Detailed explanation goes here
 
+% if(exist(obj.jacobian))
+    
+% end
+if(strcmp(eqn,'solution')==1)
+    
+if(~isempty(obj.primalJacobian) && obj.linearPhysics)
+   J = obj.primalJacobian;
+   return; 
+end
+
+elseif(strcmp(eqn,'error')==1)
+    if(~isempty(obj.errorJacobian) && obj.linearPhysics)
+   J = obj.errorJacobian;
+   return; 
+end
+
+end
+
+
+
 if(strcmp(eqn,'solution')==1)
     order = obj.pOrder;
 elseif(strcmp(eqn,'error')==1)

@@ -46,6 +46,8 @@ uR = obj.bcRightVal;
            
            case 'irk2'
            [uu,d] = irk2('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
+            case 'irk3'
+           [uu,d] = irk3('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
              case 'irk4'
            [uu,d] = irk4('error',u,x,f,k,h,N,p,phys,time,Rsp,BCLeft,uL,BCRight,uR,obj);
            

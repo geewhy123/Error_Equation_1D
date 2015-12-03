@@ -46,6 +46,10 @@ higherprimalPI;
         nUnk;
         NLError;
         exactNoisySolution;
+        
+        linearPhysics;
+        primalJacobian;
+        errorJacobian;
     end
     
     methods

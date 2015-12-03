@@ -402,7 +402,9 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
             if(obj.stencilSize == 3)
                 b = [wi1*(ub1-ubi); wi2*(ub2-ubi); ];
             end
-
+% size(AD(:,:,i))
+% size(b)
+% error('1')
             Y(2:p) = AD(:,:,i)*b;
 
             Y(1) = ubi;%-xbi*y(2);%ubi-xbi*y(2)

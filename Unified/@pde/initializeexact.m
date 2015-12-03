@@ -124,6 +124,7 @@ end
 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
 if(strcmp(obj.goal,'TimeAccurate')==1)
  ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl)));%+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));    
+%   ue(i)= (1/h(i))*((-1/(pi))*(100*exp(-pi^2*tlim))*(cos(pi*xr)-cos(pi*xl)));
  f(i) = 0;
 end
 
@@ -137,6 +138,7 @@ end
 %  ue(i) = (1/h(i))*(xr-2*log(cosh((xr)/2))-xl+2*log(cosh((xl)/2)));
 % ue(i) = (1/h(i))*((1/pi))*(-cos(pi*(xr+0.2))+cos(pi*(xl+0.2)));
 ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+
 
 ne(i) =  (1/h(i))*z(i)*1e1*(xr^3/6-xl^3/6);
 
@@ -154,6 +156,7 @@ end
  
  if(strcmp(obj.goal,'TimeAccurate')==1)
  u0(i)=  (1/h(i))*(-100/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+%   u0(i)=  (1/h(i))*(-100/(pi))*(cos(pi*xr)-cos(pi*xl));
 end
 % u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
     
