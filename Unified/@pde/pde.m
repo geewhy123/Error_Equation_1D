@@ -50,6 +50,8 @@ higherprimalPI;
         linearPhysics;
         primalJacobian;
         errorJacobian;
+        Usp;
+        Rall;
     end
     
     methods

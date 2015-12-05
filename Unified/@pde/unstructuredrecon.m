@@ -209,7 +209,7 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         
         if(isstr(obj.bcLeftVal))
         t = obj.curTime;
-        uL = eval(obj.bcLeftVal)
+        uL = eval(obj.bcLeftVal);
         end
 
         
@@ -298,7 +298,7 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
 
         if(isstr(obj.bcRightVal))
         t = obj.curTime;
-        uL = eval(obj.bcRightVal)
+        uL = eval(obj.bcRightVal);
         end
 
         
@@ -527,7 +527,7 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         uL = obj.bcRightVal;%sin(pi*obj.curTime);%obj.bcRightVal;%-1/exp(obj.step*obj.tStep)
           if(isstr(obj.bcRightVal))
         t = obj.curTime;
-        uL = eval(obj.bcRightVal)
+        uL = eval(obj.bcRightVal);
         end
         
 %         obj.bcRightVal = uL;
@@ -768,7 +768,7 @@ function [Z] = unstructuredreconlong(obj,u ,p,eqn)
 
         if(isstr(obj.bcLeftVal))
         t = obj.curTime;
-        uL = eval(obj.bcLeftVal)
+        uL = eval(obj.bcLeftVal);
         end
 
         

@@ -324,6 +324,14 @@ u;
 T = 1;
 klast = k;
 tlim
+obj.curTime = 0;
+
+
+   Z = problem.unstructuredrecon(u,p,'solution');
+     f = problem.computefluxintegral(Z,'solution');
+    problem.Rall(:,1) = f;
+    
+    
 for j = 1:100000
     %     for m = 1:nUnk
     
@@ -344,8 +352,9 @@ for j = 1:100000
         tt = tt +klast;
         
         problem.tStep = klast;
-        problem.curTime = problem.curTime + klast;
+%         problem.curTime = problem.curTime + klast;
        [uu,d] = problem.updatesolution(u);
+         problem.curTime = problem.curTime + klast;
         u = uu;
         nSteps = j;
         T = (1:1:j-1)*k;
@@ -372,6 +381,7 @@ for j = 1:100000
     
     
     % problem.curTime = j*k;
+    
     [uu,d] = problem.updatesolution(u);
     problem.curTime = j*k;
     
@@ -393,6 +403,10 @@ for j = 1:100000
     
     %     end
 end
+problem.Rall
+% U
+% error('1')
+% U
 fprintf('CFL = %e\n',CFL)
 fprintf('k = %e\n',k)
 fprintf('T_end = %e\n',tt)
@@ -481,6 +495,9 @@ R = zeros(N+2,nSteps+1);
  tt=0;
 
  
+% dUdt = dUdt*0;
+
+
 for j = 1:nSteps+1
     
 
@@ -512,6 +529,9 @@ problem.residual = R;
 % error('1')
 
 
+% R
+% error('1')
+
 plot(x,R(:,end))
 max(abs(R(:,end)));
 
@@ -541,12 +561,20 @@ max(abs(R(:,end)));
 
 
 T=(0:1:nSteps)*k;
-
 for j = 2:N+1
-sp = spapi(2,T,R(j,:));
+sp = spapi(6,T,R(j,:));
 Rsp(j) = sp;
+% spu = spapi(2,T,U(j,:));
+spu = spapi(optknt(T,6),T,U(j,:));
+Usp(j) = spu;
+% Rsp(j) = pchip(T,R(j,:));
 end
-
+% figure
+% fnplt(Usp(2))
+% % U
+% % sum(U(2:N+1,:))
+% error('1')
+problem.Usp = Usp;
 
 e = zeros(N+2,1);
 ee =zeros(N+2,1);
@@ -632,6 +660,8 @@ axis([0 1 -1 1])
 % k
 % nSteps
 % tlim
+
+problem.curTime = 0;
 for j = 1:nSteps+1
 
 
@@ -713,6 +743,9 @@ end
      set(plt2,'ydata',e)
      drawnow
     
+     
+      problem.curTime = j*k;
+     
 end
 
 % E(:,end-2:end)
