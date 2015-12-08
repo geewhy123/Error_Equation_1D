@@ -31,11 +31,12 @@ if(p>0)
 w = 0;
 h0 = 1/N;
 
-CFL = 0.5;
+CFL = 0.4;
 k = CFL*h0;
 Q = tlim/(h0*CFL);
 if(abs(round(Q)-Q) > 1e-10)
    fprintf('not an integer number of steps, need to fix residual evaluation\n')
+   error('1')
 end
     
     
@@ -324,12 +325,13 @@ u;
 T = 1;
 klast = k;
 tlim
-obj.curTime = 0;
+problem.curTime = 0;
 
 
    Z = problem.unstructuredrecon(u,p,'solution');
      f = problem.computefluxintegral(Z,'solution');
     problem.Rall(:,1) = f;
+    problem.Uall(:,1) = u;
     
     
 for j = 1:100000
@@ -403,7 +405,8 @@ for j = 1:100000
     
     %     end
 end
-problem.Rall
+% problem.Rall
+problem.Uall
 % U
 % error('1')
 % U
@@ -528,7 +531,7 @@ problem.residual = R;
 % R
 % error('1')
 
-
+U
 % R
 % error('1')
 
@@ -562,10 +565,11 @@ max(abs(R(:,end)));
 
 T=(0:1:nSteps)*k;
 for j = 2:N+1
-sp = spapi(6,T,R(j,:));
+sp = spapi(2,T,R(j,:));
 Rsp(j) = sp;
 % spu = spapi(2,T,U(j,:));
-spu = spapi(optknt(T,6),T,U(j,:));
+% spu = spapi(optknt(T,6),T,U(j,:));
+spu = pchip(T,U(j,:));
 Usp(j) = spu;
 % Rsp(j) = pchip(T,R(j,:));
 end

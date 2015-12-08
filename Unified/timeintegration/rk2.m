@@ -15,7 +15,20 @@ if (strcmp(eqn,'error')==1)
     
     for kk = 2:N+1
         val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
+        
+%          uval(kk,1:length(timesbet)) = fnval(timesbet,obj.Usp(kk)); 
+%         utval(kk,1:length(timesbet)) = fnval(fnder(obj.Usp(kk)),timesbet); 
     end
+    
+    
+%     Z1 = obj.unstructuredrecon(uval(:,1),obj.rOrder,'residual');
+%     r = obj.computefluxintegral(Z1,'residual');
+%     Z2 = obj.unstructuredrecon(uval(:,2),obj.rOrder,'residual');
+%     r(:,2) = obj.computefluxintegral(Z2,'residual');
+%     utval(N+2,:) = NaN;
+%  val(:,1:length(timesbet)) = -(utval-r);
+%     
+    
 end
 uu = zeros(N+2,1);
 Z = obj.unstructuredrecon(u,p,eqn);
@@ -28,7 +41,7 @@ A = [1/2 0; 0 1];
 for steps = 1:length(c)
 Z = obj.unstructuredrecon(unew,p,eqn);
     if(strcmp(eqn,'solution')==1)
-            obj.curTime = obj.curTime + (steps-1)*k/length(c);
+%             obj.curTime = obj.curTime + (steps-1)*k/length(c);
             
         phi(:,steps) = obj.computefluxintegral(Z,eqn);
       
@@ -44,7 +57,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
     end
     unew = u+phi*A(steps,:)'*k;
    
-   
+   U(:,steps) = unew;
 end
 % phi
 % error('1')
@@ -55,5 +68,14 @@ uu(N+2) = NaN;
 
  d = max(d,abs((uu-u))/k); 
 
+ 
+ if(strcmp(eqn,'solution')==1)
+% [obj.curTime obj.tStep]
+i = round(obj.curTime/obj.tStep) +1;
+
+    obj.Uall(:,2*i) = U(:,1);
+    obj.Uall(:,2*i+1) = U(:,2);
+end
+ 
 end
 

@@ -52,6 +52,7 @@ higherprimalPI;
         errorJacobian;
         Usp;
         Rall;
+        Uall;
     end
     
     methods

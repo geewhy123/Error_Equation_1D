@@ -28,7 +28,7 @@ if (strcmp(eqn,'error')==1)
     r = obj.computefluxintegral(Z,'residual');
 utval(N+2) = NaN;
 
-% %     obj.errorSource = (utval-r);
+%     obj.errorSource = (utval-r);
 
 % 
 % i = round(obj.curTime/obj.tStep) +1
@@ -106,6 +106,11 @@ i = round(obj.curTime/obj.tStep) +1;
      Z = obj.unstructuredrecon(u,p,eqn);
      f = obj.computefluxintegral(Z,eqn);
     obj.Rall(:,2*i+1) = f;
+    
+       J = obj.computefluxjacobian(u,eqn);
+          obj.Uall(2:N+1,2*i) = J(2:N+1,2:N+1)\y(2:N+1);
+          obj.Uall(2:N+1,2*i+1) = J(2:N+1,2:N+1)\f(2:N+1);
+          assert(obj.linearPhysics);
 end
 end
 
