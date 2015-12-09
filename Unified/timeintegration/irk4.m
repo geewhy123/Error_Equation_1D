@@ -133,7 +133,7 @@ end
     
   
 %     error('1')
-    max(abs(f))
+    max(abs(f));
 end
  u(2:N+1) = u(2:N+1)+(k/2)*(y1(2:N+1)+y2(2:N+1));
 
