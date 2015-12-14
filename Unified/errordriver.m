@@ -158,6 +158,11 @@ if(p>0)
         %     [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
         if(strcmp(problem.physics,'EulerQ')~=1)
             [errerr2,x,cverr2,exacterr,ee,te  ]=problem.solvebyjacobianNL();
+            if(q==0 && r ==0)
+                errerr2 = cverr2;
+                ee = NaN;
+                exacterr = NaN;
+            end
             return;
         end
         

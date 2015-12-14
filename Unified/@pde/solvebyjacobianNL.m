@@ -567,15 +567,15 @@ stem(f,2*abs(Y(1:N/2+1))/N)
 
 % error('1')
 % upptilde
-  errerr2= NaN;
-    cverr2 = NaN;
-    exacterr = NaN;
-    ee = NaN;
-    
-    x10b = x;
-    h10b = h;
-    u10b = u;
-    tau10b = tau;
+% %   errerr2= NaN;
+% %     cverr2 = NaN;
+% %     exacterr = NaN;
+% %     ee = NaN;
+% %     
+% %     x10b = x;
+% %     h10b = h;
+% %     u10b = u;
+% %     tau10b = tau;
 %     save('te.mat','x10b','h10b','u10b','tau10b','-append')
 % 
 %     for j = 1:N+2
@@ -927,41 +927,41 @@ ecor = ue-(u+ee);
 
 % ee = ee- mean(ee(2:N+1))
 
-
-x = x(2:end-1);
-u = ee(2:end-1);
-L = length(x);
-NFFT = 2^nextpow2(L);
-Fs = 1*(length(x));
-Y = fft(u,NFFT)/L;
-f = Fs/2*linspace(0,1,NFFT/2+1);
-figure
-subplot(223)
-f = reshape(f,size(Y(1:NFFT/2+1)));
-stem(f,2*abs(Y(1:NFFT/2+1))) 
-M = max(abs(2*abs(Y(1:NFFT/2+1))));
-ylim([0 M])
-xlabel('fft of ee ')
-subplot(224)
-size(f);
-size(Y(1:NFFT/2+1));
-f = reshape(f,size(Y(1:NFFT/2+1)));
-stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
-MM = max(2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2);
-ylim([0 3*MM])
-xlabel('fft of ee * (2\pi f)^2')
-
-
-
-Y = fft(exacterr(2:end-1),NFFT)/L;
-subplot(221)
-stem(f,2*abs(Y(1:NFFT/2+1)))
-ylim([0 M])
-
-subplot(222)
-stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2)
-ylim([0 3*MM])
-% mean(ee(2:N+1))
+% % 
+% % x = x(2:end-1);
+% % u = ee(2:end-1);
+% % L = length(x);
+% % NFFT = 2^nextpow2(L);
+% % Fs = 1*(length(x));
+% % Y = fft(u,NFFT)/L;
+% % f = Fs/2*linspace(0,1,NFFT/2+1);
+% % figure
+% % subplot(223)
+% % f = reshape(f,size(Y(1:NFFT/2+1)));
+% % stem(f,2*abs(Y(1:NFFT/2+1))) 
+% % M = max(abs(2*abs(Y(1:NFFT/2+1))));
+% % ylim([0 M])
+% % xlabel('fft of ee ')
+% % subplot(224)
+% % size(f);
+% % size(Y(1:NFFT/2+1));
+% % f = reshape(f,size(Y(1:NFFT/2+1)));
+% % stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2) 
+% % MM = max(2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2);
+% % ylim([0 3*MM])
+% % xlabel('fft of ee * (2\pi f)^2')
+% % 
+% % 
+% % 
+% % Y = fft(exacterr(2:end-1),NFFT)/L;
+% % subplot(221)
+% % stem(f,2*abs(Y(1:NFFT/2+1)))
+% % ylim([0 M])
+% % 
+% % subplot(222)
+% % stem(f,2*abs(Y(1:NFFT/2+1)).*(2*pi*f).^2)
+% % ylim([0 3*MM])
+% % % mean(ee(2:N+1))
 
 
 
