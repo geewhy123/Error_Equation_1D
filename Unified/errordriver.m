@@ -544,6 +544,8 @@ if(q>0 && r > 0)
         problem.curTime = j*k;
         
     end   
+    E
+    error('1')
     exacterr = ue-u;
 
     exacterr = exacterr(2:N+1);
