@@ -163,6 +163,11 @@ steps = round(steps)
         %     [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
         if(strcmp(problem.physics,'EulerQ')~=1)
             [errerr2,x,cverr2,exacterr,ee,te  ]=problem.solvebyjacobianNL();
+            if(q==0 && r ==0)
+                errerr2 = cverr2;
+                ee = NaN;
+                exacterr = NaN;
+            end
             return;
         end
         
@@ -486,9 +491,14 @@ if(q>0 && r > 0)
         problem.curTime = problem.curTime+k;%j*k;
         
     end   
+<<<<<<< HEAD
     E(:,end+1,1:problem.nUnk) = e;
 %     E
 %     error('1')
+=======
+    E
+    error('1')
+>>>>>>> 302129f5d96e25399795c018fa02a298c698e856
     exacterr = ue-u;
 
     exacterr = exacterr(2:N+1);
