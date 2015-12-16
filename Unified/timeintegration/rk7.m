@@ -106,7 +106,7 @@ phi(:,steps) = obj.computefluxintegral(Z,eqn);
 
 elseif(strcmp(eqn,'error')==1)
         obj.errorSource = -1*val(:,steps);
-        
+        obj.errorSource
 %         obj.curTime = obj.curTime + (steps-1)*k/length(c);
          phi(:,steps) = obj.computefluxintegral(Z,'error');
 %         phi

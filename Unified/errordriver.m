@@ -24,12 +24,7 @@ if(p>0)
     
     CFL = 0.4;
     k = CFL*h0;
-    Q = tlim/(h0*CFL);
-    if(abs(round(Q)-Q) > 1e-10)
-        fprintf('not an integer number of steps, need to fix residual evaluation\n')
-        error('1')
-    end
-    
+
     if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
         
         if(strncmp(tord,'i',1)==1)
@@ -42,6 +37,16 @@ if(p>0)
             k = 1.5*k;
         end
     end
+    
+    
+        steps = tlim/k;
+    if(abs(round(steps)-steps) > 1e-10)
+        fprintf('not an integer number of steps, need to fix residual evaluation\n')
+        error('1')
+        
+    end
+steps = round(steps)
+    
     
     % load('tauN.mat')
     
@@ -220,6 +225,11 @@ if(p>0)
     klast = k;
     tlim
     problem.curTime = 0;
+    k
+%     u;
+%     J=problem.primalJacobian;
+%     save('test.mat','u','J')
+%     error('1')
     
     
     Z = problem.unstructuredrecon(u,p,'solution');
@@ -227,74 +237,22 @@ if(p>0)
     problem.Rall(:,1) = f;
     problem.Uall(:,1) = u;
     
-    
-    for j = 1:100000
-        %     for m = 1:nUnk
-        
+%     tt = 0;
+    for j = 1:steps  
         U(:,j,1:problem.nUnk) = u;
-        tt = k*(j-1);
-        
-        
-        if(tt+k > tlim)
-            klast = tlim-tt;
-            [tt k klast]
-            if(klast < 1e-10)
-                nSteps = j-1;
-                T = (1:1:j-1)*k;
-                T(end+1) = T(end)+klast;
-                U(:,nSteps+1,1:problem.nUnk) = u;
-                break
-            end
-            tt = tt +klast;
-            
-            problem.tStep = klast;
-            %         problem.curTime = problem.curTime + klast;
-            [uu,d] = problem.updatesolution(u);
-            problem.curTime = problem.curTime + klast;
-            u = uu;
-            nSteps = j;
-            T = (1:1:j-1)*k;
-            T(end+1) = T(end)+klast;
-            U(:,nSteps+1,1:problem.nUnk) = u;
-            break
-        end
-        % if((max(d)*k<1e-15)  ||(tt>=tlim) )
-        if((max(d)*k<1e-15))
-            
-            %         [uu,d] = problem.updatesolution(u);
-            
-            u = uu;
-            max(d);
-            tt;
-            T = (1:1:j-1)*k;
-            %  U(:,j+1) = u;
-            nSteps = j-1;
-            
-            break
-        end
-        
-        % d=0;      
-        % problem.curTime = j*k;
-        
+
         [uu,d] = problem.updatesolution(u);
-        problem.curTime = j*k;
+
+        problem.curTime = problem.curTime+k;%j*k;
+        problem.curTime
         
-        
-        % [uu,d] = update('solution',u,x,problem.source,k,h,N,p,tord,physics,NaN,NaN,problem);
-        
-        % if(j==20)
-        %     uu
-        % error('1')
-        % end
-        % [uu,d] = update('solution',u,x,f,k,h,N,p,tord,physics,NaN,NaN);  
         u = uu;
         
         
         set(plt,'ydata',u)
         drawnow
-        
-        %     end
     end
+    U(:,end+1,1:problem.nUnk) = u;
     % problem.Rall
     problem.Uall
     % U
@@ -302,7 +260,7 @@ if(p>0)
     % U
     fprintf('CFL = %e\n',CFL)
     fprintf('k = %e\n',k)
-    fprintf('T_end = %e\n',tt)
+    fprintf('T_end = %e\n',problem.curTime)
     % nSteps
     % U(:,end-2:end)
     % pause
@@ -350,7 +308,7 @@ gsp = NaN;
 problem.convSoln = u;
 if(q>0 && r > 0)
     
-    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau
+    clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau steps
 
     
     figure
@@ -365,19 +323,31 @@ if(q>0 && r > 0)
     global UU
     UU = U;
     
+    
+    
+    tt = 0;
+    Rp = zeros(N+2,steps+1);%nSteps+1);
+    for j = 1:steps+1%nSteps+1        
+         Z = problem.unstructuredrecon(U(:,j),p,'solution');
+    Rp(:,j) =problem.computefluxintegral(Z,'solution');
+        tt = tt+k;
+    end
+    
+    
+    
     problem.computerespseudo();%N,x,h,r);
     % problem.resPI
     % error('1')
     
     %global R
-    R = zeros(N+2,nSteps+1);
+    R = zeros(N+2,steps+1);%nSteps+1);
     tt=0;
     
     
-    % dUdt = dUdt*0;
+    dUdt = dUdt*0;
     
     
-    for j = 1:nSteps+1
+    for j = 1:steps+1%nSteps+1
         %    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
         R(:,j) = problem.computeres(U(:,j),tt,r);      
         tt = tt+k;        
@@ -397,11 +367,15 @@ if(q>0 && r > 0)
     % max(abs(-R(:,end)-tau))
     % plot(x,-R(:,end),x,tau)
     % R
-    % error('1')
     
     U
-    % R
-    % error('1')
+%     error('1')
+    
+%     U
+    R-Rp
+    problem.residual = R-Rp;
+    
+%     error('1')
     
     plot(x,R(:,end))
     max(abs(R(:,end)));
@@ -431,7 +405,7 @@ if(q>0 && r > 0)
     
     
     
-    T=(0:1:nSteps)*k;
+    T=(0:1:steps)*k;%nSteps)*k;
     for j = 2:N+1
         sp = spapi(6,T,R(j,:));
         Rsp(j) = sp;
@@ -455,7 +429,7 @@ if(q>0 && r > 0)
     problem.Rsp =Rsp;
     
     global M
-    M = nSteps;
+    M = steps-1;%nSteps;
     fprintf('Error Equation\n')
     
     % % %  AD = computepseudo(N,x,h,q);
@@ -492,45 +466,13 @@ if(q>0 && r > 0)
     % R(:,end-2:end)
 
     problem.curTime = 0;
-    for j = 1:nSteps+1
+    for j = 1:steps%nSteps+1
         
         
         E(:,j) = e;
-        
-        TT = k*(j-1);
-
-        if(TT+k > tlim)
-            %       TT=TT-k;
-            [TT k tlim-TT]
-            tlim-TT
-            klast = tlim-TT;
-            
-            if(klast < 1e-10)
-                
-                nSteps = j-1;
-                T = (1:1:j-1)*k;
-                T(end+1) = T(end)+klast;
-                
-                E(:,nSteps+1,1:problem.nUnk) = e;
-                break
-            end
-            
-            problem.tStep = klast;
-            problem.curTime = problem.curTime + klast;
-            %             TT = TT +k;
-            [ee,s] = problem.updateerror(e,TT,j);
-            
-            e = ee;
-            nSteps = j;
-            E(:,nSteps+1) = e;
-            break
-        end
-  
         s=0;
-        
-        % % % [ee,s] = update('error',e,x,-R(:,j),k,h,N,q,tord,physics,TT,Rsp);
-        % [e;TT]
-        [ee,s] = problem.updateerror(e,TT,j);
+     
+        [ee,s] = problem.updateerror(e,problem.curTime,j);%TT,j);
         
      
         e = ee;        
@@ -541,9 +483,12 @@ if(q>0 && r > 0)
         set(plt2,'ydata',e)
         drawnow
      
-        problem.curTime = j*k;
+        problem.curTime = problem.curTime+k;%j*k;
         
     end   
+    E(:,end+1,1:problem.nUnk) = e;
+%     E
+%     error('1')
     exacterr = ue-u;
 
     exacterr = exacterr(2:N+1);
@@ -555,7 +500,7 @@ if(q>0 && r > 0)
     ee = ee(2:N+1);
     ue=ue(2:N+1);
     
-    
+    problem.curTime
     errerr1 = sum(abs(exacterr-ee))/N;
     errerr2 = sqrt(sum((exacterr-ee).^2)/N);
     errerrinf=max(abs(exacterr-ee));

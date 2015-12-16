@@ -16,6 +16,13 @@ if (strcmp(eqn,'error')==1)
         val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
     end
     obj.errorSource = -1*val(:,1);
+    
+    
+       istep = round(obj.curTime/obj.tStep) +1;
+       -1*obj.residual(:,istep)
+ obj.errorSource = -1*obj.residual(:,istep);
+ 
+    
 end
 
 u0 = u;

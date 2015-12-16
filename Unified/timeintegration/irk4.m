@@ -31,7 +31,7 @@ unew = u;
 
 
 
-obj.curTime = obj.curTime + k;
+% obj.curTime = obj.curTime + k;
 
 
 
@@ -58,6 +58,10 @@ while(max(abs(f)) > 3e-9)
 
 if (strcmp(eqn,'error')==1)
      obj.errorSource = -1*val(:,1);
+     
+         istep = round(obj.curTime/obj.tStep) +1;
+         istep
+ obj.errorSource = -1*obj.residual(:,istep);
 end
     Z = obj.unstructuredrecon((uold+k*a11*y1+k*a12*y2),p,eqn);
     f1 = y1-obj.computefluxintegral(Z,eqn);
@@ -81,6 +85,12 @@ end
 
 if (strcmp(eqn,'error')==1)
      obj.errorSource = -1*val(:,2);
+     
+     
+     
+         istep = round(obj.curTime/obj.tStep) +1;
+ obj.errorSource = -1*obj.residual(:,istep);
+     
 end
 
 

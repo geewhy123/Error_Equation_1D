@@ -7,11 +7,11 @@ if (strcmp(eqn,'error')==1)
     val = NaN*ones(N+2,1);
     timesbet = 0.5*k+time;
     
-    global TEND
-    if(abs(timesbet(end)-TEND) < 1e-10)
-%         error('1')
-        timesbet(end) = TEND;
-    end
+%     global TEND
+%     if(abs(timesbet(end)-TEND) < 1e-10)
+% %         error('1')
+%         timesbet(end) = TEND;
+%     end
     
     for kk = 2:N+1
         val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
@@ -22,7 +22,16 @@ if (strcmp(eqn,'error')==1)
         
     end
     obj.errorSource = -1*val(:,1);
+    timesbet;
+    obj.errorSource;
+    obj.curTime;
+    istep = round(obj.curTime/obj.tStep) +1
+    -1*obj.residual(:,istep);
     
+%     error('1')
+ obj.errorSource = -1*obj.residual(:,istep);
+ 
+ 
 %      obj.computerespseudo();
     Z = obj.unstructuredrecon(uval,obj.rOrder,'residual');
     r = obj.computefluxintegral(Z,'residual');
