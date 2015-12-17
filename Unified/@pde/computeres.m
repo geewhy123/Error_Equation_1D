@@ -78,7 +78,7 @@ end
  
  if(time > 1.3)
     Ut'
-     error('1')
+%      error('1')
  end
  
 %   dUdt

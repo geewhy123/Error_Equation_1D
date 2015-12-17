@@ -27,6 +27,11 @@ end
 
 for kk = 2:N+1
 val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
+% if(val(2,end)==0)
+%     timesbet(end)-round(TEND)
+%    fnval(timesbet(end),obj.Rsp(kk) )
+%    error('1')
+% end
 end
 %val
 
@@ -106,7 +111,7 @@ phi(:,steps) = obj.computefluxintegral(Z,eqn);
 
 elseif(strcmp(eqn,'error')==1)
         obj.errorSource = -1*val(:,steps);
-        obj.errorSource
+%         obj.errorSource
 %         obj.curTime = obj.curTime + (steps-1)*k/length(c);
          phi(:,steps) = obj.computefluxintegral(Z,'error');
 %         phi

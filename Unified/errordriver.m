@@ -42,7 +42,7 @@ if(p>0)
         steps = tlim/k;
     if(abs(round(steps)-steps) > 1e-10)
         fprintf('not an integer number of steps, need to fix residual evaluation\n')
-        error('1')
+%         error('1')
         
     end
 steps = round(steps)
@@ -288,7 +288,7 @@ steps = round(steps)
     
 end
 
-tlim = T(end)
+% tlim = T(end)
 
 global dUdt
 % if(klast > 1e-10 && klast < k)
@@ -349,7 +349,7 @@ if(q>0 && r > 0)
     tt=0;
     
     
-    dUdt = dUdt*0;
+%     dUdt = dUdt*0;
     
     
     for j = 1:steps+1%nSteps+1
@@ -373,12 +373,13 @@ if(q>0 && r > 0)
     % plot(x,-R(:,end),x,tau)
     % R
     
-    U
+%     U
+% R
 %     error('1')
     
 %     U
     R-Rp
-    problem.residual = R-Rp;
+%     problem.residual = R-Rp;
     
 %     error('1')
     
@@ -420,6 +421,7 @@ if(q>0 && r > 0)
         Usp(j) = spu;
         % Rsp(j) = pchip(T,R(j,:));
     end
+    
     % figure
     % fnplt(Usp(2))
     % % U
@@ -491,14 +493,10 @@ if(q>0 && r > 0)
         problem.curTime = problem.curTime+k;%j*k;
         
     end   
-<<<<<<< HEAD
     E(:,end+1,1:problem.nUnk) = e;
 %     E
 %     error('1')
-=======
-    E
-    error('1')
->>>>>>> 302129f5d96e25399795c018fa02a298c698e856
+
     exacterr = ue-u;
 
     exacterr = exacterr(2:N+1);

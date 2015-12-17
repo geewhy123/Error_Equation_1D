@@ -29,7 +29,7 @@ if (strcmp(eqn,'error')==1)
     -1*obj.residual(:,istep);
     
 %     error('1')
- obj.errorSource = -1*obj.residual(:,istep);
+%  obj.errorSource = -1*obj.residual(:,istep);
  
  
 %      obj.computerespseudo();
