@@ -33,6 +33,11 @@ assert(abs(er-4.601353e-3)<1e-4)
 er = errordriver(20,2,4,4,1/3,'D',0,'D',0,0.1,'rk2','Poisson','TimeAccurate')
 assert(abs(er-.0067)<1e-4)
 
+
+er = errordriver(20,2,4,4,1/3,'D',0,'D',0,0.1,'irk1','Poisson','TimeAccurate')
+assert(abs(er-.02736)<1e-4)
+
+
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'D',tanh(0),'D',-2*tanh(1),10,'rk7','BurgersVisc','SS');
 assert(abs( errerr2-1.636222437037368e-04)/errerr2 < 0.001)
 

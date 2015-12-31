@@ -224,7 +224,9 @@ steps = round(steps)
     
     
     d=1;
-    u;
+    u
+    J = problem.primalJacobian;
+    save('J')
     % U =
     T = 1;
     klast = k;
@@ -233,7 +235,7 @@ steps = round(steps)
     k
 %     u;
 %     J=problem.primalJacobian;
-%     save('test.mat','u','J')
+    save('test.mat','u','J')
 %     error('1')
     
     
@@ -258,8 +260,9 @@ steps = round(steps)
         drawnow
     end
     U(:,end+1,1:problem.nUnk) = u;
+    u
     % problem.Rall
-    problem.Uall
+%     problem.Uall
     % U
     % error('1')
     % U
@@ -409,7 +412,7 @@ if(q>0 && r > 0)
     %
     %  error('1')
     
-    
+
     
     T=(0:1:steps)*k;%nSteps)*k;
     for j = 2:N+1
@@ -460,7 +463,14 @@ if(q>0 && r > 0)
         problem.errorSource = -1*val(:,1);
         problem.errorJacobian = problem.computefluxjacobian(e,'error');
     end
-   
+
+    
+    
+    
+        RR = R;
+   J4=problem.errorJacobian;
+    save('test.mat','RR','J4')
+    
     T = 1;
     s=1;
    
@@ -524,7 +534,7 @@ else
     ee = NaN;
     exacterr = NaN;
 end
-
+ee
 
 exacterr-ee;
 te = NaN;

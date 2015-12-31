@@ -101,7 +101,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 %    error('1')
 % end
 if(strcmp(eqn,'solution')==1)
-    obj.curTime = obj.curTime + (steps-1)*k/length(c);
+%     obj.curTime = obj.curTime + (steps-1)*k/length(c);
 phi(:,steps) = obj.computefluxintegral(Z,eqn);
 
 %  phi(:,steps)

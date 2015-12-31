@@ -234,7 +234,8 @@ figure
     dtold = 1;
     while(max(abs(R)) > 2e-11 )
         J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
-        
+        norm(J)
+        error('1')
 
 %      q = eig(J);
 %      req = real(q);

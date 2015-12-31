@@ -16,11 +16,15 @@ if (strcmp(eqn,'error')==1)
         val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
     end
     obj.errorSource = -1*val(:,1);
-    
+%     obj.errorSource
+%     timesbet
+%     obj.residual
+% %     fnval(obj.Rsp(N+1)
+%     error('1')
     
        istep = round(obj.curTime/obj.tStep) +1;
-       -1*obj.residual(:,istep)
- obj.errorSource = -1*obj.residual(:,istep);
+%        -1*obj.residual(:,istep)
+%  obj.errorSource = -1*obj.residual(:,istep);
  
     
 end
@@ -34,7 +38,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 
 
 
-obj.curTime = obj.curTime + k;
+% obj.curTime = obj.curTime + k;
 
 
 
