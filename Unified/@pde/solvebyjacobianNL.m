@@ -234,8 +234,8 @@ figure
     dtold = 1;
     while(max(abs(R)) > 2e-11 )
         J = obj.computefluxjacobian(u,'solution');%,x,h,N,p);
-        norm(J)
-        error('1')
+%         norm(J)
+%         error('1')
 
 %      q = eig(J);
 %      req = real(q);
@@ -637,7 +637,8 @@ stem(f,2*abs(Y(1:N/2+1))/N)
 % error('1')
 
 % save('test.mat','tau')
-
+load('test.mat')
+% error('1')
     if(q> 0 && r>0)
 
         fprintf('\n\n\nError Equation:\n')
@@ -700,8 +701,15 @@ stem(f,2*abs(Y(1:N/2+1))/N)
 % plot(x,exacterr)
 % error('1')
 
+% save('test.mat','Rend','-append')
+% error('1')
+% RR = Rend;
+load('test.mat')
+% figure
+% plot(x(2:N+1),RR(2:N+1),x(2:N+1),Rend(2:N+1))
+% error('1')
 
-        f = -Rend;
+        f = tau-Rend;
         ff = tau+randn(N+2,1)/N^6;
         ep = rand(N+2,1)/N^6;
          mean(abs(f(2:N+1)-tau(2:N+1)));
