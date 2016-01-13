@@ -312,7 +312,8 @@ gsp = NaN;
 % % % %plot(T,U(3,:),'*')
 % % % end
 
-
+% save('test.mat','J','u0')
+% error('1')
 problem.convSoln = u;
 if(q>0 && r > 0)
     
@@ -353,6 +354,10 @@ if(q>0 && r > 0)
     
     
 %     dUdt = dUdt*0;
+% dUdt(2:N+1,:)=(problem.primalJacobian(2:N+1,2:N+1))*(U(2:N+1,:));
+
+% error('1')
+% dUdt = -J(2:N+1,2:N+1)*
     
     
     for j = 1:steps+1%nSteps+1

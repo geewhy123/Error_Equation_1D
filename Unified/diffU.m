@@ -14,18 +14,20 @@
 %b = [0 1 0]';
 
 %centered
-for j = 1:9
-    for i = 1:9
-     A(i,j) = (j-5)^(i-1)/factorial(i-1);            
+nt = 8;
+
+for j = 1:nt+1
+    for i = 1:nt+1
+     A(i,j) = (j-(nt/2+1))^(i-1)/factorial(i-1);            
     end
 end
                 
-    b = zeros(9,1);
+    b = zeros(nt+1,1);
     b(2) = 1;
 cc = A\b;
 
-for j = 1:9
-    for i = 1:9
+for j = 1:nt+1
+    for i = 1:nt+1
      Al(i,j) = (j-1)^(i-1)/factorial(i-1);            
     end
 end
@@ -41,14 +43,14 @@ cr = cr(end:-1:1);
 
 dUdt = zeros(m,n);
 for j = 1:n
-    if(j > 4 && j < n-3)
-    dUdt(:,j)= U(:,j-4:j+4)*cc/k;
-    elseif(j<=4)
+    if(j > nt/2 && j < n-(nt/2-1))
+    dUdt(:,j)= U(:,j-nt/2:j+nt/2)*cc/k;
+    elseif(j<=nt/2)
         [j n];
-        dUdt(:,j) = U(:,j:j+8)*cl/k;
-    elseif(j>=(n-3))
+        dUdt(:,j) = U(:,j:j+nt)*cl/k;
+    elseif(j>=(n-(nt/2-1)))
        
-        dUdt(:,j) = U(:,j-8:j)*cr/k;
+        dUdt(:,j) = U(:,j-nt:j)*cr/k;
     end
     
 end
