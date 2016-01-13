@@ -14,17 +14,11 @@ close all
 
 if(p>0)
     rng(1234);
-    
-    %  g = randi(1000000);
-    %  977219
-    % rng(g)
-    %   rng(972219);
-    w = 0;
     h0 = 1/N;
     
     CFL = 0.4;
     k = CFL*h0;
-
+    
     if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
         
         if(strncmp(tord,'i',1)==1)
@@ -39,69 +33,33 @@ if(p>0)
     end
     
     
-        steps = tlim/k;
+    steps = tlim/k;
     if(abs(round(steps)-steps) > 1e-10)
         fprintf('not an integer number of steps, need to fix residual evaluation\n')
-%         error('1')
-        
     end
-steps = round(steps)
-    
-    
-    % load('tauN.mat')
-    
+    steps = round(steps);    
     X = zeros(N+1,1);
-    for i = 1:N+1%1:N+1
+    for i = 1:N+1
         X(i) = (i-1)*h0;
         if(i>1 && i < N+1)
-            %    X(i) = X(i) + 0.1*randn*h0;
-            X(i) = X(i) + unif*(-1+rand*(2))*h0/3;%0.001*sin(2*pi*X(i));%
-            
-            
+            X(i) = X(i) + unif*(-1+rand*(2))*h0/3;%0.001*sin(2*pi*X(i));
         end
     end
-    
-    % X(2) = (2-1)*h0;
-    % X(N) = (N-1)*h0;
-    % X(N/2+1) = X(N/2+1)+(-1+rand*(2))*h0/3;
-    
+   
     x = zeros(N+2,1);
     for i = 2:N+1
         x(i) = (X(i-1)+X(i))/2;
-        
-        %     j = floor(i/2)+1;
-        %     jj = mod(i,2);
-        %     x(i) = x32(j)-h32(j)/4;
-        %     if(jj == 1)
-        %         x(i) = x(i) +h32(j)/2;
-        %     end
     end
     
-    x(1) = NaN;%0-(1-x(N+1));%-x(2);
-    x(N+2) = NaN;%1+x(2);%1+(1-x(N+1));
-    
-    
+    x(1) = NaN;
+    x(N+2) = NaN;
     h = zeros(N+2,1);
     for i = 2:N+1
         h(i) = X(i)-X(i-1);
-        
-        %    j = floor(i/2)+1;
-        %    h(i) = h32(j)/2;
     end
     
     h(1) = h(N+1);
-    h(N+2) = h(2);
-    
-    % [x32 h32]
-    % [x h]
-    % plot(x,1,'*')
-    % error('1')
-    
-    % global xx
-    % xx = X;
-    global dir
-    dir = NaN*ones(N+2,1);
-   
+    h(N+2) = h(2);    
     if(strcmp(physics,'LinearSystem')==1)
         problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
         problem.ebcL = ebcL;
@@ -118,27 +76,15 @@ steps = round(steps)
         problem.jump = jump;
         problem.bchandle = bchandle;
     end
-  
+    
     problem.initializeexact();
     
     
     u0 = problem.initialSolution;
     ue = problem.exactSolution;
-    length(x);
-    length(ue);
-    % figure
-    %  plot(x,u0)
     
-    %  plot(x,ue)
-    %  assert(0)
     problem.computemoments();
-    
-    %u = ue;
     u=u0;
-    %uu = zeros(N+2,1);
-  
-    %%%%
-    % error('2')
     switch physics
         case {'Poisson', 'Advection'}
             problem.linearPhysics = true;
@@ -151,16 +97,11 @@ steps = round(steps)
     
     if(problem.linearPhysics)
         problem.computeprimalpseudo();
-        %       problem.jacobian = zeros(N+2,N+2);
         problem.primalJacobian = problem.computefluxjacobian(ue,'solution');
     end
-   
-    %%%%
-
-    %   if((strcmp(physics,'Poisson')==1 && strcmp(goal,'SS')==1 && problem.bcLeftType == 'D' && problem.bcRightType == 'D' )||(strcmp(physics,'Advection')==1 && strcmp(goal,'SS')==1))
+    
     if(strcmp(goal,'SS')==1 )
         fprintf('Implicit solve using Jacobian \n');
-        %     [errerr2,x,cverr2,exacterr,ee,te  ]= problem.solvebyjacobian();
         if(strcmp(problem.physics,'EulerQ')~=1)
             [errerr2,x,cverr2,exacterr,ee,te  ]=problem.solvebyjacobianNL();
             if(q==0 && r ==0)
@@ -177,17 +118,10 @@ steps = round(steps)
         end
         return;
     end
- 
-    % global AD
-    % AD = computepseudo(N,x,h,p,BCRight,BCLeft);
-    problem.computeprimalpseudo();
     
-    % problem.primalPI
-  
+    problem.computeprimalpseudo();
     problem.curTime = 0;
     Z = problem.unstructuredrecon(ue,problem.pOrder,'solution');
- 
-    % figure
     if(strcmp(problem.physics,'LinearSystem')==1)
         er = problem.reconplot(Z(1:2,:),'solution');
         figure
@@ -198,20 +132,8 @@ steps = round(steps)
     plt = plot(x,u0,'*');
     hold on
     grid on
-    
-    % Z
-    % error('1')
-    
-    % hold on
-    % plot(x,u0)
     f = problem.source;
     
-    % figure
-    % plot(x,ue)
-    % error('1')
-    
-    Z;
-    % % % % [tau]=reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
     [tau]=problem.computefluxintegral(Z,'solution');%reconfluxsoln(Z,f,h,N,p,physics,tlim,problem)
     
     
@@ -222,64 +144,41 @@ steps = round(steps)
         problem.nUnk = 1;
     end
     
-    
-    d=1;
-    u
-    J = problem.primalJacobian;
-    save('J')
-    % U =
-    T = 1;
     klast = k;
-    tlim
     problem.curTime = 0;
-    k
-%     u;
-%     J=problem.primalJacobian;
-    save('test.mat','u','J')
-%     error('1')
-    
     
     Z = problem.unstructuredrecon(u,p,'solution');
     f = problem.computefluxintegral(Z,'solution');
     problem.Rall(:,1) = f;
     problem.Uall(:,1) = u;
     
-%     tt = 0;
-    for j = 1:steps  
+    for j = 1:steps
         U(:,j,1:problem.nUnk) = u;
-
+        
         [uu,d] = problem.updatesolution(u);
-
+        
         problem.curTime = problem.curTime+k;%j*k;
-        problem.curTime
+        
         
         u = uu;
-        
         
         set(plt,'ydata',u)
         drawnow
     end
     U(:,end+1,1:problem.nUnk) = u;
-    u
+    
     % problem.Rall
-%     problem.Uall
+    %     problem.Uall
     % U
     % error('1')
     % U
     fprintf('CFL = %e\n',CFL)
     fprintf('k = %e\n',k)
     fprintf('T_end = %e\n',problem.curTime)
-    % nSteps
-    % U(:,end-2:end)
-    % pause
-    u;
-    [size(ue) size(u)]
     cverr1 = sum(abs(ue(2:N+1)-u(2:N+1)))/N;
     cverr2 = sqrt(sum((ue(2:N+1)-u(2:N+1)).^2)/N);
     cverrinf=max(abs(ue-u));
     fprintf('D.E.: [%e\t %e\t %e]\n\n',cverr1,cverr2,cverrinf);
-    % size(U)
-    
     
     u(1) = NaN;
     u(N+2) = NaN;
@@ -290,8 +189,6 @@ steps = round(steps)
     ylabel('ue-u')
     
 end
-
-% tlim = T(end)
 
 global dUdt
 % if(klast > 1e-10 && klast < k)
@@ -318,7 +215,7 @@ problem.convSoln = u;
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau steps
-
+    
     
     figure
     hold on
@@ -331,39 +228,28 @@ if(q>0 && r > 0)
     TEND = tlim;
     global UU
     UU = U;
-    
-    
-    
+   
     tt = 0;
     Rp = zeros(N+2,steps+1);%nSteps+1);
-    for j = 1:steps+1%nSteps+1        
-         Z = problem.unstructuredrecon(U(:,j),p,'solution');
-    Rp(:,j) =problem.computefluxintegral(Z,'solution');
+    for j = 1:steps+1%nSteps+1
+        Z = problem.unstructuredrecon(U(:,j),p,'solution');
+        Rp(:,j) =problem.computefluxintegral(Z,'solution');
         tt = tt+k;
     end
-    
-    
-    
+        
     problem.computerespseudo();%N,x,h,r);
-    % problem.resPI
-    % error('1')
-    
-    %global R
+
     R = zeros(N+2,steps+1);%nSteps+1);
     tt=0;
     
     
-%     dUdt = dUdt*0;
-% dUdt(2:N+1,:)=(problem.primalJacobian(2:N+1,2:N+1))*(U(2:N+1,:));
-
-% error('1')
-% dUdt = -J(2:N+1,2:N+1)*
-    
+    %     dUdt = dUdt*0;
+    % dUdt(2:N+1,:)=(problem.primalJacobian(2:N+1,2:N+1))*(U(2:N+1,:));
     
     for j = 1:steps+1%nSteps+1
         %    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
-        R(:,j) = problem.computeres(U(:,j),tt,r);      
-        tt = tt+k;        
+        R(:,j) = problem.computeres(U(:,j),tt,r);
+        tt = tt+k;
     end
     
     
@@ -373,29 +259,17 @@ if(q>0 && r > 0)
             R(:,j) = -FI;
         end
     end
-
+    
     problem.residual = R;
     % problem.errorSource = R;
     % [-R(:,end) tau]
     % max(abs(-R(:,end)-tau))
     % plot(x,-R(:,end),x,tau)
-    % R
     
-%     U
-% R
-%     error('1')
-    
-%     U
-    R-Rp
-%     problem.residual = R-Rp;
-    
-%     error('1')
     
     plot(x,R(:,end))
     max(abs(R(:,end)));
     
-    % dUdt
-    %
     % t = (0:1:nSteps)*k;
     % Utexact = zeros(size(dUdt));
     % Utexact(1,:) = NaN;
@@ -417,7 +291,7 @@ if(q>0 && r > 0)
     %
     %  error('1')
     
-
+    
     
     T=(0:1:steps)*k;%nSteps)*k;
     for j = 2:N+1
@@ -452,14 +326,14 @@ if(q>0 && r > 0)
     
     Zu = problem.unstructuredrecon(problem.convSoln,problem.qOrder,'error');
     problem.convSolnRecon = Zu;
-
+    
     
     
     if( problem.bcLeftType == 'D' && problem.bcRightType == 'D')
         problem.bcLeftVal = 0;
         problem.bcRightVal = 0;
     end
-   
+    
     if(problem.linearPhysics)
         timesbet = 0;
         for kk = 2:N+1
@@ -468,52 +342,43 @@ if(q>0 && r > 0)
         problem.errorSource = -1*val(:,1);
         problem.errorJacobian = problem.computefluxjacobian(e,'error');
     end
-
     
     
     
-        RR = R;
-   J4=problem.errorJacobian;
+    
+    RR = R;
+    J4=problem.errorJacobian;
     save('test.mat','RR','J4')
     
-    T = 1;
-    s=1;
-   
+    
     figure(2);clf;
     plt2 = plot(x,u0,'*');
     hold on
     grid on
     axis([0 1 -1 1])
-    % size(R)
-    % R(:,end-2:end)
-
+    
     problem.curTime = 0;
     for j = 1:steps%nSteps+1
         
         
         E(:,j) = e;
         s=0;
-     
         [ee,s] = problem.updateerror(e,problem.curTime,j);%TT,j);
-        
-     
-        e = ee;        
+        e = ee;
         if(mod(j,100)==0)
             max(s)
         end
         
         set(plt2,'ydata',e)
         drawnow
-     
+        
         problem.curTime = problem.curTime+k;%j*k;
         
-    end   
+    end
     E(:,end+1,1:problem.nUnk) = e;
-%     E
-%     error('1')
-
+    
     exacterr = ue-u;
-
+    
     exacterr = exacterr(2:N+1);
     x = x(2:N+1);
     figure
@@ -539,7 +404,7 @@ else
     ee = NaN;
     exacterr = NaN;
 end
-ee
+
 
 exacterr-ee;
 te = NaN;
