@@ -14,21 +14,21 @@ assert(abs(errerr2-0.147752190039767)/errerr2 < 0.001)%
 % assert(abs(errerr2-2.472279e-02)/errerr2 < 0.001)
 
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(20,2,4,4,1/3,'P',0,'P',0,1.3,'rk7','Advection','TimeAccurate');
-assert(abs(errerr2-1.556691e-3)/errerr2 < 0.001)
-
+% assert(abs(errerr2-1.556691e-3)/errerr2 < 0.001)
+assert(abs(errerr2-1.625503e-03)/errerr2 < 0.001)
 er = errordriver(20,2,4,4,1/3,'P',0,'P',0,1,'rk7','Advection','TimeAccurate')/errordriver(40,2,4,4,1/3,'P',0,'P',0,1,'rk7','Advection','TimeAccurate');
 assert(log(er)/log(2) > 3.7)
 
 er = errordriver(20,2,4,4,0,'P',0,'P',0,0.1,'irk4','Poisson','TimeAccurate');
-assert(abs(er-0.004014597588612)<1e-4)
-
+% assert(abs(er-0.004014597588612)<1e-4)
+assert(abs(er-3.021541e-03	)<1e-4)
 er = errordriver(20,2,4,4,0,'D',0,'D',0,0.1,'irk4','Poisson','TimeAccurate');
-assert(abs(er-6.812438e-03)<1e-4)
-
+% assert(abs(er-6.812438e-03)<1e-4)
+assert(abs(er-5.803144e-03)<1e-4)
 er =  errordriver(20,2,4,4,1/3,'D',0,'D',0,0.1,'irk2','Poisson','TimeAccurate');
 % assert(abs(er-.0034)<1e-3)
-assert(abs(er-4.601353e-3)<1e-4)
-
+% assert(abs(er-4.601353e-3)<1e-4)
+assert(abs(er-6.069142e-03)<1e-4)
 
 er = errordriver(20,2,4,4,1/3,'D',0,'D',0,0.1,'rk2','Poisson','TimeAccurate')
 assert(abs(er-.0067)<1e-4)

@@ -57,22 +57,21 @@ if(p>0)
     for i = 2:N+1
         h(i) = X(i)-X(i-1);
     end
-    
     h(1) = h(N+1);
     h(N+2) = h(2);    
     if(strcmp(physics,'LinearSystem')==1)
-        problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+        problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
         problem.ebcL = ebcL;
         problem.ebcR = ebcR;
         problem.bchandle = bchandle;
     elseif(strcmp(physics,'EulerQ')==1)
-        problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+        problem = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
         problem.ebcL = ebcL;
         problem.ebcR = ebcR;
         problem.bchandle = bchandle;
         problem.NLfluxtype = NLflux;
     else
-        problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,0);
+        problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
         problem.jump = jump;
         problem.bchandle = bchandle;
     end
@@ -295,7 +294,7 @@ if(q>0 && r > 0)
     
     T=(0:1:steps)*k;%nSteps)*k;
     for j = 2:N+1
-        sp = spapi(6,T,R(j,:));
+        sp = spapi(2,T,R(j,:));
         Rsp(j) = sp;
         % spu = spapi(2,T,U(j,:));
         % spu = spapi(optknt(T,6),T,U(j,:));

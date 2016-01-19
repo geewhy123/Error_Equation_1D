@@ -14,10 +14,14 @@ elseif(strcmp(eqn,'residual')==1)
 p = obj.rOrder;
 elseif(strcmp(eqn,'error')==1)
 p = obj.qOrder;
+elseif(strcmp(eqn,'average')==1)
+p = 1;
 end
 
 
-N = obj.nCells;
+% N = obj.nCells;
+[~,N] = size(Z(:,2:end-1));
+N
 
 for i = 2:N+1
    xx = linspace(x(i)-h(i)/2,x(i)+h(i)/2,100);

@@ -17,6 +17,7 @@ classdef pde < handle
          goal;
          cellCentroids;
          cellWidths;
+         cellEndPoints;
          initialSolution;
          exactSolution;
          source;
@@ -56,7 +57,7 @@ higherprimalPI;
     end
     
     methods
-        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,wt)
+        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,wt)
             if(nargin>0)
          obj.nCells = N;
         obj.pOrder = p;
@@ -72,6 +73,7 @@ higherprimalPI;
          obj.goal = goal;
          obj.cellCentroids = x;
          obj.cellWidths = h;
+         obj.cellEndPoints = X;
          obj.tStep = k;
          obj.weight = wt;
          
@@ -96,6 +98,7 @@ higherprimalPI;
         computehigherpseudo(obj);
         postprocesscn(obj,n);
         f = computeTimeDepSource(obj);
+        meshrefinecoarsen(obj,s);
     end
     
     methods(Access=private)

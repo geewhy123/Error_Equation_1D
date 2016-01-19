@@ -5,6 +5,8 @@ function  [AD,AA] = computepseudo(obj,p)
     x = obj.cellCentroids;
     wt = obj.weight;
 
+
+
     if(p < 6)
 %         m = obj.stencilSize;
  m = min(obj.stencilSize,5);
