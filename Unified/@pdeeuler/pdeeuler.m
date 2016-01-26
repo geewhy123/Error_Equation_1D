@@ -29,7 +29,7 @@ NLfluxtype=2;
     end
     
     methods
-         function obj = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,k,wt)
+         function obj = pdeeuler(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,wt)
             if(nargin>0)
          obj.nCells = N;
         obj.pOrder = p;

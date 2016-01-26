@@ -41,6 +41,7 @@ cl = Al\b;
 cr = -cl;
 cr = cr(end:-1:1);
 
+
 dUdt = zeros(m,n);
 for j = 1:n
     if(j > nt/2 && j < n-(nt/2-1))
@@ -56,6 +57,7 @@ for j = 1:n
 end
 % U
 % dUdt
+% error('1')
 % t = 0:0.1:2;
 % plot(t,dUdt,t,-sin(t),t,cos(t))
 
