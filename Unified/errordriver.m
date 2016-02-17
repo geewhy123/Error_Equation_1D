@@ -165,7 +165,7 @@ if(p>0)
         drawnow
     end
     U(:,end+1,1:problem.nUnk) = u;
-    
+
     % problem.Rall
     %     problem.Uall
     % U
@@ -192,6 +192,7 @@ end
 global dUdt
 % if(klast > 1e-10 && klast < k)
 dUdt = diffU(U,k,klast);
+
 % else
 % dUdt = diffU(U,k);
 % end
@@ -376,6 +377,7 @@ if(q>0 && r > 0)
     end
     E(:,end+1,1:problem.nUnk) = e;
     
+    
     exacterr = ue-u;
     
     exacterr = exacterr(2:N+1);
@@ -403,7 +405,14 @@ else
     ee = NaN;
     exacterr = NaN;
 end
-
+    J = problem.primalJacobian;
+    J4 = problem.errorJacobian;
+%     save('jac.mat','J','U','E','R')
+    save('jac.mat','J')
+   [(ue(2:end-1)-u(2:end-1)) inv(J(2:end-1,2:end-1))*tau(2:end-1)]
+    
+    [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
+    error('1')
 
 exacterr-ee;
 te = NaN;

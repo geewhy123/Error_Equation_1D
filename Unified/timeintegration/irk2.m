@@ -15,6 +15,7 @@ if (strcmp(eqn,'error')==1)
     
     for kk = 2:N+1
         val(kk,1:length(timesbet)) = fnval(timesbet,obj.Rsp(kk));
+%         val(kk,1:length(timesbet)) = 0.5*(obj.residual(kk,1+floor(timesbet/k))+obj.residual(kk,1+ceil(timesbet/k)));
         uval(kk,1:length(timesbet)) = fnval(timesbet,obj.Usp(kk)); 
         utval(kk,1:length(timesbet)) = fnval(fnder(obj.Usp(kk)),timesbet); 
         

@@ -245,7 +245,21 @@ else
     exacterr = NaN;
     ee = NaN;
     
+    
+    
 end
+
+    J = obj.primalJacobian;
+J4 = obj.errorJacobian;
+%     save('jac.mat','J','U','E','R')
+    save('jac.mat','J')
+
+   [norm((ue(2:end-1)-u(2:end-1))) norm(tau(2:end-1)) norm(inv(J(2:end-1,2:end-1))) norm(inv(Je(2:end-1,2:end-1))*J(2:end-1,2:end-1)) norm(inv(Je(2:end-1,2:end-1))*J(2:end-1,2:end-1))]
+J(2:end-1,2:end-1) = J(2:end-1,2:end-1)*Je(2:end-1,2:end-1);
+   [min(eig(J(2:end-1,2:end-1))) max(eig(J(2:end-1,2:end-1))) min(eig(J(2:end-1,2:end-1)*J(2:end-1,2:end-1)')) max(eig(J(2:end-1,2:end-1)*J(2:end-1,2:end-1)')) ] 
+%    obj.primalJacobian
+%     [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
+    error('1')
 
 end
 
