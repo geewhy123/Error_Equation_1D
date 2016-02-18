@@ -120,7 +120,7 @@ i = round(obj.curTime/obj.tStep) +1;
        J = obj.computefluxjacobian(u,eqn);
           obj.Uall(2:N+1,2*i) = J(2:N+1,2:N+1)\y(2:N+1);
           obj.Uall(2:N+1,2*i+1) = J(2:N+1,2:N+1)\f(2:N+1);
-          assert(obj.linearPhysics);
+%           assert(obj.linearPhysics);
 end
 end
 

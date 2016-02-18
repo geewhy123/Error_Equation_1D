@@ -54,6 +54,7 @@ higherprimalPI;
         Usp;
         Rall;
         Uall;
+        params = struct('nu',1);
     end
     
     methods

@@ -76,6 +76,12 @@ if(p>0)
         problem.bchandle = bchandle;
     end
     
+    if(strcmp(problem.physics,'BurgersVisc')==1 && strcmp(problem.goal,'TimeAccurate')==1)
+        problem.params.nu = 5e-3;
+    else
+        problem.params.nu = 1;
+    end
+    
     problem.initializeexact();
     
     
@@ -143,6 +149,8 @@ if(p>0)
         problem.nUnk = 1;
     end
     
+ 
+    
     klast = k;
     problem.curTime = 0;
     
@@ -150,7 +158,8 @@ if(p>0)
     f = problem.computefluxintegral(Z,'solution');
     problem.Rall(:,1) = f;
     problem.Uall(:,1) = u;
-    
+%     plot(x,problem.exactSolution,'o')
+%     error('1')
     for j = 1:steps
         U(:,j,1:problem.nUnk) = u;
         
@@ -193,6 +202,11 @@ global dUdt
 % if(klast > 1e-10 && klast < k)
 dUdt = diffU(U,k,klast);
 
+%  for j = 1:steps
+%     dUdt(:,j) = (U(:,j+1)-U(:,j))/k;
+%  end
+% dUdt(:,steps+1) = (U(:,steps+1)-U(:,steps))/k;
+ 
 % else
 % dUdt = diffU(U,k);
 % end
@@ -405,14 +419,14 @@ else
     ee = NaN;
     exacterr = NaN;
 end
-    J = problem.primalJacobian;
-    J4 = problem.errorJacobian;
-%     save('jac.mat','J','U','E','R')
-    save('jac.mat','J')
-   [(ue(2:end-1)-u(2:end-1)) inv(J(2:end-1,2:end-1))*tau(2:end-1)]
-    
-    [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
-    error('1')
+%     J = problem.primalJacobian;
+%     J4 = problem.errorJacobian;
+% %     save('jac.mat','J','U','E','R')
+%     save('jac.mat','J')
+%    [(ue(2:end-1)-u(2:end-1)) inv(J(2:end-1,2:end-1))*tau(2:end-1)]
+%     
+%     [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
+%     error('1')
 
 exacterr-ee;
 te = NaN;

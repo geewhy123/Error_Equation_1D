@@ -14,7 +14,7 @@
 %b = [0 1 0]';
 
 %centered
-nt = 8;
+nt = 4;
 
 for j = 1:nt+1
     for i = 1:nt+1

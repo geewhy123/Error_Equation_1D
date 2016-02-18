@@ -308,13 +308,13 @@ f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 
      
 
      if(strcmp(obj.goal,'TimeAccurate')==1)
-%         b = 10;
-%         u0(i) = u0(i)+ (1/h(i))*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2));
-%         ue(i) = ue(i) + (1/h(i))*exp(-b*obj.endTime)*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2));
-% %         f(i) = (1/h(i))*(-b*exp(-b*obj.endTime)*((xr^3/3-xr^2/2)-(xl^3/3-xl^2/2)) + exp(-2*b*obj.endTime)*((xr^4/2-xr^3+xr^2/2)-(xl^4/2-xl^3+xl^2/2)) );
-        u0(i) = (1/h(i))*(3*xr-2*log(exp(xr)+1)-3*xl+2*log(exp(xl)+1));
-        ue(i) = (1/h(i))*(3*xr-2*log(exp(xr)+exp(2*tlim))-3*xl+2*log(exp(xl)+exp(2*tlim)));
-
+%         u0(i) = (1/h(i))*(3*xr-2*log(exp(xr)+1)-3*xl+2*log(exp(xl)+1));
+%         ue(i) = (1/h(i))*(3*xr-2*log(exp(xr)+exp(2*tlim))-3*xl+2*log(exp(xl)+exp(2*tlim)));
+           nu = obj.params.nu;
+        u0(i) = (1/h(i))*( (xr - 2*nu*log(exp(-( - 2*xr + 1)/(4*nu)) + 1)) - (xl - 2*nu*log(exp(-( - 2*xl + 1)/(4*nu)) + 1)) );
+        ue(i) = (1/h(i))*( (xr - 2*nu*log(exp(-(tlim - 2*xr + 1)/(4*nu)) + 1)) - (xl - 2*nu*log(exp(-(tlim - 2*xl + 1)/(4*nu)) + 1)));
+          
+          
      end
 
      

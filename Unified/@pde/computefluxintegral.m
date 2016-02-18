@@ -492,6 +492,7 @@ else
     assert(0);
 end
 
+nu = obj.params.nu;
 
 if(~isempty(obj.refinecells))
     if(i==1)
@@ -535,7 +536,7 @@ utildel = 0;
 if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     F = 0;
     for k = 1:p-1
-        F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
+        F = F + nu*k*right(k+1)*(-h(i+1)/2)^(k-1);
     end
     U=0;
     for k = 1:p
@@ -579,7 +580,7 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
 elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     F = 0;
     for k = 1:p-1
-        F = F + k*left(k+1)*(h(i)/2)^(k-1);
+        F = F + nu*k*left(k+1)*(h(i)/2)^(k-1);
     end
     U=0;
     for k = 1:p
@@ -678,7 +679,7 @@ else
     Fl = 0;
     Fr = 0;
     for k = 1:pr-1
-        Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+        Fr = Fr + nu*k*right(k+1)*(-h(i+1)/2)^(k-1);
     end
     ur=0;
     for k = 1:pr
@@ -693,7 +694,7 @@ else
     
     Fr = Fr-ur^2/2;
     for k = 1:pl-1
-        Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+        Fl = Fl + nu*k*left(k+1)*(h(i)/2)^(k-1);
     end
     ul=0;
     for k = 1:pl
