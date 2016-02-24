@@ -77,17 +77,19 @@ if(p>0)
     end
     
     if(strcmp(problem.physics,'BurgersVisc')==1 && strcmp(problem.goal,'TimeAccurate')==1)
-        problem.params.nu = 5e-3;
+%         problem.params.nu = 5e-3;
+        problem.params.nu = 0.1;
     else
         problem.params.nu = 1;
     end
     
     problem.initializeexact();
     
-    
     u0 = problem.initialSolution;
     ue = problem.exactSolution;
     
+%     plot(x,u0,'o-',x,ue,'-+')
+%     error('1')
     problem.computemoments();
     u=u0;
     switch physics
@@ -202,6 +204,7 @@ global dUdt
 % if(klast > 1e-10 && klast < k)
 dUdt = diffU(U,k,klast);
 
+% dUdt = dUdt *0;
 %  for j = 1:steps
 %     dUdt(:,j) = (U(:,j+1)-U(:,j))/k;
 %  end
@@ -282,6 +285,7 @@ if(q>0 && r > 0)
     
     
     plot(x,R(:,end))
+    ylabel('R')
     max(abs(R(:,end)));
     
     % t = (0:1:nSteps)*k;
@@ -359,10 +363,10 @@ if(q>0 && r > 0)
     
     
     
-    
-    RR = R;
-    J4=problem.errorJacobian;
-    save('test.mat','RR','J4')
+%     
+%     RR = R;
+%     J4=problem.errorJacobian;
+%     save('test.mat','RR','J4')
     
     
     figure(2);clf;
@@ -427,6 +431,7 @@ end
 %     
 %     [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
 %     error('1')
+% error('1')
 
 exacterr-ee;
 te = NaN;

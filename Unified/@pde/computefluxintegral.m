@@ -1,5 +1,24 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1||strcmp(obj.physics,'Burgers')==1 )
+    
+    
+if(strcmp(eqn,'error') == 1)
+    
+    N = obj.nCells;
+    e = zeros(N+2,1);
+    for i = 2:N+1
+        for k = 1:obj.qOrder
+            e(i) = e(i) + Z(k,i)*obj.moments(i,k);
+        end
+    end
+   tidx = round(obj.curTime/obj.tStep) +1;
+   Z = obj.unstructuredrecon(e+obj.Uall(:,tidx),obj.qOrder,'error');
+   Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+   FI = computefluxintegral( obj,Z,'solution' ) - computefluxintegral( obj,Zu,'solution' ) ;
+   obj.computeerrorpseudo();
+   return;
+end
+
     h = obj.cellWidths;
     N = obj.nCells;
     F = zeros(N+2,1);
@@ -72,6 +91,7 @@ if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || str
 %         F
 
     %     error('1')
+ 
     if(strcmp(eqn,'error')==1)
         %              FI
         %              if(isnan(FI(2)))
@@ -238,36 +258,11 @@ else
     F = 0.5*(Fr+Fl);
     
     if(pr==2 && pl == 2)
-        %          if(i==1)
-        %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-        %                 ul1 = right(1)+right(2)*(-h(i+1)/2);
-        %                 ul2 = left(1)+ left(2)*(h(N+1)/2);
-        %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-        %              end
-        %          elseif(i==N+1)
-        %                 ul1 = right(1)+right(2)*(-h(i)/2);
-        %                 ul2 = left(1)+ left(2)*(h()/2);
-        %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-        %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-        %
-        %              end
-        %
-        %          else
-        
-        
         ul1 = right(1)+right(2)*(-h(i+1)/2);
         ul2 = left(1) + left(2)*(h(i)/2);
         jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
-        %          end
-        
+
         F = F+jump;
-        
-        % %             elseif(pr==3 && pl==3)
-        % %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2;
-        % %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2;
-        % %                   jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
-        % %                    F = F+jump;
-        
         
     elseif(pr==4 && pl==4)
         ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
@@ -277,7 +272,6 @@ else
         
         
     end
-    %     end
     
     return;
     
@@ -477,6 +471,7 @@ function [ F ] = computeburgersviscflux( obj,left,right,eqn,i  )
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
 
+
 h = obj.cellWidths;
 N = obj.nCells;
 alpha = obj.jump(2);
@@ -494,41 +489,42 @@ end
 
 nu = obj.params.nu;
 
-if(~isempty(obj.refinecells))
-    if(i==1)
-        p = obj.hOrder;
-    elseif(i==N+1)
-        p = obj.hOrder;
-    else
-        n = length(obj.refinecells);
-        if(i < obj.refinecells(n/2))
-            pl = obj.hOrder;
-            pr = obj.hOrder;
-        elseif(i==obj.refinecells(n/2))
-            pl = obj.hOrder;
-            pr = obj.pOrder;
-        elseif(i== obj.refinecells(n/2+1)-1)
-            pl = obj.pOrder;
-            pr = obj.hOrder;
-        elseif(i> obj.refinecells(n/2+1)-1)
-            pl = obj.hOrder;
-            pr = obj.hOrder;
-        else
-            pl = obj.pOrder;
-            pr = obj.pOrder;
-        end
-        
-    end
-else
-    %     if(strcmp(eqn,'solution')==1)
-    %     p = obj.pOrder;
-    pr = p;%obj.pOrder;
-    pl = p;%obj.pOrder;
-    %     elseif(strcmp(eqn,'residual')==1)
-    %     elseif(strcmp(eqn,'error')==1)
-    %     end
-end
-
+% if(~isempty(obj.refinecells))
+%     if(i==1)
+%         p = obj.hOrder;
+%     elseif(i==N+1)
+%         p = obj.hOrder;
+%     else
+%         n = length(obj.refinecells);
+%         if(i < obj.refinecells(n/2))
+%             pl = obj.hOrder;
+%             pr = obj.hOrder;
+%         elseif(i==obj.refinecells(n/2))
+%             pl = obj.hOrder;
+%             pr = obj.pOrder;
+%         elseif(i== obj.refinecells(n/2+1)-1)
+%             pl = obj.pOrder;
+%             pr = obj.hOrder;
+%         elseif(i> obj.refinecells(n/2+1)-1)
+%             pl = obj.hOrder;
+%             pr = obj.hOrder;
+%         else
+%             pl = obj.pOrder;
+%             pr = obj.pOrder;
+%         end
+%         
+%     end
+% else
+%     %     if(strcmp(eqn,'solution')==1)
+%     %     p = obj.pOrder;
+%     pr = p;%obj.pOrder;
+%     pl = p;%obj.pOrder;
+%     %     elseif(strcmp(eqn,'residual')==1)
+%     %     elseif(strcmp(eqn,'error')==1)
+%     %     end
+% end
+pr = p;
+pl = p;
 
 nonlinearerror = ~strcmp(obj.NLError,'PrimalError');
 utilder = 0;
@@ -543,37 +539,30 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
         U = U+(right(k)*(-h(i+1)/2)^(k-1));
     end
     
-    %
     if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
         F = F+U^2/2;
+        error('1')
     end
-    %
     
     F = F-U^2/2;
     
-    
-    
     if(nonlinearerror && strcmp(eqn,'error')==1)
+        if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;
+        else
+        tidx = round(obj.curTime/obj.tStep) +1;
+        
+        Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+        end
         uorder = obj.qOrder;
-        %             error('1')
     end
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
         for k = 1:uorder
-            %         utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
             utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
         end
         F = F - U * utilder;
-        %         Fl = Fl - ul * utildel;
-        
-        
-        %
-        %         if(strcmp(eqn,'error')==1)
-        %         fprintf('warning - linearized flux')
-        %         F = F + U^2/2;
-        %         end
-        %
+
     end
     return;
     
@@ -587,35 +576,30 @@ elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
         U = U+(left(k)*(h(i)/2)^(k-1)) ;
     end
     
-    
-    %
-    
     if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
         F = F+U^2/2;
     end
     
-    %
-    
     F = F-U^2/2;
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
+        if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;
+        else
+        tidx = round(obj.curTime/obj.tStep) +1;
+        Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+        end
+        
         uorder = obj.qOrder;
     end
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
         for k = 1:uorder
             utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
-            %         utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
         end
-        %         F = F - ur * utilder;
+
         F = F - U * utildel;
-        %
-        %         if(strcmp(eqn,'error')==1)
-        %         fprintf('warning - linearized flux')
-        %         F = F + U^2/2;
-        %         end
-        %
+
     end
     return;
     
@@ -642,7 +626,12 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
     Fl = Fl-ul^2/2;
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
+        if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;
+        else
+            tidx = round(obj.curTime/obj.tStep) +1;
+        Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+        end
         uorder = obj.qOrder;
     end
     if(nonlinearerror && strcmp(eqn,'error')==1)
@@ -654,16 +643,7 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
         Fl = Fl - ul * utildel;
         
     end
-    
-    
-    %
-    %         if(strcmp(eqn,'error')==1)
-    %         fprintf('warning - linearized flux')
-    %         Fr = Fr + ur^2/2;
-    %         Fl = Fl + ul^2/2;
-    
-    %         end
-    %
+
     F = 0.5*(Fr+Fl);
     
     
@@ -713,7 +693,15 @@ else
     
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
+        if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;
+        else
+        tidx = round(obj.curTime/obj.tStep) +1;
+        Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+%         obj.Uall(:,tidx)
+%         Zu
+%         error('1')
+        end
         uorder = obj.qOrder;
     end
     if(nonlinearerror && strcmp(eqn,'error')==1)
@@ -725,38 +713,21 @@ else
         Fl = Fl - ul * utildel;
         
     end
-    %
-    %         if(strcmp(eqn,'error')==1)
-    %         fprintf('warning - linearized flux')
-    %         Fr = Fr + ur^2/2;
-    %         Fl = Fl + ul^2/2;
-    %
-    %         end
-    %
+
     F = 0.5*(Fr+Fl);
     
     if(pr==2 && pl == 2)
-        %          error('1')
-        %          if(i==1)
-        %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-        %                 ul1 = right(1)+right(2)*(-h(i+1)/2);
-        %                 ul2 = left(1)+ left(2)*(h(N+1)/2);
-        %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-        %              end
-        %          elseif(i==N+1)
-        %                 ul1 = right(1)+right(2)*(-h(i)/2);
-        %                 ul2 = left(1)+ left(2)*(h()/2);
-        %                 jump = (.2/((h(i)+h(N+1))/2))*(ul1-ul2) ;
-        %              if(obj.bcLeftType == 'P' && obj.bcRightType == 'P')
-        %
-        %              end
-        %
-        %          else
         ul1 = right(1)+right(2)*(-h(i+1)/2);
         ul2 = left(1) + left(2)*(h(i)/2);
         jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
         %          end
         
+        F = F+jump;
+    elseif(pr==4 && pl==4)
+        
+        ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
+        ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
+        jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
         F = F+jump;
     end
     %     end
@@ -866,12 +837,17 @@ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     if(nonlinearerror && strcmp(eqn,'error')==1)
         %              obj.computerespseudo();%
         %              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+        if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;%obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+        else
+tidx = round(obj.curTime/obj.tStep) +1;
+        Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+        end
         uorder = obj.qOrder;
         %              obj.computeerrorpseudo();%
         %                 obj.convSoln
         %                 error('1')
-        Zu;
+%         Zu;
         % error('1')
     end
     
