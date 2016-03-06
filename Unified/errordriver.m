@@ -283,8 +283,8 @@ if(q>0 && r > 0)
     end
 %     error('2')
 %     U
-    R
-    error('1')
+%     R
+%     error('1')
     
     
     if(exist('goal','var') && strcmp(goal,'FI')==1)

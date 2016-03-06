@@ -297,6 +297,19 @@ obj.initialSolution = u0;
 obj.source = f;
 end
 
+function u=burgersexact(x,t,nu)
+
+num = 0; den = 0;
+for n = 1:20
+    an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
+    num = num+an*exp(-n^2*pi^2*nu*t)*n*sin(n*pi*x);
+    den = den+an*exp(-n^2*pi^2*nu*t)*cos(n*pi*x);
+end
+
+den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);
+u = 2*pi*nu*num./den;
+end
+
 function  burgersviscinitialize(obj)
 %BURGERSINITIALIZE Summary of this function goes here
 %   Detailed explanation goes here
@@ -331,29 +344,32 @@ for i = 2:N+1
             %         ue(i) = (1/h(i))*( (xr - 2*nu*log(exp(-(tlim - 2*xr + 1)/(4*nu)) + 1)) - (xl - 2*nu*log(exp(-(tlim - 2*xl + 1)/(4*nu)) + 1)));
             
             u0(i) = (1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));
-            num = 0; den = 0;an = 0;
-            for n = 1:20
-                an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
-                num = num+an*exp(-n^2*pi^2*nu*tlim)*n*(1/h(i))*(1/(n*pi))*(-cos(n*pi*xr)+cos(n*pi*xl));
-                den = den+an*exp(-n^2*pi^2*nu*tlim)*(1/h(i))*(1/(n*pi))*(sin(n*pi*xr)-sin(n*pi*xl));
-            end
-            
-            den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);
-            ue(i) = 2*pi*nu*num./den;
-            
+%             num = 0; den = 0;an = 0;
+%             for n = 1:20
+%                 an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
+%                 num = num+an*exp(-n^2*pi^2*nu*tlim)*n*(1/h(i))*(1/(n*pi))*(-cos(n*pi*xr)+cos(n*pi*xl));
+%                 den = den+an*exp(-n^2*pi^2*nu*tlim)*(1/h(i))*(1/(n*pi))*(sin(n*pi*xr)-sin(n*pi*xl));
+%             end
+%             
+%             den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);
+%             ue(i) = 2*pi*nu*num./den;
+
             
             obj.exactSolutionAll(i,1) = u0(i);
             kk = 0;
             for tt = obj.tStep:obj.tStep:obj.endTime
                 kk = kk + 1;
-                num = 0; den = 0;
-                for n = 1:20
-                    an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
-                    num = num+an*exp(-n^2*pi^2*nu*tt)*n*(1/h(i))*(1/(n*pi))*(-cos(n*pi*xr)+cos(n*pi*xl));
-                    den = den+an*exp(-n^2*pi^2*nu*tt)*(1/h(i))*(1/(n*pi))*(sin(n*pi*xr)-sin(n*pi*xl));
-                end
-                den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);
-                ue(i) = 2*pi*nu*num./den;
+%                 num = 0; den = 0;
+%                 for n = 1:20
+%                     an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
+%                     num = num+an*exp(-n^2*pi^2*nu*tt)*n*(1/h(i))*(1/(n*pi))*(-cos(n*pi*xr)+cos(n*pi*xl));
+%                     den = den+an*exp(-n^2*pi^2*nu*tt)*(1/h(i))*(1/(n*pi))*(sin(n*pi*xr)-sin(n*pi*xl));
+%                 end
+%                 den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);
+%                 ue(i) = 2*pi*nu*num./den;
+              F = @(s) burgersexact(s,tt,nu);
+              ue(i) = (1/h(i))*quadgk(F,xl,xr);
+
                 obj.exactSolutionAll(i,kk+1) =  ue(i);
                 
             end
