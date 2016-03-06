@@ -18,11 +18,13 @@ if(p>0)
     
     CFL = 0.4;
     k = CFL*h0;
-    
+
+
     if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
         
         if(strncmp(tord,'i',1)==1)
             k = k/4;
+            
         else
             k = k*h0;
         end
@@ -162,6 +164,11 @@ if(p>0)
     problem.Uall(:,1) = u;
 %     plot(x,problem.exactSolution,'o')
 %     error('1')
+% 
+%   ZZ0 = problem.unstructuredrecon(problem.exactSolution(:,1),p,'solution');
+%     ff0 = problem.computefluxintegral(ZZ0,'solution');
+% ff0
+% error('2')
     for j = 1:steps
         U(:,j,1:problem.nUnk) = u;
         
@@ -229,6 +236,10 @@ gsp = NaN;
 % save('test.mat','J','u0')
 % error('1')
 problem.convSoln = u;
+[um un] = size(problem.Uall);
+if(um == 0 || un == 0 )
+   problem.Uall = u; 
+end
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau steps
@@ -259,20 +270,27 @@ if(q>0 && r > 0)
     R = zeros(N+2,steps+1);%nSteps+1);
     tt=0;
     
-    
-    %     dUdt = dUdt*0;
+%     dUdt
+%     error('1')
+%         dUdt = dUdt*0;
     % dUdt(2:N+1,:)=(problem.primalJacobian(2:N+1,2:N+1))*(U(2:N+1,:));
-    
+
     for j = 1:steps+1%nSteps+1
-        %    R(:,j) =computeres(U(:,j),x,h,N,f,r,physics,tt,gsp);
+       
         R(:,j) = problem.computeres(U(:,j),tt,r);
+%  R(:,j) = problem.computeres(problem.exactSolution(:,1),tt,r);
         tt = tt+k;
     end
+%     error('2')
+%     U
+    R
+    error('1')
     
     
     if(exist('goal','var') && strcmp(goal,'FI')==1)
         assert(strcmp(physics,'Poisson')==1)
         for j = 1:nSteps+1
+            error('1')
             R(:,j) = -FI;
         end
     end
@@ -338,7 +356,7 @@ if(q>0 && r > 0)
     global M
     M = steps-1;%nSteps;
     fprintf('Error Equation\n')
-    
+    Emax = 0.1;%max(max(abs(problem.Uall-problem.exactSolutionAll)));
     % % %  AD = computepseudo(N,x,h,q);
     problem.computeerrorpseudo();
     
@@ -373,7 +391,8 @@ if(q>0 && r > 0)
     plt2 = plot(x,u0,'*');
     hold on
     grid on
-    axis([0 1 -1 1])
+    
+    axis([0.1 1 -Emax Emax])
     
     problem.curTime = 0;
     for j = 1:steps%nSteps+1
@@ -432,6 +451,9 @@ end
 %     [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
 %     error('1')
 % error('1')
+% exacterr
+% ee
+% E
 
 exacterr-ee;
 te = NaN;

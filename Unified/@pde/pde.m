@@ -56,6 +56,7 @@ higherprimalPI;
         Uall;
         params = struct('nu',1);
         exactSolutionAll;
+        
     end
     
     methods

@@ -82,7 +82,10 @@ fprintf('D.E.: [%e\t %e\t %e]\n',cverr1, cverr2, cverrinf);
 plot(x,u,'*',x,ue,'o')
 
 obj.convSoln = u;
-
+if(strcmp(obj.goal,'SS')==1)
+   obj.Uall = u; 
+   obj.curTime = 0;
+end
 %h-truncation error
 % Z = obj.unstructuredrecon(u,p,'solution')
 % figure

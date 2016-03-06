@@ -1,23 +1,22 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
 if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1||strcmp(obj.physics,'Burgers')==1 )
+
     
-    
-if(strcmp(eqn,'error') == 1)
-    
-    N = obj.nCells;
-    e = zeros(N+2,1);
-    for i = 2:N+1
-        for k = 1:obj.qOrder
-            e(i) = e(i) + Z(k,i)*obj.moments(i,k);
-        end
-    end
-   tidx = round(obj.curTime/obj.tStep) +1;
-   Z = obj.unstructuredrecon(e+obj.Uall(:,tidx),obj.qOrder,'error');
-   Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
-   FI = computefluxintegral( obj,Z,'solution' ) - computefluxintegral( obj,Zu,'solution' ) ;
-   obj.computeerrorpseudo();
-   return;
-end
+% if(strcmp(eqn,'error') == 1 && strcmp(obj.goal,'TimeAccurate')==1 &&  strcmp(obj.physics,'BurgersVisc')==1)  
+%     N = obj.nCells;
+%     e = zeros(N+2,1);
+%     for i = 2:N+1
+%         for k = 1:obj.qOrder
+%             e(i) = e(i) + Z(k,i)*obj.moments(i,k);
+%         end
+%     end
+%    tidx = round(obj.curTime/obj.tStep) +1;
+%    Z = obj.unstructuredrecon(e+obj.Uall(:,tidx),obj.qOrder,'error');
+%    Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+%    FI = computefluxintegral( obj,Z,'solution' ) - computefluxintegral( obj,Zu,'solution' ) ;
+%    obj.computeerrorpseudo();
+%    return;
+% end
 
     h = obj.cellWidths;
     N = obj.nCells;
@@ -132,6 +131,8 @@ elseif(strcmp(eqn,'residual')==1)
 else
     assert(0);
 end
+
+[p,~] = size(left);
 
 % Z=unstructuredrecon(u,x,h,N,NaN,NaN,p);
 
@@ -295,7 +296,7 @@ elseif(strcmp(eqn,'residual')==1)
 else
     assert(0);
 end
-
+[p,~] = size(left);
 
 if(~isempty(obj.refinecells))
     if(i==1)
@@ -430,7 +431,7 @@ elseif(strcmp(eqn,'residual')==1)
 else
     assert(0);
 end
-
+[p,~] = size(left);
 if(obj.bcLeftType=='P' && obj.bcRightType == 'P')
     Ul = 0;
     Ur = 0;
@@ -486,7 +487,7 @@ elseif(strcmp(eqn,'residual')==1)
 else
     assert(0);
 end
-
+[p,~] = size(left);
 nu = obj.params.nu;
 
 % if(~isempty(obj.refinecells))
@@ -555,18 +556,18 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
         Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
         end
         uorder = obj.qOrder;
-    end
-    
-    if(nonlinearerror && strcmp(eqn,'error')==1)
+
         for k = 1:uorder
             utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
         end
         F = F - U * utilder;
 
     end
+    
     return;
     
 elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    
     F = 0;
     for k = 1:p-1
         F = F + nu*k*left(k+1)*(h(i)/2)^(k-1);
@@ -582,18 +583,23 @@ elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     
     F = F-U^2/2;
     
+    
     if(nonlinearerror && strcmp(eqn,'error')==1)
         if(strcmp(obj.goal,'SS') == 1)        
         Zu = obj.convSolnRecon;
         else
         tidx = round(obj.curTime/obj.tStep) +1;
         Zu = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+        
+%            Zu 
+%            obj.Uall(:,tidx)
+%            tidx
+%         error('1')
+        
         end
         
         uorder = obj.qOrder;
-    end
-    
-    if(nonlinearerror && strcmp(eqn,'error')==1)
+        
         for k = 1:uorder
             utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
         end
@@ -703,8 +709,7 @@ else
 %         error('1')
         end
         uorder = obj.qOrder;
-    end
-    if(nonlinearerror && strcmp(eqn,'error')==1)
+        
         for k = 1:uorder
             utildel = utildel+Zu(k,i)*(h(i)/2)^(k-1);
             utilder = utilder+Zu(k,i+1)*(-h(i+1)/2)^(k-1);
@@ -713,14 +718,24 @@ else
         Fl = Fl - ul * utildel;
         
     end
-
+if(i==2 && strcmp(eqn,'residual')==1)
+%    ul
+%    ur
+%    left
+%    uxl = 0;
+%     for k = 1:pl-1
+%        uxl =  uxl + k*left(k+1)*(h(i)/2)^(k-1);
+%     end
+%     
+% uxl
+%    error('5')
+end
     F = 0.5*(Fr+Fl);
     
     if(pr==2 && pl == 2)
         ul1 = right(1)+right(2)*(-h(i+1)/2);
         ul2 = left(1) + left(2)*(h(i)/2);
         jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
-        %          end
         
         F = F+jump;
     elseif(pr==4 && pl==4)
@@ -728,10 +743,17 @@ else
         ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
         ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
         jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+       
         F = F+jump;
+        
+%         if(i==3 && strcmp(eqn,'residual')==1)
+%             F
+%             error('5')
+%         end
+        
+        
     end
-    %     end
-    
+
     return;
     
 end
