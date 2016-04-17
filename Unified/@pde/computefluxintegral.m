@@ -18,6 +18,11 @@ if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || str
 %    return;
 % end
 
+if(strcmp(eqn,'error')==1)
+       tidx = round(obj.curTime/obj.tStep) +1;
+       obj.convSolnRecon = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
+end
+
     h = obj.cellWidths;
     N = obj.nCells;
     F = zeros(N+2,1);
@@ -548,7 +553,7 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     F = F-U^2/2;
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
-        if(strcmp(obj.goal,'SS') == 1)        
+        if(strcmp(obj.goal,'SS') == 1 || 1)        
         Zu = obj.convSolnRecon;
         else
         tidx = round(obj.curTime/obj.tStep) +1;
@@ -585,7 +590,7 @@ elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
-        if(strcmp(obj.goal,'SS') == 1)        
+        if(strcmp(obj.goal,'SS') == 1 || 1)        
         Zu = obj.convSolnRecon;
         else
         tidx = round(obj.curTime/obj.tStep) +1;
@@ -632,7 +637,7 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
     Fl = Fl-ul^2/2;
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
-        if(strcmp(obj.goal,'SS') == 1)        
+        if(strcmp(obj.goal,'SS') == 1 || 1)        
         Zu = obj.convSolnRecon;
         else
             tidx = round(obj.curTime/obj.tStep) +1;
@@ -699,7 +704,7 @@ else
     
     
     if(nonlinearerror && strcmp(eqn,'error')==1)
-        if(strcmp(obj.goal,'SS') == 1)        
+        if(strcmp(obj.goal,'SS') == 1||1)        
         Zu = obj.convSolnRecon;
         else
         tidx = round(obj.curTime/obj.tStep) +1;
@@ -859,7 +864,7 @@ elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     if(nonlinearerror && strcmp(eqn,'error')==1)
         %              obj.computerespseudo();%
         %              Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
-        if(strcmp(obj.goal,'SS') == 1)        
+        if(strcmp(obj.goal,'SS') == 1 || 1 )        
         Zu = obj.convSolnRecon;%obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
         else
 tidx = round(obj.curTime/obj.tStep) +1;

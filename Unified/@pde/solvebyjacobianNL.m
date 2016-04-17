@@ -150,6 +150,14 @@ if(q> 0 && r>0)
     obj.reconplot(Zr,'residual');
     
     Rend = obj.computefluxintegral(Zr,'residual');
+    
+%     [Zre] = obj.unstructuredrecon(ue,r,'residual');
+%     Rte = Rend;
+%     Rte = Rte - obj.computefluxintegral(Zre,'residual');
+% %     Rte = Rte +h(2)^5*rand(size(Rte));
+% %     max(abs(Rte-Rend))
+% [max(abs(Rte)) max(abs(Rend)) max(abs(Rte-Rend))]
+%     error('1')
     obj.computeerrorpseudo();
     
     Zu = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
@@ -174,7 +182,10 @@ if(q> 0 && r>0)
     [Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
     
     f = -Rend;
-%     f = -Rhte;
+    
+%     f = -Rte;
+
+    
     
     
     mean(abs(f(2:N+1)-tau(2:N+1)));
@@ -186,7 +197,18 @@ if(q> 0 && r>0)
 % %     subplot(1,2,2)
 % %     plot(x,tau-f,'x')
     
-    obj.errorSource = f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
+tau0= tau;
+% tau = tau+rand(N+2,1)*h(2)^1;
+% load('te.mat')
+[mean(abs(f(2:N+1)-tau(2:N+1))) max(abs(f(2:N+1)-tau(2:N+1)))]
+plot(f)
+hold on
+plot(tau0)
+
+% tau4 = tau;
+% save('te.mat','tau4','-append')
+% error('1')
+    obj.errorSource = tau4+f+rand(N+2,1)*h(2)^3;%f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
     
     [tauE]= obj.computefluxintegral(Z,'error');
     tauE1 = sum(abs(tauE(2:N+1)))/N;
@@ -252,16 +274,24 @@ else
     
 end
 % 
-%     J = obj.primalJacobian;
+    J = obj.primalJacobian;
 % J4 = obj.errorJacobian;
+% size(J)
+% size(J4)
 % %     save('jac.mat','J','U','E','R')
-%     save('jac.mat','J')
+%     save('jac.mat','J4','-append')
 % 
 %    [norm((ue(2:end-1)-u(2:end-1))) norm(tau(2:end-1)) norm(inv(J(2:end-1,2:end-1))) norm(inv(Je(2:end-1,2:end-1))*J(2:end-1,2:end-1)) norm(inv(Je(2:end-1,2:end-1))*J(2:end-1,2:end-1))]
 % J(2:end-1,2:end-1) = J(2:end-1,2:end-1)*Je(2:end-1,2:end-1);
 %    [min(eig(J(2:end-1,2:end-1))) max(eig(J(2:end-1,2:end-1))) min(eig(J(2:end-1,2:end-1)*J(2:end-1,2:end-1)')) max(eig(J(2:end-1,2:end-1)*J(2:end-1,2:end-1)')) ] 
-% %    obj.primalJacobian
-% %     [norm(J(2:end-1,2:end-1),2) norm(inv(J(2:end-1,2:end-1)))]
+%    obj.primalJacobian
+%     [norm(J(2:end-1,2:end-1),2)]
+%     [norm(inv(J(2:end-1,2:end-1)))]
+% load('jac.mat')
+% [norm(J(2:end-1,2:end-1)*inv(J4(2:end-1,2:end-1)),2)]
+% [norm(inv(J(2:end-1,2:end-1))*J4(2:end-1,2:end-1),2)]
+% [norm(J(2:end-1,2:end-1)*inv(J4(2:end-1,2:end-1)),2)]
+% [norm(inv(J4(2:end-1,2:end-1))*J(2:end-1,2:end-1),2)]
 %     error('1')
 
 end

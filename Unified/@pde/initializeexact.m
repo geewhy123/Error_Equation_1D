@@ -304,6 +304,9 @@ for n = 1:20
     an = 2*integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))).*cos(n*pi*s),0,1);
     num = num+an*exp(-n^2*pi^2*nu*t)*n*sin(n*pi*x);
     den = den+an*exp(-n^2*pi^2*nu*t)*cos(n*pi*x);
+    if(exp(-n^2*pi^2*nu*t) < 1e-15)
+        break;
+    end
 end
 
 den = den+integral(@(s)exp(-(1/(2*pi*nu))*(1-cos(pi*s))),0,1);

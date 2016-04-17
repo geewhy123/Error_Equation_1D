@@ -17,6 +17,7 @@ if(p>0)
     h0 = 1/N;
     
     CFL = 0.4;
+%     CFL = 1;
     k = CFL*h0;
 
 
@@ -34,7 +35,9 @@ if(p>0)
         end
     end
     
-    
+%     k = 0.002;
+
+
     steps = tlim/k;
     if(abs(round(steps)-steps) > 1e-10)
         fprintf('not an integer number of steps, need to fix residual evaluation\n')
@@ -458,5 +461,6 @@ end
 exacterr-ee;
 te = NaN;
 
+% max(abs(ee))
 clear global
 end
