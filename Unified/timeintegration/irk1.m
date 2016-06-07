@@ -45,8 +45,12 @@ J = obj.computefluxjacobian(obj.Uall(:,istep+1),'solution');
         
 %        -1*obj.residual(:,istep)
 %  obj.errorSource = -1*obj.residual(:,istep);
- 
-    
+
+
+% Ze = obj.unstructuredrecon(obj.exactSolutionAll(:,istep+1),p,'solution');
+% fe = obj.computefluxintegral(Ze,'solution');
+%  obj.errorSource(2:N+1) = -1*((obj.exactSolutionAll(2:N+1,istep+1)-obj.exactSolutionAll(2:N+1,istep))/obj.timeStep-fe(2:N+1));
+%     
 end
 
 u0 = u;
@@ -64,7 +68,7 @@ Z = obj.unstructuredrecon(unew,p,eqn);
 
 f = 1;
 uold = u;
-while(max(abs(f)) > 1e-10)
+while(max(abs(f)) > 1e-12)
     
     J = obj.computefluxjacobian((u),eqn);
     J = eye(N+2,N+2)-(k)*J;

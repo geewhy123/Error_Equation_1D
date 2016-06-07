@@ -208,7 +208,7 @@ plot(tau0)
 % tau4 = tau;
 % save('te.mat','tau4','-append')
 % error('1')
-    obj.errorSource = tau4+f+rand(N+2,1)*h(2)^3;%f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
+    obj.errorSource = f;%tau4+f+rand(N+2,1)*h(2)^3;%f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
     
     [tauE]= obj.computefluxintegral(Z,'error');
     tauE1 = sum(abs(tauE(2:N+1)))/N;
