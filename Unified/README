@@ -1,0 +1,11 @@
+/*********************************************
+* Error_Equation_1D (in progress)  
+* Solves the ETE using k-exact FV method for 
+* steady and unsteady problems.
+* 
+* Example usage:
+*
+* errordriver(10,2,4,4,1/3,'D',0,'D',-2*tanh(1),0.1,'irk1','BurgersVisc','SS')
+* 
+* errordriver(20,2,4,4,1,'D',0,'D',0,0.1,'icn','Poisson','TimeAccurate')
+**********************************************/
