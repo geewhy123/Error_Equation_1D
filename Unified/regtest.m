@@ -1,7 +1,9 @@
 
 %clean 11-12-15
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,1/3,'P',0,'P',0,1,'rk7','Poisson','SS');
-assert(abs(errerr2-0.008889241936575)/errerr2 < 0.001)%
+[err4,x,cverr2,exacterr,ee,te]=errordriver(10,4,0,0,1/3,'P',0,'P',0,1,'rk7','Poisson','SS');
+
+assert(abs(errerr2-err4)/errerr2 < 0.0001)%
 
 [errerr2,x,cverr2,exacterr,ee,te]=errordriver(10,2,4,4,0,'D',0,'D',0,10,'rk7','Poisson','SS');
 assert(abs(errerr2-0.014910710436112)/errerr2 < 0.001)%

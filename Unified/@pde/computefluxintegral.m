@@ -18,7 +18,7 @@ if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || str
 %    return;
 % end
 
-if(strcmp(eqn,'error')==1)
+if(strcmp(eqn,'error')==1 && strcmp(obj.goal,'SS')~=1)
        tidx = round(obj.curTime/obj.tStep) +1;
        obj.convSolnRecon = obj.unstructuredrecon(obj.Uall(:,tidx),obj.qOrder,'error');
 end
@@ -533,6 +533,7 @@ pr = p;
 pl = p;
 
 nonlinearerror = ~strcmp(obj.NLError,'PrimalError');
+
 utilder = 0;
 utildel = 0;
 if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
@@ -555,6 +556,9 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     if(nonlinearerror && strcmp(eqn,'error')==1)
         if(strcmp(obj.goal,'SS') == 1 || 1)        
         Zu = obj.convSolnRecon;
+%         obj.convSolnRecon
+%         obj.bcRightVal
+%         error('4')
         else
         tidx = round(obj.curTime/obj.tStep) +1;
         

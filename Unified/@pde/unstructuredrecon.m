@@ -295,7 +295,8 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
         ub4 = u(cv4);
         ubi = u(i);
         uL = obj.bcRightVal;
-
+% uL
+% error('6')
         if(isstr(obj.bcRightVal))
         t = obj.curTime;
         uL = eval(obj.bcRightVal);
@@ -528,6 +529,7 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
           if(isstr(obj.bcRightVal))
         t = obj.curTime;
         uL = eval(obj.bcRightVal);
+        error('5')
         end
         
 %         obj.bcRightVal = uL;

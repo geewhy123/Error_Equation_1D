@@ -177,14 +177,17 @@ if(q> 0 && r>0)
     if(obj.bcRightType == 'D')
         obj.bcRightVal = 0;uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
     end
-    
+
     exacterr = ue-u;
     [Z] = obj.unstructuredrecon(exacterr,q,'error');%ue,x,h,N,NaN,NaN,p);
     
     f = -Rend;
+ 
     
 %     f = -Rte;
-
+%   f
+%         Zr
+%         error('1')
     
     
     
@@ -210,7 +213,7 @@ plot(tau0)
 % error('1')
     obj.errorSource = f;%tau4+f+rand(N+2,1)*h(2)^3;%f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
     
-    [tauE]= obj.computefluxintegral(Z,'error');
+    [tauE]= obj.computefluxintegral(Z,'solution');
     tauE1 = sum(abs(tauE(2:N+1)))/N;
     tauE2 = sqrt(sum((tauE(2:N+1).^2)/N));
     tauEinf = max(abs(tauE(2:N+1)));
@@ -226,7 +229,11 @@ plot(tau0)
     
     total_time = 0;
     
+%     tau
+% f
+%     error('7')
     while(max(abs(R)) > 1e-11 )
+        
         Je = obj.computefluxjacobian(e,'error');%,x,h,N,p);
         count = count +1;
         Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2);

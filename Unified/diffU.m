@@ -2,6 +2,9 @@
 %DIFFU Summary of this function goes here
 %   Detailed explanation goes here
 
+% [ dUdt] = diffUalt( U ,k,klast);
+% return
+
 [m,n] = size(U);
 
 % k

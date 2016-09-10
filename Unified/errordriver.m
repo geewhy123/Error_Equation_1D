@@ -18,8 +18,10 @@ if(p>0)
     
     CFL = 0.4;
 %     CFL = 1;
-    k = CFL*h0;
+% CFL = 0.2;
 
+    k = CFL*h0;
+% k = 1e-2;
 
     if(strcmp(physics,'Poisson')==1 || strcmp(physics,'BurgersVisc') == 1)
         
@@ -341,6 +343,10 @@ if(q>0 && r > 0)
         spu = pchip(T,U(j,:));
         Usp(j) = spu;
         % Rsp(j) = pchip(T,R(j,:));
+%         fnval(k,Rsp(j))
+%         fnval(1.5*k,Rsp(j))
+%         fnval(2*k,Rsp(j))
+%         error('1')
     end
     
     % figure
@@ -355,6 +361,16 @@ if(q>0 && r > 0)
     
     
     problem.Rsp =Rsp;
+    
+    
+    figure
+    Utall = problem.Uall;
+    for i = 2:N+1
+    Utall(i,:) = diffU(problem.Uall(i,:),k,k);
+    end
+    plot(x,Utall(:,end))
+%     error('1')
+    
     
     global M
     M = steps-1;%nSteps;
@@ -460,6 +476,11 @@ end
 
 exacterr-ee;
 te = NaN;
+
+% E=problem.exactSolutionAll-problem.Uall;
+% save('tmp.mat','x','E')
+% problem.source
+% plot(x,problem.source(1,:))
 
 % max(abs(ee))
 clear global

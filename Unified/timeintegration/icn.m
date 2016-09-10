@@ -8,8 +8,8 @@ if (strcmp(eqn,'error')==1)
     val1 = NaN*ones(N+2,1);
     
     for kk = 2:N+1
-        val0(kk,1) = fnval(time,obj.Rsp(kk));
-        val1(kk,1) = fnval(time+k,obj.Rsp(kk));
+        val0(kk,1) = 999*fnval(time,obj.Rsp(kk));
+        val1(kk,1) = 999*fnval(time+k,obj.Rsp(kk));
     end
     obj.errorSource = 0*val0(:,1);
     i = round(obj.curTime/obj.tStep) +1;
@@ -30,32 +30,51 @@ if (strcmp(eqn,'error')==1)
     Z1 = obj.unstructuredrecon(obj.Uall(:,i+1),obj.pOrder,'solution');
     f1 = obj.computefluxintegral(Z1,'solution');
      
-%     R0(2:N+1) =  -(1/12)*obj.tStep^2*JJ^3*obj.Uall(2:N+1,i);%+(1/12)*obj.tStep^3*JJ^4*obj.Uall(2:N+1,i);
-%     R1(2:N+1) =  -(1/12)*obj.tStep^2*JJ^3*obj.Uall(2:N+1,i+1);%+(1/12)*obj.tStep^3*JJ^4*obj.Uall(2:N+1,i+1);
+% %     R0(2:N+1) =  -(1/12)*obj.tStep^2*JJ^3*obj.Uall(2:N+1,i);%+(1/12)*obj.tStep^3*JJ^4*obj.Uall(2:N+1,i);
+% %     R1(2:N+1) =  -(1/12)*obj.tStep^2*JJ^3*obj.Uall(2:N+1,i+1);%+(1/12)*obj.tStep^3*JJ^4*obj.Uall(2:N+1,i+1);
+% 
+%      R0(2:N+1) =  -(1/12)*obj.tStep^2*JJ0^2*f0(2:N+1);
+%     R1(2:N+1) =  -(1/12)*obj.tStep^2*JJ1^2*f1(2:N+1);
+%     
+% %     R0(2:N+1) = R0(2:N+1) + -(1/24)*obj.tStep^3*JJ0^3*f0(2:N+1);
+% %     R1(2:N+1) = R1(2:N+1) +  -(1/24)*obj.tStep^3*JJ1^3*f1(2:N+1);
+% 
+% H0 = zeros(N+2,N+2,N+2);
+% H1 = H0;
+% for kk = 2:N+1
+%     delta = 1e-8;
+%     del = zeros(N+2,1);
+%     del(kk) = delta;
+%    H0(:,:,kk) =  (obj.computefluxjacobian(obj.Uall(:,i)+del,'solution')-obj.computefluxjacobian(obj.Uall(:,i),'solution'))/delta;
+%    H1(:,:,kk) =  (obj.computefluxjacobian(obj.Uall(:,i+1)+del,'solution')-obj.computefluxjacobian(obj.Uall(:,i+1),'solution'))/delta;
+% end
+% for ii = 2:N+1
+%     for jj = 2:N+1
+%         for kk = 2:N+1
+%             R0(ii) = R0(ii)+H0(ii,jj,kk)*f0(jj)*f0(kk)*(-1/12)*obj.tStep^2;
+%             R1(ii) = R1(ii)+H1(ii,jj,kk)*f1(jj)*f1(kk)*(-1/12)*obj.tStep^2;
+%         end
+%     end 
+% end
 
-     R0(2:N+1) =  -(1/12)*obj.tStep^2*JJ0^2*f0(2:N+1);
-    R1(2:N+1) =  -(1/12)*obj.tStep^2*JJ1^2*f1(2:N+1);
-    
-%     R0(2:N+1) = R0(2:N+1) + -(1/24)*obj.tStep^3*JJ0^3*f0(2:N+1);
-%     R1(2:N+1) = R1(2:N+1) +  -(1/24)*obj.tStep^3*JJ1^3*f1(2:N+1);
 
-H0 = zeros(N+2,N+2,N+2);
-H1 = H0;
-for kk = 2:N+1
-    delta = 1e-8;
-    del = zeros(N+2,1);
-    del(kk) = delta;
-   H0(:,:,kk) =  (obj.computefluxjacobian(obj.Uall(:,i)+del,'solution')-obj.computefluxjacobian(obj.Uall(:,i),'solution'))/delta;
-   H1(:,:,kk) =  (obj.computefluxjacobian(obj.Uall(:,i+1)+del,'solution')-obj.computefluxjacobian(obj.Uall(:,i+1),'solution'))/delta;
-end
-for ii = 2:N+1
-    for jj = 2:N+1
-        for kk = 2:N+1
-            R0(ii) = R0(ii)+H0(ii,jj,kk)*f0(jj)*f0(kk)*(-1/12)*obj.tStep^2;
-            R1(ii) = R1(ii)+H1(ii,jj,kk)*f1(jj)*f1(kk)*(-1/12)*obj.tStep^2;
-        end
-    end 
-end
+% % grad(Jf)f
+% R0 = R0*0;
+% R1 = R1*0;
+%     delta = 1e-8;
+% for kk = 2:N+1
+%     Zd = obj.unstructuredrecon(obj.Uall(:,i)+delta*f0,obj.pOrder,'solution');
+%     fd = obj.computefluxintegral(Zd,'solution');
+%     Jd = obj.computefluxjacobian(obj.Uall(:,i)+delta*f0,'solution');
+%     R0(2:N+1) =  ((Jd(2:N+1,2:N+1)*fd(2:N+1)-J0(2:N+1,2:N+1)*f0(2:N+1))/delta)*(-1/12)*obj.tStep^2;
+%     
+%     Zd = obj.unstructuredrecon(obj.Uall(:,i+1)+delta*f1,obj.pOrder,'solution');
+%     fd = obj.computefluxintegral(Zd,'solution');
+%     Jd = obj.computefluxjacobian(obj.Uall(:,i+1)+delta*f1,'solution');
+%     R1(2:N+1) =  ((Jd(2:N+1,2:N+1)*fd(2:N+1)-J1(2:N+1,2:N+1)*f1(2:N+1))/delta)*(-1/12)*obj.tStep^2;
+% 
+% end
+
     
 % unsteady burgers?
 % if(i==4)
@@ -77,7 +96,25 @@ end
 %  plot(x,R0,'*')
 %  error('1')
  
-    %exact te
+
+
+% %%%
+% R0 = 0*R0;
+% R1 = 0*R1;
+% Z0 = obj.unstructuredrecon(obj.Uall(:,i),obj.pOrder,'solution');
+% y1 = k*obj.computefluxintegral(Z0,'solution');
+% Z0 = obj.unstructuredrecon(obj.Uall(:,i)+y1/2,obj.pOrder,'solution');
+% y2 = k*obj.computefluxintegral(Z0,'solution');
+% Z0 = obj.unstructuredrecon(obj.Uall(:,i)+y2/2,obj.pOrder,'solution');
+% y3 = k*obj.computefluxintegral(Z0,'solution');
+% Z0 = obj.unstructuredrecon(obj.Uall(:,i)+y3,obj.pOrder,'solution');
+% y4 = k*obj.computefluxintegral(Z0,'solution');
+% R0 = (1/1)*(obj.Uall(:,i+1)-obj.Uall(:,i))-(1/1)*(y1/6-y2/3-y3/3-y4/6);
+% R1 = R0;
+%%%
+
+%     %exact te
+%     r0 = R0;r1 = R1;
 %     if(obj.pOrder == obj.qOrder)
 %     ZZ1 = obj.unstructuredrecon(obj.exactSolutionAll(:,i+1),p,'solution');
 %     ff1 = obj.computefluxintegral(ZZ1,'solution');
@@ -99,19 +136,32 @@ end
 %     ff4 = obj.computefluxintegral(ZZ4,'solution');
 %     ZZ5 = obj.unstructuredrecon(obj.Uall(:,i+1),p,'error');
 %     ff5 = obj.computefluxintegral(ZZ5,'solution');
-%     r0 = R0;
-%     r1 = R1;
-%     R0 = (1/obj.tStep)*(obj.exactSolutionAll(:,i+1)-obj.exactSolutionAll(:,i))-ff1-ff3+ff5;
-%     R1 = (1/obj.tStep)*(obj.exactSolutionAll(:,i+1)-obj.exactSolutionAll(:,i))-ff0-ff2+ff4;
-% 
+% %     r0 = R0;
+% %     r1 = R1;
 %     
 %     
-%     R1 = R1+zeros(size(R1))*h(2)^4;
+% %     R0 = (1/obj.tStep)*(obj.exactSolutionAll(:,i+1)-obj.exactSolutionAll(:,i))-ff1-ff3+ff5;
+% %     R1 = (1/obj.tStep)*(obj.exactSolutionAll(:,i+1)-obj.exactSolutionAll(:,i))-ff0-ff2+ff4;
+%   
+%     DD0 = obj.residual(:,i)-ff5;
+%     DD1 = obj.residual(:,i+1)-ff4;
+% %     R1 = R1+zeros(size(R1))*h(2)^4;
 % %     [r0+r1 R0+R1]
-% %     error('1')
-%     
+% % %     error('1')
+% %     
 %     end
     
+    
+    if(0 && time > obj.endTime/2)
+       max(abs(r0+r1-R0-R1))
+       max(abs(DD0+DD1+2*(obj.Uall(:,i+1)-obj.Uall(:,i))/k))
+%            [r0+r1 R0+R1]
+%        figure
+%        plot(x,R0+R1);
+obj.Uall(floor(obj.nCells/2),:)
+       error('1')
+       
+    end
 %     
 %     Z = obj.unstructuredrecon(u,p,eqn);
 %     f = obj.computefluxintegral(Z,eqn);

@@ -122,9 +122,9 @@ for i = 2:N+1
     %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
     if(obj.bcLeftType == 'P' && obj.bcRightType == 'P'|| strcmp(obj.goal,'SS')~=1)
         
-        ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+        ue(i) = (1/h(i))*(-1/(1*pi))*(cos(1*pi*xr)-cos(1*pi*xl));
         if(strcmp(obj.goal,'TimeAccurate')==1)
-            ue(i)= (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tlim))*(cos(2*pi*xr)-cos(2*pi*xl)));%+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
+            ue(i)= (1/h(i))*((-1/(1*pi))*(100*exp(-1*pi^2*tlim))*(cos(1*pi*xr)-cos(1*pi*xl)));%+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
             %   ue(i)= (1/h(i))*((-1/(pi))*(100*exp(-pi^2*tlim))*(cos(pi*xr)-cos(pi*xl)));
             f(i) = 0;
             
@@ -134,7 +134,7 @@ for i = 2:N+1
             for tt = 0:obj.tStep:obj.endTime
                 kk = kk + 1;
                 
-                obj.exactSolutionAll(i,kk) =  (1/h(i))*((-1/(2*pi))*(100*exp(-4*pi^2*tt))*(cos(2*pi*xr)-cos(2*pi*xl)));
+                obj.exactSolutionAll(i,kk) =  (1/h(i))*((-1/(1*pi))*(100*exp(-1*pi^2*tt))*(cos(1*pi*xr)-cos(1*pi*xl)));
             end
             
         end
@@ -170,7 +170,7 @@ for i = 2:N+1
     u0(i)=0;
     
     if(strcmp(obj.goal,'TimeAccurate')==1)
-        u0(i)=  (1/h(i))*(-100/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+        u0(i)=  (1/h(i))*(-100/(1*pi))*(cos(1*pi*xr)-cos(1*pi*xl));
         
         %   u0(i)=  (1/h(i))*(-100/(pi))*(cos(pi*xr)-cos(pi*xl));
     end
