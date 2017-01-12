@@ -33,6 +33,18 @@ end
     %         error('1')
     if(strcmp(eqn,'solution')==1 || strcmp(eqn,'residual')==1)
         f = obj.source;
+        tt = obj.curTime;
+        if(isempty(tt)) 
+            tt=0;
+        end
+            for j = 2:N+1
+                x = obj.cellCentroids;
+                h = obj.cellWidths;
+                 xl = x(j)-h(j)/2;
+                xr = x(j)+h(j)/2;
+                f(j) = (1/h(j))*(-1/pi)*(cos(pi*xr)-cos(pi*xl))*(-sin(tt)+pi^2*cos(tt));
+            end
+        
         %             if(strcmp(obj.goal,'TimeAccurate')==1)
         %
         %                 f = obj.computeTimeDepSource();

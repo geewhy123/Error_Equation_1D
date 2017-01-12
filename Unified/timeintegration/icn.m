@@ -10,6 +10,7 @@ if (strcmp(eqn,'error')==1)
     for kk = 2:N+1
         val0(kk,1) = 999*fnval(time,obj.Rsp(kk));
         val1(kk,1) = 999*fnval(time+k,obj.Rsp(kk));
+        error('1')
     end
     obj.errorSource = 0*val0(:,1);
     i = round(obj.curTime/obj.tStep) +1;

@@ -245,6 +245,13 @@ problem.convSoln = u;
 if(um == 0 || un == 0 )
    problem.Uall = u; 
 end
+
+for j = 1:20
+plot(problem.exactSolutionAll(:,j)-problem.Uall(:,j))
+pause(1)
+hold on
+end
+
 if(q>0 && r > 0)
     
     clearvars -except u N p q r unif FI bta f cverr2 v k ue u0 tlim tord uo physics uder nSteps gsp U h x goal dUdt X problem Je tau steps

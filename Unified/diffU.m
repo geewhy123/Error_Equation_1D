@@ -53,7 +53,9 @@ for j = 1:n
         [j n];
         dUdt(:,j) = U(:,j:j+nt)*cl/k;
     elseif(j>=(n-(nt/2-1)))
-       
+       if(j==19)
+          U(:,j-nt:j)
+       end
         dUdt(:,j) = U(:,j-nt:j)*cr/k;
     end
     
