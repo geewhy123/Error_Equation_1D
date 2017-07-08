@@ -64,8 +64,56 @@ if(p>0)
     for i = 2:N+1
         h(i) = X(i)-X(i-1);
     end
+
+% w = 2;
+% ff = @(s) 1+w*N*s-(1+s)^N;
+% options = optimset(optimset('fsolve'), 'TolFun', 1.0e-16, 'TolX',1.0e-16,'MaxFunEvals',200);
+% ss = fsolve(ff,0.5,options)
+% assert(abs(ss) > 1e-12 )
+% for j = 2:N+1
+% h(j) = (1/(w*N))*(1+ss)^(j-2);
+% end
+
+
+% cc = 2;
+% a = 1;
+% w = ((1+cc/N^a)^N-1)/(cc*N^(1-a));
+% for j = 2:N+1
+% h(j) = (1/(w*N))*(1+cc/N^a)^(j-2);
+% end
+
+% w = 2;
+% ff = @(s) 1-(2*w/N)*(1-1/(1+s)^(N/2))/(1-1/(1+s));
+% options = optimset(optimset('fsolve'), 'TolFun', 1.0e-16, 'TolX',1.0e-16,'MaxFunEvals',200);
+% ss = fsolve(ff,0.5,options)
+% assert(abs(ss) > 1e-12 )
+% for j = 2:N/2+1
+% h(j) = (w/N)/(1+ss)^(N/2-j+1);
+% end
+% for j = N/2+2:N+1
+% h(j) = (w/N)/(1+ss)^(j-N/2-2);
+% end
+
+
+
+for j = 2:N
+X(j) = X(j-1)+h(j);
+end
+
+for j = 2:N+1
+x(j) = 0.5*(X(j)+X(j-1));
+end
+h
+ X
+ x
+% cc/N
+% error('1')
+
+
     h(1) = h(N+1);
     h(N+2) = h(2);    
+
+
     if(strcmp(physics,'LinearSystem')==1)
         problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
         problem.ebcL = ebcL;

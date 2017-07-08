@@ -354,12 +354,21 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
     Fl = 0;
     Fr = 0;
     
-    for k = 1:p
-        Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+%     for k = 1:p
+%         Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+%     end
+    for k = 1:p-2
+        Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
     end
-    for k = 1:p
-        Fl = Fl + left(k)*(h(i)/2)^(k-1);
-    end
+
+%     for k = 1:p
+%         Fl = Fl + left(k)*(h(i)/2)^(k-1);
+%     end
+%     for k = 1:p-2
+%         Fl = Fl + k*right(k+2)*(-h(i+1)/2)^(k-1);
+%     end
+
+
     F = Fr;%0.5*(Fr+Fl);
     
     if(p==2)
@@ -381,12 +390,16 @@ else
     Fl = 0;
     Fr = 0;
     
-    for k = 1:pr
-        Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+%     for k = 1:pr
+%         Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
+%     end
+    for k = 1:pr-2
+        Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
     end
-    for k = 1:pl
-        Fl = Fl + left(k)*(h(i)/2)^(k-1);
-    end
+% 
+%     for k = 1:pl
+%         Fl = Fl + left(k)*(h(i)/2)^(k-1);
+%     end
     F =Fr;% 0.5*(Fr+Fl);
     
     if(pr==2 && pl == 2)
@@ -532,6 +545,7 @@ nu = obj.params.nu;
 pr = p;
 pl = p;
 
+% obj.NLError
 nonlinearerror = ~strcmp(obj.NLError,'PrimalError');
 
 utilder = 0;
@@ -548,7 +562,7 @@ if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
     
     if(strcmp(obj.NLError,'NewtonError')==1 && strcmp(eqn,'error')==1)
         F = F+U^2/2;
-        error('1')
+%         error('1')
     end
     
     F = F-U^2/2;

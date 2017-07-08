@@ -20,7 +20,9 @@ x = obj.cellCentroids;
 obj.computeprimalpseudo();
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
-obj.NLError = 'NLError';
+%obj.NLError = 'NLError';
+obj.NLError = 'NewtonError';
+
     
 [tau]=obj.computefluxintegral(Z,'solution');
 te1 = sum(abs(tau(2:N+1)))/N;
@@ -47,6 +49,10 @@ Rold = R;
 dtold = 1;
 while(max(abs(R)) > 2e-11 )
     J = obj.computefluxjacobian(u,'solution');
+    
+%     [U,S,V] = svd(J(2:end-1,2:end-1))
+%     error('5')
+    
     count = count +1;
     if(count > 100)
         break;
@@ -68,6 +74,9 @@ while(max(abs(R)) > 2e-11 )
     
     total_time = total_time+dt;
     fprintf('dt = %e , time = %e, Residual = %e \n', dt,total_time,max(abs(R)))
+    
+%     norm(inv(J(2:N+1,2:N+1))*N^2)
+%     error('6')
     
 end
 
@@ -172,9 +181,11 @@ if(q> 0 && r>0)
     end
     
     if(obj.bcLeftType == 'D')
+        primalbcLeft = obj.bcLeftVal;
         obj.bcLeftVal = 0;uRL;(Z(1,2)+Z(2,2)*-h(2)/2); 0;
     end
     if(obj.bcRightType == 'D')
+        primalbcRight = obj.bcRightVal;
         obj.bcRightVal = 0;uRR;(Z(1,N+1)+Z(2,N+1)*h(N+1)/2);0;
     end
 
@@ -232,9 +243,11 @@ plot(tau0)
 %     tau
 % f
 %     error('7')
+e = 0*e;
     while(max(abs(R)) > 1e-11 )
         
         Je = obj.computefluxjacobian(e,'error');%,x,h,N,p);
+        
         count = count +1;
         Rratio =norm(Rold(2:N+1),2)/norm(R(2:N+1),2);
         
@@ -243,6 +256,46 @@ plot(tau0)
         [Z] = obj.unstructuredrecon(e,q,'error');
         Rold = R;
         [R]=obj.computefluxintegral(Z,'error');
+        
+        
+% % % % %         %
+% % % % % %         norm(Je(2:N+1,2:N+1))
+% % % % %          e(2:N+1) = Je(2:N+1,2:N+1)\-R(2:N+1);
+% % % % %          e(N+2) = NaN;
+% % % % % %          [e exacterr]
+% % % % %          ee = e;
+% % % % %          disp('newtonerror')
+% % % % %          
+% % % % % %          obj
+% % % % %          %          error('1')
+% % % % %          disp('re-linearize')
+% % % % %          
+% % % % % obj.bcLeftVal = primalbcLeft;
+% % % % % obj.bcRightVal = primalbcRight;
+% % % % %          obj.qOrder  = 6;
+% % % % %          obj.rOrder = 6;
+% % % % %           obj.convSoln = obj.convSoln+e;
+% % % % % obj.computerespseudo();
+% % % % % obj.computeerrorpseudo();
+% % % % % obj
+% % % % %           [Zs] = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+% % % % %          obj.convSolnRecon = Zs;
+% % % % % 
+% % % % % % error('1')
+% % % % %          e = 0*e;
+% % % % %          obj.bcLeftVal = 0;
+% % % % %          obj.bcRightVal = 0;
+% % % % %          Je6 = obj.computefluxjacobian(e,'error');
+% % % % %          [norm(Je6(2:N+1,2:N+1)) norm(Je(2:N+1,2:N+1))]
+% % % % %          [Z6] = obj.unstructuredrecon(e,obj.qOrder,'error');
+% % % % %          [R6]=obj.computefluxintegral(Z6,'error');
+% % % % %          e(2:N+1) = Je6(2:N+1,2:N+1)\-R6(2:N+1);
+% % % % %          ee = e;
+% % % % % %          full(Je)
+% % % % %         break;
+% % % % %         %
+        
+        
         del = pinv(K)*-R(2:N+1);
         
         max(abs(R(2:N+1)));
@@ -256,6 +309,8 @@ plot(tau0)
         total_time = total_time+dt;
         fprintf('dt = %e , time = %e, Residual = %e \n', dt,total_time,max(abs(R)))
     end
+    
+    
     w = exacterr-ee;
 
     ee = exacterr - w;
@@ -266,8 +321,16 @@ plot(tau0)
     errerrinf = max(abs(errerr(2:N+1)));
     
     figure
-    plot(x,ee,'*',x,exacterr,'o')
-    
+    set(gca,'FontSize',25)
+    h=plot(x,ee,'*',x,exacterr,'o','LineWidth',2)
+    xlabel('x','FontSize',25)
+%     ylabel('Discretization Error $$\epsilon$$','FontSize',30,'Interpreter','Latex')
+%     legend('Estimate','Exact')
+ylim([-0.04 0.03])
+numberOfXTicks = 8;
+xData = get(h,'XData');
+set(gca,'Ytick',-0.04:0.01:0.03)
+%set(gca,'YTickLabel',{'-0.04', '-0.03', '-0.02', '-0.01', '0', '0.01', '0.02', '0.03'})
     fprintf('\nError T.E.: [%e\t %e\t %e]\n',tauE1, tauE2, tauEinf);
     fprintf('Error D.E.: [%e\t %e\t %e]\n',errerr1, errerr2, errerrinf);
  

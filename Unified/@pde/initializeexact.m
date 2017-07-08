@@ -215,9 +215,17 @@ for i = 2:N+1
         ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr+tlim)) -cos(2*pi*(xl+tlim)));
         u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
         f(i) = 0;
+%KdV
+%     ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*(xr-tlim*(2*pi)^2)) -cos(2*pi*(xl-tlim*(2*pi)^2)));
+%         u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+%         f(i) = 0;
+    ue(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*(xr-tlim*(2*pi)^2)) -sin(2*pi*(xl-tlim*(2*pi)^2)));
+        u0(i) = (1/h(i))*(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl));
+        f(i) = 0;
     elseif(obj.bcLeftType == 'F' && obj.bcRightType == 'D')
         ue(i) = (1/h(i))*(xr-xl);%(1/h(i))*(1/pi)*(-cos(pi*xr)+cos(pi*xl));%(1/h(i))*(xr-xl);
         u0(i) = 0;%(1/h(i))*((1/pi)*(-cos(pi*xr)+cos(pi*xl))+xr-xl);
+
         f(i) = 0;
     else
         %     ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
@@ -225,7 +233,6 @@ for i = 2:N+1
         %     f(i) =
         assert(0)
     end
-    
     
     if(strcmp(obj.goal,'SS')==1)%|| obj.endTime > 8)
         ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
@@ -246,6 +253,9 @@ u0(N+2)= NaN;
 obj.exactSolution = ue;
 obj.initialSolution = u0;
 obj.source = f;
+
+
+
 end
 
 function  burgersmodinitialize(obj)
