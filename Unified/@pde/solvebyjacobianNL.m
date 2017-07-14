@@ -20,8 +20,9 @@ x = obj.cellCentroids;
 obj.computeprimalpseudo();
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
-%obj.NLError = 'NLError';
+% obj.NLError = 'NLError';
 obj.NLError = 'NewtonError';
+disp(obj.NLError)
 
     
 [tau]=obj.computefluxintegral(Z,'solution');
@@ -91,6 +92,12 @@ fprintf('D.E.: [%e\t %e\t %e]\n',cverr1, cverr2, cverrinf);
 plot(x,u,'*',x,ue,'o')
 
 obj.convSoln = u;
+
+% load('u244lin.mat')
+% u = Upe;
+% obj.convSoln = u;
+
+
 if(strcmp(obj.goal,'SS')==1)
    obj.Uall = u; 
    obj.curTime = 0;
@@ -363,6 +370,62 @@ end
 % [norm(J(2:end-1,2:end-1)*inv(J4(2:end-1,2:end-1)),2)]
 % [norm(inv(J4(2:end-1,2:end-1))*J(2:end-1,2:end-1),2)]
 %     error('1')
+
+% if q == 0
+%  obj.convSoln
+% else
+% obj.convSoln+e
+% end
+
+disp('re-linearize')
+obj.bcLeftVal = primalbcLeft;
+obj.bcRightVal = primalbcRight;
+obj.qOrder  = 6;
+obj.rOrder = 6;
+obj.convSoln = obj.convSoln+e;
+
+obj.computerespseudo();
+[Z6] = obj.unstructuredrecon(obj.convSoln,obj.rOrder,'residual');
+[R6]=obj.computefluxintegral(Z6,'residual');
+
+obj.convSolnRecon = Z6;
+obj.computeerrorpseudo();
+[Zs] = obj.unstructuredrecon(obj.convSoln,obj.qOrder,'error');
+% obj.convSolnRecon = Zs;
+
+% error('1')
+e = 0*e;
+obj.bcLeftVal = 0;
+obj.bcRightVal = 0;
+Je6 = obj.computefluxjacobian(e,'error');
+% Je6
+% R6
+
+% [norm(Je6(2:N+1,2:N+1)) norm(Je(2:N+1,2:N+1))]
+e(2:N+1) = Je6(2:N+1,2:N+1)\-R6(2:N+1);
+
+
+
+disp('')
+disp('relin corr:')
+% disp(max(abs(ue-(u+e))))
+disp(max(abs(ue-(obj.convSoln+e))))
+
+
+
+% figure
+% plot(x,obj.convSoln+e)
+% [ue obj.convSoln ]
+%          full(Je)
+
+%
+
+ errerr = ue-(obj.convSoln+e);
+    errerr2 = sqrt(sum((errerr(2:N+1)).^2)/N) ;
+% Upe = obj.convSoln+e;
+% save('u244lin.mat','Upe')
+
+
 
 end
 

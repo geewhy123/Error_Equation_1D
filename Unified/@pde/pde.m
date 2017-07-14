@@ -56,11 +56,12 @@ higherprimalPI;
         Uall;
         params = struct('nu',1);
         exactSolutionAll;
+        qRelin;
         
     end
     
     methods
-        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,wt)
+        function obj = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,wt,qRelin)
             if(nargin>0)
          obj.nCells = N;
         obj.pOrder = p;
@@ -79,7 +80,7 @@ higherprimalPI;
          obj.cellEndPoints = X;
          obj.tStep = k;
          obj.weight = wt;
-         
+         obj.qRelin = qRelin;
             end
         end
 %     end

@@ -1,13 +1,15 @@
 
-function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle,NLflux)
+function [errerr2,x,cverr2,exacterr,ee ,te ] = errordriver( N,p,q,r ,unif,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,jump,bchandle,NLflux,qRelin)
 ebcL = 0;
 ebcR = 0;
 
 if nargin == 13
     jump(1:3) = 0.2;
     bchandle = 'HC';
+    qRelin = 0;
 elseif nargin == 14
     bchandle = 'HC';
+    qRelin = 0;
 end
 
 close all
@@ -103,9 +105,9 @@ end
 for j = 2:N+1
 x(j) = 0.5*(X(j)+X(j-1));
 end
-h
- X
- x
+% h
+%  X
+%  x
 % cc/N
 % error('1')
 
@@ -126,7 +128,7 @@ h
         problem.bchandle = bchandle;
         problem.NLfluxtype = NLflux;
     else
-        problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
+        problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0,qRelin);
         problem.jump = jump;
         problem.bchandle = bchandle;
     end
