@@ -376,7 +376,7 @@ end
 % else
 % obj.convSoln+e
 % end
-
+if(obj.qRelin)
 disp('re-linearize')
 obj.bcLeftVal = primalbcLeft;
 obj.bcRightVal = primalbcRight;
@@ -425,7 +425,7 @@ disp(max(abs(ue-(obj.convSoln+e))))
 % Upe = obj.convSoln+e;
 % save('u244lin.mat','Upe')
 
-
+end
 
 end
 
