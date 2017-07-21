@@ -83,6 +83,7 @@ while(max(abs(R)) > 2e-11 )
 end
 
 % J
+% sum(J)
 % error('1')
 vv = ue-u;
 cverr1 = sum(abs(vv(2:N+1)))/N;

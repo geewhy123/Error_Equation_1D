@@ -350,6 +350,10 @@ for i = 2:N+1
         ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         
+        ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+        u0(i) = ue(i);
+         f(i) = (1/h(i))*(2*pi*(cos(2*pi*xr)-cos(2*pi*xl)) + (1/4)*(cos(4*pi*xr)-cos(4*pi*xl)));
+         obj.source = f;
         
         if(strcmp(obj.goal,'TimeAccurate')==1)
             %         u0(i) = (1/h(i))*(3*xr-2*log(exp(xr)+1)-3*xl+2*log(exp(xl)+1));
