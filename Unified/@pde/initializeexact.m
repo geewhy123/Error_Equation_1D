@@ -334,6 +334,7 @@ obj.exactSolutionAll = zeros(N+2,round(obj.endTime/obj.tStep)+1);
 u0 = zeros(N+2,1);
 ue = zeros(N+2,1);
 f = zeros(N+2,1);
+% nu = obj.params.nu;
 for i = 2:N+1
     xl = x(i)-h(i)/2;
     xr = x(i)+h(i)/2;
@@ -345,6 +346,7 @@ for i = 2:N+1
         f(i) = (-2/h(i))*(  ((sin(pi*xr)^2 - 1)*(2*pi - sin(pi*xr)^2)) - ((sin(pi*xl)^2 - 1)*(2*pi - sin(pi*xl)^2)));
     elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
         
+%         ue(i) = nu*(1/h(i))*-2*(log(cosh(xr/nu))-log(cosh(xl/nu)));
         ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         

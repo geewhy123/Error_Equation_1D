@@ -115,6 +115,31 @@ end
     h(1) = h(N+1);
     h(N+2) = h(2);    
 
+%nested subdivision
+    load('X10.mat')
+    ref = log(round(N/10))/log(2);
+    assert(mod(ref,1)==0);
+    
+    Xold = X10;
+    for jj = 1:ref
+        X = zeros(2*(length(Xold)-1)+1,1);
+        X(1:2:end) = Xold;
+        X(2:2:end-1) = (X(1:2:end-2)+X(3:2:end))/2;
+        Xold = X;
+    end
+    for i = 2:N+1
+        h(i) = X(i)-X(i-1);
+    end
+    h(1) = h(N+1);
+    h(N+2) = h(2); 
+    for j = 2:N+1
+        x(j) = 0.5*(X(j)+X(j-1));
+    end
+%    X40_10 = X;
+%    save('X40_10.mat','X40_10')
+%    plot(X,'*');
+%    error('1')
+    
 
     if(strcmp(physics,'LinearSystem')==1)
         problem = pdelinearsystem(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0);
@@ -131,6 +156,7 @@ end
         problem = pde(N,p,q,r,BCLeft,valLeft,BCRight,valRight,tlim,tord,physics,goal,x,h,X,k,0,qRelin);
         problem.jump = jump;
         problem.bchandle = bchandle;
+         problem.NLError = NLflux;
     end
     
     if(strcmp(problem.physics,'BurgersVisc')==1 && strcmp(problem.goal,'TimeAccurate')==1)

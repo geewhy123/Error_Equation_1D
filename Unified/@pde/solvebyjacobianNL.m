@@ -21,7 +21,8 @@ obj.computeprimalpseudo();
 [Z] = obj.unstructuredrecon(ue,p,'solution');%ue,x,h,N,NaN,NaN,p);
 
 % obj.NLError = 'NLError';
-obj.NLError = 'NewtonError';
+
+% obj.NLError = 'NewtonError';
 disp(obj.NLError)
 
     
@@ -81,6 +82,8 @@ while(max(abs(R)) > 2e-11 )
     
 end
 
+% J
+% error('1')
 vv = ue-u;
 cverr1 = sum(abs(vv(2:N+1)))/N;
 cverr2 =sqrt(sum((vv(2:N+1)).^2)/N);
@@ -331,9 +334,14 @@ e = 0*e;
     set(gca,'FontSize',25)
     h=plot(x,ee,'*',x,exacterr,'o','LineWidth',2)
     xlabel('x','FontSize',25)
-%     ylabel('Discretization Error $$\epsilon$$','FontSize',30,'Interpreter','Latex')
-%     legend('Estimate','Exact')
-ylim([-0.04 0.03])
+    
+     ylabel('Discretization Error $$\epsilon$$','FontSize',30,'Interpreter','Latex')
+  legend('Estimate','Exact')
+
+  figure
+  plot(x,exacterr-ee,'x')
+  
+% ylim([-0.04 0.03])
 numberOfXTicks = 8;
 xData = get(h,'XData');
 set(gca,'Ytick',-0.04:0.01:0.03)
@@ -351,7 +359,7 @@ else
     
 end
 % 
-    J = obj.primalJacobian;
+%     J = obj.primalJacobian;
 % J4 = obj.errorJacobian;
 % size(J)
 % size(J4)
@@ -383,7 +391,7 @@ obj.bcRightVal = primalbcRight;
 obj.qOrder  = 6;
 obj.rOrder = 6;
 obj.convSoln = obj.convSoln+e;
-
+obj.convSoln
 obj.computerespseudo();
 [Z6] = obj.unstructuredrecon(obj.convSoln,obj.rOrder,'residual');
 [R6]=obj.computefluxintegral(Z6,'residual');
@@ -401,7 +409,7 @@ Je6 = obj.computefluxjacobian(e,'error');
 % Je6
 % R6
 
-% [norm(Je6(2:N+1,2:N+1)) norm(Je(2:N+1,2:N+1))]
+
 e(2:N+1) = Je6(2:N+1,2:N+1)\-R6(2:N+1);
 
 
@@ -425,7 +433,19 @@ disp(max(abs(ue-(obj.convSoln+e))))
 % Upe = obj.convSoln+e;
 % save('u244lin.mat','Upe')
 
-end
+% obj.bcLeftVal = primalbcLeft;
+% obj.bcRightVal = primalbcRight;
+% load('u244lin.mat')
+% u = Upe;
+% obj.convSoln = u;
+% obj.computerespseudo();
+% u
+% [Z6] = obj.unstructuredrecon(obj.convSoln,obj.rOrder,'residual');
+% [R64]=obj.computefluxintegral(Z6,'residual');
+% [R6 R64]
 
+end
+ 
+% norm(Je6(2:end-1,2:end-1))
 end
 
