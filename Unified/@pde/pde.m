@@ -103,6 +103,8 @@ higherprimalPI;
         postprocesscn(obj,n);
         f = computeTimeDepSource(obj);
         meshrefinecoarsen(obj,s);
+        cpy = copy(obj);
+        
     end
     
     methods(Access=private)

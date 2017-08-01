@@ -78,6 +78,17 @@ while(max(abs(R)) > 2e-11 )
     fprintf('dt = %e , time = %e, Residual = %e \n', dt,total_time,max(abs(R)))
     
 %     norm(inv(J(2:N+1,2:N+1))*N^2)
+
+% eigA = eig(J(2:N+1,2:N+1));
+% eiginvA = eig(inv(J(2:N+1,2:N+1)));
+% [max(abs(eigA));
+%  min(abs(eigA));   
+%  max(abs(eiginvA));
+%  min(abs(eiginvA))]
+% norm(inv(J(2:N+1,2:N+1)))
+% figure
+% eigA
+% plot(real(eigA),imag(eigA),'*')
 %     error('6')
     
 end
@@ -233,6 +244,25 @@ plot(tau0)
 % tau4 = tau;
 % save('te.mat','tau4','-append')
 % error('1')
+
+% f(3:end-2) = 0.5*(f(2:end-3)+f(4:end-1));
+% f(2:end-1) = 0.5*(f(1:end-2)+f(3:end));
+% figure
+% f(3:end-2) = (h(2:end-3).*f(2:end-3)+h(4:end-1).*f(4:end-1))./(h(2:end-3)+h(4:end-1));
+% f(3:end-2) = tau(3:end-2);
+% plot(x,tau,'o',x,f,'x')
+
+
+% e = tau-f;
+% e_norm2 = sqrt(sum(e.^2.*h))
+% sum(h.*tau)
+% sum(h(2:end-1).*(tau(2:end-1)))
+
+f = hTE(u,obj);
+
+% obj
+% error('1')
+
     obj.errorSource = f;%tau4+f+rand(N+2,1)*h(2)^3;%f;%tau2-Rend;%tau2-Rend;f;%tau6-Rq;%f;%tau;
     
     [tauE]= obj.computefluxintegral(Z,'solution');
