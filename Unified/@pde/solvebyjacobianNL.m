@@ -1,6 +1,5 @@
 function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
-%SOLVEBYJACOBIAN Summary of this function goes here
-%   Detailed explanation goes here
+%errordriver(40,2,2,4,1,'D',0,'D',0,0,'','Poisson','SS',[1 1 1],'HC','NLError',0);
 
 fprintf('\nPrimal Equation:\n')
 ue = obj.exactSolution;
@@ -258,8 +257,13 @@ plot(tau0)
 % sum(h.*tau)
 % sum(h(2:end-1).*(tau(2:end-1)))
 
-f = hTE(u,obj);
 
+%other res
+% f = hTE(u,obj);
+f = uniformproj(u,obj);
+% figure
+% plot(f)
+% error('5')
 % obj
 % error('1')
 
