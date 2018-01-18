@@ -9,6 +9,8 @@ elseif(strcmp(obj.physics,'Advection')==1)
     advectioninitialize(obj);
 elseif(strcmp(obj.physics,'Poisson')==1)
     poissoninitialize(obj);
+elseif(strcmp(obj.physics,'Biharmonic')==1)
+    biharmonicinitialize(obj);
 elseif(strcmp(obj.physics,'BurgersMod')==1)
     burgersmodinitialize(obj);
 elseif(strcmp(obj.physics,'BurgersVisc')==1)
@@ -59,7 +61,10 @@ for i = 2:N+1
     if(obj.bcLeftType == 'P' && obj.bcRightType == 'P' || strcmp(obj.goal,'SS')~=1)
         
         %      f(i) = (1/h(i))*(-4*pi^2)*( (exp(1)^3*sin(2*pi*xr)+1)/(sin(2*pi*xr)+exp(1)^3)^2 - (exp(1)^3*sin(2*pi*xl)+1)/(sin(2*pi*xl)+exp(1)^3)^2);
-        f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
+%         f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
+%                 f(i) = (1/h(i))*(2*pi*sqrt(2))*(cos(2*pi*xr)-cos(2*pi*xl));
+f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
+        
         %      z(i) = randn();
         %      f(i) = f(i) + (1/h(i))*z(i)*1e-1*(xr-xl);
     elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
@@ -122,7 +127,11 @@ for i = 2:N+1
     %this%% ue(i) = (1/h(i))*(log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl)));
     if(obj.bcLeftType == 'P' && obj.bcRightType == 'P'|| strcmp(obj.goal,'SS')~=1)
         
-        ue(i) = (1/h(i))*(-1/(1*pi))*(cos(1*pi*xr)-cos(1*pi*xl));
+%          ue(i) = (1/h(i))*(-1/(1*pi))*(cos(1*pi*xr)-cos(1*pi*xl));
+                 ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+% ue(i) = (1/h(i))*(-1/(2*pi*sqrt(2)))*(cos(2*pi*xr)-cos(2*pi*xl));
+        
+        
         if(strcmp(obj.goal,'TimeAccurate')==1)
             ue(i)= (1/h(i))*((-1/(1*pi))*(100*exp(-1*pi^2*tlim))*(cos(1*pi*xr)-cos(1*pi*xl)));%+  (log(exp(1)^3+sin(2*pi*xr))-log(exp(1)^3+sin(2*pi*xl))));%(1/(2*pi))*(sin(2*pi*xr)-sin(2*pi*xl)));
             %   ue(i)= (1/h(i))*((-1/(pi))*(100*exp(-pi^2*tlim))*(cos(pi*xr)-cos(pi*xl)));
@@ -195,6 +204,69 @@ obj.exactNoisySolution = une*0;
 
 end
 
+function biharmonicinitialize(obj)
+tlim = obj.endTime;
+x = obj.cellCentroids;
+N = obj.nCells;
+h = obj.cellWidths;
+
+u0 = zeros(N+2,1);
+ue = zeros(N+2,1);
+obj.exactSolutionAll = zeros(N+2,round(obj.endTime/obj.tStep)+1);
+une = zeros(N+2,1);
+ne = zeros(N+2,1);
+f = zeros(N+2,1);
+z = rand(N+2,1);
+% z = [0; randn(N,1); 0];
+rr  = randn(N+2,1);
+rr = rr - sum(rr(2:N+1)/N);
+s= 0;
+for i = 2:N+1
+    xl = x(i)-h(i)/2;
+    xr = x(i)+h(i)/2;
+    
+    if(obj.bcLeftType == 'P' && obj.bcRightType == 'P' || strcmp(obj.goal,'SS')~=1)
+        
+        f(i) = (1/h(i))*(2*pi)*(cos(2*pi*xr)-cos(2*pi*xl));
+        error('1');
+    elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+        
+        f(i) = (1/h(i))*(-exp(xr)-(-exp(xl)));
+        
+    else
+        assert(0)
+    end
+    
+    if(obj.bcLeftType == 'P' && obj.bcRightType == 'P'|| strcmp(obj.goal,'SS')~=1)
+        
+        ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
+        error('1');
+    elseif(obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+        ue(i) = (1/h(i))*((-exp(xr)-(exp(1)-3)*xr^3-(5-2*exp(1))*xr^2+xr+1) - (-exp(xl)-(exp(1)-3)*xl^3-(5-2*exp(1))*xl^2+xl+1));
+    else
+        assert(0)
+    end
+    
+    u0(i)=0;
+    
+
+end
+
+f(1) = NaN;
+f(N+2) = NaN;
+ue(1) = NaN;
+ue(N+2) = NaN;
+u0(1) = NaN;
+u0(N+2)= NaN;
+
+obj.exactSolution = ue;
+obj.initialSolution = u0;
+obj.source = f;
+obj.exactNoisySolution = une*0;
+
+
+end
+
 
 function  advectioninitialize(obj)
 %BURGERSINITIALIZE Summary of this function goes here
@@ -238,6 +310,7 @@ for i = 2:N+1
         ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
         u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
         f(i) = (1/h(i))*(sin(2*pi*xr)-sin(2*pi*xl));
+        
     end
     %  ue(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
     %    u0(i) = (1/h(i))*(-1/(2*pi))*(cos(2*pi*xr)-cos(2*pi*xl));
@@ -253,7 +326,6 @@ u0(N+2)= NaN;
 obj.exactSolution = ue;
 obj.initialSolution = u0;
 obj.source = f;
-
 
 
 end
@@ -350,11 +422,21 @@ for i = 2:N+1
         ue(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         u0(i) = (1/h(i))*-2*(log(cosh(xr))-log(cosh(xl)));
         
-        ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
-        u0(i) = ue(i);
-         f(i) = (1/h(i))*(2*pi*(cos(2*pi*xr)-cos(2*pi*xl)) + (1/4)*(cos(4*pi*xr)-cos(4*pi*xl)));
-         obj.source = f;
-        
+%         ue(i) = (1/h(i))*((1/(2*pi))*(-cos(2*pi*xr)+cos(2*pi*xl)));
+%         u0(i) = ue(i);
+%          f(i) = (1/h(i))*(2*pi*(cos(2*pi*xr)-cos(2*pi*xl)) + (1/4)*(cos(4*pi*xr)-cos(4*pi*xl)));
+%          obj.source = f;
+
+% jvvuq 
+a = 0.005;
+ue(i) = (1/h(i))*(((pi^(1/2)*erf((1/a)^(1/2)*(xr - 1/2)))/(2*(1/a)^(1/2)))-...
+                  ((pi^(1/2)*erf((1/a)^(1/2)*(xl - 1/2)))/(2*(1/a)^(1/2))));
+u0(i) = ue(i);
+f(i) = -(1/h(i))*(((exp(-(2*xr^2)/a)*exp(-1/(2*a))*exp((2*xr)/a))/2 - (exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a + (2*xr*exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a)-...
+     ((exp(-(2*xl^2)/a)*exp(-1/(2*a))*exp((2*xl)/a))/2 - (exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a + (2*xl*exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a));
+%        (2*exp(-(x - 1/2)^2/a))/a - (exp(-(2*(x - 1/2)^2)/a)*(2*x - 1))/a - (exp(-(x - 1/2)^2/a)*(2*x - 1)^2)/a^2
+
+
         if(strcmp(obj.goal,'TimeAccurate')==1)
             %         u0(i) = (1/h(i))*(3*xr-2*log(exp(xr)+1)-3*xl+2*log(exp(xl)+1));
             %         ue(i) = (1/h(i))*(3*xr-2*log(exp(xr)+exp(2*tlim))-3*xl+2*log(exp(xl)+exp(2*tlim)));

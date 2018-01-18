@@ -274,8 +274,26 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
 
 
         Z(:,i) = y;
-
-
+        
+%         M = zeros(p+2,p);
+%         M(1,:) = obj.moments(i,1:p);
+%         M(2,:) = (-1).^(0:3).*(h(i)/2).^(0:3);
+%         M(3:end,2:p) = AA(:,:,i);
+%         M(3:end,1) = 1;
+%         ww = 10;
+%         M(2,:) = M(2,:)*ww;
+%         b = [ubi; ww*uL; wi1*(ub1); wi2*(ub2); wi3*(ub3); wi4*(ub4) ];
+% 
+% M(end+1,:) = ww*[0 1 -h(i) 3*(h(i)/2)^2]; % derivative
+% b(end+1) = 0*ww;
+% %         M
+% %         b
+%         Z(:,i) = (M'*M)\(M'*b);
+% %         Z(:,2)
+% % error('1')
+%         
+%         
+        
         i = N+1;
         xbi = obj.moments(i,2);
 
@@ -345,6 +363,30 @@ function [Z] = unstructuredreconp(obj,u ,p,eqn)
 % %%%%%
         Z(:,i) = y;
 
+        
+%         % new 
+%           M = zeros(p+2,p);
+%         M(1,:) = obj.moments(i,1:p);
+%         M(2,:) = (1).^(0:3).*(h(i)/2).^(0:3);
+%         M(3:end,2:p) = AA(:,:,i);
+%         M(3:end,1) = 1;
+%         ww = 10;
+%         M(2,:) = M(2,:)*ww;
+%         b = [ubi; ww*uL; wi1*(ub1); wi2*(ub2); wi3*(ub3); wi4*(ub4) ];
+% 
+% M(end+1,:) = ww*[0 1 h(i) 3*(h(i)/2)^2]; % derivative
+% b(end+1) = 0*ww;
+%         M
+%         b
+%         Z(:,i) = (M'*M)\(M'*b);
+%         Z(:,N+1)
+%         error('1')
+%         
+        
+        
+        
+        
+        
         if(strcmp(obj.bchandle,'HC')==1)
            begin = 3;
            fin = N;

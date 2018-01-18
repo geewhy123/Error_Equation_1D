@@ -50,7 +50,11 @@ for j = 1:n
     if(j > nt/2 && j < n-(nt/2-1))
     dUdt(:,j)= U(:,j-nt/2:j+nt/2)*cc/k;
     elseif(j<=nt/2)
-        [j n];
+        size(U)
+        U
+        [j j+nt]
+       U(:,j:j+nt)
+        [j n]
         dUdt(:,j) = U(:,j:j+nt)*cl/k;
     elseif(j>=(n-(nt/2-1)))
        

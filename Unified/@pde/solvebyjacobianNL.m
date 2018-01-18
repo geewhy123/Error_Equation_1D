@@ -1,5 +1,6 @@
 function [errerr2,x,cverr2,exacterr,ee,te  ] = solvebyjacobianNL( obj )
-%errordriver(40,2,2,4,1,'D',0,'D',0,0,'','Poisson','SS',[1 1 1],'HC','NLError',0);
+%SOLVEBYJACOBIAN Summary of this function goes here
+%   Detailed explanation goes here
 
 fprintf('\nPrimal Equation:\n')
 ue = obj.exactSolution;
@@ -65,7 +66,11 @@ while(max(abs(R)) > 2e-11 )
     [Z] = obj.unstructuredrecon(u,p,'solution');
     Rold = R;
     [R]=obj.computefluxintegral(Z,'solution');
-    del = pinv(K)*-R(2:N+1);    
+    del = pinv(K)*-R(2:N+1); 
+    
+    del = K\-R(2:N+1);
+    
+    
     uu = u(2:N+1) + del;
     u = NaN*ones(N+2,1);
     u(2:N+1) = uu;
@@ -75,6 +80,26 @@ while(max(abs(R)) > 2e-11 )
     
     total_time = total_time+dt;
     fprintf('dt = %e , time = %e, Residual = %e \n', dt,total_time,max(abs(R)))
+    
+    
+%     eig(J(2:N+1,2:N+1))
+%     error('1')
+%     sparse(K)
+%      spy(sparse(K))
+%     error('1')
+%     c = eig(K)
+%     K-K'
+%     plot(real(c),imag(c),'o')
+% Kunif = K;
+%     save('primalJac.mat','Kunif')
+%     
+%     [~,s,~] = svd(K);
+%     ci = eig(inv(K));
+%     [~,si,~] = svd(inv(K));
+%     [max(max(abs(c))) max(max(abs(s)));
+%             [max(max(abs(ci))) max(max(abs(si)))]]
+%     
+%     error('6')
     
 %     norm(inv(J(2:N+1,2:N+1))*N^2)
 
@@ -91,6 +116,9 @@ while(max(abs(R)) > 2e-11 )
 %     error('6')
     
 end
+% 
+% unorm = sqrt(u(2:end-1).^2.*h(2:end-1));
+% u(2:end-1) = u(2:end-1)/unorm;
 
 % J
 % sum(J)
@@ -174,6 +202,20 @@ if(q> 0 && r>0)
     
     fprintf('\n\n\nError Equation:\n')
     obj.computerespseudo();
+    
+    
+    
+
+% gaussFilter = gausswin(4);
+% gaussFilter = gaussFilter / sum(gaussFilter); % Normalize.
+% 
+% 
+% u = u(2:end-1);
+% u = conv(u, gaussFilter,'same');
+% u = [NaN; u ; NaN];
+
+    
+    
     
     [Zr] = obj.unstructuredrecon(u,r,'residual');
     figure
@@ -259,8 +301,26 @@ plot(tau0)
 
 
 %other res
-% f = hTE(u,obj);
-f = uniformproj(u,obj);
+% f = hTE(u,obj); 
+% f = uniformproj(u,obj);
+% f = resfilter(u,obj);
+
+%%%%
+% windowSize = 10; 
+% b = (1/windowSize)*ones(1,windowSize);
+% a = 1;
+% f = filter(b,a,f);
+%%%%
+% f = medfilt1(f,1);
+%%%%
+% [ ~,u0] = uniformproj(u,obj);
+% u0
+% error('1')
+% % % % % % windowWidth = int16(5);
+% % % % % % gaussFilter = gausswin(5);
+% % % % % % gaussFilter = gaussFilter / sum(gaussFilter); % Normalize.
+% % % % % % f = conv(f, gaussFilter,'same');
+
 % figure
 % plot(f)
 % error('5')
@@ -302,6 +362,8 @@ e = 0*e;
         Rold = R;
         [R]=obj.computefluxintegral(Z,'error');
         
+%         K
+%         error('1')
         
 % % % % %         %
 % % % % % %         norm(Je(2:N+1,2:N+1))
@@ -375,12 +437,13 @@ e = 0*e;
 
   figure
   plot(x,exacterr-ee,'x')
-  
+  xlabel('x')
+  ylabel('Error in error')
 % ylim([-0.04 0.03])
-numberOfXTicks = 8;
-xData = get(h,'XData');
-set(gca,'Ytick',-0.04:0.01:0.03)
-%set(gca,'YTickLabel',{'-0.04', '-0.03', '-0.02', '-0.01', '0', '0.01', '0.02', '0.03'})
+% numberOfXTicks = 8;
+% xData = get(h,'XData');
+% set(gca,'Ytick',-0.04:0.01:0.03)
+% %set(gca,'YTickLabel',{'-0.04', '-0.03', '-0.02', '-0.01', '0', '0.01', '0.02', '0.03'})
     fprintf('\nError T.E.: [%e\t %e\t %e]\n',tauE1, tauE2, tauEinf);
     fprintf('Error D.E.: [%e\t %e\t %e]\n',errerr1, errerr2, errerrinf);
  

@@ -186,7 +186,7 @@ end
     problem.computemoments();
     u=u0;
     switch physics
-        case {'Poisson', 'Advection'}
+        case {'Poisson', 'Advection','Biharmonic'}
             problem.linearPhysics = true;
         case {'Burgers','BurgersVisc','EulerQ'}
             problem.linearPhysics = false;
@@ -198,6 +198,8 @@ end
     if(problem.linearPhysics)
         problem.computeprimalpseudo();
         problem.primalJacobian = problem.computefluxjacobian(ue,'solution');
+%         problem.primalJacobian
+%         error('2')
     end
     
     if(strcmp(goal,'SS')==1 )
@@ -451,6 +453,8 @@ if(q>0 && r > 0)
     
     figure
     Utall = problem.Uall;
+    
+    
     for i = 2:N+1
     Utall(i,:) = diffU(problem.Uall(i,:),k,k);
     end

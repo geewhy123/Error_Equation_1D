@@ -1,5 +1,5 @@
 function [ FI ] = computefluxintegral( obj,Z,eqn )
-if(strcmp(obj.physics,'Poisson')==1 || strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1||strcmp(obj.physics,'Burgers')==1 )
+if(strcmp(obj.physics,'Poisson')==1 ||strcmp(obj.physics,'Biharmonic')==1|| strcmp(obj.physics,'Advection')==1 || strcmp(obj.physics,'BurgersVisc')==1|| strcmp(obj.physics,'LinearSystem')==1||strcmp(obj.physics,'Burgers')==1 )
 
     
 % if(strcmp(eqn,'error') == 1 && strcmp(obj.goal,'TimeAccurate')==1 &&  strcmp(obj.physics,'BurgersVisc')==1)  
@@ -46,6 +46,8 @@ end
             F(i) = computepoissonflux(obj,Z(:,i),Z(:,i+1),eqn,i);
             %                 F
             %                 error('1')
+        elseif(strcmp(obj.physics,'Biharmonic')==1)
+            F(i) = computebiharmonicflux(obj,Z(:,i),Z(:,i+1),eqn,i);
         elseif(strcmp(obj.physics,'Advection')==1)
             F(i) = computeadvectionflux(obj,Z(:,i),Z(:,i+1),eqn,i);
         elseif(strcmp(obj.physics,'BurgersVisc')==1)
@@ -285,6 +287,144 @@ end
 
 end
 
+function [ F ] = computebiharmonicflux( obj,left,right,eqn,i )
+
+h = obj.cellWidths;
+N = obj.nCells;
+alpha = obj.jump(2);
+alphaL = obj.jump(1);
+alphaR = obj.jump(3);
+if(strcmp(eqn,'solution')==1)
+    p = obj.pOrder;
+elseif(strcmp(eqn,'error')==1)
+    p = obj.qOrder;
+elseif(strcmp(eqn,'residual')==1)
+    p = obj.rOrder;
+else
+    assert(0);
+end
+
+[p,~] = size(left);
+
+pr = p;%obj.pOrder;
+pl = p;%obj.pOrder;
+
+if(i==1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    F = 0;
+    for k = 1:p-3
+%         F = F + k*right(k+1)*(-h(i+1)/2)^(k-1);
+        F = F + k*(k+1)*(k+2)*right(k+3)*(-h(i+1)/2)^(k-1);
+    end
+    
+    if(strcmp(obj.bchandle,'Jump')==1 )
+        error('1')
+        uu = 0;
+        for k = 1:p
+            uu = uu + right(k)*(-h(i+1)/2)^(k-1);
+        end
+        F = F+alphaL*(uu-obj.bcLeftVal)/(h(i+1)/2);
+        if(abs(uu-obj.bcLeftVal) > 1e-5)
+            %             [uu obj.bcLeftVal]
+            %     error('1')
+        end
+    end
+    %boundary jump
+    
+    return;
+    
+elseif(i==N+1 && obj.bcLeftType == 'D' && obj.bcRightType == 'D')
+    F = 0;
+    for k = 1:p-3
+%         F = F + k*left(k+1)*(h(i)/2)^(k-1);
+         F = F + k*(k+1)*(k+2)*left(k+3)*(h(i)/2)^(k-1);
+    end
+    
+    if(strcmp(obj.bchandle,'Jump')==1 )
+        error('1')
+        uu = 0;
+        for k = 1:p
+            uu = uu + left(k)*(h(i)/2)^(k-1);
+        end
+        F = F-alphaR*(uu-obj.bcRightVal)/(h(i)/2);
+        
+        %             error('1')
+    end
+    %boundary jump
+    
+    return;
+    
+elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
+    error('1')
+    Fl = 0;
+    Fr = 0;
+    
+    for k = 1:p-1
+        Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+    end
+    for k = 1:p-1
+        Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+    end
+    F = 0.5*(Fr+Fl);
+    
+    if(p==2 )
+        ul1 = right(1)+right(2)*(-h(i+1)/2);
+        ul2 = left(1) + left(2)*(h(i)/2);
+        jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+        F = F+jump;
+        
+        % %                       elseif(p==3)
+        % %           ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2;
+        % %             ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2;
+        % %                   jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+        % %                    F = F+jump;
+        
+    elseif(p==4)
+        ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
+        ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
+        jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+        F = F+jump;
+        
+    end
+    return;
+    
+else
+    Fl = 0;
+    Fr = 0;
+    
+    for k = 1:pr-3
+%         Fr = Fr + k*right(k+1)*(-h(i+1)/2)^(k-1);
+        Fr = Fr + k*(k+1)*(k+2)*right(k+3)*(-h(i+1)/2)^(k-1);
+    end
+    for k = 1:pl-3
+%         Fl = Fl + k*left(k+1)*(h(i)/2)^(k-1);
+        Fl = Fl + k*(k+1)*(k+2)*left(k+3)*(h(i)/2)^(k-1);
+    end
+    F = 0.5*(Fr+Fl);
+    
+    if(pr==2 && pl == 2)
+        ul1 = right(1)+right(2)*(-h(i+1)/2);
+        ul2 = left(1) + left(2)*(h(i)/2);
+        jump = (alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+
+        F = F+jump;
+        
+    elseif(pr==4 && pl==4)
+%         ul1 = right(1)+right(2)*(-h(i+1)/2)+right(3)*(-h(i+1)/2)^2+right(4)*(-h(i+1)/2)^3;
+%         ul2 = left(1) + left(2)*(h(i)/2)+left(3)*(h(i)/2)^2+left(4)*(h(i)/2)^3;
+%         jump = (1*alpha/((h(i+1)+h(i))/2))*(ul1-ul2) ;
+%         F = F+jump;
+%         
+        
+    end
+    
+    return;
+    
+end
+
+end
+
+
+
 function [ F ] = computeadvectionflux( obj,left,right,eqn,i  )
 %COMPUTEFLUXINTEGRAL Summary of this function goes here
 %   Detailed explanation goes here
@@ -354,12 +494,12 @@ elseif(obj.bcLeftType=='P' && obj.bcRightType == 'P')
     Fl = 0;
     Fr = 0;
     
-%     for k = 1:p
-%         Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
-%     end
-    for k = 1:p-2
-        Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
+    for k = 1:p
+        Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
     end
+%     for k = 1:p-2
+%         Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
+%     end
 
 %     for k = 1:p
 %         Fl = Fl + left(k)*(h(i)/2)^(k-1);
@@ -390,12 +530,12 @@ else
     Fl = 0;
     Fr = 0;
     
-%     for k = 1:pr
-%         Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
-%     end
-    for k = 1:pr-2
-        Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
+    for k = 1:pr
+        Fr = Fr + right(k)*(-h(i+1)/2)^(k-1);
     end
+%     for k = 1:pr-2
+%         Fr = Fr + k*(k+1)*right(k+2)*(-h(i+1)/2)^(k-1);
+%     end
 % 
 %     for k = 1:pl
 %         Fl = Fl + left(k)*(h(i)/2)^(k-1);
