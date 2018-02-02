@@ -427,14 +427,14 @@ for i = 2:N+1
 %          f(i) = (1/h(i))*(2*pi*(cos(2*pi*xr)-cos(2*pi*xl)) + (1/4)*(cos(4*pi*xr)-cos(4*pi*xl)));
 %          obj.source = f;
 
-% jvvuq 
-a = 0.005;
-ue(i) = (1/h(i))*(((pi^(1/2)*erf((1/a)^(1/2)*(xr - 1/2)))/(2*(1/a)^(1/2)))-...
-                  ((pi^(1/2)*erf((1/a)^(1/2)*(xl - 1/2)))/(2*(1/a)^(1/2))));
-u0(i) = ue(i);
-f(i) = -(1/h(i))*(((exp(-(2*xr^2)/a)*exp(-1/(2*a))*exp((2*xr)/a))/2 - (exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a + (2*xr*exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a)-...
-     ((exp(-(2*xl^2)/a)*exp(-1/(2*a))*exp((2*xl)/a))/2 - (exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a + (2*xl*exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a));
-%        (2*exp(-(x - 1/2)^2/a))/a - (exp(-(2*(x - 1/2)^2)/a)*(2*x - 1))/a - (exp(-(x - 1/2)^2/a)*(2*x - 1)^2)/a^2
+% % jvvuq 
+% a = 0.005;
+% ue(i) = (1/h(i))*(((pi^(1/2)*erf((1/a)^(1/2)*(xr - 1/2)))/(2*(1/a)^(1/2)))-...
+%                   ((pi^(1/2)*erf((1/a)^(1/2)*(xl - 1/2)))/(2*(1/a)^(1/2))));
+% u0(i) = ue(i);
+% f(i) = -(1/h(i))*(((exp(-(2*xr^2)/a)*exp(-1/(2*a))*exp((2*xr)/a))/2 - (exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a + (2*xr*exp(-xr^2/a)*exp(-1/(4*a))*exp(xr/a))/a)-...
+%      ((exp(-(2*xl^2)/a)*exp(-1/(2*a))*exp((2*xl)/a))/2 - (exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a + (2*xl*exp(-xl^2/a)*exp(-1/(4*a))*exp(xl/a))/a));
+% %        (2*exp(-(x - 1/2)^2/a))/a - (exp(-(2*(x - 1/2)^2)/a)*(2*x - 1))/a - (exp(-(x - 1/2)^2/a)*(2*x - 1)^2)/a^2
 
 
         if(strcmp(obj.goal,'TimeAccurate')==1)
