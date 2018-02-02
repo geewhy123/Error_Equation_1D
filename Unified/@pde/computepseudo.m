@@ -113,11 +113,12 @@ function  [AD,AA] = computepseudo(obj,p)
             %           i
             %          [x2b1 nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2)]
             %       end
-                    xhat(1,k) = xhat(1,k)+ nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2);   
-                    xhat(2,k) = xhat(2,k)+nchoosek(k,ii-1)*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2);
+            nk = nchoosek(k,ii-1);
+                    xhat(1,k) = xhat(1,k)+ nk*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2);   
+                    xhat(2,k) = xhat(2,k)+nk*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2);
                     if(m ==5)
-                        xhat(3,k) = xhat(3,k)+nchoosek(k,ii-1)*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2);
-                        xhat(4,k) = xhat(4,k)+nchoosek(k,ii-1)*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2);
+                        xhat(3,k) = xhat(3,k)+nk*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2);
+                        xhat(4,k) = xhat(4,k)+nk*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2);
                     end
                 end
     
@@ -303,12 +304,13 @@ function  [AD,AA] = computepseudo(obj,p)
 %           i
 %          [x2b1 nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2)]
 %       end
-                    xhat(1,k) = wi1*(xhat(1,k)+ nchoosek(k,ii-1)*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2));   
-                    xhat(2,k) = wi2*(xhat(2,k)+nchoosek(k,ii-1)*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2));
-                    xhat(3,k) = wi3*(xhat(3,k)+nchoosek(k,ii-1)*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2));
-                    xhat(4,k) = wi4*(xhat(4,k)+nchoosek(k,ii-1)*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2));
-                    xhat(5,k) = wi5*(xhat(5,k)+nchoosek(k,ii-1)*(x5-xi)^(ii-1)*obj.moments(cv5,k-ii+2));
-                    xhat(6,k) = wi6*(xhat(6,k)+nchoosek(k,ii-1)*(x6-xi)^(ii-1)*obj.moments(cv6,k-ii+2));
+                    nk = nchoosek(k,ii-1);
+                    xhat(1,k) = wi1*(xhat(1,k)+ nk*(x1-xi)^(ii-1)*obj.moments(cv1,k-ii+2));   
+                    xhat(2,k) = wi2*(xhat(2,k)+nk*(x2-xi)^(ii-1)*obj.moments(cv2,k-ii+2));
+                    xhat(3,k) = wi3*(xhat(3,k)+nk*(x3-xi)^(ii-1)*obj.moments(cv3,k-ii+2));
+                    xhat(4,k) = wi4*(xhat(4,k)+nk*(x4-xi)^(ii-1)*obj.moments(cv4,k-ii+2));
+                    xhat(5,k) = wi5*(xhat(5,k)+nk*(x5-xi)^(ii-1)*obj.moments(cv5,k-ii+2));
+                    xhat(6,k) = wi6*(xhat(6,k)+nk*(x6-xi)^(ii-1)*obj.moments(cv6,k-ii+2));
                 end
         
             end
